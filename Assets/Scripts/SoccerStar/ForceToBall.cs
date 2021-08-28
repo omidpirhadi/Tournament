@@ -44,7 +44,8 @@ namespace Diaco.SoccerStar.Marble
         private Vector3 LastPos;
        [SerializeField] private float Y_Pos_Refrence = 0.0f;
         public bool InMove = false;
-
+        private float StepPower;
+        private Vector3 DirectionMove;
         public void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -69,7 +70,29 @@ namespace Diaco.SoccerStar.Marble
             VlocityBall = rigidbody.velocity;
 
         }
+        void OnCollisionEnter(Collision collision)
+        {
 
+           
+            if (MarbleType == Marble_Type.Ball)
+            {
+                if (collision.collider.tag == "marble" || collision.collider.tag == "wall")
+                {
+                    StartCoroutine(fakeRotation());
+                    BounceBall(collision);
+                }
+            }
+            else
+            {
+                if (collision.collider.tag == "wall")
+                    BounceBall(collision);
+            }
+
+        }
+        private void OnCollisionStay(Collision collision)
+        {
+            Debug.Log("STAY");
+        }
         private void OnEnable()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -117,7 +140,10 @@ namespace Diaco.SoccerStar.Marble
         {
             if(marbleID == ID)
             {
+                DirectionMove = dir; 
+                StepPower = pow;
                 Move(dir, pow);
+                
             }
         }
 
@@ -136,16 +162,7 @@ namespace Diaco.SoccerStar.Marble
 
 
 
-        void OnCollisionEnter(Collision obj)
-        {
-
-
-            if (MarbleType == Marble_Type.Ball)
-            {
-                if(obj.collider.tag== "marble" ||  obj.collider.tag == "wall")
-                StartCoroutine(fakeRotation());
-            }
-        }
+       
 
         public void Move(Vector3 dir, float pow)
         {
@@ -185,6 +202,8 @@ namespace Diaco.SoccerStar.Marble
 
         bool frFlag = false;
         public int rotationSpeed = 15;
+        
+
         IEnumerator fakeRotation()
         {
 
@@ -365,6 +384,32 @@ namespace Diaco.SoccerStar.Marble
                 this.transform.position = new Vector3(x_p, y_p, z_p);
                 this.transform.eulerAngles = new Vector3(x_r, y_r, z_r);
             });
+
+        }
+
+        private void BounceBall(Collision collision)
+        {
+
+
+
+            var normal = collision.contacts[0].normal;
+            var reflect2 = Vector3.Reflect(VlocityBall, normal).normalized;
+           // Debug.Log(VlocityBall + "Velocity");
+           // Debug.Log(reflect2 + "Reflect");
+            if (collision.relativeVelocity.magnitude == 0 )
+            {
+                // rigidbody.velocity = reflect2 * 10;
+                var ss =   Vector3.Reflect(DirectionMove, normal).normalized;
+                rigidbody.AddForce(ss * StepPower, forceMode);
+                //Debug.Log(collision.relativeVelocity.magnitude + "wall" + reflect2);
+            }
+            else
+            {
+                rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+                Debug.Log("AAAA");
+            }
+            
+            
 
         }
     }

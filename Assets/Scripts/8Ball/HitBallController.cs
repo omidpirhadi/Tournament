@@ -147,7 +147,8 @@ namespace Diaco.EightBall.CueControllers
               collision.rigidbody.velocity = vvv.normalized * collision.relativeVelocity.magnitude;
                
             }
-
+            if (collision.collider.tag == "wall")
+                BounceBall(collision);
 
         }
 
@@ -1011,7 +1012,17 @@ namespace Diaco.EightBall.CueControllers
 
             return move;
         }
+        private void BounceBall(Collision collision)
+        {
 
+
+
+            var normal = collision.contacts[0].normal;
+            var reflect2 = Vector3.Reflect(VlocityBall.normalized, normal).normalized;
+            rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+            Debug.Log("wall");
+
+        }
         #region Events
 
         public event Action<int , Vector3,Vector3> OnHitBall;
