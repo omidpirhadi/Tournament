@@ -144,7 +144,7 @@ namespace Diaco.EightBall.CueControllers
                 count_imapct++;
                 
 
-              collision.rigidbody.velocity = collision.relativeVelocity.normalized * collision.relativeVelocity.magnitude;
+              collision.rigidbody.velocity = vvv.normalized * collision.relativeVelocity.magnitude;
                
             }
 
