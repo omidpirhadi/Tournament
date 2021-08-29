@@ -307,7 +307,7 @@ namespace Diaco.SoccerStar.Marble
             if (Y_Pos_Refrence > 0.0f)
             {
                 var conflict_Y = Mathf.Abs(transform.position.y - Y_Pos_Refrence);
-                if (conflict_Y > Physics.defaultContactOffset)
+                if (conflict_Y > 0.1f)
                 {
 
                     transform.position = new Vector3(transform.position.x, Y_Pos_Refrence, transform.position.z);
