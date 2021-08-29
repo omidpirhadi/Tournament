@@ -46,6 +46,9 @@ namespace Diaco.SoccerStar.Marble
         public bool InMove = false;
         private float StepPower;
         private Vector3 DirectionMove;
+
+        private RaycastHit hit;
+        private Ray ray;
         public void Start()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -79,20 +82,24 @@ namespace Diaco.SoccerStar.Marble
                 if (collision.collider.tag == "marble" || collision.collider.tag == "wall")
                 {
                     StartCoroutine(fakeRotation());
+                    
+                }
+                if(collision.collider.tag == "wall")
+                {
                     BounceBall(collision);
+                    Debug.Log("XXXX");
                 }
             }
             else
             {
                 if (collision.collider.tag == "wall")
+                {
                     BounceBall(collision);
+                }
             }
 
         }
-        private void OnCollisionStay(Collision collision)
-        {
-            Debug.Log("STAY");
-        }
+
         private void OnEnable()
         {
             rigidbody = GetComponent<Rigidbody>();
@@ -129,7 +136,13 @@ namespace Diaco.SoccerStar.Marble
             
         }
 
-
+        public void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+           var reflect =  Vector3.Reflect(ray.direction, hit.normal);
+            Gizmos.DrawRay(transform.position, ray.direction);
+            Gizmos.DrawRay(hit.point, reflect);
+        }
 
         private void Server_EnableRingMarbleForOpponent( bool enable)
         {
@@ -162,26 +175,41 @@ namespace Diaco.SoccerStar.Marble
 
 
 
-       
+
 
         public void Move(Vector3 dir, float pow)
         {
-          
+
 
             var d_n = new Vector3(dir.x, 0, dir.z).normalized;
             var P_F = SoftFloat.Soft((PowerForce) * pow);
-            //server.SendForceData(new CustomTypes.FORCEDATA { id = (short)ID, direction = d_n, power = PowerForce, aimPower = pow });
-           /// ForceStopBallInSpeed2 = 00;
-            //Debug.Log(P_F);
-          rigidbody.AddForce(d_n * (float)P_F, forceMode);
-            //server.SendDirctionForceToServer((short)ID, dir_temp * (PowerForce * pow));
+
+            ray = new Ray(transform.position, d_n);
+            if(Physics.Raycast(ray,out hit,100f,LayerMask.GetMask("Wall")))
+            {
+                var dis = Vector3.Distance(transform.position, hit.point);
+                if(dis<5.0f)
+                {
+                    var reflect = Vector3.Reflect(ray.direction, hit.normal).normalized;
+                    rigidbody.AddForce(reflect*(float)P_F, forceMode);
+                    //Debug.Log("CloseToWall");
+                }
+                else
+                {
+                    rigidbody.AddForce(d_n * (float)P_F, forceMode);
+                   /// Debug.Log("AAAA" + d_n * (float)P_F);
+                }
+            }
+            
+           
+
 
             if (server.InRecordMode == false)
 
                 StartCoroutine(server.SendDataMarblesMovement());
             else
                 server.StarCheckMovment();
-          //  Debug.Log("ForceTT");
+
 
 
         }
@@ -394,22 +422,9 @@ namespace Diaco.SoccerStar.Marble
 
             var normal = collision.contacts[0].normal;
             var reflect2 = Vector3.Reflect(VlocityBall, normal).normalized;
-           // Debug.Log(VlocityBall + "Velocity");
-           // Debug.Log(reflect2 + "Reflect");
-            if (collision.relativeVelocity.magnitude == 0 )
-            {
-                // rigidbody.velocity = reflect2 * 10;
-                var ss =   Vector3.Reflect(DirectionMove, normal).normalized;
-                rigidbody.AddForce(ss * StepPower, forceMode);
-                //Debug.Log(collision.relativeVelocity.magnitude + "wall" + reflect2);
-            }
-            else
-            {
+            if (reflect2.magnitude > 0.0f)
                 rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
-                Debug.Log("AAAA");
-            }
-            
-            
+           // Debug.Log("XXXX" + reflect2 * collision.relativeVelocity.magnitude);
 
         }
     }
