@@ -140,12 +140,17 @@ namespace Diaco.EightBall.CueControllers
                 this.rigidbody.velocity += Normal / this.rigidbody.mass;
                 collision.rigidbody.velocity -= Normal / collision.rigidbody.mass;*/
 
+     
+                
+                if(vvv.magnitude >0)
+                {
+                    collision.rigidbody.velocity = vvv.normalized * collision.relativeVelocity.magnitude;
+                    Debug.Log("WhiteToBall");
+                }
+             
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
-                
 
-              collision.rigidbody.velocity = vvv.normalized * collision.relativeVelocity.magnitude;
-               
             }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);
@@ -617,6 +622,9 @@ namespace Diaco.EightBall.CueControllers
                                 GhostBall.transform.position = ray_line.origin + (ray_line.direction.normalized * hit2.distance);
                                 lineRenderer.SetPosition(0, transform.position);
                                 lineRenderer.SetPosition(1, GhostBall.transform.position);
+
+                               var dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
+                                vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
                                 Handler_OnHitBall(-1, Vector3.zero, Vector3.zero);
 
                             }
@@ -718,7 +726,7 @@ namespace Diaco.EightBall.CueControllers
                         }
                         ///  LastTouchPosition = Camera.main.WorldToScreenPoint(hit2.point);
                         Handler_OnHitBall(-1, Vector3.zero, Vector3.zero);
-                        // gamemanager.FirstBallImpact = 0;
+                        vvv = Vector3.zero;
                     }
                 }
             }

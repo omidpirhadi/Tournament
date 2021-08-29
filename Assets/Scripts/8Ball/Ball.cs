@@ -8,7 +8,7 @@ namespace Diaco.EightBall.CueControllers
     {
         public int ID = 0;
         public float ThresholdSleep = 0.09f;
-        public Vector3 TargetVelocity ;
+        public Vector3 TargetVelocity;
         public bool HaveTarget = false;
         private new Rigidbody rigidbody;
         private LineRenderer lineRenderer;
@@ -16,9 +16,9 @@ namespace Diaco.EightBall.CueControllers
         private Diaco.EightBall.Server.BilliardServer server;
         [SerializeField] private float SpeedBallCurrent = 0.0f;
         private Vector3 VlocityBallCurrent;
-        [SerializeField]  private float Y_Pos_Refrence;
-        
-      [SerializeField]  private bool InMove = false;
+        [SerializeField] private float Y_Pos_Refrence;
+
+        [SerializeField] private bool InMove = false;
         private Ray ray;
         private RaycastHit hit;
         public LayerMask layer;
@@ -31,8 +31,8 @@ namespace Diaco.EightBall.CueControllers
             cueball.OnHitBall += Ball_OnHitBall;
             cueball.OnFreazeBall += Cueball_OnFreazeBall;
             cueball.OnFristHit += Cueball_OnFristHit;
-            server = FindObjectOfType< Diaco.EightBall.Server.BilliardServer>();
-            
+            server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
+
             //InvokeRepeating("CheckballMove", 0, gamemanager.SendRate.value);//
             SetYPositionRefrence();
         }
@@ -41,17 +41,17 @@ namespace Diaco.EightBall.CueControllers
 
         private void FixedUpdate()
         {
-             VlocityBallCurrent = rigidbody.velocity;
+            VlocityBallCurrent = rigidbody.velocity;
             SpeedBallCurrent = rigidbody.velocity.magnitude;
 
             rigidbody.maxAngularVelocity = 150;
 
-           /* if (HaveTarget && SpeedBallCurrent > ThresholdSleep )
-            {
-                var d = (TargetVelocity - rigidbody.velocity).normalized;
-                rigidbody.velocity = d * SpeedBallCurrent;
+            /* if (HaveTarget && SpeedBallCurrent > ThresholdSleep )
+             {
+                 var d = (TargetVelocity - rigidbody.velocity).normalized;
+                 rigidbody.velocity = d * SpeedBallCurrent;
 
-            }*/
+             }*/
         }
         void LateUpdate()
         {
@@ -65,7 +65,7 @@ namespace Diaco.EightBall.CueControllers
             cueball.OnHitBall -= Ball_OnHitBall;
             cueball.OnFreazeBall -= Cueball_OnFreazeBall;
         }
-       
+
         private void OnCollisionEnter(Collision collision)
         {
             if (collision.collider.tag == "wall")
@@ -73,8 +73,8 @@ namespace Diaco.EightBall.CueControllers
         }
         private void OnDrawGizmos()
         {
-           Gizmos.color = Color.red;
-            
+            Gizmos.color = Color.red;
+
             Gizmos.DrawRay(ray);
             Gizmos.DrawWireSphere(hit.point, 0.4f);
         }
@@ -103,25 +103,25 @@ namespace Diaco.EightBall.CueControllers
                 {
                     lineRenderer.enabled = true;
                     SetlineDirection(dir);
-                   /* if (targetvelocity.magnitude > 0.0f)
-                    {
-                        this.TargetVelocity = targetvelocity;
-                        HaveTarget = true;
+                    /* if (targetvelocity.magnitude > 0.0f)
+                     {
+                         this.TargetVelocity = targetvelocity;
+                         HaveTarget = true;
 
-                    }*/
+                     }*/
                 }
                 else if (target != ID)
                 {
-                 //  lineRenderer.enabled = false;
-                 //  SetlineDirection(new Vector3(0, -10f, 0));
-                  ///  this.TargetVelocity = Vector3.zero;
-                  ///  HaveTarget = false;
+                    lineRenderer.enabled = false;
+                    SetlineDirection(new Vector3(0, -10f, 0));
+                    ///  this.TargetVelocity = Vector3.zero;
+                    ///  HaveTarget = false;
                 }
             }
             else
             {
-              // lineRenderer.enabled = false;
-             //  SetlineDirection(new Vector3(0, -10f, 0));
+                lineRenderer.enabled = false;
+                SetlineDirection(new Vector3(0, -10f, 0));
                 // Debug.Log("Nulll");
 
             }
@@ -130,24 +130,25 @@ namespace Diaco.EightBall.CueControllers
 
         private void SetlineDirection(Vector3 pos)
         {
-             lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0, transform.position.z));
+            lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0, transform.position.z));
 
             lineRenderer.SetPosition(1, (new Vector3(pos.x, 0f, pos.z)));
 
         }
         public void SetYPositionRefrence()
         {
-           DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
-            {
+            DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
+             {
 
-            }).OnComplete(() => {
+             }).OnComplete(() =>
+             {
                 //rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
                 Y_Pos_Refrence = transform.position.y;
-            });
+             });
         }
         private void FixOverflowMovment()
         {
-           if (Y_Pos_Refrence > 0.0f)
+            if (Y_Pos_Refrence > 0.0f)
             {
                 var conflict_Y = Mathf.Abs(transform.position.y - Y_Pos_Refrence);
                 if (conflict_Y > 0.1f)
@@ -176,7 +177,7 @@ namespace Diaco.EightBall.CueControllers
                 rigidbody.velocity = Vector3.zero;
                 rigidbody.angularVelocity = Vector3.zero;
                 InMove = false;
-               
+
                 Debug.Log("Fix Move Ball");
 
             }
@@ -204,5 +205,5 @@ namespace Diaco.EightBall.CueControllers
 
         }
     }
-    
+
 }
