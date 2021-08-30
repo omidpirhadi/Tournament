@@ -453,7 +453,7 @@ namespace Diaco.EightBall.CueControllers
             //Debug.Log(dir);
             dir.y = 0;
 
-            rigidbody.AddForceAtPosition((GhostBall.transform.position - transform.position).normalized *powcue, transform.position, Forcemode);
+            rigidbody.AddForceAtPosition((GhostBall.transform.position - transform.position).normalized *powcue, AtPosition, Forcemode);
             //Debug.Log(dir);
            // rigidbody.AddForce(dir * powcue, Forcemode);
             if (Server.InRecordMode == false)
@@ -867,7 +867,7 @@ namespace Diaco.EightBall.CueControllers
                     InMove = true;
                 });
             }
-            if (VlocityBall.magnitude < ThresholdSleep && InMove == true)
+            if (VlocityBall.magnitude < ThresholdSleep && VlocityBall.magnitude > 0.001f && InMove == true)
             {
 
                 rigidbody.velocity = Vector3.zero;

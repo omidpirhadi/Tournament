@@ -4665,7 +4665,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 2
 --- !u!114 &973510829921708373
 MonoBehaviour:
@@ -4689,6 +4689,7 @@ MonoBehaviour:
   Y_Pos_Refrence: 0
   InMove: 0
   rotationSpeed: 90
+  PrecentSpeedRotate: 0.1
 --- !u!96 &973510829921700094
 TrailRenderer:
   serializedVersion: 2
@@ -8649,7 +8650,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 973510829921704157}
   m_LocalRotation: {x: -0.5, y: 0.50000006, z: 0.50000006, w: 0.5}
-  m_LocalPosition: {x: 61.30458, y: 1.5121377, z: 0.6381569}
+  m_LocalPosition: {x: 61.30458, y: 1.5121377, z: 0.15}
   m_LocalScale: {x: 18.325583, y: 6.2758355, z: 3.7263322}
   m_Children: []
   m_Father: {fileID: 973510829921699430}
@@ -16883,6 +16884,7 @@ GameObject:
   - component: {fileID: 5679884664027936400}
   - component: {fileID: 6819268725204411710}
   - component: {fileID: 3826026215294026138}
+  - component: {fileID: 4023940384408292964}
   m_Layer: 11
   m_Name: Cube (11)
   m_TagString: wall
@@ -16925,6 +16927,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4023940384408292964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859549616223772258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aacf6a1d2df17489a3625453ea5d66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3224316230199821216
 GameObject:
   m_ObjectHideFlags: 0
@@ -17042,6 +17056,7 @@ GameObject:
   - component: {fileID: 1098328976129209819}
   - component: {fileID: 8886215551689685167}
   - component: {fileID: 8360622312660385053}
+  - component: {fileID: 4475735086977231774}
   m_Layer: 11
   m_Name: Cube (10)
   m_TagString: wall
@@ -17084,6 +17099,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4475735086977231774
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5505756937100203231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73aacf6a1d2df17489a3625453ea5d66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5653549638913710522
 GameObject:
   m_ObjectHideFlags: 0

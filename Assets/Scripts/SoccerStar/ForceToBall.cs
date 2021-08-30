@@ -78,15 +78,15 @@ namespace Diaco.SoccerStar.Marble
         void OnCollisionEnter(Collision collision)
         {
 
-           
+            var tag_collider = collision.collider.tag;
             if (MarbleType == Marble_Type.Ball)
             {
-                if (collision.collider.tag == "marble" || collision.collider.tag == "wall")
+                if (tag_collider == "marble" || tag_collider == "wall")
                 {
                     StartCoroutine(fakeRotation());
                     
                 }
-                if(collision.collider.tag == "wall")
+                if(tag_collider == "wall")
                 {
                     BounceBall(collision);
                    // Debug.Log("XXXX");
@@ -94,10 +94,18 @@ namespace Diaco.SoccerStar.Marble
             }
             else
             {
-                if (collision.collider.tag == "wall")
+                if (tag_collider == "wall")
                 {
                     BounceBall(collision);
                 }
+              /*  if(tag_collider == "ball")
+                {
+                    var hit_point = collision.contacts[0].point;
+                    var direction_move = (hit_point - transform.position).normalized;
+                    var speed = collision.relativeVelocity.magnitude;
+                    collision.rigidbody.AddTorque(direction_move*speed*2 , forceMode);
+                    Debug.Log("Impact Ball");
+                }*/
             }
 
         }
@@ -235,7 +243,7 @@ namespace Diaco.SoccerStar.Marble
 
         bool frFlag = false;
         public int rotationSpeed = 15;
-        
+        public float PrecentSpeedRotate = 0.1f;
 
         IEnumerator fakeRotation()
         {
@@ -253,8 +261,8 @@ namespace Diaco.SoccerStar.Marble
                 //print ("fake rotation...");
 
                 t += Time.deltaTime * 0.4f;
-                float rot = rotationSpeed - (t * rotationSpeed);
-                transform.Rotate(new Vector3(rot / 3, rot, rot / 3));
+                float rot = rotationSpeed - (t * VlocityBall.magnitude);
+                transform.Rotate(new Vector3(rot/3, rot/3, 0));
                 yield return 0;
             }
 
@@ -327,17 +335,28 @@ namespace Diaco.SoccerStar.Marble
                 {
 
                     InMove = true;
+                    Debug.Log("BallMove");
                 });
             }
-            if (VlocityBall.magnitude < ThresholdSleep && InMove == true)
+            if (VlocityBall.magnitude < ThresholdSleep  && VlocityBall.magnitude >0.001f && InMove == true)
             {
 
                 rigidbody.velocity = Vector3.zero;
                 rigidbody.angularVelocity = Vector3.zero;
+                rigidbody.isKinematic = true;
                 InMove = false;
-                Debug.Log("Fix Move Ball");
+                frFlag = false;
+                Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
+                DOVirtual.Float(0, 1, 1.0f, (x) => { }).OnComplete(() =>
+                {
 
+                }).OnComplete(() =>
+                {
+                    rigidbody.isKinematic = false;
+                    rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                });
             }
+                
         }
         private bool CheckBallMove()
         {

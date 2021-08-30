@@ -534,7 +534,7 @@ namespace Diaco.SoccerStar.Server
 
 
                 ///Marbles[index_marble].transform.eulerAngles = rotate;
-                Marbles[index_marble].transform.position = pos;
+                Marbles[index_marble].transform.DOMove(pos, 0.1f);
                 // Debug.Log("MOVVVVEEEEEE");
             }
 

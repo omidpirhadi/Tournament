@@ -27,10 +27,7 @@ namespace Diaco.SoccerStar.Goals
                     //   Debug.Log("GOAL");
                     var rigibody = other.GetComponent<Rigidbody>();
 
-                    DOVirtual.Float(0, 1, 0.2f, (x) => { }).OnComplete(() =>
-                      {
-                          rigibody.velocity = Vector3.zero;
-                      });
+                   
                     server.IsGoal = ID;
                 }
                 if (other.GetComponent<ForceToBall>().MarbleType == ForceToBall.Marble_Type.Marble)
