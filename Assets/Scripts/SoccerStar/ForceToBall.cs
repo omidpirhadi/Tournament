@@ -125,11 +125,14 @@ namespace Diaco.SoccerStar.Marble
                 playerControll.OnShoot += PlayerControll_OnShoot;
 
             }
-
+            server.OnPhysicFreeze += Server_OnPhysicFreeze;
             SetYPositionRefrence();
         }
 
-
+        private void Server_OnPhysicFreeze(bool obj)
+        {
+            PhysicFreeze(obj);
+        }
 
         public void OnDestroy()
         {
@@ -143,7 +146,7 @@ namespace Diaco.SoccerStar.Marble
                     server.OnChangeTurn -= Server_OnChangeTurn;
 
                 }
-            
+            server.OnPhysicFreeze -= Server_OnPhysicFreeze;
         }
 
         public void OnDrawGizmos()
@@ -347,14 +350,7 @@ namespace Diaco.SoccerStar.Marble
                 InMove = false;
                 frFlag = false;
                 Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
-                DOVirtual.Float(0, 1, 1.0f, (x) => { }).OnComplete(() =>
-                {
 
-                }).OnComplete(() =>
-                {
-                    rigidbody.isKinematic = false;
-                    rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-                });
             }
                 
         }
@@ -450,6 +446,24 @@ namespace Diaco.SoccerStar.Marble
                 rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
             Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
 
+        }
+        private void PhysicFreeze(bool enable)
+        {
+            if (enable)
+
+            {
+                this.rigidbody.isKinematic = true;
+                this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+                Debug.Log("PhysicFreeze");
+            }
+
+            else
+            {
+                this.rigidbody.isKinematic = false;
+                this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                Debug.Log("Physic UnFreeze");
+
+            }
         }
     }
 }

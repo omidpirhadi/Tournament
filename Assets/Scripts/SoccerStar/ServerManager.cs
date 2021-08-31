@@ -49,6 +49,8 @@ namespace Diaco.SoccerStar.Server
                 turn = value;
 
                 handler_OnTurnChange(turn);
+                if (turn == true)
+                    Handler_OnPhysicFreeze(false);
             }
             get
             {
@@ -391,7 +393,7 @@ namespace Diaco.SoccerStar.Server
             GameDataRecive = false;
             Turn = false;
             // Debug.Log("TRUN5");
-            KinimaticMarblesAndBall(true);
+            //KinimaticMarblesAndBall(true);
             if (ResultGamePage.activeSelf && gameData.state != -1)
             {
                 ResultGamePage.SetActive(false);
@@ -483,7 +485,7 @@ namespace Diaco.SoccerStar.Server
                 {
                     Turn = true;
                     /// Debug.Log("TRUN2");
-                    KinimaticMarblesAndBall(false);
+                  //  KinimaticMarblesAndBall(false);
                 }
                 else
                 {
@@ -593,6 +595,7 @@ namespace Diaco.SoccerStar.Server
             // Debug.Log("ForceT333T");
             // Handler_SoftPositionAndRotation();
             this.TimeStep = 0.0f;
+            Handler_OnPhysicFreeze(true);
             yield return null;
         }
 
@@ -616,7 +619,7 @@ namespace Diaco.SoccerStar.Server
 
                     var rotate = new Vector3(0.0f, movement_packet.marbleMovements[i].rotate_y, 0.0f);
 
-                    var s = Marbles[index_marble].GetComponent<Rigidbody>().DOMove(pos, movement_packet.TimeStepPacket);
+                    var s = Marbles[index_marble].transform.DOMove(pos, movement_packet.TimeStepPacket);
                     Marbles[index_marble].transform.DORotate(rotate, movement_packet.TimeStepPacket);
 
                 }
@@ -1173,9 +1176,32 @@ namespace Diaco.SoccerStar.Server
             }
         }
 
+
+        private Action<bool> physicfreeze;
+        public event Action<bool> OnPhysicFreeze
+        {
+
+            add
+            {
+                physicfreeze += value;
+            }
+            remove
+            {
+                physicfreeze -= value;
+            }
+        }
+        public void Handler_OnPhysicFreeze(bool enable)
+        {
+            if (physicfreeze != null)
+            {
+
+                physicfreeze(enable);
+            }
+        }
+
         #endregion
 
-       
+
     }
 
 
