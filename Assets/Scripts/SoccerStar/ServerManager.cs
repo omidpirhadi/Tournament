@@ -50,7 +50,17 @@ namespace Diaco.SoccerStar.Server
 
                 handler_OnTurnChange(turn);
                 if (turn == true)
-                    Handler_OnPhysicFreeze(false);
+                {
+                    DOVirtual.Float(0, 1, 0.3f, x =>
+                    {
+
+                    }).OnComplete(() =>
+                    {
+                        Handler_OnPhysicFreeze(false);
+                    });
+                }
+
+
             }
             get
             {
@@ -393,7 +403,7 @@ namespace Diaco.SoccerStar.Server
             GameDataRecive = false;
             Turn = false;
             // Debug.Log("TRUN5");
-            //KinimaticMarblesAndBall(true);
+          
             if (ResultGamePage.activeSelf && gameData.state != -1)
             {
                 ResultGamePage.SetActive(false);
@@ -447,6 +457,7 @@ namespace Diaco.SoccerStar.Server
                 InitializTurn_new();
 
             }
+       
         }
         public void InitializTurn_new()
         {
@@ -524,6 +535,7 @@ namespace Diaco.SoccerStar.Server
         }
         public IEnumerator MoveMarbelsToPositionFromServer(GameData data, int side, float speed)
         {
+           // Handler_OnPhysicFreeze(true);
             var count_movement = data.positions.Count;
             for (int i = 0; i < count_movement; i++)
             {
@@ -539,7 +551,7 @@ namespace Diaco.SoccerStar.Server
                 Marbles[index_marble].transform.DOMove(pos, 0.1f);
                 // Debug.Log("MOVVVVEEEEEE");
             }
-
+           // Handler_OnPhysicFreeze(false);
             yield return null;
 
         }
@@ -590,12 +602,13 @@ namespace Diaco.SoccerStar.Server
                    //Debug.Log("SendPositions");
             }
             while (CheckMarbleMove());
+            Handler_OnPhysicFreeze(true);
             socket.Emit("EndTurn", IsGoal);
             IsGoal = -1;
             // Debug.Log("ForceT333T");
             // Handler_SoftPositionAndRotation();
             this.TimeStep = 0.0f;
-            Handler_OnPhysicFreeze(true);
+            
             yield return null;
         }
 

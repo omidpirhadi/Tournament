@@ -126,7 +126,7 @@ namespace Diaco.SoccerStar.Marble
 
             }
             server.OnPhysicFreeze += Server_OnPhysicFreeze;
-            SetYPositionRefrence();
+           // SetYPositionRefrence();
         }
 
         private void Server_OnPhysicFreeze(bool obj)
@@ -295,9 +295,10 @@ namespace Diaco.SoccerStar.Marble
 
         public void SetYPositionRefrence()
         {
+            
             DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
             {
-
+               PhysicFreeze(false);
             }).OnComplete(() => {
                 
                 
@@ -311,6 +312,11 @@ namespace Diaco.SoccerStar.Marble
                     rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
                 }
                 Y_Pos_Refrence = transform.position.y;
+                if (server.Turn == false)
+                    PhysicFreeze(true);
+                else
+                    PhysicFreeze(false);
+                    
             });
         }
         private void FixOverflowMovment()
