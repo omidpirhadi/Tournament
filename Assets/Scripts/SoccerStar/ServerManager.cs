@@ -591,7 +591,7 @@ namespace Diaco.SoccerStar.Server
                 else
                 {
                     movementPackets.TimeStepPacket = Mathf.Abs(Time.realtimeSinceStartup - TimeStep);
-                    Debug.Log($"<color=green>TimeStepPacket{movementPackets.TimeStepPacket}</color>");
+                   // Debug.Log($"<color=green>TimeStepPacket{movementPackets.TimeStepPacket}</color>");
                 }
 
                 var json_packet = JsonUtility.ToJson(movementPackets);

@@ -98,14 +98,15 @@ namespace Diaco.SoccerStar.Marble
                 {
                     BounceBall(collision);
                 }
-              /*  if(tag_collider == "ball")
+                if(tag_collider == "ball")
                 {
                     var hit_point = collision.contacts[0].point;
                     var direction_move = (hit_point - transform.position).normalized;
                     var speed = collision.relativeVelocity.magnitude;
-                    collision.rigidbody.AddTorque(direction_move*speed*2 , forceMode);
-                    Debug.Log("Impact Ball");
-                }*/
+                    collision.rigidbody.maxAngularVelocity = 150;
+                    collision.rigidbody.AddRelativeTorque(direction_move*speed*3 , forceMode);
+                    Debug.Log("Impact Ball ::: " + direction_move * speed * 3);
+                }
             }
 
         }
@@ -251,33 +252,34 @@ namespace Diaco.SoccerStar.Marble
         IEnumerator fakeRotation()
         {
 
-            if (frFlag)
-                yield break;
+            /* if (frFlag)
+                 yield break;
 
-            frFlag = true;
+             frFlag = true;
 
-            float t = 0;
-            while (t < 1)
-            {
+             float t = 0;
+             while (t < 1)
+             {
 
- 
-                //print ("fake rotation...");
 
-                t += Time.deltaTime * 0.4f;
-                float rot = rotationSpeed - (t * VlocityBall.magnitude);
-                transform.Rotate(new Vector3(rot/3, rot/3, 0));
-                yield return 0;
-            }
+                 //print ("fake rotation...");
 
-            if (t >= 1)
-            {
-                frFlag = false;
-            }
+                 t += Time.deltaTime * 0.4f;
+                 float rot = rotationSpeed - (t * VlocityBall.magnitude);
+                 transform.Rotate(new Vector3(rot/3, rot/3, 0));
+                 yield return 0;
+             }
+
+             if (t >= 1)
+             {
+                 rFlag = false;
+             }*/
+            yield return null; 
         }
         private void manageBallFriction()
         {
 
-
+/*
            var ballSpeed = GetComponent<Rigidbody>().velocity.magnitude;
             //print("Ball Speed: " + rigidbody.velocity.magnitude);
             if (ballSpeed < 0.5f)
@@ -290,7 +292,7 @@ namespace Diaco.SoccerStar.Marble
             {
                 //let it slide
                 GetComponent<Rigidbody>().drag = 0.9f;
-            }
+            }*/
         }
 
         public void SetYPositionRefrence()
@@ -344,7 +346,7 @@ namespace Diaco.SoccerStar.Marble
                 {
 
                     InMove = true;
-                    Debug.Log("BallMove");
+                    //Debug.Log("BallMove");
                 });
             }
             if (VlocityBall.magnitude < ThresholdSleep  && VlocityBall.magnitude >0.001f && InMove == true)
@@ -352,10 +354,10 @@ namespace Diaco.SoccerStar.Marble
 
                 rigidbody.velocity = Vector3.zero;
                 rigidbody.angularVelocity = Vector3.zero;
-                rigidbody.isKinematic = true;
+                //rigidbody.isKinematic = true;
                 InMove = false;
                 frFlag = false;
-                Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
+               // Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
 
             }
                 
@@ -455,7 +457,7 @@ namespace Diaco.SoccerStar.Marble
         }
         private void PhysicFreeze(bool enable)
         {
-            if (enable)
+          /*  if (enable)
 
             {
                 this.rigidbody.isKinematic = true;
@@ -469,7 +471,7 @@ namespace Diaco.SoccerStar.Marble
                 this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 Debug.Log("Physic UnFreeze");
 
-            }
+            }*/
         }
     }
 }

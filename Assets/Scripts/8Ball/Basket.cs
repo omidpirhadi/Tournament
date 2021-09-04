@@ -9,7 +9,7 @@ public class Basket : MonoBehaviour
     public Transform ConceptBall;
     public Vector3 PositionStart;
     public Material[] SkinBalls;
-    public Transform[] Path;
+   // public Transform[] Path;
     public Queue<int> QueueBasket;
     public float Delay = 0.2f;
     public float Duration;

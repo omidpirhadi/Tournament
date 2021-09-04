@@ -130,9 +130,9 @@ namespace Diaco.EightBall.CueControllers
 
         private void SetlineDirection(Vector3 pos)
         {
-            lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0, transform.position.z));
+            lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0.06f, transform.position.z));
 
-            lineRenderer.SetPosition(1, (new Vector3(pos.x, 0f, pos.z)));
+            lineRenderer.SetPosition(1, (new Vector3(pos.x, 0.06f, pos.z)));
 
         }
         public void SetYPositionRefrence()
@@ -156,7 +156,7 @@ namespace Diaco.EightBall.CueControllers
 
                     transform.position = new Vector3(transform.position.x, Y_Pos_Refrence, transform.position.z);
 
-                    Debug.Log("Fix Y Ball");
+                  //  Debug.Log("Fix Y Ball");
                 }
 
             }
@@ -178,7 +178,7 @@ namespace Diaco.EightBall.CueControllers
                 rigidbody.angularVelocity = Vector3.zero;
                 InMove = false;
 
-                Debug.Log("Fix Move Ball");
+               // Debug.Log("Fix Move Ball");
 
             }
         }

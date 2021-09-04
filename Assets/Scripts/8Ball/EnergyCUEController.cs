@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using DG.Tweening;
 
 namespace Diaco.EightBall.CueControllers
 {
@@ -12,7 +13,8 @@ namespace Diaco.EightBall.CueControllers
     {
 
         public Slider CueWoodEnergySlider;
-
+        public float DurationShowOrHideEnergyBar = 0.3f;
+       [SerializeField] private  RectTransform Parent;
         void Start()
         {
             CueWoodEnergySlider.onValueChanged.AddListener((x) =>
@@ -21,7 +23,9 @@ namespace Diaco.EightBall.CueControllers
                 Handler_OnChangeEnergy(x);
             });
             //GetEventSystem.currentSelectedGameObject
+            Parent = transform.parent.GetComponent<RectTransform>();
         }
+
         public void OnPointerClick(PointerEventData eventData)
         {
             Handler_OnBeginChangeEnergy();
@@ -34,6 +38,17 @@ namespace Diaco.EightBall.CueControllers
            // Debug.Log("AAA");
         }
 
+       public void Show(bool show)
+        {
+            if (show == false)
+            {
+                Parent.DOAnchorPos(new Vector2(-90, 0), DurationShowOrHideEnergyBar);
+            }
+            else
+            {
+                Parent.DOAnchorPos(new Vector2(0, 0), DurationShowOrHideEnergyBar);
+            }
+        }
 
         public event Action<float> OnChangeEnergy;
         protected void Handler_OnChangeEnergy(float x)

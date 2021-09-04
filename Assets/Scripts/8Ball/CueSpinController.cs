@@ -64,7 +64,7 @@ namespace Diaco.EightBall.CueControllers
             var y = Rect_CueSpin.anchoredPosition3D.y / Max;
             spin = new Vector2(x, y);
             
-          //  Debug.Log("Spin :  " + spin);
+            Debug.Log("Spin :  " + spin);
             return spin;
         }
         #region Events

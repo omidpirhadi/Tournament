@@ -459,8 +459,8 @@ namespace Diaco.EightBall.Server
                 EnableCoolDown(Side.Right, data.turnTime);
                 CheckEnable8BallRightInOtherClient();
                 
-                AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystem(true);
-                //Debug.Log("TimeAndTurn");
+                AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemOnPlayRecord(true);
+                Debug.Log("HE::::::");
             }
 
          
@@ -732,15 +732,19 @@ namespace Diaco.EightBall.Server
             //Emit_PositionsBalls(PositionBalls);
             //TimeStep = Time.realtimeSinceStartup;
             Emit_SendDataOfGameOnEndTurn(AddressBalls[0].transform.position);
-
             TimeStep = 0.0f;
+
+            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemOnPlayRecord(true);
+
             yield return null;
         }
         public IEnumerator PlayRecordPositionsBallsAndRecivedFromServer()
         {
           //  yield return new WaitForSecondsRealtime(0.5f);
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
+
             cueball.ActiveAimSystem(false);
+            cueball.Handler_OnHitBall(-1, Vector3.zero, Vector3.zero);
             do
             {
 
@@ -1602,21 +1606,21 @@ namespace Diaco.EightBall.Server
         }
         public void NormalPitok(Vector3 lastpos)
         {
-           // DOVirtual.Float(0, 1, 0.2f, (x) => { }).OnComplete(() =>
-           /// {
-                Pitok = 1;
-                var cueball = AddressBalls[0];
-                //cueball.gameObject.SetActive(true); 
-                var  ooo = new Vector3(lastpos.x, lastpos.y, lastpos.z);
-                cueball.transform.position = ooo;
-                //   cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CUEWoodSetPosition(Vector3.zero);
-                cueball.transform.DOScale(0.33f, 0.1f);
+            // DOVirtual.Float(0, 1, 0.2f, (x) => { }).OnComplete(() =>
+            /// {
+            Pitok = 1;
+            var cueball = AddressBalls[0];
+            //cueball.gameObject.SetActive(true); 
+            var ooo = new Vector3(lastpos.x, lastpos.y, lastpos.z);
+            cueball.transform.position = ooo;
+            //   cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CUEWoodSetPosition(Vector3.zero);
+            cueball.transform.DOScale(0.33f, 0.1f);
             cueball.GetComponent<Rigidbody>().isKinematic = false;
             cueball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             cueball.GetComponent<Rigidbody>().WakeUp();
-                 Debug.Log("Pitok1" + ooo);
+            Debug.Log("Pitok1" + ooo);
 
-          //  });
+            //  });
 
         }
         public void Pitok1_3(Vector3 lastpos)

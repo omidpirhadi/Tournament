@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54921576492764856}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 3.8400004, y: 0.14, z: -4.75}
+  m_LocalPosition: {x: 3.8400004, y: 0.14, z: -4.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 54921577171404655}
@@ -58,8 +58,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54921576513942833}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 8.715934, y: -0.6366517, z: 2.7397265}
-  m_LocalScale: {x: 0.9466684, y: 1.5566622, z: 1.0879046}
+  m_LocalPosition: {x: 9.05, y: -0.6366517, z: 2.7397265}
+  m_LocalScale: {x: 0.79, y: 1.5566622, z: 1.0879046}
   m_Children: []
   m_Father: {fileID: 54921576655316954}
   m_RootOrder: 11
@@ -666,7 +666,7 @@ MonoBehaviour:
   Parent: {fileID: 8527773438183283253}
   ConceptBall: {fileID: 7334948416730689921, guid: d4c78c33f6660f14abcabdfc82646398,
     type: 3}
-  PositionStart: {x: 6.01, y: -0.79, z: 2.16}
+  PositionStart: {x: 6, y: -0.44, z: 2.22}
   SkinBalls:
   - {fileID: 2100000, guid: 6e79eca2dd96732439c771e1e3baa869, type: 2}
   - {fileID: 2100000, guid: 423195e4609bc7c4792dbb2a2d318e64, type: 2}
@@ -684,10 +684,6 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c6cca0b2f8c5ab24bb78353d865d02bd, type: 2}
   - {fileID: 2100000, guid: f7b44936d71d02c4eb3aa07715213be5, type: 2}
   - {fileID: 2100000, guid: ba83ae76f34c2634682965c7eb29fd57, type: 2}
-  Path:
-  - {fileID: 54921576492764857}
-  - {fileID: 54921578209153839}
-  - {fileID: 54921578610091042}
   Delay: 4
   Duration: 2
   InUse: 0
@@ -1234,7 +1230,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54921578209153838}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -2.13, y: 0.14, z: -4.68}
+  m_LocalPosition: {x: -2.13, y: 0.14, z: -4.26}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 54921577171404655}
@@ -2507,8 +2503,8 @@ MonoBehaviour:
   maxanguler: 150
   CUEWood: {fileID: 7145618190849547308}
   CueRenderer: {fileID: 1463128566311103908}
-  PowerCUE: 17000
-  PowerSpin: 17000
+  PowerCUE: 15
+  PowerSpin: 15
   OffsetPositionCueWoodFromCueBall: {x: -0.3, y: 0, z: 0}
   GhostBall: {fileID: 4871677854849541697}
   RadiusGhostBall: 0.2
@@ -2517,11 +2513,13 @@ MonoBehaviour:
   AimSystemShow: 0
   ScaleLineAimGhostBall: 0.006
   SensitivityRotate: 0.9
+  DragIsBusy: 0
   TouchWorkInUI: 0
   Y_Pos_Refrence: 0
   ThresholdSleep: 0.09
   InMove: 0
   vvv: {x: 0, y: 0, z: 0}
+  AtPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4871677854998683675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4466,6 +4464,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CueWoodEnergySlider: {fileID: 2839842727252327124}
+  DurationShowOrHideEnergyBar: 0.3
+  Parent: {fileID: 0}
 --- !u!1 &2839842727278051245
 GameObject:
   m_ObjectHideFlags: 0
@@ -11019,7 +11019,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.07833334}
   m_AnchorMax: {x: 0.06823078, y: 0.7033334}
-  m_AnchoredPosition: {x: -11.498901, y: 0.5}
+  m_AnchoredPosition: {x: -11.498535, y: 0.5}
   m_SizeDelta: {x: -25, y: 1.0000076}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9059729291874904286
@@ -19628,6 +19628,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CueWoodEnergySlider: {fileID: 851786560076131339}
+  DurationShowOrHideEnergyBar: 0.3
+  Parent: {fileID: 0}
 --- !u!1 &8604005694731524812
 GameObject:
   m_ObjectHideFlags: 0
