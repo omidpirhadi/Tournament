@@ -61,8 +61,8 @@ namespace Diaco.EightBall.CueControllers
         private float last_value_cue_energy = 0;
         private float timetouch = 0;
 
-        private float temp_PowerCUE;
-        private float temp_PowerSpin;
+       /// private float temp_PowerCUE;
+       /// private float temp_PowerSpin;
         private Ray ray_line;
         float prevAngle;
 
@@ -438,10 +438,13 @@ namespace Diaco.EightBall.CueControllers
         private void ForceToBall(float powcue, float powspin)
         {
             rigidbody.maxAngularVelocity = maxanguler;
-
-             AtPosition = new Vector3((transform.position.x + (PosCueSpin.x * RadiusGhostBall)), (transform.position.y + (PosCueSpin.y * RadiusGhostBall)), (transform.position.z));
             var dir = (transform.position - CueRenderer.position).normalized;
-         
+             AtPosition = new Vector3(
+                 (transform.position.x  +  (PosCueSpin.x * RadiusGhostBall)*  dir.z), 
+                 (transform.position.y  +  (PosCueSpin.y * RadiusGhostBall)), 
+                 (transform.position.z) +  (PosCueSpin.x * RadiusGhostBall) * -dir.x);
+            
+            Debug.Log(dir);
             dir.y = 0;
 
             rigidbody.AddForceAtPosition((GhostBall.transform.position - transform.position).normalized *powcue, AtPosition, Forcemode);
