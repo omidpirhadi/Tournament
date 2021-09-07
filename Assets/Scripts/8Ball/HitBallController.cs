@@ -14,7 +14,7 @@ namespace Diaco.EightBall.CueControllers
 {
     public class HitBallController : MonoBehaviour
     {
-
+        public BillardTestSetting testSetting;
         public Diaco.EightBall.Server.BilliardServer Server;
         public CueSpinController CueSpin;
         public EnergyCUEController EnergyCue;
@@ -90,6 +90,9 @@ namespace Diaco.EightBall.CueControllers
             EnergyCue.OnBeginChangeEnergy += EnergyCue_OnBeginChangeEnergy;
 
             CueSpin.OnChangeValueSpin += HitBallController_OnChangeValueSpin;
+            testSetting = FindObjectOfType<BillardTestSetting>();
+            testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
+
             UI.OnUIActive += UI_OnUIActive;
             if (Server.Turn)
                 ActiveAimSystem(true);
@@ -100,6 +103,13 @@ namespace Diaco.EightBall.CueControllers
             //  Debug.Log("cCcCCCcCC");
             RadiusGhostBall = GetComponent<SphereCollider>().radius * transform.localScale.x;
         }
+
+        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3,float arg, float arg4)
+        {
+            SetSetting(arg1, arg2, arg3, arg, arg4);
+            Debug.Log("ChengeAccept");
+        }
+
         void LateUpdate()
         {
             FixOverflowMovment();
@@ -1001,6 +1011,15 @@ namespace Diaco.EightBall.CueControllers
             var reflect2 = Vector3.Reflect(VlocityBall.normalized, normal).normalized;
             rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
             Debug.Log("wall");
+
+        }
+        private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold)
+        {
+            this.maxanguler = MaxAngularDrag;
+            this.PowerCUE = pow;
+            rigidbody.drag = Drag;
+            rigidbody.angularDrag = AngularDrag;
+            this.ThresholdSleep = SpeedThershold;
 
         }
         #region Events

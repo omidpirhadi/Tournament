@@ -6,6 +6,7 @@ namespace Diaco.EightBall.CueControllers
 {
     public class Ball : MonoBehaviour
     {
+        public BillardTestSetting testSetting;
         public int ID = 0;
         public float ThresholdSleep = 0.09f;
         public Vector3 TargetVelocity;
@@ -22,6 +23,7 @@ namespace Diaco.EightBall.CueControllers
         private Ray ray;
         private RaycastHit hit;
         public LayerMask layer;
+       [SerializeField] private float MaxAngularDarg = 150;
         void Start()
         {
 
@@ -32,19 +34,23 @@ namespace Diaco.EightBall.CueControllers
             cueball.OnFreazeBall += Cueball_OnFreazeBall;
             cueball.OnFristHit += Cueball_OnFristHit;
             server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
-
+           testSetting =  FindObjectOfType<BillardTestSetting>();
+            testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
             //InvokeRepeating("CheckballMove", 0, gamemanager.SendRate.value);//
             SetYPositionRefrence();
         }
 
-
+        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3 ,float arg, float arg4)
+        {
+            SetSetting(arg1, arg2, arg3,arg, arg4);
+        }
 
         private void FixedUpdate()
         {
             VlocityBallCurrent = rigidbody.velocity;
             SpeedBallCurrent = rigidbody.velocity.magnitude;
 
-            rigidbody.maxAngularVelocity = 150;
+            rigidbody.maxAngularVelocity = MaxAngularDarg;
 
             /* if (HaveTarget && SpeedBallCurrent > ThresholdSleep )
              {
@@ -202,6 +208,15 @@ namespace Diaco.EightBall.CueControllers
             var reflect2 = Vector3.Reflect(VlocityBallCurrent.normalized, normal).normalized;
             rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
             Debug.Log("wall");
+
+        }
+
+        private void  SetSetting(float PowerCue, float Drag, float AngularDrag, float MaxAngular,float SpeedThershold)
+        {
+            MaxAngularDarg = MaxAngular;
+            rigidbody.drag = Drag;
+            rigidbody.angularDrag = AngularDrag;
+            this.ThresholdSleep = SpeedThershold;
 
         }
     }

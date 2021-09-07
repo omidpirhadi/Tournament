@@ -7,65 +7,33 @@ using DG.Tweening;
 using UnityEngine.UI;
 public class Test_soccer : MonoBehaviour
 {
-    public Ease ease;
-    public Diaco.SoccerStar.Server.ServerManager server;
-    public float smoothTime = 0.05f;
-    public float smoothA = 0.05f;
-    public Button Go, GoWithVelocity;
-    public int Frame = 0;
-    public void Start()
+    public LineRenderer line;
+    public RaycastHit hit;
+    public Vector3 point_mouse;
+
+    private void OnMouseDown()
     {
-       /* Go.onClick.AddListener(() =>
+        line.SetPosition(0, transform.position);
+    }
+    private void OnMouseDrag()
+    {
+     var ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
+        //Debug.Log(ray.origin);
+        if(Physics.Raycast(ray,out hit ,1000))
         {
-            this.Frame = 0;
-            Physics.autoSimulation = false;
-            InvokeRepeating("serverSimlator", 00, smoothTime);
-
-        });
-        GoWithVelocity.onClick.AddListener(() =>
-        {
-            this.Frame = 0;
-            Physics.autoSimulation = false;
-            InvokeRepeating("serverSimlatorv", 00, smoothTime);
-
-        });*/
+            var dir = hit.point - transform.position;
+            var a = Quaternion.AngleAxis(180, Vector3.up);
+            var b = a * dir;
+            point_mouse = b + transform.position;
+            line.SetPosition(1, point_mouse);
+        }
+        
     }
 
-
-
-
-    void serverSimlator()
+    private void OnDrawGizmos()
     {
-
-        /*  if (Frame < server.Frames.Count)
-              transform.GetComponent<Rigidbody>().DOMove(server.Frames[Frame].Position, smoothA);
-          else
-              CancelInvoke("serverSimlator");
-          Frame++;*/
+        Gizmos.color = Color.green;
+        Gizmos.DrawSphere(hit.point, 0.5f);
     }
-    void serverSimlatorv()
-    {
 
-        /* if (Frame < server.Frames.Count)
-         {
-             //transform.position = server.Frames[Frame].Position;
-              transform.GetComponent<Rigidbody>().DOMove(server.Frames[Frame].Position, smoothA)
-                   .SetEase(ease)
-                   .OnComplete(() =>
-                   {
-
-                   });
-             transform.GetComponent<Rigidbody>().MovePosition(server.Frames[Frame].Position);
-             transform.GetComponent<Rigidbody>().velocity = server.Frames[Frame].velocity;
-             Frame++;
-             Physics.Simulate(smoothA);
-             //transform.GetComponent<Rigidbody>().do
-         }
-         else
-         {
-             Physics.autoSimulation = true;
-             CancelInvoke("serverSimlatorv");
-         }*/
-
-    }
 }
