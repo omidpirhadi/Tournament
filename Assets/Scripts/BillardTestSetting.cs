@@ -11,6 +11,7 @@ public class BillardTestSetting : MonoBehaviour
     public Slider AnglurDrag;
     public Slider MaxAngularDrag;
     public Slider SpeedThershold;
+    public Slider SensivityRotate;
     public Button Set_Btn;
     void Start()
     {
@@ -44,6 +45,10 @@ public class BillardTestSetting : MonoBehaviour
         {
             SpeedThershold.GetComponentInChildren<Text>().text = "SpeedThershold:" + x.ToString();
         });
+        SensivityRotate.onValueChanged.AddListener(x =>
+        {
+            SpeedThershold.GetComponentInChildren<Text>().text = "SensivityRotate:" + x.ToString();
+        });
     }
     private void OnDisable()
     {
@@ -52,21 +57,22 @@ public class BillardTestSetting : MonoBehaviour
         AnglurDrag.onValueChanged.RemoveAllListeners();
         SpeedThershold.onValueChanged.RemoveAllListeners();
         MaxAngularDrag.onValueChanged.RemoveAllListeners();
+        SensivityRotate.onValueChanged.RemoveAllListeners();
         Set_Btn.onClick.RemoveAllListeners();
     }
 
     public void Set()
     {
-        Handler_OnChangeSetting(CueBallPower.value, Drag.value, AnglurDrag.value,MaxAngularDrag.value, SpeedThershold.value);
+        Handler_OnChangeSetting(CueBallPower.value, Drag.value, AnglurDrag.value,MaxAngularDrag.value, SpeedThershold.value,SensivityRotate.value);
         Debug.Log("Change Setting");
     }
-    public event Action<float, float, float,float, float> OnChangeSetting;
+    public event Action<float, float, float,float, float,float> OnChangeSetting;
 
-    public void Handler_OnChangeSetting(float CuePower,float Drag, float AngularDrag,float MaxAngular, float SpeedThershold)
+    public void Handler_OnChangeSetting(float CuePower,float Drag, float AngularDrag,float MaxAngular, float SpeedThershold, float sensivityrotate)
     {
         if (OnChangeSetting != null)
         {
-            OnChangeSetting(CuePower, Drag, AngularDrag, MaxAngular, SpeedThershold);
+            OnChangeSetting(CuePower, Drag, AngularDrag, MaxAngular, SpeedThershold, sensivityrotate);
         }
     }
 

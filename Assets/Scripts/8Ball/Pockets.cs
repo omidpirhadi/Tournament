@@ -11,6 +11,7 @@ namespace Diaco.EightBall.Pockets
     {
         public Basket basket;
         public event Pocket OnPocket;
+        public float timeDestory = 3.0f;
         private Diaco.EightBall.Server.BilliardServer Server;
        // private Diaco.EightBall.CueControllers.HitBallController CueBall;
         private void Start()
@@ -25,8 +26,8 @@ namespace Diaco.EightBall.Pockets
             if(Ball.tag == "ball" && Ball.GetComponent< Diaco.EightBall.CueControllers.Ball>())
             {
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().ID;
-               // Ball.GetComponent<Rigidbody>().isKinematic = true;
-                Destroy(Ball.gameObject,0.1f);
+                Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
+                Destroy(Ball.gameObject, timeDestory);
                 if (Server.InRecordMode == false)
                 {
                     Server.DisableAllSharInBiliboard(id);
@@ -46,20 +47,37 @@ namespace Diaco.EightBall.Pockets
                 if (Server.InRecordMode == false)
                 {
                     var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;
-                    Ball.GetComponent<Rigidbody>().isKinematic = true;
-                    Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
-                    Ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                    
+                    Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    DOVirtual.Float(0, 1, timeDestory, (x) => {
 
-                    Ball.transform.DOScale(0.0f, 0.1f);
+                    }).OnComplete(() => {
+                        Ball.GetComponent<Rigidbody>().isKinematic = true;
+                        Ball.transform.DOScale(0.0f, 0.1f);
+                    });
+                   
                     Handler_OnPocket(id);
                 }
                 else
                 {
                     var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;
+
+
+                    Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    DOVirtual.Float(0, 1, timeDestory, (x) => {
+
+                    }).OnComplete(() => {
+                        Ball.GetComponent<Rigidbody>().isKinematic = true;
+                        Ball.transform.DOScale(0.0f, 0.1f);
+                    });
+
                     Ball.GetComponent<Rigidbody>().Sleep();
+
                     Ball.transform.DOScale(0.0f, 0.1f);
                 }
-                Debug.Log("kkkk");
+               // Debug.Log("kkkk");
             }
         }
         public virtual void  Handler_OnPocket(int id)

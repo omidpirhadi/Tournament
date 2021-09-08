@@ -23,7 +23,7 @@ namespace Diaco.EightBall.CueControllers
         private Ray ray;
         private RaycastHit hit;
         public LayerMask layer;
-       [SerializeField] private float MaxAngularDarg = 150;
+       [SerializeField] private float MaxAngularvelocity = 150;
         void Start()
         {
 
@@ -40,7 +40,7 @@ namespace Diaco.EightBall.CueControllers
             SetYPositionRefrence();
         }
 
-        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3 ,float arg, float arg4)
+        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3 ,float arg, float arg4,float arg6)
         {
             SetSetting(arg1, arg2, arg3,arg, arg4);
         }
@@ -50,7 +50,7 @@ namespace Diaco.EightBall.CueControllers
             VlocityBallCurrent = rigidbody.velocity;
             SpeedBallCurrent = rigidbody.velocity.magnitude;
 
-            rigidbody.maxAngularVelocity = MaxAngularDarg;
+            rigidbody.maxAngularVelocity = MaxAngularvelocity;
 
             /* if (HaveTarget && SpeedBallCurrent > ThresholdSleep )
              {
@@ -213,7 +213,7 @@ namespace Diaco.EightBall.CueControllers
 
         private void  SetSetting(float PowerCue, float Drag, float AngularDrag, float MaxAngular,float SpeedThershold)
         {
-            MaxAngularDarg = MaxAngular;
+            MaxAngularvelocity = MaxAngular;
             rigidbody.drag = Drag;
             rigidbody.angularDrag = AngularDrag;
             this.ThresholdSleep = SpeedThershold;
