@@ -15,7 +15,8 @@ namespace Diaco.SoccerStar.Marble
     
     public class ForceToBall : MonoBehaviour
     {
-        
+
+        public SoccerTestSettings TestSetting ;
         public enum Marble_Type { Marble, Ball };
 
         public Marble_Type MarbleType;
@@ -26,6 +27,7 @@ namespace Diaco.SoccerStar.Marble
 
         [Range(110, 1000000000)]
         public float PowerForce;
+        public float AccelerationBallAfterHit = 3.0f;
         public GameObject SelectEffect;
         public float SelectEffectRotateSenciviti = 1.5f;
        // p//ublic bool calculate = false;
@@ -52,70 +54,14 @@ namespace Diaco.SoccerStar.Marble
         private Ray ray;
         public void Start()
         {
+            TestSetting = FindObjectOfType<SoccerTestSettings>();
             rigidbody = GetComponent<Rigidbody>();
             server = FindObjectOfType<ServerManager>();
             SetYPositionRefrence();
             LastPos = transform.position;
+            TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
-        }
-        void Update()
-        {
-             if(MarbleType == Marble_Type.Ball)
-             {
-                manageBallFriction();
-             }
-        }
-        void LateUpdate()
-        {
 
-            FixOverflowMovment();
-        }
-        private void FixedUpdate()
-        {
-            VlocityBall = rigidbody.velocity;
-
-        }
-        void OnCollisionEnter(Collision collision)
-        {
-
-            var tag_collider = collision.collider.tag;
-            if (MarbleType == Marble_Type.Ball)
-            {
-                if (tag_collider == "marble" || tag_collider == "wall")
-                {
-                    StartCoroutine(fakeRotation());
-                    
-                }
-                if(tag_collider == "wall")
-                {
-                    BounceBall(collision);
-                   // Debug.Log("XXXX");
-                }
-            }
-            else
-            {
-                if (tag_collider == "wall")
-                {
-                    BounceBall(collision);
-                }
-                if(tag_collider == "ball")
-                {
-                    var hit_point = collision.contacts[0].point;
-                    var direction_move = (hit_point - transform.position).normalized;
-                    var speed = collision.relativeVelocity.magnitude;
-                    collision.rigidbody.maxAngularVelocity = 150;
-                    collision.rigidbody.AddRelativeTorque(direction_move*speed*3 , forceMode);
-                    Debug.Log("Impact Ball ::: " + direction_move * speed * 3);
-                }
-            }
-
-        }
-
-        private void OnEnable()
-        {
-            rigidbody = GetComponent<Rigidbody>();
-
-            server = FindObjectOfType<ServerManager>();
             if (MarbleType == Marble_Type.Marble)
             {
                 server.OnChangeTurn += Server_OnChangeTurn;
@@ -127,7 +73,87 @@ namespace Diaco.SoccerStar.Marble
 
             }
             server.OnPhysicFreeze += Server_OnPhysicFreeze;
+            TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
+        }
+        void Update()
+        {
+            /* if(MarbleType == Marble_Type.Ball)
+             {
+                manageBallFriction();
+             }*/
+        }
+        void LateUpdate()
+        {
+
+          //  FixOverflowMovment();
+        }
+        private void FixedUpdate()
+        {
+            VlocityBall = rigidbody.velocity;
+
+        }
+        void OnCollisionEnter(Collision collision)
+        {
+
+            /*  
+              if (MarbleType == Marble_Type.Ball)
+              {
+                  if (tag_collider == "marble" || tag_collider == "wall")
+                  {
+                      StartCoroutine(fakeRotation());
+
+                  }
+                  if(tag_collider == "wall")
+                  {
+                      BounceBall(collision);
+                     // Debug.Log("XXXX");
+                  }
+              }*/
+            var tag_collider = collision.collider.tag;
+            if (MarbleType == Marble_Type.Marble)
+            {
+
+                if (tag_collider == "ball")
+                {
+                    var hit_point = collision.contacts[0].point;
+                    var direction_move = (hit_point - transform.position).normalized;
+                    var speed = collision.relativeVelocity.magnitude;
+                    collision.rigidbody.maxAngularVelocity = 150;
+                    collision.rigidbody.AddRelativeTorque(direction_move * speed * AccelerationBallAfterHit, forceMode);
+                    Debug.Log("Impact Ball ::: " + direction_move * speed * AccelerationBallAfterHit);
+                }
+            }
+
+        }
+
+        private void OnEnable()
+        {
+          //  rigidbody = GetComponent<Rigidbody>();
+
+         //   server = FindObjectOfType<ServerManager>();
+          
            // SetYPositionRefrence();
+        }
+
+        private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationMarbleAfterhit, float MassBall, float DragBall, float AngularDragBall)
+        {
+            if(MarbleType == Marble_Type.Marble)
+            {
+                this.rigidbody.mass = MassMarble;
+                this.PowerForce = ForceMarble;
+                this.rigidbody.drag = DragMarble;
+                this.rigidbody.angularDrag = AngularDragMarble;
+                this.AccelerationBallAfterHit = AccelerationMarbleAfterhit;
+                Debug.Log("AAAAAAAAA1");
+            }
+            else
+            {
+                this.rigidbody.mass = MassBall;
+                this.rigidbody.drag = DragBall;
+                this.rigidbody.angularDrag = AngularDragMarble;
+                Debug.Log("AAAAAAAAA2");
+            }
+            Debug.Log("AAAAAAAAA3");
         }
 
         private void Server_OnPhysicFreeze(bool obj)
@@ -148,6 +174,7 @@ namespace Diaco.SoccerStar.Marble
 
                 }
             server.OnPhysicFreeze -= Server_OnPhysicFreeze;
+            TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
         }
 
         public void OnDrawGizmos()
@@ -194,33 +221,36 @@ namespace Diaco.SoccerStar.Marble
         public void Move(Vector3 dir, float pow)
         {
 
-            bool DoForce = false;
+           // bool DoForce = false;
             var d_n = new Vector3(dir.x, 0, dir.z).normalized;
             var P_F = SoftFloat.Soft((PowerForce) * pow);
 
-            ray = new Ray(transform.position, d_n);
-            if(Physics.Raycast(ray,out hit,100f,LayerMask.GetMask("Wall")))
-            {
-                var dis = Vector3.Distance(transform.position, hit.point);
-                if(dis<5.0f)
-                {
-                    var reflect = Vector3.Reflect(ray.direction, hit.normal).normalized;
-                    rigidbody.AddForce(reflect*(float)P_F, forceMode);
-                    DoForce = true;
-                    Debug.Log("CloseToWall" + reflect * (float)P_F);
-                }
-                else
-                {
-                    rigidbody.AddForce(d_n * (float)P_F, forceMode);
-                    Debug.Log("FarToWall" + d_n * (float)P_F);
-                    DoForce = true;
-                }
-            }
-            if (DoForce == false)
-            {
-                rigidbody.AddForce(d_n * (float)P_F, forceMode);
-                Debug.Log("IgnoreForce" + d_n * (float)P_F);
-            }
+            /*  ray = new Ray(transform.position, d_n);
+              if(Physics.Raycast(ray,out hit,100f,LayerMask.GetMask("Wall")))
+              {
+                  var dis = Vector3.Distance(transform.position, hit.point);
+                  if(dis<5.0f)
+                  {
+                      var reflect = Vector3.Reflect(ray.direction, hit.normal).normalized;
+                      rigidbody.AddForce(reflect*(float)P_F, forceMode);
+                      DoForce = true;
+                      Debug.Log("CloseToWall" + reflect * (float)P_F);
+                  }
+                  else
+                  {
+                      rigidbody.AddForce(d_n * (float)P_F, forceMode);
+                      Debug.Log("FarToWall" + d_n * (float)P_F);
+                      DoForce = true;
+                  }
+              }
+              if (DoForce == false)
+              {
+
+                  Debug.Log("IgnoreForce" + d_n * (float)P_F);
+              }
+
+              */
+            rigidbody.AddForce(d_n * (float)P_F, forceMode);
             if (server.InRecordMode == false)
 
                 StartCoroutine(server.SendDataMarblesMovement());
@@ -298,7 +328,7 @@ namespace Diaco.SoccerStar.Marble
         public void SetYPositionRefrence()
         {
             
-            DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
+           /* DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
             {
                PhysicFreeze(false);
             }).OnComplete(() => {
@@ -319,11 +349,11 @@ namespace Diaco.SoccerStar.Marble
                 else
                     PhysicFreeze(false);
                     
-            });
+            });*/
         }
         private void FixOverflowMovment()
         {
-            if (Y_Pos_Refrence > 0.0f)
+           /* if (Y_Pos_Refrence > 0.0f)
             {
                 var conflict_Y = Mathf.Abs(transform.position.y - Y_Pos_Refrence);
                 if (conflict_Y > 0.1f)
@@ -359,7 +389,7 @@ namespace Diaco.SoccerStar.Marble
                 frFlag = false;
                // Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
 
-            }
+            }*/
                 
         }
         private bool CheckBallMove()

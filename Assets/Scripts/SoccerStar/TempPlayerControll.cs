@@ -89,7 +89,7 @@ public class TempPlayerControll : MonoBehaviour
 
                         var dis_current = Vector3.Distance(hit.point, firstouch);
                         var dis_last = Vector3.Distance(LastPos, firstouch);
-
+                        Debug.Log($"DistancFirst:{dis_current}DistancLast:{dis_last}");
                         aimCricle.ScaleAim(ID, dis_current - dis_last);
 
                         LastPos = hit.point;

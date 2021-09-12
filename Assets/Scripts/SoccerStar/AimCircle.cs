@@ -50,7 +50,7 @@ public class AimCircle : MonoBehaviour
     public void ScaleAim(int marbleId , float changescale )
     {
         var currentscale = this.transform.localScale.x;
-        var tempscale = currentscale + changescale * SensivitiScale;
+        var tempscale = currentscale + changescale ;
         CurrentAimPower = Mathf.Clamp(tempscale, 0, PowerRadius);
         this.transform.localScale = new Vector3(CurrentAimPower, CurrentAimPower, CurrentAimPower);
       /*  SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData

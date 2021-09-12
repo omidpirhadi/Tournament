@@ -7,33 +7,20 @@ using DG.Tweening;
 using UnityEngine.UI;
 public class Test_soccer : MonoBehaviour
 {
-    public LineRenderer line;
-    public RaycastHit hit;
-    public Vector3 point_mouse;
 
-    private void OnMouseDown()
+    public new Rigidbody rigidbody;
+    public float Pow = 2f;
+    public ForceMode forceMode;
+    public void Start()
     {
-        line.SetPosition(0, transform.position);
+        rigidbody = GetComponent<Rigidbody>();
     }
-    private void OnMouseDrag()
+    public void Update()
     {
-     var ray =  Camera.main.ScreenPointToRay(Input.mousePosition);
-        //Debug.Log(ray.origin);
-        if(Physics.Raycast(ray,out hit ,1000))
+        if(Input.GetKeyDown(KeyCode.Space))
         {
-            var dir = hit.point - transform.position;
-            var a = Quaternion.AngleAxis(180, Vector3.up);
-            var b = a * dir;
-            point_mouse = b + transform.position;
-            line.SetPosition(1, point_mouse);
+            rigidbody.AddForce(Vector3.right * Pow, forceMode);
         }
-        
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(hit.point, 0.5f);
     }
 
 }
