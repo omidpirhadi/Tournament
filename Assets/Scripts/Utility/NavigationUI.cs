@@ -208,7 +208,7 @@ public class NavigationUI : MonoBehaviour
 
         if (LoadingPageshow != null)
             StopCoroutine(LoadingPageshow);
-        Debug.Log("Closeloading");
+     //   Debug.Log("Closeloading");
     }
     public void loadTeaminfoWithLastTeamID()
     {

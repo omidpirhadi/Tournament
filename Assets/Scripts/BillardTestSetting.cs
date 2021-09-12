@@ -47,7 +47,7 @@ public class BillardTestSetting : MonoBehaviour
         });
         SensivityRotate.onValueChanged.AddListener(x =>
         {
-            SpeedThershold.GetComponentInChildren<Text>().text = "SensivityRotate:" + x.ToString();
+            SensivityRotate.GetComponentInChildren<Text>().text = "SensivityRotate:" + x.ToString();
         });
     }
     private void OnDisable()

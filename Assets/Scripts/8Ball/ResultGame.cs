@@ -38,31 +38,40 @@ public class ResultGame : MonoBehaviour
     public Sprite Gem;
     private void Awake()
     {
+        DOVirtual.Float(0, 1, 2f, (x) => { }).OnComplete(() =>
+        {
+            RematchButton.interactable = true;
+            CloseGameButton.interactable = true;
+
+        });
         luncher = FindObjectOfType<GameLuncher>();
         Server.OnGameResult += Server_OnGameResult;
-        RematchButton.onClick.AddListener(() => {
+        RematchButton.onClick.AddListener(() =>
+        {
             Server.Emit_PlayAgain();
             //  this.gameObject.SetActive(false);
             RematchButton.interactable = false;
         });
-        CloseGameButton.onClick.AddListener(() => {
-           
+        CloseGameButton.onClick.AddListener(() =>
+        {
+
             Server.Emit_LeftGame();
             Server.CloseConnection();
-            luncher.BackToMenu(); 
+            luncher.BackToMenu();
             CloseGameButton.interactable = false;
             this.gameObject.SetActive(false);
         });
         if (Server.Namespaceserver == "_competition")
-            DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() => {
+            DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() =>
+            {
                 Server.Emit_LeftGame();
                 Server.CloseConnection();
                 luncher.BackToMenu();
                 CloseGameButton.interactable = false;
                 this.gameObject.SetActive(false);
             });
-       
-     
+
+
     }
     void Start()
     {
@@ -112,7 +121,7 @@ public class ResultGame : MonoBehaviour
                result.loser.rank
                );
         }
-      // StartCoroutine(Server.ResetData());
+       StartCoroutine(Server.ResetData());
     }
 
 

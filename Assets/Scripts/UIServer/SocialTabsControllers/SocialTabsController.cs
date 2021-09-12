@@ -51,7 +51,7 @@ public class SocialTabsController : MonoBehaviour
             StartGameTimerTab.SetActive(false);
             SocialTabs.ShowTabsDefalt = 1;
             SocialTabs.ShowTabs(1);
-            Debug.Log("HAVE NOT A TEAM" + Server.BODY.social.team.teamId.Length);
+          ///  Debug.Log("HAVE NOT A TEAM" + Server.BODY.social.team.teamId.Length);
         }
         else
         {
@@ -60,7 +60,7 @@ public class SocialTabsController : MonoBehaviour
             MakeTeamTab.SetActive(false);
             TeamsTab.SetActive(false);
             SocialTabs.ShowTabsDefalt = 4;
-            Debug.Log(" HAVE A TEAM" + Server.BODY.social.team.teamId.Length);
+         //   Debug.Log(" HAVE A TEAM" + Server.BODY.social.team.teamId.Length);
             SocialTabs.ShowTabs(5);
         }
         

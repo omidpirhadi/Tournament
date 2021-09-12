@@ -26,13 +26,14 @@ namespace Diaco.EightBall.Pockets
             if(Ball.tag == "ball" && Ball.GetComponent< Diaco.EightBall.CueControllers.Ball>())
             {
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().ID;
+                Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = false;
                 Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
-                Destroy(Ball.gameObject, timeDestory);
+                
                 if (Server.InRecordMode == false)
                 {
                     Server.DisableAllSharInBiliboard(id);
 
-                    Server.BallInBasket.Add(id);
+                    Server.AddBallToBasket(id);
 
                     basket.AddToQueue(id);
                     StartCoroutine(basket.ExtractBall());
@@ -41,40 +42,37 @@ namespace Diaco.EightBall.Pockets
 
                     Server.DeletedBallCount++;
                 }
+                Destroy(Ball.gameObject, timeDestory);
             }
             else if(Ball.tag == "whiteball" && Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>())
             {
                 if (Server.InRecordMode == false)
                 {
                     var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;
-                    
-                    Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
-                    Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
-                    DOVirtual.Float(0, 1, timeDestory, (x) => {
+                    /// Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = false;
+                    // Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    ///   Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.0f, 0.0f);
+                      Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.00f, 0.001f, 0.0f);
+                    Ball.GetComponent<Rigidbody>().isKinematic = true;
+                        Ball.transform.DOScale(0.0f, 0.1f);
+                   /* DOVirtual.Float(0, 1, timeDestory, (x) => {
 
                     }).OnComplete(() => {
-                        Ball.GetComponent<Rigidbody>().isKinematic = true;
-                        Ball.transform.DOScale(0.0f, 0.1f);
+                       
                     });
-                   
+                   */
                     Handler_OnPocket(id);
                 }
                 else
                 {
                     var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;
-
-
-                    Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
-                    Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
-                    DOVirtual.Float(0, 1, timeDestory, (x) => {
-
-                    }).OnComplete(() => {
-                        Ball.GetComponent<Rigidbody>().isKinematic = true;
-                        Ball.transform.DOScale(0.0f, 0.1f);
-                    });
-
-                    Ball.GetComponent<Rigidbody>().Sleep();
-
+                    /// Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = false;
+                    // Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    ///   Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
+                    Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.0f, 0.0f);
+                    Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.00f, 0.000f, 0.0f);
+                    Ball.GetComponent<Rigidbody>().isKinematic = true;
                     Ball.transform.DOScale(0.0f, 0.1f);
                 }
                // Debug.Log("kkkk");

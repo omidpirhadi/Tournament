@@ -5,26 +5,18 @@ using UnityEngine;
 public class CueWood : MonoBehaviour
 {
 
-    public Vector3 DefaultPosition = new Vector3(-0.5f, 0.0f, 0.0f);
-    public Vector3 DefaultRotation = new Vector3(0.0f, 0.0f, 0.0f);
+    // public Vector3 DefaultPosition = new Vector3(-0.5f, 0.0f, 0.0f);
+    //  public Vector3 DefaultRotation = new Vector3(0.0f, 0.0f, 0.0f);
 
-    public void SetDefault()
+    public Diaco.EightBall.CueControllers.HitBallController whiteball;
+    void  Start()
     {
-        //transform.localPosition = DefaultPosition;
-       /// transform.localEulerAngles = DefaultRotation;
+        whiteball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
     }
-    public void OnEnable()
+     void LateUpdate()
     {
-    
-     //   transform.localPosition = DefaultPosition;
-      ///  transform.localEulerAngles = DefaultRotation;
-      //  Debug.Log("ENABLEEEEEE");
-    }
-    public void OnDisable()
-    {
-    
-       // transform.localEulerAngles = DefaultRotation;
-       // Debug.Log("DIISSSSaLEEEEEE");
+        this.transform.position = whiteball.transform.position;
+
     }
 }
 

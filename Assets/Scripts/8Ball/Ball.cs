@@ -17,6 +17,7 @@ namespace Diaco.EightBall.CueControllers
         private Diaco.EightBall.Server.BilliardServer server;
         [SerializeField] private float SpeedBallCurrent = 0.0f;
         private Vector3 VlocityBallCurrent;
+        public bool EnableYFix = true;
         [SerializeField] private float Y_Pos_Refrence;
 
         [SerializeField] private bool InMove = false;
@@ -35,7 +36,8 @@ namespace Diaco.EightBall.CueControllers
             cueball.OnFristHit += Cueball_OnFristHit;
             server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
            testSetting =  FindObjectOfType<BillardTestSetting>();
-            testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
+            if (testSetting)
+                testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
             //InvokeRepeating("CheckballMove", 0, gamemanager.SendRate.value);//
             SetYPositionRefrence();
         }
@@ -61,7 +63,8 @@ namespace Diaco.EightBall.CueControllers
         }
         void LateUpdate()
         {
-            FixOverflowMovment();
+            if (EnableYFix)
+                FixOverflowMovment();
         }
 
 
@@ -70,6 +73,9 @@ namespace Diaco.EightBall.CueControllers
 
             cueball.OnHitBall -= Ball_OnHitBall;
             cueball.OnFreazeBall -= Cueball_OnFreazeBall;
+            if (testSetting)
+                testSetting.OnChangeSetting -= HitBallController_OnChangeSetting;
+
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -207,7 +213,7 @@ namespace Diaco.EightBall.CueControllers
             var normal = collision.contacts[0].normal;
             var reflect2 = Vector3.Reflect(VlocityBallCurrent.normalized, normal).normalized;
             rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
-            Debug.Log("wall");
+          //  Debug.Log("wall");
 
         }
 

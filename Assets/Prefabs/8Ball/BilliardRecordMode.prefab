@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basket: {fileID: 4789750484517612245}
+  timeDestory: 3
 --- !u!1 &836584844600915736
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basket: {fileID: 4789750484517612245}
+  timeDestory: 3
 --- !u!1 &967371746308915273
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,6 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basket: {fileID: 4789750484517612245}
+  timeDestory: 3
 --- !u!1 &1127421320609835525
 GameObject:
   m_ObjectHideFlags: 0
@@ -1414,6 +1417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basket: {fileID: 4789750484517612245}
+  timeDestory: 3
 --- !u!1 &3236856467576667335
 GameObject:
   m_ObjectHideFlags: 0
@@ -1473,6 +1477,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basket: {fileID: 4789750484517612245}
+  timeDestory: 3
 --- !u!1 &3366137786757561394
 GameObject:
   m_ObjectHideFlags: 0
@@ -3231,6 +3236,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   basket: {fileID: 4789750484517612245}
+  timeDestory: 3
 --- !u!1 &4750951990925590631
 GameObject:
   m_ObjectHideFlags: 0
@@ -3825,6 +3831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dfe2bbeed7a241544a32a36ebc68a164, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testSetting: {fileID: 0}
   Server: {fileID: 4750951992988045779}
   CueSpin: {fileID: 4750951992172432918}
   EnergyCue: {fileID: 4750951992442420177}
@@ -3856,11 +3863,14 @@ MonoBehaviour:
   AimSystemShow: 0
   ScaleLineAimGhostBall: 0.006
   SensitivityRotate: 0.9
+  DragIsBusy: 0
   TouchWorkInUI: 0
+  EnableYFix: 1
   Y_Pos_Refrence: 0
   ThresholdSleep: 0.09
   InMove: 0
   vvv: {x: 0, y: 0, z: 0}
+  AtPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &4750951991193136206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7215,6 +7225,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CueWoodEnergySlider: {fileID: 4750951992442420176}
+  DurationShowOrHideEnergyBar: 0.3
+  Parent: {fileID: 0}
 --- !u!1 &4750951992554204190
 GameObject:
   m_ObjectHideFlags: 0
@@ -7462,6 +7474,7 @@ GameObject:
   - component: {fileID: 4750951992638929878}
   - component: {fileID: 4750951992638929879}
   - component: {fileID: 4750951992638929896}
+  - component: {fileID: 8556770441895660384}
   m_Layer: 0
   m_Name: CueWood
   m_TagString: Untagged
@@ -7531,6 +7544,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8556770441895660384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4750951992638929897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb3b4dc254b1ad747ab2550e1fee55d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteball: {fileID: 0}
 --- !u!1 &4750951992656195808
 GameObject:
   m_ObjectHideFlags: 0
@@ -8342,8 +8368,8 @@ MonoBehaviour:
   - {fileID: 9181506084239496969, guid: 8ef061589582d5d4aa278d0679fda2bf, type: 3}
   PlayerShar: -1
   turn: 0
-  pitok: 0
   AllowAreaForMoveCueBallRenderer: {fileID: 0}
+  Pitok: 0
   EightBallEnable: 0
   Basket: {fileID: 0}
   BallInBasket: 
@@ -8767,10 +8793,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c6cca0b2f8c5ab24bb78353d865d02bd, type: 2}
   - {fileID: 2100000, guid: f7b44936d71d02c4eb3aa07715213be5, type: 2}
   - {fileID: 2100000, guid: ba83ae76f34c2634682965c7eb29fd57, type: 2}
-  Path:
-  - {fileID: 679329039154067921}
-  - {fileID: 8452859509274587771}
-  - {fileID: 6862542122817124359}
+  ballinbasket: 
   Delay: 4
   Duration: 2
   InUse: 0
