@@ -44,15 +44,17 @@ public class TempPlayerControll : MonoBehaviour
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
                 if (Physics.Raycast(ray, out hit,100000000, MaskForSelect))
                 {
-                   // Debug.Log(hit.collider.name+"    OMMMMMMDDDDD");
+                   Debug.Log(hit.collider.name+"    OMMMMMMDDDDD");
                     Deselect();
                  ///   FindNearMarbleFromFinger(hit.point);
                     if (hit.collider && hit.collider.tag == "marble")
                     {
-                       // Debug.Log("OMMMMMMDDDDD3");
+                 ///       Debug.Log("OMMMMMMDDDDD3");
                         var marble = hit.collider.GetComponent<ForceToBall>();
                         if (marble.MarbleType == ForceToBall.Marble_Type.Marble && (CheckOwnerMarble(marble.ID)) /*&& server.Play*/)
                         {
+
+                      ///      Debug.Log("OMMMMMMDDDDD4");
                             SetAimCircleOnMarble(marble.transform);
                             aimCricle.StartRecordAim(ID);
                             firstouch = hit.collider.transform.position;

@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1310513243937252174}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0.00092168624, y: 0, z: -0.65624106}
-  m_LocalScale: {x: 7.222244, y: 7.222244, z: 21.13873}
+  m_LocalScale: {x: 7.222244, y: 7.2222447, z: 21.138731}
   m_Children: []
   m_Father: {fileID: 4867411009215750250}
   m_RootOrder: 0
@@ -106,11 +106,11 @@ GameObject:
   - component: {fileID: 4867411009215750224}
   - component: {fileID: 4867411009215750323}
   - component: {fileID: 4867411009215750209}
-  - component: {fileID: 4867411009215750288}
+  - component: {fileID: 1319628950}
   - component: {fileID: 4867411009215750318}
+  - component: {fileID: 4867411009215750293}
   - component: {fileID: 4867411009215750598}
   - component: {fileID: 4867411009215750599}
-  - component: {fileID: 4867411009215750293}
   m_Layer: 8
   m_Name: marble_B
   m_TagString: marble
@@ -181,8 +181,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4867411009215750288
-MeshCollider:
+--- !u!135 &1319628950
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -191,10 +191,9 @@ MeshCollider:
   m_Material: {fileID: 13400000, guid: 97cefb26a54d2b94eabd4ca9862de54e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -2432090755550338912, guid: 3fec631664af36e4982531424ccae0e6, type: 3}
+  serializedVersion: 2
+  m_Radius: 0.35
+  m_Center: {x: 0.028666494, y: 0, z: -0.07715299}
 --- !u!54 &4867411009215750318
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -204,48 +203,13 @@ Rigidbody:
   m_GameObject: {fileID: 4867411009215751049}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 0
-  m_UseGravity: 1
+  m_Drag: 1.35
+  m_AngularDrag: 10
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 84
   m_CollisionDetection: 2
---- !u!114 &4867411009215750598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4867411009215751049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e9e07734ad6eb040835adccd7c5522e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MarbleType: 0
-  ID: 0
-  forceMode: 1
-  PowerForce: 150
-  SelectEffect: {fileID: 1310513243937252174}
-  SelectEffectRotateSenciviti: 0.15
-  ThresholdSleep: 0.09
-  Y_Pos_Refrence: 0
-  InMove: 0
-  rotationSpeed: 0
---- !u!114 &4867411009215750599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4867411009215751049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5414fb8713905346839e171b7f9e76e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FixRenderer: {fileID: 4867411009215750250}
 --- !u!82 &4867411009215750293
 AudioSource:
   m_ObjectHideFlags: 0
@@ -342,6 +306,44 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4867411009215750598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867411009215751049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e9e07734ad6eb040835adccd7c5522e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TestSetting: {fileID: 0}
+  MarbleType: 0
+  ID: 0
+  forceMode: 1
+  PowerForce: 150
+  AccelerationBallAfterHit: 3
+  SelectEffect: {fileID: 1310513243937252174}
+  SelectEffectRotateSenciviti: 0.15
+  ThresholdSleep: 0.09
+  Y_Pos_Refrence: 0
+  InMove: 0
+  rotationSpeed: 0
+  PrecentSpeedRotate: 0.1
+--- !u!114 &4867411009215750599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867411009215751049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5414fb8713905346839e171b7f9e76e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FixRenderer: {fileID: 4867411009215750250}
 --- !u!1 &4867411009215751129
 GameObject:
   m_ObjectHideFlags: 0
