@@ -46,7 +46,7 @@ namespace Diaco.EightBall.CueControllers
         public bool AimSystemShow = true;
         public float ScaleLineAimGhostBall = 2f;
         public float SensitivityRotate;
-
+        public float powerbounce = 1.0f;
         private Vector2 PosCueSpin;
         private new Rigidbody rigidbody;
         private LineRenderer lineRenderer;
@@ -105,9 +105,9 @@ namespace Diaco.EightBall.CueControllers
             RadiusGhostBall = GetComponent<SphereCollider>().radius * transform.localScale.x;
         }
 
-        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3,float arg, float arg4,float arg6)
+        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3,float arg, float arg4,float arg6,float arg7)
         {
-            SetSetting(arg1, arg2, arg3, arg, arg4, arg6);
+            SetSetting(arg1, arg2, arg3, arg, arg4, arg6,arg7);
             Debug.Log("ChengeAccept");
         }
 
@@ -1031,11 +1031,11 @@ namespace Diaco.EightBall.CueControllers
 
             var normal = collision.contacts[0].normal;
             var reflect2 = Vector3.Reflect(VlocityBall.normalized, normal).normalized;
-            rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+            rigidbody.velocity = (reflect2 * collision.relativeVelocity.magnitude) * powerbounce;
            // Debug.Log("wall");
 
         }
-        private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate)
+        private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate ,  float powbounce)
         {
             this.maxanguler = MaxAngularDrag;
             this.PowerCUE = pow;
@@ -1043,7 +1043,7 @@ namespace Diaco.EightBall.CueControllers
             rigidbody.angularDrag = AngularDrag;
             this.ThresholdSleep = SpeedThershold;
             this.SensitivityRotate = sensivityrotate;
-
+            this.powerbounce = powbounce;
         }
         #region Events
 

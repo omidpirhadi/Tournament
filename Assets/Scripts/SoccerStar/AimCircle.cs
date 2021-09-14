@@ -49,18 +49,11 @@ public class AimCircle : MonoBehaviour
 
     public void ScaleAim(int marbleId , float changescale )
     {
-        var currentscale = this.transform.localScale.x;
-        var tempscale = currentscale + changescale ;
-        CurrentAimPower = Mathf.Clamp(tempscale, 0, PowerRadius);
+      //  var currentscale = this.transform.localScale.x;
+      //  var tempscale = currentscale + changescale ;
+        CurrentAimPower = Mathf.Clamp(changescale, 0, PowerRadius);
         this.transform.localScale = new Vector3(CurrentAimPower, CurrentAimPower, CurrentAimPower);
-      /*  SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData
-        {
-            ID = marbleId,
-            Position = this.transform.position,
-            CircleRotate_Y = this.transform.eulerAngles.y,
-            CricleScale = this.transform.localScale.x,
-           
-        });*/
+
     }
     public void AimCircleAndIndicatorRotate(int marbleId,Vector3 point)
     {

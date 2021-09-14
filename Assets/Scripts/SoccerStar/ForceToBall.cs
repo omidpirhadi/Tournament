@@ -119,7 +119,7 @@ namespace Diaco.SoccerStar.Marble
                     var direction_move = (hit_point - transform.position).normalized;
                     var speed = collision.relativeVelocity.magnitude;
                     collision.rigidbody.maxAngularVelocity = 150;
-                    collision.rigidbody.AddRelativeTorque((direction_move * speed )* AccelerationBallAfterHit, forceMode);
+                    collision.rigidbody.AddRelativeTorque((direction_move * speed )* 2, forceMode);
                     Debug.Log("Impact Ball ::: " + direction_move * speed * AccelerationBallAfterHit);
                 }
             }

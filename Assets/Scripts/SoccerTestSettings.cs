@@ -13,6 +13,8 @@ public class SoccerTestSettings : MonoBehaviour
     public Slider MassBall;
     public Slider DragBall;
     public Slider AngularDragBall;
+    public Slider BounceWallPhysic;
+    public PhysicMaterial physicwall;
     public Button Set_Btn;
     private void OnEnable()
     {
@@ -57,6 +59,11 @@ public class SoccerTestSettings : MonoBehaviour
         AngularDragBall.onValueChanged.AddListener(x =>
         {
             MassBall.GetComponentInChildren<Text>().text = "AngularDragBall:" + x.ToString();
+        });
+        BounceWallPhysic.onValueChanged.AddListener(x =>
+        {
+            BounceWallPhysic.GetComponentInChildren<Text>().text = "BounceWall:" + x.ToString();
+            physicwall.bounciness = x;
         });
     }
     private void OnDisable()

@@ -12,6 +12,7 @@ public class BillardTestSetting : MonoBehaviour
     public Slider MaxAngularDrag;
     public Slider SpeedThershold;
     public Slider SensivityRotate;
+    public Slider Powerbounce;
     public Button Set_Btn;
     void Start()
     {
@@ -49,6 +50,10 @@ public class BillardTestSetting : MonoBehaviour
         {
             SensivityRotate.GetComponentInChildren<Text>().text = "SensivityRotate:" + x.ToString();
         });
+        Powerbounce.onValueChanged.AddListener(x =>
+        {
+            Powerbounce.GetComponentInChildren<Text>().text = "PowerBounceWall:" + x.ToString();
+        });
     }
     private void OnDisable()
     {
@@ -58,21 +63,22 @@ public class BillardTestSetting : MonoBehaviour
         SpeedThershold.onValueChanged.RemoveAllListeners();
         MaxAngularDrag.onValueChanged.RemoveAllListeners();
         SensivityRotate.onValueChanged.RemoveAllListeners();
+        Powerbounce.onValueChanged.RemoveAllListeners();
         Set_Btn.onClick.RemoveAllListeners();
     }
 
     public void Set()
     {
-        Handler_OnChangeSetting(CueBallPower.value, Drag.value, AnglurDrag.value,MaxAngularDrag.value, SpeedThershold.value,SensivityRotate.value);
+        Handler_OnChangeSetting(CueBallPower.value, Drag.value, AnglurDrag.value,MaxAngularDrag.value, SpeedThershold.value,SensivityRotate.value,Powerbounce.value);
         Debug.Log("Change Setting");
     }
-    public event Action<float, float, float,float, float,float> OnChangeSetting;
+    public event Action<float, float, float,float, float,float, float> OnChangeSetting;
 
-    public void Handler_OnChangeSetting(float CuePower,float Drag, float AngularDrag,float MaxAngular, float SpeedThershold, float sensivityrotate)
+    public void Handler_OnChangeSetting(float CuePower,float Drag, float AngularDrag,float MaxAngular, float SpeedThershold, float sensivityrotate,float powbounce)
     {
         if (OnChangeSetting != null)
         {
-            OnChangeSetting(CuePower, Drag, AngularDrag, MaxAngular, SpeedThershold, sensivityrotate);
+            OnChangeSetting(CuePower, Drag, AngularDrag, MaxAngular, SpeedThershold, sensivityrotate,powbounce);
         }
     }
 

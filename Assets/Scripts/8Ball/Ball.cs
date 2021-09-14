@@ -11,6 +11,7 @@ namespace Diaco.EightBall.CueControllers
         public float ThresholdSleep = 0.09f;
         public Vector3 TargetVelocity;
         public bool HaveTarget = false;
+        public float powerbounce = 1.0f;
         private new Rigidbody rigidbody;
         private LineRenderer lineRenderer;
         private HitBallController cueball;
@@ -42,9 +43,9 @@ namespace Diaco.EightBall.CueControllers
             SetYPositionRefrence();
         }
 
-        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3 ,float arg, float arg4,float arg6)
+        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3 ,float arg, float arg4,float arg6,float arg7)
         {
-            SetSetting(arg1, arg2, arg3,arg, arg4);
+            SetSetting(arg1, arg2, arg3,arg, arg4,arg7);
         }
 
         private void FixedUpdate()
@@ -212,17 +213,18 @@ namespace Diaco.EightBall.CueControllers
 
             var normal = collision.contacts[0].normal;
             var reflect2 = Vector3.Reflect(VlocityBallCurrent.normalized, normal).normalized;
-            rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+            rigidbody.velocity = (reflect2 * collision.relativeVelocity.magnitude)*powerbounce;
           //  Debug.Log("wall");
 
         }
 
-        private void  SetSetting(float PowerCue, float Drag, float AngularDrag, float MaxAngular,float SpeedThershold)
+        private void  SetSetting(float PowerCue, float Drag, float AngularDrag, float MaxAngular,float SpeedThershold,float powbounce)
         {
             MaxAngularvelocity = MaxAngular;
             rigidbody.drag = Drag;
             rigidbody.angularDrag = AngularDrag;
             this.ThresholdSleep = SpeedThershold;
+            this.powerbounce = powbounce;
 
         }
     }

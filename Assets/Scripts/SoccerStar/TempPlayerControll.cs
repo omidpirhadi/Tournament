@@ -11,7 +11,7 @@ public class TempPlayerControll : MonoBehaviour
 
     public LayerMask MaskForSelect;
     public LayerMask MaskForMove;
-    public float DistanceFingerFromMarble = 2.0f;
+    //public float DistanceFingerFromMarble = 2.0f;
     public ForceToBall MarbleSelected;
     public int ID = 0;
    /// public GameObject CircleAim;
@@ -19,7 +19,7 @@ public class TempPlayerControll : MonoBehaviour
     public float Sensiviti = 0.1f;
 
     public Vector3 LastPos;
-
+    public Vector3 FirstPosFinger2;
     private bool activeselection;
 
     private RaycastHit hit, hit2;
@@ -44,7 +44,7 @@ public class TempPlayerControll : MonoBehaviour
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
                 if (Physics.Raycast(ray, out hit,100000000, MaskForSelect))
                 {
-                   Debug.Log(hit.collider.name+"    OMMMMMMDDDDD");
+                   //Debug.Log(hit.collider.name+"    OMMMMMMDDDDD");
                     Deselect();
                  ///   FindNearMarbleFromFinger(hit.point);
                     if (hit.collider && hit.collider.tag == "marble")
@@ -57,7 +57,7 @@ public class TempPlayerControll : MonoBehaviour
                       ///      Debug.Log("OMMMMMMDDDDD4");
                             SetAimCircleOnMarble(marble.transform);
                             aimCricle.StartRecordAim(ID);
-                            firstouch = hit.collider.transform.position;
+                            firstouch = new Vector3(hit.collider.transform.position.x, 0, hit.collider.transform.position.z);
                             this.MarbleSelected = marble;
                             ID = marble.ID;
 
@@ -82,18 +82,22 @@ public class TempPlayerControll : MonoBehaviour
 
 
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                if (Physics.Raycast(ray, out hit, 100000000, MaskForSelect) && MarbleSelected)
+                if (Physics.Raycast(ray, out hit, 100000000, MaskForMove) && MarbleSelected)
                 {
 
 
                     if (!Touch2Clicked)
                     {
 
-                        var dis_current = Vector3.Distance(hit.point, firstouch);
-                        var dis_last = Vector3.Distance(LastPos, firstouch);
-                        Debug.Log($"DistancFirst:{dis_current}DistancLast:{dis_last}");
-                        aimCricle.ScaleAim(ID, dis_current - dis_last);
+                       // var dis_current = Vector3.Distance(hit.point, firstouch);
+                        var pos1 = new Vector3(firstouch.x, 0, firstouch.z);
+                        var pos2 = new Vector3(LastPos.x, 0, LastPos.z);
 
+                        var dis_last = Vector3.Distance(pos1, pos2);
+                       // Debug.Log($"DistancFirst:{dis_current}DistancLast:{dis_last}");
+                        aimCricle.ScaleAim(ID,  dis_last);
+
+                        Debug.Log( dis_last);
                         LastPos = hit.point;
 
                         if (rotateType2)
@@ -173,8 +177,10 @@ public class TempPlayerControll : MonoBehaviour
 
                     Touch2Clicked = true;
                     rotateType2 = true;
-                    LastPos = hit2.point;
+                    FirstPosFinger2 = new Vector3(hit2.point.x, 0, hit.point.z);
 
+                    LastPos = hit2.point;
+                    
                 }
 
             }
@@ -184,16 +190,25 @@ public class TempPlayerControll : MonoBehaviour
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(1).position);
                 if (Physics.Raycast(ray, out hit2, MaskForMove) && MarbleSelected)
                 {
-
+                 
                     var dis_current = Vector3.Distance(hit2.point, firstouch);
                     var dis_last = Vector3.Distance(LastPos, firstouch);
+                    var first_dis_finger2FromMarble = Vector3.Distance(FirstPosFinger2, firstouch);
+                    if(dis_current - dis_last < 0)
+                    {
+                        if (dis_current < (first_dis_finger2FromMarble - 2))
+                            aimCricle.ScaleAim(ID, aimCricle.transform.localScale.x + dis_current - dis_last);
+                    }
+                    else
+                    {
+                        aimCricle.ScaleAim(ID, aimCricle.transform.localScale.x + dis_current - dis_last);
 
-                    aimCricle.ScaleAim(ID, dis_current - dis_last);
+                    }
+
 
                     LastPos = hit2.point;
-
-                    aimCricle.AimCircleAndIndicatorRotate2(ID, hit2.point);
-                    // MarbleSelected.SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData { ID = ID, CircleRotate_Y = CircleAim.transform.eulerAngles.y, CricleScale = CircleAim.transform.localScale.x, PositionIndicator = indicator.transform.localPosition, RotateIndicator_Y = indicator.transform.eulerAngles.y });
+                    aimCricle.AimCircleRotate(ID, Input.GetTouch(1).deltaPosition.y * Sensiviti);
+                   // aimCricle.AimCircleAndIndicatorRotate2(ID, hit2.point);
                 }
                 if (aimCricle.CurrentAimPower < 3.5f)
                 {
