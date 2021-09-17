@@ -6,13 +6,13 @@ using UnityEngine.UI;
 
 public class BillardTestSetting : MonoBehaviour
 {
-    public Slider CueBallPower;
-    public Slider Drag;
-    public Slider AnglurDrag;
-    public Slider MaxAngularDrag;
-    public Slider SpeedThershold;
-    public Slider SensivityRotate;
-    public Slider Powerbounce;
+    public InputField CueBallPower;
+    public InputField Drag;
+    public InputField AnglurDrag;
+    public InputField MaxAngularDrag;
+    public InputField SpeedThershold;
+    public InputField SensivityRotate;
+    public InputField Powerbounce;
     public Button Set_Btn;
     void Start()
     {
@@ -26,7 +26,7 @@ public class BillardTestSetting : MonoBehaviour
         });
 
 
-        CueBallPower.onValueChanged.AddListener(x =>
+        /*CueBallPower.onValueChanged.AddListener(x =>
         {
             CueBallPower.GetComponentInChildren<Text>().text = "CueBallPower:" + x.ToString();
         });
@@ -53,23 +53,31 @@ public class BillardTestSetting : MonoBehaviour
         Powerbounce.onValueChanged.AddListener(x =>
         {
             Powerbounce.GetComponentInChildren<Text>().text = "PowerBounceWall:" + x.ToString();
-        });
+        });*/
     }
     private void OnDisable()
     {
-        CueBallPower.onValueChanged.RemoveAllListeners();
+      /*  CueBallPower.onValueChanged.RemoveAllListeners();
         Drag.onValueChanged.RemoveAllListeners();
         AnglurDrag.onValueChanged.RemoveAllListeners();
         SpeedThershold.onValueChanged.RemoveAllListeners();
         MaxAngularDrag.onValueChanged.RemoveAllListeners();
         SensivityRotate.onValueChanged.RemoveAllListeners();
-        Powerbounce.onValueChanged.RemoveAllListeners();
+        Powerbounce.onValueChanged.RemoveAllListeners();*/
         Set_Btn.onClick.RemoveAllListeners();
     }
 
     public void Set()
     {
-        Handler_OnChangeSetting(CueBallPower.value, Drag.value, AnglurDrag.value,MaxAngularDrag.value, SpeedThershold.value,SensivityRotate.value,Powerbounce.value);
+        var powercue = Convert.ToSingle(CueBallPower.text);
+        var dragball = Convert.ToSingle(Drag.text);
+        var angulardrag = Convert.ToSingle(AnglurDrag.text);
+        var maxangular = Convert.ToSingle(MaxAngularDrag.text);
+        var speedthershold = Convert.ToSingle(SpeedThershold.text);
+        var sencivityrotate = Convert.ToSingle(SensivityRotate.text);
+        var powerbounce = Convert.ToSingle(Powerbounce.text);
+
+        Handler_OnChangeSetting(powercue, dragball, angulardrag, maxangular, speedthershold, sencivityrotate, powerbounce);
         Debug.Log("Change Setting");
     }
     public event Action<float, float, float,float, float,float, float> OnChangeSetting;

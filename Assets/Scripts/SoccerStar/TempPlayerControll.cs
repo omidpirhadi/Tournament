@@ -23,9 +23,9 @@ public class TempPlayerControll : MonoBehaviour
     private bool activeselection;
 
     private RaycastHit hit, hit2;
-    private Vector3 firstouch, secondtouch;
-    private bool Touch2Clicked = false;
-    private bool rotateType2;
+    [SerializeField] private Vector3 firstouch, secondtouch;
+    [SerializeField] private bool Touch2Clicked = false;
+    [SerializeField] private bool rotateType2;
 
 
 
@@ -97,7 +97,7 @@ public class TempPlayerControll : MonoBehaviour
                        // Debug.Log($"DistancFirst:{dis_current}DistancLast:{dis_last}");
                         aimCricle.ScaleAim(ID,  dis_last);
 
-                        Debug.Log( dis_last);
+                       // Debug.Log( dis_last);
                         LastPos = hit.point;
 
                         if (rotateType2)

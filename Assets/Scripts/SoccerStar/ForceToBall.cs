@@ -85,7 +85,7 @@ namespace Diaco.SoccerStar.Marble
         void LateUpdate()
         {
 
-          //  FixOverflowMovment();
+          FixOverflowMovment();
         }
         private void FixedUpdate()
         {
@@ -135,7 +135,7 @@ namespace Diaco.SoccerStar.Marble
            // SetYPositionRefrence();
         }
 
-        private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationMarbleAfterhit, float MassBall, float DragBall, float AngularDragBall)
+        private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationMarbleAfterhit, float MassBall, float DragBall, float AngularDragBall,float speedtheshold)
         {
             if(MarbleType == Marble_Type.Marble)
             {
@@ -144,16 +144,17 @@ namespace Diaco.SoccerStar.Marble
                 this.rigidbody.drag = DragMarble;
                 this.rigidbody.angularDrag = AngularDragMarble;
                 this.AccelerationBallAfterHit = AccelerationMarbleAfterhit;
-                Debug.Log("AAAAAAAAA1");
+               // Debug.Log("AAAAAAAAA1");
             }
             else
             {
                 this.rigidbody.mass = MassBall;
                 this.rigidbody.drag = DragBall;
-                this.rigidbody.angularDrag = AngularDragMarble;
-                Debug.Log("AAAAAAAAA2");
+                this.rigidbody.angularDrag = AngularDragBall;
+               // Debug.Log("AAAAAAAAA2");
             }
-            Debug.Log("AAAAAAAAA3");
+            this.ThresholdSleep = speedtheshold;
+           //// Debug.Log("AAAAAAAAA3");
         }
 
         private void Server_OnPhysicFreeze(bool obj)
@@ -366,7 +367,7 @@ namespace Diaco.SoccerStar.Marble
 
 
                
-            }
+            }*/
             if (CheckBallMove() == true && InMove == false)
             {
                 DOVirtual.Float(0, 1, 1.0f, (x) => { }).OnComplete(() =>
@@ -386,10 +387,10 @@ namespace Diaco.SoccerStar.Marble
                 rigidbody.angularVelocity = Vector3.zero;
                 //rigidbody.isKinematic = true;
                 InMove = false;
-                frFlag = false;
+               // frFlag = false;
                // Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
 
-            }*/
+            }
                 
         }
         private bool CheckBallMove()

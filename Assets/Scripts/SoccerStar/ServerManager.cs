@@ -633,6 +633,7 @@ namespace Diaco.SoccerStar.Server
                     var rotate = new Vector3(0.0f, movement_packet.marbleMovements[i].rotate_y, 0.0f);
 
                     var s = Marbles[index_marble].transform.DOMove(pos, movement_packet.TimeStepPacket);
+
                     Marbles[index_marble].transform.DORotate(rotate, movement_packet.TimeStepPacket);
 
                 }

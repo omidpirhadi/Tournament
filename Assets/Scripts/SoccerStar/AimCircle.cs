@@ -89,16 +89,24 @@ public class AimCircle : MonoBehaviour
     public void AimCircleRotate(int marbleId,float angel)
     {
         ////Debug.Log(this.transform.localEulerAngles.y);
-        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + angel, 0.0f));
-
-     /*   SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData
+        var dir = DirectionShoot().normalized;
+        /*if(dir.x>0)
         {
-            ID = marbleId,
-            Position = this.transform.position,
-            CircleRotate_Y = this.transform.eulerAngles.y,
-            CricleScale = this.transform.localScale.x,
+            this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + angel, 0.0f));
+        }
+        else
+        {
+            this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y - angel, 0.0f));
+        }*/
+        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + angel, 0.0f));
+        /*   SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData
+           {
+               ID = marbleId,
+               Position = this.transform.position,
+               CircleRotate_Y = this.transform.eulerAngles.y,
+               CricleScale = this.transform.localScale.x,
 
-        });*/
+           });*/
     }
     public Vector3  DirectionShoot()
     {

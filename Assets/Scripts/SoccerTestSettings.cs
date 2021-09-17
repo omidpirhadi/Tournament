@@ -5,15 +5,16 @@ using UnityEngine.UI;
 
 public class SoccerTestSettings : MonoBehaviour
 {
-    public Slider MassMarble;
-    public Slider ForceMarble;
-    public Slider DragMarble;
-    public Slider AngularDragMarble;
-    public Slider AccelerationBall;
-    public Slider MassBall;
-    public Slider DragBall;
-    public Slider AngularDragBall;
-    public Slider BounceWallPhysic;
+    public InputField MassMarble;
+    public InputField ForceMarble;
+    public InputField DragMarble;
+    public InputField AngularDragMarble;
+    public InputField AccelerationBall;
+    public InputField MassBall;
+    public InputField DragBall;
+    public InputField AngularDragBall;
+    public InputField BounceWallPhysic;
+    public InputField SpeedThershold;
     public PhysicMaterial physicwall;
     public Button Set_Btn;
     private void OnEnable()
@@ -23,74 +24,36 @@ public class SoccerTestSettings : MonoBehaviour
         });
 
 
-        MassMarble.onValueChanged.AddListener(x =>
-        {
-            MassMarble.GetComponentInChildren<Text>().text = "MassMarble:" + x.ToString();
-        });
-
-        ForceMarble.onValueChanged.AddListener(x =>
-        {
-            ForceMarble.GetComponentInChildren<Text>().text = "ForceMarble:" + x.ToString();
-        });
-     
-        DragMarble.onValueChanged.AddListener(x =>
-        {
-            DragMarble.GetComponentInChildren<Text>().text = "DragMarble:" + x.ToString();
-        });
-
-        AngularDragMarble.onValueChanged.AddListener(x =>
-        {
-            AngularDragMarble.GetComponentInChildren<Text>().text = " AngularDragMarble:" + x.ToString();
-        });
-
-        AccelerationBall.onValueChanged.AddListener(x =>
-        {
-            AccelerationBall.GetComponentInChildren<Text>().text = "AccelerationBallAfterHit:" + x.ToString();
-        });
-
-        MassBall.onValueChanged.AddListener(x =>
-        {
-            MassBall.GetComponentInChildren<Text>().text = "MassBall:" + x.ToString();
-        });
-        DragBall.onValueChanged.AddListener(x =>
-        {
-            DragBall.GetComponentInChildren<Text>().text = "DragBall:" + x.ToString();
-        });
-        AngularDragBall.onValueChanged.AddListener(x =>
-        {
-            MassBall.GetComponentInChildren<Text>().text = "AngularDragBall:" + x.ToString();
-        });
-        BounceWallPhysic.onValueChanged.AddListener(x =>
-        {
-            BounceWallPhysic.GetComponentInChildren<Text>().text = "BounceWall:" + x.ToString();
-            physicwall.bounciness = x;
-        });
+       
     }
     private void OnDisable()
     {
-        MassMarble.onValueChanged.RemoveAllListeners();
-        ForceMarble.onValueChanged.RemoveAllListeners();
-        DragMarble.onValueChanged.RemoveAllListeners();
-        AccelerationBall.onValueChanged.RemoveAllListeners();
-        AngularDragMarble.onValueChanged.RemoveAllListeners();
-        MassBall.onValueChanged.RemoveAllListeners();
-        DragBall.onValueChanged.RemoveAllListeners();
-        AngularDragBall.onValueChanged.RemoveAllListeners();
+
+
         Set_Btn.onClick.RemoveAllListeners();
     }
 
     public void Set()
     {
-        Handler_OnChangeSetting(MassMarble.value, ForceMarble.value, DragMarble.value, AngularDragMarble.value, AccelerationBall.value, MassBall.value, DragBall.value, AngularDragBall.value);
+        var mass_marble = Convert.ToSingle(MassMarble.text);
+        var force_marble = Convert.ToSingle(ForceMarble.text);
+        var drag_marble = Convert.ToSingle(DragMarble.text);
+        var angular_marble = Convert.ToSingle(AngularDragMarble.text);
+        var acceleration_ball = Convert.ToSingle(AccelerationBall.text);
+        var mass_ball = Convert.ToSingle(MassBall.text);
+        var drag_ball = Convert.ToSingle(DragBall.text);
+        var angulardrag_ball = Convert.ToSingle(AngularDragBall.text);
+        var speedthershold = Convert.ToSingle(SpeedThershold.text);
+        Handler_OnChangeSetting(mass_marble, force_marble, drag_marble,angular_marble, acceleration_ball, mass_ball, drag_ball, angulardrag_ball,speedthershold);
         Debug.Log("Change Setting");
     }
-    public event Action<float, float, float, float, float, float,float,float> OnChangeSetting;
+    public event Action<float, float, float, float, float, float,float,float,float> OnChangeSetting;
 
-    public void Handler_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationBall, float MassBall,float DragBall,float AngularDragBall)
+    public void Handler_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationBall, float MassBall,float DragBall,float AngularDragBall,float Speedthershold)
     {
         if (OnChangeSetting != null)
         {
-            OnChangeSetting(MassMarble, ForceMarble, DragMarble, AngularDragMarble, AccelerationBall, MassBall, DragBall, AngularDragBall);
+            OnChangeSetting(MassMarble, ForceMarble, DragMarble, AngularDragMarble, AccelerationBall, MassBall, DragBall, AngularDragBall, Speedthershold);
         }
     }
 }
