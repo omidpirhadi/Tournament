@@ -72,8 +72,11 @@ namespace Diaco.EightBall.CueControllers
         private void OnDestroy()
         {
 
-            cueball.OnHitBall -= Ball_OnHitBall;
-            cueball.OnFreazeBall -= Cueball_OnFreazeBall;
+            if (cueball != null)
+            {
+                cueball.OnHitBall -= Ball_OnHitBall;
+                cueball.OnFreazeBall -= Cueball_OnFreazeBall;
+            }
             if (testSetting)
                 testSetting.OnChangeSetting -= HitBallController_OnChangeSetting;
 

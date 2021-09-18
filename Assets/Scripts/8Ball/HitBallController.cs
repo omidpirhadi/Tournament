@@ -302,7 +302,7 @@ namespace Diaco.EightBall.CueControllers
                     LargeCueBall.enabled = false;
                 Handler_OnHitBall(-1, Vector3.zero, Vector3.zero);
             }
-
+            TouchWorkInUI = false;
             // resetpos();
 
         }

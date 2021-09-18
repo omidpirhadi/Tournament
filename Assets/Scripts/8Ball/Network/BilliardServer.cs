@@ -430,7 +430,7 @@ namespace Diaco.EightBall.Server
             SetCountCostBillboard(data.cost.ToString());
 
             ///   SetPositionsBalls(data.positions);
-            SpwanBallInBasketAndDestroyBallInTable(data);
+            StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
             QueuePositionsBallFromServer.Enqueue(data.positions);
             StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer());
 
@@ -513,7 +513,7 @@ namespace Diaco.EightBall.Server
             SetCountCostBillboard(data.cost.ToString());
 
 
-            SpwanBallInBasketAndDestroyBallInTable(data);
+            StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
             QueuePositionsBallFromServer.Enqueue(data.positions);
             StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer());
 
@@ -567,11 +567,7 @@ namespace Diaco.EightBall.Server
                     //  GameResult.text = "Loser";
                 }
             }
-            /*  AddressBalls[0].transform.DOScale(0.33f, 0.1f);
-              AddressBalls[0].GetComponent<Rigidbody>().isKinematic = false;
-              AddressBalls[0].GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-              AddressBalls[0].GetComponent<Rigidbody>().WakeUp();
-              AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().resetpos();*/
+
             Handler_GameReady();
         }
 
@@ -1081,7 +1077,7 @@ namespace Diaco.EightBall.Server
             }
         }
 
-        public void SpwanBallInBasketAndDestroyBallInTable(Diaco.EightBall.Structs.GameData data)
+        public IEnumerator SpwanBallInBasketAndDestroyBallInTable(Diaco.EightBall.Structs.GameData data)
         {
             for (int i = 0; i < data.deletedBalls.Count; i++)
             {
@@ -1095,7 +1091,9 @@ namespace Diaco.EightBall.Server
 
                 }
             }
-            //  Debug.Log("basket length : " + BallInBasket.Count);
+           /// Debug.Log("basket length : " + BallInBasket.Count);
+            yield return new WaitForSecondsRealtime(1f);
+            
             for (int i = 0; i < BallInBasket.Count; i++)///check for Wrong Ball In Basket
             {
                 var id = BallInBasket[i];
@@ -1116,13 +1114,14 @@ namespace Diaco.EightBall.Server
                             Destroy(ball_in_basket[j].gameObject);
                             BallInBasket.Remove(id);
                             i = -1;
-                            //    Debug.Log("VBBBVBVBVBVBVBVBVBVBV"+id);
+                           
                         }
                     }
 
                 }
-
+  // Debug.Log("VBBBVBVBVBVBVBVBVBVBV"+id);
             }
+            yield return new WaitForSecondsRealtime(1f);
             StartCoroutine(Basket.ExtractBallFast());
         }
         public void CloseConnection()

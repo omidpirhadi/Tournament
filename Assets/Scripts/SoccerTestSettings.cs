@@ -15,7 +15,9 @@ public class SoccerTestSettings : MonoBehaviour
     public InputField AngularDragBall;
     public InputField BounceWallPhysic;
     public InputField SpeedThershold;
+    public InputField SensivityRotateFinger2;
     public PhysicMaterial physicwall;
+    public TempPlayerControll PlayerControll;
     public Button Set_Btn;
     private void OnEnable()
     {
@@ -23,7 +25,7 @@ public class SoccerTestSettings : MonoBehaviour
             Set();
         });
 
-
+        PlayerControll = FindObjectOfType<TempPlayerControll>();
        
     }
     private void OnDisable()
@@ -44,7 +46,13 @@ public class SoccerTestSettings : MonoBehaviour
         var drag_ball = Convert.ToSingle(DragBall.text);
         var angulardrag_ball = Convert.ToSingle(AngularDragBall.text);
         var speedthershold = Convert.ToSingle(SpeedThershold.text);
+        var bouncewall = Convert.ToSingle(BounceWallPhysic.text);
+        var sensiviti = Convert.ToSingle(SensivityRotateFinger2.text);
+    
         Handler_OnChangeSetting(mass_marble, force_marble, drag_marble,angular_marble, acceleration_ball, mass_ball, drag_ball, angulardrag_ball,speedthershold);
+
+        physicwall.bounciness = bouncewall;
+        PlayerControll.Sensiviti = sensiviti;
         Debug.Log("Change Setting");
     }
     public event Action<float, float, float, float, float, float,float,float,float> OnChangeSetting;

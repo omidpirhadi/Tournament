@@ -76,7 +76,7 @@ public class Basket : MonoBehaviour
                      });
 
                  }*/
-                yield return new WaitForSecondsRealtime(0.0001f);
+                yield return new WaitForSecondsRealtime(0.5f);
 
 
             }

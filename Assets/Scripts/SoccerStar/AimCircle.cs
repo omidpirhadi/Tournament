@@ -90,15 +90,26 @@ public class AimCircle : MonoBehaviour
     {
         ////Debug.Log(this.transform.localEulerAngles.y);
         var dir = DirectionShoot().normalized;
-        /*if(dir.x>0)
+        int side = 0;
+        if(dir.x>0)
         {
-            this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + angel, 0.0f));
+            Debug.Log("Positiv_X");
+            side = -1;
         }
         else
         {
-            this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y - angel, 0.0f));
-        }*/
-        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + angel, 0.0f));
+            Debug.Log("Negativ_X");
+            side = 1;
+        }
+        if (dir.z > 0)
+        {
+           // Debug.Log("Positiv_Z");
+        }
+        else
+        {
+          //  Debug.Log("Negativ_Z");
+        }
+        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f));
         /*   SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData
            {
                ID = marbleId,

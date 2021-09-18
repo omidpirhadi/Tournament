@@ -90,24 +90,24 @@ public class TempPlayerControll : MonoBehaviour
                     {
 
                        // var dis_current = Vector3.Distance(hit.point, firstouch);
-                        var pos1 = new Vector3(firstouch.x, 0, firstouch.z);
-                        var pos2 = new Vector3(LastPos.x, 0, LastPos.z);
+                        var pos_marble = new Vector3(firstouch.x, 0, firstouch.z);
+                        var pos_lasttouch = new Vector3(LastPos.x, 0, LastPos.z);
 
-                        var dis_last = Vector3.Distance(pos1, pos2);
-                       // Debug.Log($"DistancFirst:{dis_current}DistancLast:{dis_last}");
-                        aimCricle.ScaleAim(ID,  dis_last);
+                        var dis_last = Vector3.Distance(pos_marble, pos_lasttouch);
 
-                       // Debug.Log( dis_last);
-                        LastPos = hit.point;
+                        LastPos = new Vector3(hit.point.x, 0, hit.point.z);
 
                         if (rotateType2)
                         {
+                            var dis_current = Vector3.Distance(new Vector3(hit.point.x, 0, hit.point.z), pos_marble);
+                            aimCricle.ScaleAim(ID, aimCricle.transform.localScale.x + dis_current - dis_last);
                             aimCricle.AimCircleRotate(ID, Input.GetTouch(0).deltaPosition.y * Sensiviti);
                             ///    aimCricle.SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData { ID = ID, CircleRotate_Y = CircleAim.transform.eulerAngles.y, CricleScale = CircleAim.transform.localScale.x, PositionIndicator = indicator.transform.localPosition, RotateIndicator_Y = indicator.transform.eulerAngles.y });
 
                         }
                         else
                         {
+                            aimCricle.ScaleAim(ID,  dis_last);
                             aimCricle.AimCircleAndIndicatorRotate(ID, hit.point);
                             //   aimCricle.SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData { ID = ID, CircleRotate_Y = CircleAim.transform.eulerAngles.y, CricleScale = CircleAim.transform.localScale.x, PositionIndicator = indicator.transform.localPosition, RotateIndicator_Y = indicator.transform.eulerAngles.y });
                         }
@@ -115,11 +115,11 @@ public class TempPlayerControll : MonoBehaviour
                     }
                     else
                     {
-                        LastPos = hit.point;
-                        var dis_current = Vector3.Distance(hit.point, firstouch);
-                        var dis_last = Vector3.Distance(LastPos, firstouch);
+                        LastPos = new Vector3(hit.point.x, 0, hit.point.z);
+                        // var dis_current = Vector3.Distance(hit.point, firstouch);
+                        // var dis_last = Vector3.Distance(LastPos, firstouch);
 
-                        aimCricle.ScaleAim(ID, dis_current - dis_last);
+                        //aimCricle.ScaleAim(ID, dis_current - dis_last);
                         Touch2Clicked = false;
 
                     }
