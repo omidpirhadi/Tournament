@@ -830,6 +830,7 @@ namespace Diaco.EightBall.CueControllers
 
                 lineRenderer.SetPosition(0, Vector3.zero);
                 lineRenderer.SetPosition(1, Vector3.zero);
+                Handler_OnHitBall(-1, Vector3.zero, Vector3.zero);
                 Debug.Log("DisableAimXXx");
 
             }

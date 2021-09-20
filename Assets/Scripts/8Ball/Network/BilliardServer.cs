@@ -1024,7 +1024,7 @@ namespace Diaco.EightBall.Server
         {
             // AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemOnPlayRecord(false);
             var PositionBall = QueueCueBallPositionFromServer.Dequeue();
-
+            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(false);
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().MoveOnPlayRecord(PositionBall, 0.02f);
             yield return null;
         }
