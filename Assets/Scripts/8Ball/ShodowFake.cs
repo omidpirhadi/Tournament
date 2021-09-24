@@ -6,41 +6,35 @@ public class ShodowFake : MonoBehaviour
 {
     public Transform table;
     public Transform shadow;
-    public float OffsetX = 0.04f;
-    public float OffsetZ = 0.04f;
-    void Start()
+    public Transform Parent;
+    public float Offset = 0.04f;
+  
+    private void Start()
     {
+        
+        table = GameObject.Find("TablePos").transform;
+        Parent = GameObject.Find("BilliardGame").transform;
+        shadow.parent = Parent;
+    }
+    private void Update()
+    {
+        Vector3 dir = (transform.position - table.transform.position);
+//shadow.transform.rotation = Quaternion.Euler(90, 0, 0);
+
+       // Debug.Log(dir);
+        //  Vector3 newPos = transform.position + dir;
+        // newPos.x = transform.position.x + OffsetX;
+        var newPos = new Vector3(0.0f,0.0f,0.0f);
+        newPos.x = dir.x * Offset;
+        newPos.y = 0.05f;
+        newPos.z = dir.z * Offset;
+        if (shadow)
+            shadow.transform.position = newPos;
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDestroy()
     {
-        Vector3 dir = (transform.position - table.transform.position);
-
-
-        //Debug.Log(dir);
-        //  Vector3 newPos = transform.position + dir;
-        // newPos.x = transform.position.x + OffsetX;
-        var newPos = new Vector3();
-        newPos.x = dir.x * OffsetX;
-        newPos.z = dir.z * OffsetX;
-        shadow.transform.position = newPos;
-        shadow.transform.rotation = Quaternion.Euler(90, 0, 0);
-    }
-    private void LateUpdate()
-    {
-
-       /* Vector3 dir = (transform.position - table.transform.position);
-
-
-        //Debug.Log(dir);
-        //  Vector3 newPos = transform.position + dir;
-        // newPos.x = transform.position.x + OffsetX;
-        var newPos = new Vector3();
-        newPos.x = dir.x * OffsetX;
-        newPos.z = dir.z * OffsetX;
-        shadow.transform.position = newPos;
-        shadow.transform.rotation = Quaternion.Euler(90, 0, 0);*/
+       // Destroy(shadow.gameObject);
     }
 }

@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Reflection;
 using System.Linq;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
-
 using DG.Tweening;
-using Diaco.EightBall.CueControllers;
+
 
 namespace Diaco.EightBall.CueControllers
 {
@@ -24,6 +19,8 @@ namespace Diaco.EightBall.CueControllers
         public LayerMask mask_for_move_cue_ball;
         public LayerMask mask_for_move_Aim;
         public LayerMask mask_for_Line_Aim;
+        public float MinDistancePointTouchToCueBall = 3;
+
         public bool LimitedMovePitok = false;
         public enum Type_Ball { White, Color };
         public int ID = 0;
@@ -105,11 +102,7 @@ namespace Diaco.EightBall.CueControllers
             RadiusGhostBall = GetComponent<SphereCollider>().radius * transform.localScale.x;
         }
 
-        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3,float arg, float arg4,float arg6,float arg7)
-        {
-            SetSetting(arg1, arg2, arg3, arg, arg4, arg6,arg7);
-            Debug.Log("ChengeAccept");
-        }
+        
 
         void LateUpdate()
         {
@@ -131,7 +124,8 @@ namespace Diaco.EightBall.CueControllers
             {
                 ActiveAimSystemForShowInOtherClient(true);
             }
-            CueRotate();
+            //CueRotate();
+            TouchControll();
             AimSystem();
 
 
@@ -169,7 +163,7 @@ namespace Diaco.EightBall.CueControllers
         }
         private void OnMouseDown()
         {
-            if (Server.Pitok > 0 && Server.Turn)
+           /* if (Server.Pitok > 0 && Server.Turn)
             {
                 LargeCueBall.transform.position = new Vector3(this.transform.position.x, 0.64f, this.transform.position.z);
                 LargeCueBall.enabled = true;
@@ -183,21 +177,21 @@ namespace Diaco.EightBall.CueControllers
                 // GetComponent<SphereCollider>().isTrigger = true;
                 // Handler_FreazeBall(true);
                 //Debug.Log("PITOOKKKK DOWN");
-            }
+            }*/
 
 
 
         }
         private void OnMouseDrag()
         {
-            MoveCueBallInPitok();
+           // MoveCueBallInPitok();
 
             // Debug.Log("Drag");
 
         }
         private void OnMouseUp()
         {
-            if (Server.Pitok > 0 && Server.Turn)
+           /* if (Server.Pitok > 0 && Server.Turn)
             {
                 LargeCueBall.enabled = false;
                 ActiveAimSystem(true);
@@ -213,7 +207,7 @@ namespace Diaco.EightBall.CueControllers
                 CancelAnimationHand();
                 ///    Debug.Log("PITOOKKKK UP");
                 Server.Emit_PositionCueBallInPitoks(this.transform.position);
-            }
+            }*/
         }
         private void OnDrawGizmos()
         {
@@ -234,49 +228,7 @@ namespace Diaco.EightBall.CueControllers
             }
         }
 
-        public void initialze()
-        {
-           // temp_PowerCUE = PowerCUE;
-           // temp_PowerSpin = PowerSpin;
-            rigidbody = GetComponent<Rigidbody>();
-            lineRenderer = GetComponent<LineRenderer>();
 
-            Server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
-            Server.OnTurn += HitBallController_OnTurn;
-          //  Server.OnPitok += Gamemanager_OnPitok;
-            // rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-            FindObjectOfType<EnergyCUEController>().OnChangeEnergy += HitBallController_OnChangeEnergy;
-            FindObjectOfType<EnergyCUEController>().OnEnergyTouchEnd += HitBallController_OnEnergyTouchEnd;
-            FindObjectOfType<CueSpinController>().OnChangeValueSpin += HitBallController_OnChangeValueSpin;
-            if (Server.Turn)
-                ActiveAimSystem(true);
-            else
-                ActiveAimSystem(false);
-            SetYPositionRefrence();
-
-        }
-        private void CheckPitok()
-        {
-            if (Server.Pitok == 1)
-            {
-                IntergatioShowAnimation = 0;
-                HandIcon.enabled = true;
-                HandIcon.transform.position = new Vector3(transform.position.x, 0.64f, transform.position.z);
-
-                StartAnimationHand();
-                LimitedMovePitok = false;
-                /// Debug.Log("AAAAA");
-            }
-            else if (Server.Pitok == 2)
-            {
-                IntergatioShowAnimation = 0;
-                HandIcon.enabled = true;
-                HandIcon.transform.position = new Vector3(transform.position.x, 0.64f, transform.position.z);
-                StartAnimationHand();
-                LimitedMovePitok = true;
-                //Debug.Log("BBBBBB");
-            }
-        }
 
         private void HitBallController_OnChangeValueSpin(Vector2 pos)
         {
@@ -371,11 +323,177 @@ namespace Diaco.EightBall.CueControllers
                 // OffsetPositionCueWoodFromCueBall = new Vector3(-0.3f, 0.0f, 0.00f);
             }
         }
+        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3, float arg, float arg4, float arg6, float arg7)
+        {
+            SetSetting(arg1, arg2, arg3, arg, arg4, arg6, arg7);
+            Debug.Log("ChengeAccept");
+        }
+
+        private void TouchControll()
+        {
+            if (Input.touchCount > 0 && Server.Turn )
+            {
+
+                Touch touch = Input.GetTouch(0);
+                var ray = Camera.main.ScreenPointToRay(touch.position);
+                RaycastHit hit_touch;
+
+                if (Physics.Raycast(ray, out hit_touch, 1000, mask_for_move_Aim))
+                {
+                    var hitpos = new Vector3(hit_touch.point.x, 00, hit_touch.point.z);
+                    var cueball_pos  = new Vector3(transform.position.x, 00, transform.position.z);
+                    var dist = Vector3.Distance(hitpos, cueball_pos);
+                    if(dist<MinDistancePointTouchToCueBall)
+                    {
+                        CueBallMoveInPitokTouchController();
+                       // Debug.Log("Touckh pitok");
+                    }
+                    else
+                    {
+                        CueRotate();
+                       // Debug.Log("Touckh aim");
+                    }
+                  //  Debug.Log("Touckh click");
+                }
+            }
+        }
+        private void CueBallMoveInPitokTouchController()
+        {
+            if (Server.Pitok > 0 && Server.Turn)
+            {
+                if (Input.touchCount > 0)
+                {
+                    var touch = Input.GetTouch(0);
+                    if (touch.phase == TouchPhase.Began)
+                    {
+
+                        DragIsBusy = true;
+                        LargeCueBall.transform.position = new Vector3(this.transform.position.x, 0.64f, this.transform.position.z);
+                        LargeCueBall.enabled = true;
+                        IntergatioShowAnimation = 1;
+                        rigidbody.isKinematic = true;
+                        ActiveAimSystem(false);
+                        CancelAnimationHand();
+                        Handler_FreazeBall(true);
+
+
+                    }
+                    else if (touch.phase == TouchPhase.Moved)
+                    {
+                        MoveCueBallInPitok(touch);
+                    }
+                    else if (touch.phase == TouchPhase.Ended)
+                    {
+
+                        LargeCueBall.enabled = false;
+                        ActiveAimSystem(true);
+
+                        IntergatioShowAnimation = 1;
 
 
 
+                        //GetComponent<SphereCollider>().isTrigger = false;
+                        rigidbody.isKinematic = false;
+                        Handler_FreazeBall(false);
+                        DragIsBusy = false;
+                        CancelAnimationHand();
+                        ///    Debug.Log("PITOOKKKK UP");
+                        Server.Emit_PositionCueBallInPitoks(this.transform.position);
 
-       
+                    }
+                }
+            }
+        }
+
+        private void MoveCueBallInPitok(Touch touch)
+        {
+
+
+            if (Server.Turn)
+            {
+                if (Server.Pitok > 0 && !LimitedMovePitok)
+
+                {
+                    DragIsBusy = true;
+                    //var touch = Input.GetTouch(0);
+                    var ray = Camera.main.ScreenPointToRay(touch.position);
+
+                    if (Physics.SphereCast(ray, RadiusGhostBall, out hit, 1000, mask_for_move_cue_ball))
+                    {
+
+                        bool find = false;
+
+                        var limited0_x = Mathf.Clamp(hit.point.x, -5.0f, +5.90f);
+                        var limited0_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
+                        Vector3 pos_point = new Vector3(limited0_x, 0.0f, limited0_z);
+
+                        // Debug.Log("Touch" +hit.collider.name+":::"+ hit.point);
+                        var col = Physics.OverlapSphere(pos_point, RadiusGhostBall, mask_for_move_cue_ball).ToList();
+
+                        col.ForEach((e) =>
+
+                        {// Debug.Log(e.tag);
+                            if (e.tag == "ball")
+                            {
+                                find = true;
+
+                            }
+                        });
+                        if (find == false)
+
+                        {
+                            var limited_x = Mathf.Clamp(hit.point.x, -5.0f, +5.90f);
+                            var limited_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
+                            transform.DOMove(new Vector3(limited_x, transform.position.y, limited_z), 00.01f, false);
+                            LargeCueBall.transform.DOMove(new Vector3(limited_x, 0.64f, limited_z), 00.01f, false);
+                            // Debug.Log("Touch" + hit.collider.name + ":::" + hit.point);
+                            Server.Emit_PositionCueBallInPitoks(this.transform.position);
+
+                        }
+
+                    }
+
+                }
+                else if (Server.Pitok > 0 && LimitedMovePitok)
+                {
+                    DragIsBusy = true;
+                    //var touch = Input.GetTouch(0);
+                    var ray = Camera.main.ScreenPointToRay(touch.position);
+
+                    if (Physics.SphereCast(ray, RadiusGhostBall, out hit, 1000, mask_for_move_cue_ball))
+                    {
+
+                        bool find = false;
+                        var limited0_x = Mathf.Clamp(hit.point.x, -5.0f, -2.47f);
+                        var limited0_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
+                        Vector3 pos_point = new Vector3(limited0_x, 0.0f, limited0_z);
+                        /// Debug.Log("Touch" +hit.collider.name+":::"+ hit.point);
+                        var col = Physics.OverlapSphere(pos_point, RadiusGhostBall, mask_for_move_cue_ball).ToList();
+
+                        col.ForEach((e) =>
+                        {
+                            if (e.tag == "ball")
+                            {
+                                find = true;
+                            }
+                        });
+                        if (find == false)
+
+                        {
+                            var limited_x = Mathf.Clamp(hit.point.x, -5.0f, -2.47f);
+                            var limited_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
+                            LargeCueBall.transform.DOMove(new Vector3(limited_x, 0.64f, limited_z), 00.01f, false);
+                            transform.DOMove(new Vector3(limited_x, transform.position.y, limited_z), 00.01f, false);
+
+                            Server.Emit_PositionCueBallInPitoks(this.transform.position);
+                            /// Debug.Log("PITOOKKKK LLLLIIIIIII");
+                        }
+
+                    }
+                }
+
+            }
+        }
         private void CueRotate()
         {
             float curAngle = prevAngle;
@@ -449,6 +567,50 @@ namespace Diaco.EightBall.CueControllers
             }
             prevAngle = curAngle;
         }
+        public void initialze()
+        {
+            // temp_PowerCUE = PowerCUE;
+            // temp_PowerSpin = PowerSpin;
+            rigidbody = GetComponent<Rigidbody>();
+            lineRenderer = GetComponent<LineRenderer>();
+
+            Server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
+            Server.OnTurn += HitBallController_OnTurn;
+            //  Server.OnPitok += Gamemanager_OnPitok;
+            // rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+            FindObjectOfType<EnergyCUEController>().OnChangeEnergy += HitBallController_OnChangeEnergy;
+            FindObjectOfType<EnergyCUEController>().OnEnergyTouchEnd += HitBallController_OnEnergyTouchEnd;
+            FindObjectOfType<CueSpinController>().OnChangeValueSpin += HitBallController_OnChangeValueSpin;
+            if (Server.Turn)
+                ActiveAimSystem(true);
+            else
+                ActiveAimSystem(false);
+            SetYPositionRefrence();
+
+        }
+        private void CheckPitok()
+        {
+            if (Server.Pitok == 1)
+            {
+                IntergatioShowAnimation = 0;
+                HandIcon.enabled = true;
+                HandIcon.transform.position = new Vector3(transform.position.x, 0.64f, transform.position.z);
+
+                StartAnimationHand();
+                LimitedMovePitok = false;
+                /// Debug.Log("AAAAA");
+            }
+            else if (Server.Pitok == 2)
+            {
+                IntergatioShowAnimation = 0;
+                HandIcon.enabled = true;
+                HandIcon.transform.position = new Vector3(transform.position.x, 0.64f, transform.position.z);
+                StartAnimationHand();
+                LimitedMovePitok = true;
+                //Debug.Log("BBBBBB");
+            }
+        }
+      
 
         public Vector3 AtPosition;
         private void ForceToBall(float powcue, float powspin)
@@ -881,95 +1043,7 @@ namespace Diaco.EightBall.CueControllers
                 
             }
         }
-        private void MoveCueBallInPitok()
-        {
-
-
-            if (Server.Turn)
-            {
-                if (Server.Pitok > 0 && !LimitedMovePitok)
-
-                {
-                    DragIsBusy = true;
-                    var touch = Input.GetTouch(0);
-                    var ray = Camera.main.ScreenPointToRay(touch.position);
-                   
-                    if (Physics.SphereCast(ray, RadiusGhostBall, out hit, 1000, mask_for_move_cue_ball))
-                    {
-
-                        bool find = false;
-
-                        var limited0_x = Mathf.Clamp(hit.point.x, -5.0f, +5.90f);
-                        var limited0_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
-                        Vector3 pos_point = new Vector3(limited0_x, 0.0f, limited0_z);
-
-                        // Debug.Log("Touch" +hit.collider.name+":::"+ hit.point);
-                        var col = Physics.OverlapSphere(pos_point, RadiusGhostBall, mask_for_move_cue_ball).ToList(); 
-
-                        col.ForEach((e) =>
-                        
-                        {// Debug.Log(e.tag);
-                            if (e.tag == "ball")
-                            {
-                                find = true;
-                               
-                            }
-                        });
-                        if (find == false)
-
-                        {
-                            var limited_x = Mathf.Clamp(hit.point.x, -5.0f, +5.90f);
-                            var limited_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
-                            transform.DOMove(new Vector3(limited_x, transform.position.y, limited_z), 00.01f, false);
-                            LargeCueBall.transform.DOMove(new Vector3(limited_x, 0.64f, limited_z), 00.01f, false);
-                           // Debug.Log("Touch" + hit.collider.name + ":::" + hit.point);
-                            Server.Emit_PositionCueBallInPitoks(this.transform.position);
-                           
-                        }
-                       
-                    }
-
-                }
-                else if (Server.Pitok > 0 && LimitedMovePitok)
-                {
-                    DragIsBusy = true;
-                    var touch = Input.GetTouch(0);
-                    var ray = Camera.main.ScreenPointToRay(touch.position);
-
-                    if (Physics.SphereCast(ray, RadiusGhostBall, out hit, 1000, mask_for_move_cue_ball))
-                    {
-
-                        bool find = false;
-                        var limited0_x = Mathf.Clamp(hit.point.x, -5.0f, -2.47f);
-                        var limited0_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
-                        Vector3 pos_point = new Vector3(limited0_x, 0.0f, limited0_z);
-                        /// Debug.Log("Touch" +hit.collider.name+":::"+ hit.point);
-                        var col = Physics.OverlapSphere(pos_point, RadiusGhostBall, mask_for_move_cue_ball).ToList();
-
-                        col.ForEach((e) =>
-                        {
-                            if (e.tag == "ball")
-                            {
-                                find = true;
-                            }
-                        });
-                        if (find == false)
-
-                        {
-                            var limited_x = Mathf.Clamp(hit.point.x, -5.0f, -2.47f);
-                            var limited_z = Mathf.Clamp(hit.point.z, -2.681f, 2.676f);
-                            LargeCueBall.transform.DOMove(new Vector3(limited_x, 0.64f, limited_z), 00.01f, false);
-                            transform.DOMove(new Vector3(limited_x,transform.position.y , limited_z), 00.01f, false);
-
-                            Server.Emit_PositionCueBallInPitoks(this.transform.position);
-                           /// Debug.Log("PITOOKKKK LLLLIIIIIII");
-                        }
-                        
-                    }
-                }
-
-            }
-        }
+       
         public void MoveOnPlayRecord(Vector3 pos, float speed)
         {
             transform.DOMove(pos, speed);

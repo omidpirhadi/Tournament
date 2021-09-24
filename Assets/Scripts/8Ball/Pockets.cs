@@ -43,6 +43,8 @@ namespace Diaco.EightBall.Pockets
                     Server.DeletedBallCount++;
                 }
                 Destroy(Ball.gameObject, timeDestory);
+                Destroy(Ball.GetComponent<ShodowFake>().shadow.gameObject); 
+
             }
             else if(Ball.tag == "whiteball" && Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>())
             {
@@ -56,12 +58,7 @@ namespace Diaco.EightBall.Pockets
                       Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.00f, 0.001f, 0.0f);
                     Ball.GetComponent<Rigidbody>().isKinematic = true;
                         Ball.transform.DOScale(0.0f, 0.1f);
-                   /* DOVirtual.Float(0, 1, timeDestory, (x) => {
 
-                    }).OnComplete(() => {
-                       
-                    });
-                   */
                     Handler_OnPocket(id);
                 }
                 else
