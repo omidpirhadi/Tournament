@@ -744,12 +744,12 @@ namespace Diaco.SoccerStar.Server
         }
         private void StartInvokeTimerLeft()
         {
-            InvokeRepeating("Timerleft", 0.0f, 0.01f);
+            InvokeRepeating("Timerleft", 0.0f, 0.01f* UnityEngine.Time.timeScale);
             ///      Debug.Log("TimerLeftStart");
         }
         private void StartInvokeTimerRight()
         {
-            InvokeRepeating("Timerright", 0.0f, 0.01f);
+            InvokeRepeating("Timerright", 0.0f, 0.01f* UnityEngine.Time.timeScale);
             //Debug.Log("TimerRightStart");
         }
         public void CancleInvokeTime()

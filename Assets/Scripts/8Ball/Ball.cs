@@ -110,7 +110,7 @@ namespace Diaco.EightBall.CueControllers
                 HaveTarget = false;
             }*/
         }
-        private void Ball_OnHitBall(int target, Vector3 dir, Vector3 targetvelocity)
+        private void Ball_OnHitBall(int target, Vector3 dir)
         {
 
             if (target != -1)

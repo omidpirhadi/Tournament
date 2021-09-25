@@ -36,7 +36,7 @@ namespace Diaco.EightBall.CueControllers
 
         public void OnDrag(PointerEventData eventData)
         {
-            
+           // CueBall.TouchWorkInUI = true;
             Vector3 localpos;
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(Rect_CueSpin, eventData.position, eventData.pressEventCamera, out localpos))
             {
@@ -47,6 +47,7 @@ namespace Diaco.EightBall.CueControllers
                 Rect_CueSpin.localPosition = WhiteCircle.localPosition + v;
                 Handler_OnDragSpin();
                 CueSpinSmall.SetPositions(Spin());
+                
                /// Debug.Log(Rect_CueSpin.localPosition);
             }
         }
@@ -54,7 +55,8 @@ namespace Diaco.EightBall.CueControllers
         public void OnEndDrag(PointerEventData eventData)
         {
             Handler_OnChangeSpin(Spin());
-           //Debug.Log("ChangeSpin");
+           // CueBall.TouchWorkInUI = false;
+            //Debug.Log("ChangeSpin");
         }
 
         private Vector2 Spin()

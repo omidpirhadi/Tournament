@@ -55,9 +55,9 @@ namespace Diaco.EightBall.Pockets
                     // Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
                     ///   Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
                     Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.0f, 0.0f);
-                      Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.00f, 0.001f, 0.0f);
+                    Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.00f, 0.001f, 0.0f);
                     Ball.GetComponent<Rigidbody>().isKinematic = true;
-                        Ball.transform.DOScale(0.0f, 0.1f);
+                    Ball.transform.DOScale(0.0f, 0.1f);
 
                     Handler_OnPocket(id);
                 }

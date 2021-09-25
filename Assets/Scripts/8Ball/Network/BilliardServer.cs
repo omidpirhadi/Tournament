@@ -279,7 +279,7 @@ namespace Diaco.EightBall.Server
                     if (intergateplayposition == 0)
                     {
 
-                        StartCoroutine(PlayRecordPositionsBallsAndRecivedFromServer());
+                        StartCoroutine(PositionsBallsRecivedFromServer());
                         intergateplayposition = 1;
 
                     }
@@ -291,7 +291,7 @@ namespace Diaco.EightBall.Server
                     QueueCueBallPositionFromServer.Enqueue(positionCueball);
                     if (QueueCueBallPositionFromServer.Count > 0)
                     {
-                        StartCoroutine(PlayRecordCueBallPositionRecivedFromServer());
+                        StartCoroutine(CueBallPositionRecivedFromServer());
 
                     }
 
@@ -304,7 +304,7 @@ namespace Diaco.EightBall.Server
                     QueueAimFromServer.Enqueue(aimdata);
                     if (QueueAimFromServer.Count > 0)
                     {
-                        StartCoroutine(PlayRecordAimRecivedFromServer());
+                        StartCoroutine(AimRecivedFromServer());
                     }
                 });
                 socket.On("CancelCooldown", (s, p, m) =>
@@ -625,7 +625,7 @@ namespace Diaco.EightBall.Server
             return move;
         }
 
-        public IEnumerator StartRecordPositionsBallsAndSendToServer()
+        public IEnumerator PositionsBallsSendToServer()
         {
             PositionAndRotateBalls PositionBalls = new PositionAndRotateBalls();
             do
@@ -737,13 +737,13 @@ namespace Diaco.EightBall.Server
 
             yield return null;
         }
-        public IEnumerator PlayRecordPositionsBallsAndRecivedFromServer()
+        public IEnumerator PositionsBallsRecivedFromServer()
         {
             //  yield return new WaitForSecondsRealtime(0.5f);
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
 
             cueball.ActiveAimSystem(false);
-            cueball.Handler_OnHitBall(-1, Vector3.zero, Vector3.zero);
+            cueball. Handler_OnHitBall(-1, Vector3.zero);
             do
             {
 
@@ -937,7 +937,7 @@ namespace Diaco.EightBall.Server
            
             //cueball.resetpos();
         }
-        public void SetPositionsBalls(PositionAndRotateBalls PositionBalls)
+        /*public void SetPositionsBalls(PositionAndRotateBalls PositionBalls)
         {
             if (AddressBalls[0] != null)
             {
@@ -1019,17 +1019,17 @@ namespace Diaco.EightBall.Server
                 AddressBalls[15].transform.DOMove(new Vector3(PositionBalls.Ball_15.x, AddressBalls[15].transform.position.y, PositionBalls.Ball_15.y), 0);
                 AddressBalls[15].transform.DORotate(PositionBalls.Ball_15_R, 0);
             }
-        }
-        public IEnumerator PlayRecordCueBallPositionRecivedFromServer()
+        }*/
+        public IEnumerator CueBallPositionRecivedFromServer()
         {
             // AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemOnPlayRecord(false);
             var PositionBall = QueueCueBallPositionFromServer.Dequeue();
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(false);
-            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().MoveOnPlayRecord(PositionBall, 0.02f);
+            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CueBallMoveFromServer(PositionBall, 0.02f);
             yield return null;
         }
 
-        public IEnumerator PlayRecordAimRecivedFromServer()
+        public IEnumerator AimRecivedFromServer()
         {
             if (AddressBalls[0] != null)
             {
@@ -1416,13 +1416,13 @@ namespace Diaco.EightBall.Server
 
             if (side == 0)
             {
-                InvokeRepeating("SetLeftCoolDown", 0.0f, 0.02f);
+                InvokeRepeating("SetLeftCoolDown", 0.0f, 0.01f * UnityEngine.Time.timeScale);
               
                  //Debug.Log("EnableCooldownLeft");
             }
             else
             {
-                InvokeRepeating("SetRightCoolDown", 0.0f, 0.02f);
+                InvokeRepeating("SetRightCoolDown", 0.0f, 0.01f * UnityEngine.Time.timeScale);
                   /// Debug.Log("EnableCooldownRight");
             }
            // Debug.Log("CoolDown");

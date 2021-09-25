@@ -148,8 +148,8 @@ public class GameLuncher : MonoBehaviour
         }
         else if (index == 1)
         {
-            Time.timeScale = 2;
-            Physics.sleepThreshold = 0.001f;
+            Time.timeScale = 1;
+            //Physics.sleepThreshold = 0.000001f;
             if (MainMenu)
             {
                 MainMenu.GetComponentInChildren<ServerUI>().CloseConnectionUIToServer();
@@ -182,7 +182,7 @@ public class GameLuncher : MonoBehaviour
         else if(index == 2)
         {
             Time.timeScale = 1;
-            Physics.sleepThreshold = 0.01f;
+           // Physics.sleepThreshold = 0.01f;
             if (MainMenu)
             {
                 MainMenu.GetComponentInChildren<ServerUI>().CloseConnectionUIToServer();
@@ -213,8 +213,8 @@ public class GameLuncher : MonoBehaviour
         }
         else if (index == 3)
         {
-            Time.timeScale = 2;
-            Physics.sleepThreshold = 0.001f;
+            Time.timeScale = 1;
+           // Physics.sleepThreshold = 0.001f;
             if (MainMenu)
             {
                 MainMenu.GetComponentInChildren<ServerUI>().CloseConnectionUIToServer();

@@ -862,8 +862,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 54921577452251699}
   m_LocalRotation: {x: 1, y: 0, z: -0, w: 0.0000000754979}
-  m_LocalPosition: {x: 0, y: -0, z: -0.658}
-  m_LocalScale: {x: 100.00018, y: 100.99997, z: 275.57965}
+  m_LocalPosition: {x: -0.013, y: -0.013, z: -0.658}
+  m_LocalScale: {x: 100, y: 100, z: 275}
   m_Children: []
   m_Father: {fileID: 54921576655316954}
   m_RootOrder: 3
@@ -3131,10 +3131,11 @@ MonoBehaviour:
     m_Bits: 1591
   mask_for_move_Aim:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 3072
   mask_for_Line_Aim:
     serializedVersion: 2
     m_Bits: 2816
+  MinDistancePointTouchToCueBall: 0.5
   LimitedMovePitok: 0
   ID: 0
   Forcemode: 1
@@ -3693,7 +3694,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.990566, g: 0.9187837, b: 0.4625756, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -4082,7 +4083,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -4888,7 +4889,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2598938423351822226
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4907,7 +4908,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.07833334}
   m_AnchorMax: {x: 0.06823078, y: 0.7033334}
-  m_AnchoredPosition: {x: -5, y: 0.26452637}
+  m_AnchoredPosition: {x: -5, y: 0.26464844}
   m_SizeDelta: {x: 0.19999695, y: 0.5305786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6799374485409814129
@@ -6899,6 +6900,17 @@ MonoBehaviour:
           m_StringArgument: Spin
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 4871677854998683666}
+        m_MethodName: WorkTouchInUI
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Spin
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!1 &2839842728262839993
 GameObject:
   m_ObjectHideFlags: 0
@@ -7063,8 +7075,8 @@ RectTransform:
   m_Father: {fileID: 2839842728205330384}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -7601,7 +7613,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2839842728758560620
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8155,8 +8167,8 @@ RectTransform:
   m_Father: {fileID: 5341003046413966459}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -20918,6 +20930,17 @@ MonoBehaviour:
       - m_Target: {fileID: 1706771097207058385}
         m_MethodName: ClosePopUp
         m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Spin
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4871677854998683666}
+        m_MethodName: WorkTouchInUI
+        m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
