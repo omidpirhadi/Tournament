@@ -8,45 +8,48 @@ using DG.Tweening;
 
 namespace Diaco.EightBall.CueControllers
 {
-  
-    public class EnergyCUEController : MonoBehaviour, IPointerClickHandler, IEndDragHandler
-    {
 
-        public Slider CueWoodEnergySlider;
+    public class EnergyCUEController : MonoBehaviour
+    {
+        public HandlerSilder CueWoodEnergySlider;
         public float DurationShowOrHideEnergyBar = 0.3f;
-       [SerializeField] private  RectTransform Parent;
+        private RectTransform Rect;
         void Start()
         {
-            CueWoodEnergySlider.onValueChanged.AddListener((x) =>
-            {
-
-                Handler_OnChangeEnergy(x);
-            });
+            CueWoodEnergySlider = GetComponentInChildren<HandlerSilder>();
+            CueWoodEnergySlider.OnChange += CueWoodEnergySlider_OnChange;
+            CueWoodEnergySlider.OnBegin += CueWoodEnergySlider_OnBegin;
+            CueWoodEnergySlider.OnEnd += CueWoodEnergySlider_OnEnd;
             //GetEventSystem.currentSelectedGameObject
-            Parent = transform.parent.GetComponent<RectTransform>();
+            Rect = GetComponent<RectTransform>();
         }
 
-        public void OnPointerClick(PointerEventData eventData)
+
+
+        private void CueWoodEnergySlider_OnBegin()
         {
             Handler_OnBeginChangeEnergy();
         }
 
-        public void OnEndDrag(PointerEventData eventData)
+        private void CueWoodEnergySlider_OnChange(float x)
         {
-            Handler_OnEnergyTouchEnd(CueWoodEnergySlider.value);
-            CueWoodEnergySlider.value = CueWoodEnergySlider.minValue;
-           // Debug.Log("AAA");
+            Handler_OnChangeEnergy(x);
+        }
+        private void CueWoodEnergySlider_OnEnd(float x)
+        {
+            Handler_OnEnergyTouchEnd(x);
         }
 
-       public void Show(bool show)
+
+        public void Show(bool show)
         {
             if (show == false)
             {
-                Parent.DOAnchorPos(new Vector2(-90, 0), DurationShowOrHideEnergyBar);
+                Rect.DOAnchorPos(new Vector2(-80, 0), DurationShowOrHideEnergyBar);
             }
             else
             {
-                Parent.DOAnchorPos(new Vector2(0, 0), DurationShowOrHideEnergyBar);
+                Rect.DOAnchorPos(new Vector2(0, 0), DurationShowOrHideEnergyBar);
             }
         }
 
