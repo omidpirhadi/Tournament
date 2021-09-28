@@ -196,7 +196,7 @@ namespace Diaco.SoccerStar.Marble
             if(marbleID == ID)
             {
                 DirectionMove = dir; 
-                StepPower = pow;
+               // StepPower = pow;
                 Move(dir, pow);
                 
             }

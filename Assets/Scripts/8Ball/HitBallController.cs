@@ -659,7 +659,7 @@ namespace Diaco.EightBall.CueControllers
         {
             if (AimSystemShow)
             {
-
+                float MagnitudVector = 0;
                 var dir = transform.position - CueRenderer.position;
                 dir.y = 0;
                 dir = dir.normalized;
@@ -691,7 +691,7 @@ namespace Diaco.EightBall.CueControllers
                             lineRenderer.SetPosition(1, GhostBall.transform.position);
 
                             ///Draw  Line WhiteBall Dir
-                            var dir_ghostball_to_whiteball = hit2.point - transform.position;
+                         //   var dir_ghostball_to_whiteball = hit2.point - transform.position;
                             // var scale = (transform.position - hit2.point).magnitude / 180.0f;///
                             var rotate90_R = Quaternion.AngleAxis(-90, Vector3.up);
                             var rotate90_L = Quaternion.AngleAxis(90, Vector3.up);
@@ -699,29 +699,37 @@ namespace Diaco.EightBall.CueControllers
                             var dir_left = rotate90_L * hit2.normal;
                             var angle_right = Vector3.Angle(GhostBall.transform.position - transform.position, dir_right);
                             var angle_left = Vector3.Angle(GhostBall.transform.position - transform.position, dir_left);
+                           // Debug.Log("++++"+(angle_left - angle_right));
+                            float a;
+
                             if (angle_right > angle_left)
                             {
                                 //  var d = Vector3.Min(dir_right, dir_left);
-                                float a = (angle_right - angle_left) * ScaleLineAimGhostBall;
+                                 a = (angle_right - angle_left) * ScaleLineAimGhostBall;
                                 var line = GhostBall.GetComponent<LineRenderer>();
                                 line.enabled = true;
                                 line.SetPosition(0, GhostBall.transform.position);
 
                                 line.SetPosition(1, (GhostBall.transform.position + dir_left * a));
+                                MagnitudVector = (GhostBall.transform.position + dir_left * a).magnitude;
+                                Debug.Log("L"+a);
                                 Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);////absolut
                              //   g_end = GhostBall.transform.position + dir_left * a;
                             }
-                            else if (angle_right < angle_left)
+                            else 
                             {
-                                float a = (angle_left - angle_right) * ScaleLineAimGhostBall;
+                                 a = (angle_left - angle_right) * ScaleLineAimGhostBall;
                                 var line = GhostBall.GetComponent<LineRenderer>();
                                 line.enabled = true;
                                 line.SetPosition(0, GhostBall.transform.position);
                                 line.SetPosition(1, (GhostBall.transform.position + dir_right * a));
+                                MagnitudVector = (GhostBall.transform.position + dir_right * a).magnitude;
+                                Debug.Log("R" + a);
                                 Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);////absolut
+
                             ///    g_end = GhostBall.transform.position + dir_left * a;
                             }
-                         
+                            
                             ////Dir  Other ball
                             ///
                             Vector3 dir_ghostballTo_targetball;
@@ -729,11 +737,11 @@ namespace Diaco.EightBall.CueControllers
                             dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
 
 
-                            Vector3 pos3 = hit2.transform.position + (AimOffset + cueAim * 0.25f) * dir_ghostballTo_targetball;
+                            Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * (180*ScaleLineAimGhostBall- a));
                             // hit2.collider.GetComponent<Ball>().SetlineDirection(dir_ghostballTo_targetball + hit2.transform.position);
-
+                           // Debug.Log(pos3 * AimOffse);
                             vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
-                            Handler_OnHitBall(hit2.collider.GetComponent<AddressBall>().IDPost, pos3);
+                            Handler_OnHitBall(hit2.collider.GetComponent<AddressBall>().IDPost,pos3 );
                             Debug.DrawLine(GhostBall.transform.position, pos3, Color.blue);
                           //  b_end =  hit2.transform.position + (AimOffset + cueAim * 0.25f) * dir_ghostballTo_targetball;
 
@@ -771,24 +779,27 @@ namespace Diaco.EightBall.CueControllers
                                 var dir_left = rotate90_L * hit2.normal;
                                 var angle_right = Vector3.Angle(GhostBall.transform.position - transform.position, dir_right);
                                 var angle_left = Vector3.Angle(GhostBall.transform.position - transform.position, dir_left);
+                                float a;
                                 if (angle_right > angle_left)
                                 {
                                     //  var d = Vector3.Min(dir_right, dir_left);
-                                    float a = (angle_right - angle_left) * ScaleLineAimGhostBall;
+                                     a = (angle_right - angle_left) * ScaleLineAimGhostBall;
                                     var line = GhostBall.GetComponent<LineRenderer>();
                                     line.enabled = true;
                                     line.SetPosition(0, GhostBall.transform.position);
                                     line.SetPosition(1, GhostBall.transform.position + dir_left * a);
+                                   
                                     Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);////absolut
 
                                 }
-                                else if (angle_right < angle_left)
+                                else
                                 {
-                                    float a = (angle_left - angle_right) * ScaleLineAimGhostBall;
+                                     a = (angle_left - angle_right) * ScaleLineAimGhostBall;
                                     var line = GhostBall.GetComponent<LineRenderer>();
                                     line.enabled = true;
                                     line.SetPosition(0, GhostBall.transform.position);
                                     line.SetPosition(1, GhostBall.transform.position + dir_right * a);
+                                   
                                     Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);////absolut
                                 }
 
@@ -799,7 +810,7 @@ namespace Diaco.EightBall.CueControllers
 
                                 dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
 
-                                Vector3 pos3 = hit2.transform.position + (AimOffset + cueAim * 0.25f) * dir_ghostballTo_targetball;
+                                Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * (180 * ScaleLineAimGhostBall - a));
                                 Debug.DrawLine(GhostBall.transform.position, pos3, Color.blue);
                                 // hit2.collider.GetComponent<Ball>().SetlineDirection(dir_ghostballTo_targetball + hit2.transform.position);
                                
@@ -836,7 +847,7 @@ namespace Diaco.EightBall.CueControllers
                             var line = GhostBall.GetComponent<LineRenderer>();
                             line.enabled = false;
                             line.SetPosition(0, GhostBall.transform.position);
-                            line.SetPosition(1, GhostBall.transform.position + dir_left * 0);
+                            line.SetPosition(1, GhostBall.transform.position + dir_left * a);
                             Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);
 
                         }
@@ -847,7 +858,7 @@ namespace Diaco.EightBall.CueControllers
                             var line = GhostBall.GetComponent<LineRenderer>();
                             line.enabled = false;
                             line.SetPosition(0, GhostBall.transform.position);
-                            line.SetPosition(1, GhostBall.transform.position + dir_right * 0);
+                            line.SetPosition(1, GhostBall.transform.position + dir_right * a);
                             Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);
                         }
                         ///  LastTouchPosition = Camera.main.WorldToScreenPoint(hit2.point);
@@ -1010,7 +1021,7 @@ namespace Diaco.EightBall.CueControllers
         {
 
             CUEWood.transform.position = this.transform.position;
-            CueRenderer.localPosition = new Vector3(-7.5f, 1.0f, 0.0f);
+            CueRenderer.localPosition = new Vector3(-8.5f, 1.0f, 0.0f);
             GhostBall.transform.position = this.transform.position;
             HandIcon.transform.position = new Vector3(this.transform.position.x + 0.37f, 0.64f, this.transform.position.z);
            // Debug.Log("ReSETpOSS"); 

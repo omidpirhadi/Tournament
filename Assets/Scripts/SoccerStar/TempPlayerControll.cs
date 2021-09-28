@@ -144,7 +144,7 @@ public class TempPlayerControll : MonoBehaviour
 
                     Touch2Clicked = false;
                     rotateType2 = false;
-                    var pow = aimCricle.CurrentAimPower / aimCricle.PowerRadius;
+                    var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
 
                     var dir = aimCricle.DirectionShoot();
                     Handler_OnShoot(ID, dir.normalized, pow);
