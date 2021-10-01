@@ -40,12 +40,13 @@ public class TempPlayerControll : MonoBehaviour
 
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
+                Deselect();
                // Debug.Log("OMMMMMMDDDDD");
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
                 if (Physics.Raycast(ray, out hit,100000000, MaskForSelect))
                 {
                    //Debug.Log(hit.collider.name+"    OMMMMMMDDDDD");
-                    Deselect();
+                    
                  ///   FindNearMarbleFromFinger(hit.point);
                     if (hit.collider && hit.collider.tag == "marble")
                     {
@@ -163,7 +164,7 @@ public class TempPlayerControll : MonoBehaviour
                     Handler_EnableRingEffect(true);
 
                 }
-
+                //Deselect();
             }
 
         }

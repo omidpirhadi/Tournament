@@ -276,9 +276,9 @@ namespace Diaco.SoccerStar.Marble
        
 
 
-        bool frFlag = false;
-        public int rotationSpeed = 15;
-        public float PrecentSpeedRotate = 0.1f;
+       // bool frFlag = false;
+       // public int rotationSpeed = 15;
+       // public float PrecentSpeedRotate = 0.1f;
 
         IEnumerator fakeRotation()
         {

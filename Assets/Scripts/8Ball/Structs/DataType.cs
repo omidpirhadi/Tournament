@@ -57,7 +57,7 @@ namespace Diaco.EightBall.Structs
         [DataMember] public Vector3 Ball_15_R;
         [DataMember] public float TimeStepPacket;
     }
-    [SerializeField]
+    [Serializable]
     public  struct AimData
     {
         [DataMember] public float X_position;
@@ -67,7 +67,15 @@ namespace Diaco.EightBall.Structs
         [DataMember] public float Y_rotation;
         [DataMember] public Vector3 PosCueBall;
     }
-    [SerializeField]
+
+    [Serializable]
+    public struct CueBallData
+    {
+        [DataMember] public Vector3 position;
+        [DataMember] public bool isDrag;
+
+    }
+    [Serializable]
     public struct BallIDs
     {
         public List<int> IDBalls;

@@ -13,7 +13,10 @@ public class ShodowFake : MonoBehaviour
     {
         
         table = GameObject.Find("TablePos").transform;
-        Parent = GameObject.Find("BilliardGame").transform;
+        if (GameObject.Find("BilliardGame(Clone)").transform)
+            Parent = GameObject.Find("BilliardGame(Clone)").transform;
+        else
+            Parent = GameObject.Find("BilliardGame").transform;
         shadow.parent = Parent;
     }
     private void Update()

@@ -71,9 +71,9 @@ namespace Diaco.EightBall.Server
         [FoldoutGroup("UIInRecordMode")]
         private float S;
 
-        private Queue<Diaco.EightBall.Structs.PositionAndRotateBalls> QueuePositionsBallFromServer;
-        private Queue<Vector3> QueueCueBallPositionFromServer;
-        private Queue<Diaco.EightBall.Structs.AimData> QueueAimFromServer;
+        private Queue<PositionAndRotateBalls> QueuePositionsBallFromServer;
+        private Queue<CueBallData> QueueCueBallPositionFromServer;
+        private Queue<AimData> QueueAimFromServer;
         #endregion
 
         #region Property GameData
@@ -200,7 +200,7 @@ namespace Diaco.EightBall.Server
                 AllowAreaForMoveCueBallRenderer = GameObject.Find("AreaForMoveCueBall").GetComponent<SpriteRenderer>();
                 this.Basket = FindObjectOfType<Basket>();
                 QueuePositionsBallFromServer = new Queue<PositionAndRotateBalls>();
-                QueueCueBallPositionFromServer = new Queue<Vector3>();
+                QueueCueBallPositionFromServer = new Queue<CueBallData>();
                 QueueAimFromServer = new Queue<AimData>();
                 IDImpactToWall = new List<int>();
                 PocketedBallsID = new List<int>();
@@ -287,15 +287,15 @@ namespace Diaco.EightBall.Server
                 });
                 socket.On("PositionCueBall", (s, p, m) =>
                 {
-                    var positionCueball = JsonUtility.FromJson<Vector3>(m[0].ToString());
+                    var positionCueball = JsonUtility.FromJson<CueBallData>(m[0].ToString());
                     QueueCueBallPositionFromServer.Enqueue(positionCueball);
                     if (QueueCueBallPositionFromServer.Count > 0)
                     {
                         StartCoroutine(CueBallPositionRecivedFromServer());
-
+                      //  Debug.Log("Recive1" );
                     }
 
-
+                    //Debug.Log("Recive3");
                 });
                 socket.On("Aim", (s, p, m) =>
                 {
@@ -370,11 +370,11 @@ namespace Diaco.EightBall.Server
             socket.Emit("Aim", json);
             //   Debug.Log("Sending Aim To Server");
         }
-        public void Emit_PositionCueBallInPitoks(Vector3 CueBallPosition)
+        public void Emit_PositionCueBallInPitoks(CueBallData data)
         {
-            var data = JsonUtility.ToJson(CueBallPosition);
-            socket.Emit("PositionCueBall", data);
-            //Debug.Log("Sending Cue Ball Position To Server");
+            var cue_data = JsonUtility.ToJson(data);
+            socket.Emit("PositionCueBall", cue_data);
+           // Debug.Log("Sending Cue Ball Position To Server"+data.position);
         }
 
 
@@ -544,7 +544,7 @@ namespace Diaco.EightBall.Server
             {
                 EnableCoolDown(Side.Right, data.turnTime);
                 CheckEnable8BallRightInOtherClient();
-                AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystem(true);
+                AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
 
                 // Debug.Log("TimeAndTurn");
             }
@@ -743,10 +743,11 @@ namespace Diaco.EightBall.Server
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
 
             cueball.ActiveAimSystem(false);
+            //ActiveAimSystemForShowInOtherClient(true);
             cueball. Handler_OnHitBall(-1, Vector3.zero);
             do
             {
-
+                
                 var PositionBalls = QueuePositionsBallFromServer.Dequeue();
 
                 if (AddressBalls[0] != null)
@@ -1026,6 +1027,7 @@ namespace Diaco.EightBall.Server
             var PositionBall = QueueCueBallPositionFromServer.Dequeue();
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(false);
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CueBallMoveFromServer(PositionBall, 0.02f);
+           /// Debug.Log("Recive2");
             yield return null;
         }
 
@@ -1038,7 +1040,7 @@ namespace Diaco.EightBall.Server
                 var aimdata = QueueAimFromServer.Dequeue();
 
                 cueball.SetCueWoodPositionAndRotationFromServer(aimdata);
-                cueball.transform.position = aimdata.PosCueBall;
+               // cueball.transform.position = aimdata.PosCueBall;
                 /// Debug.Log(aimdata);
                 yield return null;
 
