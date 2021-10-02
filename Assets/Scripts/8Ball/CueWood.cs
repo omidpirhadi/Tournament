@@ -13,7 +13,8 @@ public class CueWood : MonoBehaviour
     void  Start()
     {
         whiteball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
-        WoodRenderer.position = new Vector3(-8.5f, 1.0f, 0.0f);
+        this.transform.position = whiteball.transform.position;
+        WoodRenderer.localPosition = new Vector3(-8.5f, 1.0f, 0.0f);
     }
     void  OnEnable()
     {

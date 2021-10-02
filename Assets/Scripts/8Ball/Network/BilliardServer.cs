@@ -254,6 +254,7 @@ namespace Diaco.EightBall.Server
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
                     Turn = false;
+                    
                     if (gameData.playerOne.userName == UserName.userName)
                     {
                         SetPlayerOne(gameData);
@@ -463,7 +464,7 @@ namespace Diaco.EightBall.Server
                 CheckEnable8BallRightInOtherClient();
 
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
-                Debug.Log("HE::::::");
+                //Debug.Log("HE::::::");
             }
 
 
@@ -487,8 +488,8 @@ namespace Diaco.EightBall.Server
             /*AddressBalls[0].transform.DOScale(0.33f, 0.1f);
             AddressBalls[0].GetComponent<Rigidbody>().isKinematic = false;
             AddressBalls[0].GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-            AddressBalls[0].GetComponent<Rigidbody>().WakeUp();
-            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().resetpos();*/
+            AddressBalls[0].GetComponent<Rigidbody>().WakeUp();*/
+            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().inPlayPos = false;
             Handler_GameReady();
         }
         public void SetPlayerTwo(Diaco.EightBall.Structs.GameData data)
@@ -567,7 +568,7 @@ namespace Diaco.EightBall.Server
                     //  GameResult.text = "Loser";
                 }
             }
-
+            AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().inPlayPos = false;
             Handler_GameReady();
         }
 
@@ -741,7 +742,8 @@ namespace Diaco.EightBall.Server
         {
             //  yield return new WaitForSecondsRealtime(0.5f);
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
-
+            cueball.DragIsBusy = true;
+            cueball.inPlayPos = true;
             cueball.ActiveAimSystem(false);
             //ActiveAimSystemForShowInOtherClient(true);
             cueball. Handler_OnHitBall(-1, Vector3.zero);
@@ -935,8 +937,8 @@ namespace Diaco.EightBall.Server
             CheckPitok(gameData.pitok, gameData.positions.CueBall);
             KinimaticBalls(false);
             intergateplayposition = 0;
-           
-            //cueball.resetpos();
+
+            cueball.DragIsBusy = false;
         }
         /*public void SetPositionsBalls(PositionAndRotateBalls PositionBalls)
         {

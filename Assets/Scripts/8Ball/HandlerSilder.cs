@@ -18,7 +18,7 @@ public class HandlerSilder : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDr
     public void OnBeginDrag(PointerEventData eventData)
     {
         Handler_OnBegin();
-        Debug.Log("begin");
+      //  Debug.Log("begin");
     }
 
     public void OnDrag(PointerEventData eventData)

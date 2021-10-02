@@ -29,7 +29,7 @@ public class ShodowFake : MonoBehaviour
         // newPos.x = transform.position.x + OffsetX;
         var newPos = new Vector3(0.0f,0.0f,0.0f);
         newPos.x = dir.x * Offset;
-        newPos.y = 0.05f;
+        newPos.y = dir.y;
         newPos.z = dir.z * Offset;
         if (shadow)
             shadow.transform.position = newPos;

@@ -54,7 +54,8 @@ namespace Diaco.EightBall.CueControllers
         //public Vector3 LastPosition;
         private int count_imapct;
         private int IntergatioShowAnimation = 0;
-        [SerializeField] private bool DragIsBusy = false;
+        public bool DragIsBusy = false;
+        public bool inPlayPos = false;
          public bool TouchWorkInUI = false;
         private float last_value_cue_energy = 0;
         private float timetouch = 0;
@@ -65,7 +66,7 @@ namespace Diaco.EightBall.CueControllers
         float prevAngle;
         public bool EnableYFix = true;
       [SerializeField]  private bool waitForAim;
-        [SerializeField] private bool waitForAim2;
+        //[SerializeField] private bool waitForAim2;
         public float Y_Pos_Refrence;
         public float ThresholdSleep = 0.09f;
         public bool InMove = false;
@@ -124,14 +125,6 @@ namespace Diaco.EightBall.CueControllers
            
             VlocityBall = rigidbody.velocity;
 
-            /*if (waitForAim &&Server.Turn)
-            {
-                ActiveAimSystem(true);
-            }
-            if (waitForAim2 && !Server.Turn)
-            {
-                ActiveAimSystemForShowInOtherClient(true);
-            }*/
             if(waitForAim && CheckMoveBall() == false)
             {
                 EnergyCue.Show(true);
@@ -144,23 +137,22 @@ namespace Diaco.EightBall.CueControllers
                 }
                 waitForAim = false;
             }
-            if (CheckMoveBall() == true || DragIsBusy)
+            if ( (CheckMoveBall() == true && inPlayPos ) || DragIsBusy)
             {
 
 
                 ActiveAimSystem111(false);
-                // Debug.Log("Move");
+              ///  Debug.Log("Move1111");
 
             }
-            else if (CheckMoveBall() == false || !DragIsBusy)
+            else if (!DragIsBusy)
             {
 
                 ActiveAimSystem111(true);
 
-                //  Debug.Log("Stop");
+                  ///Debug.Log("Stop111" );
             }
-            LastPosition = this.transform.position;
-            LastRotation = this.transform.eulerAngles;
+
 
             AimSystem();
 
@@ -174,7 +166,8 @@ namespace Diaco.EightBall.CueControllers
             
 
 
-
+            LastPosition = this.transform.position;
+            LastRotation = this.transform.eulerAngles;
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -294,13 +287,13 @@ namespace Diaco.EightBall.CueControllers
                 if (x > last_value_cue_energy)
                 {
 
-                    Debug.Log("big");
+                 //   Debug.Log("big");
                     last_value_cue_energy = x;
                     navigaion = -1;
                 }
                 else
                 {
-                    Debug.Log("small");
+                  //  Debug.Log("small");
                     last_value_cue_energy = x;
                     navigaion = 1;
                 }
@@ -319,7 +312,7 @@ namespace Diaco.EightBall.CueControllers
                 if (step > 0)
                 {
                     float t_step = step / 5.0f;
-                    if(t_step == 1)
+                    if (t_step == 1)
                     {
                         var rand = UnityEngine.Random.Range(0.0f, PowerCUE * 0.05f);
                         ForceToBall((PowerCUE + rand) * t_step, PowerSpin);
@@ -328,16 +321,16 @@ namespace Diaco.EightBall.CueControllers
                     {
                         ForceToBall(PowerCUE * t_step, PowerSpin);
                     }
-                    
-                    
+
+
 
                     Server.Turn = false;
                     LimitedMovePitok = false;
-                     Handler_OnHitBall(-1, Vector3.zero);
+                    Handler_OnHitBall(-1, Vector3.zero);
                     Handler_ResetCueSpin();
                     PosCueSpin = Vector2.zero;
                     CancelInvoke("HandAnimationOnPitok");
-                  //  Debug.Log(step);
+                    DragIsBusy = true;
                 }
 
 
@@ -1000,71 +993,36 @@ namespace Diaco.EightBall.CueControllers
         {
 
 
-         
-                if (show == false)
-                {
-                    AimSystemShow = show;
-                    CUEWood.SetActive(show);
-                    GhostBall.SetActive(show);
-                    // EnergyCue.Show(show);
-                    //AimControllerUI.Show(show);
-                    //HandIcon.enabled = show;
-                    //CancelAnimationHand();
 
-
-                    lineRenderer.SetPosition(0, Vector3.zero);
-                    lineRenderer.SetPosition(1, Vector3.zero);
-                    // last_value_cue_energy = 0;
-                    // Debug.Log("DisableAim");
-                }
-                else if (show == true)
-                {
-
-
-                    AimSystemShow = show;
-                    CUEWood.SetActive(show);
-                    GhostBall.SetActive(show);
-                    /// EnergyCue.Show(show);
-                    //// AimControllerUI.Show(show);
-                    /*   if (Server.Pitok > 0)
-                       {
-                           CheckPitok();
-
-                       }
-                       //waitForAim = false;
-                       resetpos();*/
-
-                    /// last_value_cue_energy = 0;
-                    // Handler_OnHitBall(-1, Vector3.zero);
-
-                }
-            
-          /*  else
+            if (show == false)
             {
-                if (show == true)
+                if (AimSystemShow == true)
                 {
-
-
+                    
                     AimSystemShow = show;
                     CUEWood.SetActive(show);
                     GhostBall.SetActive(show);
-
-                }
-                else if (show == false)
-                {
-                    AimSystemShow = show;
-                    CUEWood.SetActive(show);
-                    GhostBall.SetActive(show);
-                    // HandIcon.enabled = show;
 
 
                     lineRenderer.SetPosition(0, Vector3.zero);
                     lineRenderer.SetPosition(1, Vector3.zero);
-                   // Handler_OnHitBall(-1, Vector3.zero);
-                   // Debug.Log("DisableAimXXx");
 
+                    Debug.Log("AimDisable"+DragIsBusy);
                 }
-            }*/
+            }
+            else if (show == true)
+            {
+
+                if (AimSystemShow == false)
+                {
+                   // DragIsBusy = false;
+                    AimSystemShow = show;
+                    CUEWood.SetActive(show);
+                    GhostBall.SetActive(show);
+                    Debug.Log("AimActive" +DragIsBusy);
+                }
+            }
+
         }
 
         public void ActiveAimSystemForShowInOtherClient(bool show)
@@ -1161,9 +1119,9 @@ namespace Diaco.EightBall.CueControllers
 
         public void CueBallMoveFromServer(Diaco.EightBall.Structs.CueBallData data, float speed)
         {
-            DragIsBusy = data.isDrag;
-            transform.DOMove(data.position, speed);
-          
+
+            transform.DOMove(data.position, speed).OnComplete(() => { DragIsBusy = data.isDrag; });
+            Debug.Log("XDrag"+DragIsBusy);
             Handler_OnHitBall(-1, Vector3.zero);
 
         }
