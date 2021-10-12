@@ -43,7 +43,7 @@ namespace Diaco.EightBall.Pockets
                     Server.DeletedBallCount++;
                 }
                 Destroy(Ball.gameObject, timeDestory);
-                Destroy(Ball.GetComponent<ShodowFake>().shadow.gameObject); 
+               // Destroy(Ball.GetComponent<ShodowFake>().shadow.gameObject); 
 
             }
             else if(Ball.tag == "whiteball" && Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>())

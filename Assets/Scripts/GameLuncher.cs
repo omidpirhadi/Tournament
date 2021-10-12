@@ -41,9 +41,9 @@ public class GameLuncher : MonoBehaviour
     [SerializeField] private bool LoadGameCompeleted = false;
     void Awake()
     {
-        if (Application.isMobilePlatform)
-            QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        //if (Application.isMobilePlatform)
+         //   QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
         Diaco.ImageContainerTool.ImageContainer.InitializeTexture();
         MainMenu = Instantiate(MainMenuPrefab);
         navigationUi = MainMenu.GetComponentInChildren<ServerUI>().navigationUi;
@@ -114,7 +114,7 @@ public class GameLuncher : MonoBehaviour
         if (index == 0)
         {
             Time.timeScale = 1;
-            Physics.sleepThreshold = 0.01f;
+          ///  Physics.sleepThreshold = 0.01f;
             if (MainMenu)
             {
                 MainMenu.GetComponentInChildren<ServerUI>().CloseConnectionUIToServer(); 
@@ -148,7 +148,7 @@ public class GameLuncher : MonoBehaviour
         }
         else if (index == 1)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 2;
             //Physics.sleepThreshold = 0.000001f;
             if (MainMenu)
             {
@@ -213,7 +213,7 @@ public class GameLuncher : MonoBehaviour
         }
         else if (index == 3)
         {
-            Time.timeScale = 1;
+            Time.timeScale = 2;
            // Physics.sleepThreshold = 0.001f;
             if (MainMenu)
             {

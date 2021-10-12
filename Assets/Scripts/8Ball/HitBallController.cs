@@ -188,12 +188,12 @@ namespace Diaco.EightBall.CueControllers
                 if(vvv.magnitude >0)
                 {
                     collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude /*- friction*/);
-                  //  Debug.Log("WhiteToBall");
+                  
                 }
              
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
-
+                Debug.Log("WhiteToBallXxXXXxX");
             }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);
@@ -314,8 +314,8 @@ namespace Diaco.EightBall.CueControllers
                     float t_step = step / 5.0f;
                     if (t_step == 1)
                     {
-                        var rand = UnityEngine.Random.Range(0.0f, PowerCUE * 0.05f);
-                        ForceToBall((PowerCUE + rand) * t_step, PowerSpin);
+                        var rand = UnityEngine.Random.Range(0.0f, PowerCUE * 0.015f);
+                        ForceToBall((PowerCUE /*+ rand*/) * t_step, PowerSpin);
                     }
                     else
                     {
@@ -737,13 +737,13 @@ namespace Diaco.EightBall.CueControllers
                 lineRenderer.SetPosition(0, transform.position);
 
 
-                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 1000, mask_for_Line_Aim))
+                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 11, mask_for_Line_Aim))
                 {
 
                  ///   Vector3 g_end = new Vector3();
                  //   Vector3 b_end = new Vector3();
                     if (hit2.collider && hit2.collider.GetComponent<Ball>())
-                    {  // Debug.Log(hit2.collider.name);
+                    {   Debug.Log(hit2.collider.name);
                         if (Server.CheckBallForAllowHit(hit2.collider.GetComponent<AddressBall>().IDPost))
                         {
                             ////GhostBallChangeAndSetPos///

@@ -13,9 +13,9 @@ public class ShodowFake : MonoBehaviour
     {
         
         table = GameObject.Find("TablePos").transform;
-        if (GameObject.Find("BilliardGame(Clone)").transform)
+        if (GameObject.Find("BilliardGame(Clone)"))
             Parent = GameObject.Find("BilliardGame(Clone)").transform;
-        else
+        if (GameObject.Find("BilliardGame"))
             Parent = GameObject.Find("BilliardGame").transform;
         shadow.parent = Parent;
     }
@@ -38,6 +38,6 @@ public class ShodowFake : MonoBehaviour
 
     private void OnDestroy()
     {
-       // Destroy(shadow.gameObject);
+        Destroy(shadow.gameObject);
     }
 }
