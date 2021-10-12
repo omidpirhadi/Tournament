@@ -43,7 +43,7 @@ public class GameLuncher : MonoBehaviour
     {
         //if (Application.isMobilePlatform)
          //   QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 60;
         Diaco.ImageContainerTool.ImageContainer.InitializeTexture();
         MainMenu = Instantiate(MainMenuPrefab);
         navigationUi = MainMenu.GetComponentInChildren<ServerUI>().navigationUi;

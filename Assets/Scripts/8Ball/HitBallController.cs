@@ -171,7 +171,7 @@ namespace Diaco.EightBall.CueControllers
         }
         private void OnCollisionEnter(Collision collision)
         {
-
+            Debug.Log("WhiteToBallXxXXXxX");
             if (collision.collider.tag == "ball" && count_imapct == 0)
             {
 
@@ -193,7 +193,7 @@ namespace Diaco.EightBall.CueControllers
              
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
-                Debug.Log("WhiteToBallXxXXXxX");
+               
             }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);

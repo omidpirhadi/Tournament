@@ -819,7 +819,7 @@ public class ServerUI : MonoBehaviour
         // ui.ImageUser_inPageSelectGame.sprite = ConvertImageToSprite(BODY.profile.avatar);
         UIInFooterAndHeader.ImageUser_inPageSelectGame.sprite = AvatarContainer.LoadImage(BODY.profile.avatar);
         UIInFooterAndHeader.UserName_inPageSelectGame.text = BODY.userName;
-        UIInFooterAndHeader.Coin_inPageSelectGame.text = BODY.profile.coin.ToString();
+       UIInFooterAndHeader.Coin_inPageSelectGame.text = BODY.profile.coin.ToString();
         UIInFooterAndHeader.Cupbilliard_inPageSelectGame.text = BODY.profile.billiard_cup.ToString();
         UIInFooterAndHeader.Cupsoccer_inPageSelectGame.text = BODY.profile.soccer_cup.ToString();
         UIInFooterAndHeader.Gem_inPageSelectGame.text = BODY.profile.gem.ToString();
