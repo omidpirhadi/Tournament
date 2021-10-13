@@ -27,7 +27,7 @@ public class BackToMainMenu : MonoBehaviour
                luncher.BackToMenu();
                
             
-                Debug.Log("VCVVVVV");
+               // Debug.Log("VCVVVVV");
             }
             else if(GameType == _GameLobby.Billiard)
             {

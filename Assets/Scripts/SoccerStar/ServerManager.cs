@@ -203,7 +203,10 @@ namespace Diaco.SoccerStar.Server
         {
             ConnectToServer(URLGlobal);
         }
-
+        private void OnDestroy()
+        {
+            CloseSocket();
+        }
         #endregion
 
 
@@ -406,8 +409,10 @@ namespace Diaco.SoccerStar.Server
           
             if (ResultGamePage.activeSelf && gameData.state != -1)
             {
-                ResultGamePage.SetActive(false);
-
+                //ResultGamePage.SetActive(false);
+                var luncher = FindObjectOfType<GameLuncher>();
+                luncher.PlayAgainGame(0);
+                return;
             }
 
             if (Side == 1)
@@ -604,8 +609,9 @@ namespace Diaco.SoccerStar.Server
             while (CheckMarbleMove());
             Handler_OnPhysicFreeze(true);
             socket.Emit("EndTurn", IsGoal);
+            Debug.Log("ISGoal::"+ IsGoal);
             IsGoal = -1;
-            // Debug.Log("ForceT333T");
+            
             // Handler_SoftPositionAndRotation();
             this.TimeStep = 0.0f;
             
@@ -852,12 +858,15 @@ namespace Diaco.SoccerStar.Server
         public void Emit_LeftGame()
         {
             socket.Emit("left-game");
-            CloseSocket();
+           // CloseSocket();
 
         }
         public void Emit_PlayAgain()
         {
+          
             socket.Emit("play-again");
+
+
         }
 
         public void KinimaticMarblesAndBall(bool active)

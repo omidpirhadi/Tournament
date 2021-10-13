@@ -43,7 +43,7 @@ public class GameLuncher : MonoBehaviour
     {
         //if (Application.isMobilePlatform)
          //   QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        Application.targetFrameRate = 0;
         Diaco.ImageContainerTool.ImageContainer.InitializeTexture();
         MainMenu = Instantiate(MainMenuPrefab);
         navigationUi = MainMenu.GetComponentInChildren<ServerUI>().navigationUi;
@@ -105,6 +105,10 @@ public class GameLuncher : MonoBehaviour
     public void BackToMenu()
     {
         StartCoroutine(BackToMenuWithClearDataScene());
+    }
+    public void PlayAgainGame(int index)
+    {
+        StartCoroutine(PlayAgain(index));
     }
     private IEnumerator SwitchSceneRun(int index)
     {
@@ -264,7 +268,7 @@ public class GameLuncher : MonoBehaviour
           ////  ServerSoccerController.IntiGameData();
             yield return new WaitForSeconds(1.0f);
             ////  ServerSoccerController.CloseSocket();
-            StartCoroutine(ShowMainMenu());
+            StartCoroutine(ClearEventsAndDestroyScene());
             
             Debug.Log("ClearSoccerData");
         }
@@ -274,7 +278,7 @@ public class GameLuncher : MonoBehaviour
            // ServerBilliardController.IntiGameData();
             yield return new WaitForSeconds(1.0f);
            /// ServerBilliardController.CloseConnection();
-          StartCoroutine(  ShowMainMenu());
+          StartCoroutine(  ClearEventsAndDestroyScene());
             Debug.Log("ClearBilliardData");
 
         }
@@ -282,14 +286,14 @@ public class GameLuncher : MonoBehaviour
         {
           //  ServerSoccerRecordGameController.ClearSceneInRecordMode();
           //  ServerSoccerRecordGameController.CloseSocket();
-           StartCoroutine( ShowMainMenu());
+           StartCoroutine( ClearEventsAndDestroyScene());
             Debug.Log("ClearBilliardRecordModeData");
         }
         else if(BilliardRecordGame)
         {
             // ServerBilliardRecordGameController.ClearSceneInRecordMode();
             /// ServerBilliardRecordGameController.CloseConnection();
-            StartCoroutine(ShowMainMenu());
+            StartCoroutine(ClearEventsAndDestroyScene());
             Debug.Log("ClearBilliardData");
         }
         yield return new WaitForSeconds(1.1f);
@@ -311,7 +315,7 @@ public class GameLuncher : MonoBehaviour
         FadeOutCompelete = false;
     }
    
-    private IEnumerator ShowMainMenu()
+    private IEnumerator ClearEventsAndDestroyScene()
     {
 
         if (SoccerGame)
@@ -332,6 +336,53 @@ public class GameLuncher : MonoBehaviour
         BilliardRecordGame = null;
         SoccerRecordGame = null;
         yield return new WaitForSeconds(1.0f);
+    }
+
+    private IEnumerator PlayAgain(int Index)
+    {
+        LoadGameCompeleted = false;
+        FadeInCompelete = false;
+        FadeOutCompelete = false;
+        yield return new WaitForSeconds(0.1f);
+        FadeIn();
+        //Debug.Log("WaitForBackToMenu");
+        yield return new WaitUntil(() => FadeInCompelete);
+        if (SoccerGame)
+        {
+
+            yield return new WaitForSeconds(1.0f);
+           
+            StartCoroutine(ClearEventsAndDestroyScene());
+
+            Debug.Log("ClearSoccerData");
+        }
+        else if (BilliardGame)
+        {
+
+            yield return new WaitForSeconds(1.0f);
+        
+            StartCoroutine(ClearEventsAndDestroyScene());
+            Debug.Log("ClearBilliardData");
+
+        }
+        yield return new WaitForSecondsRealtime(1);
+        if (SoccerGame == null && Index == 0 )
+        {
+            SoccerGame = Instantiate(SoccerGamePrefab);
+
+            SoccerGame.GetComponentInChildren<Diaco.SoccerStar.Server.ServerManager>().GameReady += ServerGamesController_GameReady;
+        }
+        else if(BilliardGame == null && Index == 1)
+        {
+            BilliardGame = Instantiate(BilliardGamePrefab);
+            BilliardGame.GetComponentInChildren<Diaco.EightBall.Server.BilliardServer>().GameReady += ServerGamesController_GameReady;
+        }
+        yield return new WaitUntil(() => LoadGameCompeleted);
+        FadeOut();
+        yield return new WaitUntil(() => FadeOutCompelete);
+        LoadGameCompeleted = false;
+        FadeInCompelete = false;
+        FadeOutCompelete = false;
     }
     private void FadeIn()
     {

@@ -402,7 +402,10 @@ namespace Diaco.EightBall.Server
         }
         public void Emit_PlayAgain()
         {
+            //var luncher = FindObjectOfType<GameLuncher>();
             socket.Emit("play-again");
+            
+          //  luncher.PlayAgainGame(1);
         }
         #endregion
 
@@ -418,9 +421,12 @@ namespace Diaco.EightBall.Server
             }
             if (ResultGamePage.activeSelf && data.state != -1)
             {
-                ResultGamePage.SetActive(false);
-                ResetSharBillboard();
-                EnableSharInBiliboard();
+                // ResultGamePage.SetActive(false);
+                // ResetSharBillboard();
+                // EnableSharInBiliboard();
+                var luncher = FindObjectOfType<GameLuncher>();
+                luncher.PlayAgainGame(1);
+                return;
             }
             DeletedBallCount = 0;
             CancelCoolDownTimer();
@@ -501,9 +507,12 @@ namespace Diaco.EightBall.Server
             }
             if (ResultGamePage.activeSelf && data.state != -1)
             {
-                ResultGamePage.SetActive(false);
-                ResetSharBillboard();
-                EnableSharInBiliboard();
+                //  ResultGamePage.SetActive(false);
+                // ResetSharBillboard();
+                // EnableSharInBiliboard();
+                var luncher = FindObjectOfType<GameLuncher>();
+                luncher.PlayAgainGame(1);
+                return;
             }
             DeletedBallCount = 0;
             CancelCoolDownTimer();
@@ -587,7 +596,7 @@ namespace Diaco.EightBall.Server
                 //  SendEndLimit = 0;
 
 
-                Debug.Log("Turn");
+               // Debug.Log("Turn");
             });
 
             /*   TurnRecived = false;

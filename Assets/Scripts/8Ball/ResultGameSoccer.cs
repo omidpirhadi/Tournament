@@ -47,7 +47,7 @@ public class ResultGameSoccer : MonoBehaviour
         CloseGameButton.onClick.AddListener(() => {
 
             Server.Emit_LeftGame();
-            Server.CloseSocket();
+           // Server.CloseSocket();
             luncher.BackToMenu();
             CloseGameButton.interactable = false;
             this.gameObject.SetActive(false);
@@ -56,7 +56,7 @@ public class ResultGameSoccer : MonoBehaviour
        if (Server.NamespaceServer == "_competition")
             DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() => {
                 Server.Emit_LeftGame();
-                Server.CloseSocket();
+              //  Server.CloseSocket();
                 luncher.BackToMenu();
                 CloseGameButton.interactable = false;
                 this.gameObject.SetActive(false);

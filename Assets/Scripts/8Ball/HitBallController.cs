@@ -171,7 +171,7 @@ namespace Diaco.EightBall.CueControllers
         }
         private void OnCollisionEnter(Collision collision)
         {
-            Debug.Log("WhiteToBallXxXXXxX");
+            
             if (collision.collider.tag == "ball" && count_imapct == 0)
             {
 
@@ -193,11 +193,11 @@ namespace Diaco.EightBall.CueControllers
              
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
-               
+                Debug.Log("WhiteToBallXxXXXxX");
             }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);
-
+            
         }
 
         private void OnDrawGizmos()
@@ -743,7 +743,7 @@ namespace Diaco.EightBall.CueControllers
                  ///   Vector3 g_end = new Vector3();
                  //   Vector3 b_end = new Vector3();
                     if (hit2.collider && hit2.collider.GetComponent<Ball>())
-                    {   Debug.Log(hit2.collider.name);
+                    {   //Debug.Log(hit2.collider.name);
                         if (Server.CheckBallForAllowHit(hit2.collider.GetComponent<AddressBall>().IDPost))
                         {
                             ////GhostBallChangeAndSetPos///
@@ -1007,7 +1007,7 @@ namespace Diaco.EightBall.CueControllers
                     lineRenderer.SetPosition(0, Vector3.zero);
                     lineRenderer.SetPosition(1, Vector3.zero);
 
-                    Debug.Log("AimDisable"+DragIsBusy);
+                  //  Debug.Log("AimDisable"+DragIsBusy);
                 }
             }
             else if (show == true)
@@ -1019,7 +1019,7 @@ namespace Diaco.EightBall.CueControllers
                     AimSystemShow = show;
                     CUEWood.SetActive(show);
                     GhostBall.SetActive(show);
-                    Debug.Log("AimActive" +DragIsBusy);
+                  //  Debug.Log("AimActive" +DragIsBusy);
                 }
             }
 
@@ -1121,7 +1121,7 @@ namespace Diaco.EightBall.CueControllers
         {
 
             transform.DOMove(data.position, speed).OnComplete(() => { DragIsBusy = data.isDrag; });
-            Debug.Log("XDrag"+DragIsBusy);
+           // Debug.Log("XDrag"+DragIsBusy);
             Handler_OnHitBall(-1, Vector3.zero);
 
         }
