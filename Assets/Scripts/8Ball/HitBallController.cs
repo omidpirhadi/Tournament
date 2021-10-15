@@ -25,6 +25,7 @@ namespace Diaco.EightBall.CueControllers
         public bool LimitedMovePitok = false;
         public enum Type_Ball { White, Color };
         public int ID = 0;
+        
         // public Type_Ball TypeBall;
         public ForceMode Forcemode;
         public float maxanguler;
@@ -37,7 +38,8 @@ namespace Diaco.EightBall.CueControllers
        /// public Vector3 OffsetPositionCueWoodFromCueBall;
 
         public GameObject GhostBall;
-        public float RadiusGhostBall;
+        private float RadiusGhostBall;
+        public float RadiusGhostBallScaleFactor = 0.94f;///94%
         public float cueAim = 1;
         public float AimOffset = 3;
         // public Vector3 LastTouchPosition;
@@ -74,6 +76,7 @@ namespace Diaco.EightBall.CueControllers
         public Vector3 LastPosition;
         public Vector3 LastRotation;
         public Vector3 vvv;
+        private float powscalefactor;
         private bool CueBallMoveInPitoke = false;
         void Start()
         {
@@ -105,7 +108,7 @@ namespace Diaco.EightBall.CueControllers
             SetYPositionRefrence();
             //CUEWoodSetPosition(new Vector3(1445.30f, 550.35f, 6.63f));
             //  Debug.Log("cCcCCCcCC");
-            RadiusGhostBall = GetComponent<SphereCollider>().radius * transform.localScale.x;
+            
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
         }
@@ -114,7 +117,7 @@ namespace Diaco.EightBall.CueControllers
 
         void LateUpdate()
         {
-
+            RadiusGhostBall = (GetComponent<SphereCollider>().radius * transform.localScale.x) * RadiusGhostBallScaleFactor;
             if (EnableYFix)
                 FixOverflowMovment();
         }
@@ -187,13 +190,15 @@ namespace Diaco.EightBall.CueControllers
                // var friction = collision.relativeVelocity.magnitude * collision.collider.material.staticFriction;
                 if(vvv.magnitude >0)
                 {
-                    collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude /*- friction*/);
-                  
+                    vvv.y = 0;
+                   
+                  collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude*powscalefactor);
+                  // Debug.Log("WhiteToBallXxXXXxX11");
                 }
-             
+            // Debug.Log(vvv.magnitude  +"  WhiteToBallXxXXXxX;:::222222   " + collision.relativeVelocity.magnitude);
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
-                Debug.Log("WhiteToBallXxXXXxX");
+                
             }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);
@@ -203,7 +208,7 @@ namespace Diaco.EightBall.CueControllers
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(AtPosition, 0.1f);
+            Gizmos.DrawWireSphere(GhostBall.transform.position, RadiusGhostBall);
 
         }
 
@@ -315,7 +320,7 @@ namespace Diaco.EightBall.CueControllers
                     if (t_step == 1)
                     {
                         var rand = UnityEngine.Random.Range(0.0f, PowerCUE * 0.015f);
-                        ForceToBall((PowerCUE /*+ rand*/) * t_step, PowerSpin);
+                        ForceToBall((PowerCUE + rand) * t_step, PowerSpin);
                     }
                     else
                     {
@@ -385,6 +390,7 @@ namespace Diaco.EightBall.CueControllers
                         LargeCueBall.transform.position = new Vector3(this.transform.position.x, 0.64f, this.transform.position.z);
                         LargeCueBall.enabled = true;
                         IntergatioShowAnimation = 1;
+                        rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                         rigidbody.isKinematic = true;
                         GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
                         ActiveAimSystem(false);
@@ -409,6 +415,8 @@ namespace Diaco.EightBall.CueControllers
 
                         //GetComponent<SphereCollider>().isTrigger = false;
                         rigidbody.isKinematic = false;
+                        rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                        
                         Handler_FreazeBall(false);
                         DragIsBusy = false;
                         CancelAnimationHand();
@@ -639,9 +647,9 @@ namespace Diaco.EightBall.CueControllers
             var dir = (transform.position - CueRenderer.position).normalized;
 
             AtPosition = new Vector3(
-                (transform.localPosition.x + ((PosCueSpin.x / 2) * RadiusGhostBall) * dir.z),
-                (transform.localPosition.y + ((PosCueSpin.y / 2) * RadiusGhostBall)),
-                (transform.localPosition.z + ((PosCueSpin.x / 2) * RadiusGhostBall) * -dir.x));
+                (transform.localPosition.x + ((PosCueSpin.x / powspin) * RadiusGhostBall) * dir.z),
+                (transform.localPosition.y + ((PosCueSpin.y / powspin) * RadiusGhostBall)),
+                (transform.localPosition.z + ((PosCueSpin.x / powspin) * RadiusGhostBall) * -dir.x));
 
             // Debug.Log($"AtPosition:{AtPosition}Dir:{dir}");
             var dir2 = (GhostBall.transform.position - transform.position).normalized;
@@ -803,16 +811,13 @@ namespace Diaco.EightBall.CueControllers
 
                             dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
 
+                            powscalefactor = (180 * ScaleLineAimGhostBall - a);
+                            Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * powscalefactor);
 
-                            Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * (180*ScaleLineAimGhostBall- a));
-                            // hit2.collider.GetComponent<Ball>().SetlineDirection(dir_ghostballTo_targetball + hit2.transform.position);
-                           // Debug.Log(pos3 * AimOffse);
                             vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
                             Handler_OnHitBall(hit2.collider.GetComponent<AddressBall>().IDPost,pos3 );
                             Debug.DrawLine(GhostBall.transform.position, pos3, Color.blue);
-                          //  b_end =  hit2.transform.position + (AimOffset + cueAim * 0.25f) * dir_ghostballTo_targetball;
-
-                            // gamemanager.FirstBallImpact = hit2.collider.GetComponent<AddressBall>().IDPost;
+                        
                         }
                         else
                         {
@@ -877,7 +882,8 @@ namespace Diaco.EightBall.CueControllers
 
                                 dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
 
-                                Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * (180 * ScaleLineAimGhostBall - a));
+                                powscalefactor = (180 * ScaleLineAimGhostBall - a);
+                                Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * powscalefactor);
                                 Debug.DrawLine(GhostBall.transform.position, pos3, Color.blue);
                                 // hit2.collider.GetComponent<Ball>().SetlineDirection(dir_ghostballTo_targetball + hit2.transform.position);
                                
@@ -887,9 +893,6 @@ namespace Diaco.EightBall.CueControllers
 
                             }
                         }
-                    ///  var aaa=  Vector3.Angle(g_end - GhostBall.transform.position, b_end - hit2.transform.position);
-                   //     Debug.Log("Angle::;"+aaa);
-                        ///LastTouchPosition = Camera.main.WorldToScreenPoint(hit2.point);
                     }
                     else if (hit2.collider && !hit2.collider.GetComponent<Ball>())
                     {

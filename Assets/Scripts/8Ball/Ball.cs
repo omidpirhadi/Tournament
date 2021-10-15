@@ -99,7 +99,18 @@ namespace Diaco.EightBall.CueControllers
 
         private void Cueball_OnFreazeBall(bool active)
         {
-            rigidbody.isKinematic = active;
+            if(active == true)
+            {
+                rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+                rigidbody.isKinematic = active;
+            }
+            else if(active == false)
+            {
+                rigidbody.isKinematic = active;
+                rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+                
+            }
+            
             // Debug.Log("Firize");
         }
         private void Cueball_OnFristHit(int id)
@@ -119,26 +130,20 @@ namespace Diaco.EightBall.CueControllers
                 {
                     lineRenderer.enabled = true;
                     SetlineDirection(dir);
-                    /* if (targetvelocity.magnitude > 0.0f)
-                     {
-                         this.TargetVelocity = targetvelocity;
-                         HaveTarget = true;
-
-                     }*/
+    
                 }
                 else if (target != ID)
                 {
-                    lineRenderer.enabled = false;
-                    SetlineDirection(new Vector3(0, -10f, 0));
-                    ///  this.TargetVelocity = Vector3.zero;
-                    ///  HaveTarget = false;
+                 //   lineRenderer.enabled = false;
+                 //   SetlineDirection(new Vector3(0, -10f, 0));
+      
                 }
             }
             else
             {
-                lineRenderer.enabled = false;
-                SetlineDirection(new Vector3(0, -10f, 0));
-                // Debug.Log("Nulll");
+              //  lineRenderer.enabled = false;
+              //  SetlineDirection(new Vector3(0, -10f, 0));
+              
 
             }
         }
