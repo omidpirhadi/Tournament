@@ -94,7 +94,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb3c9dd33f5a4a42a194aa837b90403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SpeedRotate: 0.9
+  SpeedRotate: 2
   loopType: 2
   ease: 1
 --- !u!1 &4867411009215751049
@@ -327,12 +327,10 @@ MonoBehaviour:
   PowerForce: 145
   AccelerationBallAfterHit: 3
   SelectEffect: {fileID: 1310513243937252174}
-  SelectEffectRotateSenciviti: 0.15
+  SelectEffectRotateSenciviti: 0.5
   ThresholdSleep: 4
   Y_Pos_Refrence: 0
   InMove: 0
-  rotationSpeed: 0
-  PrecentSpeedRotate: 0.1
 --- !u!114 &4867411009215750599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,7 +393,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: daf8d05361a8f9b40a68fda980a4f576, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

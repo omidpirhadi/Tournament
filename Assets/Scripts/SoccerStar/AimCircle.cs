@@ -144,7 +144,7 @@ public class AimCircle : MonoBehaviour
             bodyCircle.Cricletexture.enabled = false;
             bodyCircle.lineRendererArrowBackward.enabled = false;
             bodyCircle.lineRendererArrowForward.enabled = false;
-            bodyCircle.lineRendererCircle.enabled = false;
+          ///  bodyCircle.lineRendererCircle.enabled = false;
         }
         else if(!hide)
         {
@@ -152,7 +152,7 @@ public class AimCircle : MonoBehaviour
             bodyCircle.Cricletexture.enabled = true;
             bodyCircle.lineRendererArrowBackward.enabled = true;
             bodyCircle.lineRendererArrowForward.enabled = true;
-            bodyCircle.lineRendererCircle.enabled = true;
+           /// bodyCircle.lineRendererCircle.enabled = true;
         }
     }
 
@@ -213,9 +213,9 @@ public class AimCircle : MonoBehaviour
 [Serializable]
 public struct BodyCircle
 {
-    public LineRenderer lineRendererCircle;
-    public LineRenderer lineRendererArrowForward;
-    public LineRenderer lineRendererArrowBackward;
-    public MeshRenderer Cricletexture;
-    public MeshRenderer Arrowtexture;
+    ///public LineRenderer lineRendererCircle;
+    public SpriteRenderer lineRendererArrowForward;
+    public SpriteRenderer lineRendererArrowBackward;
+    public SpriteRenderer Cricletexture;
+    public SpriteRenderer Arrowtexture;
 }

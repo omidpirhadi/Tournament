@@ -26,6 +26,9 @@ namespace Diaco.EightBall.CueControllers
         private RaycastHit hit;
         public LayerMask layer;
        [SerializeField] private float MaxAngularvelocity = 150;
+
+
+        
         void Start()
         {
 
@@ -61,6 +64,7 @@ namespace Diaco.EightBall.CueControllers
                  rigidbody.velocity = d * SpeedBallCurrent;
 
              }*/
+          
         }
         void LateUpdate()
         {

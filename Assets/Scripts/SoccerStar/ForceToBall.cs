@@ -81,6 +81,8 @@ namespace Diaco.SoccerStar.Marble
              {
                 manageBallFriction();
              }*/
+           /// var r = Vector3.RotateTowards(transform.forward, t.transform.position-transform.position, v * Time.deltaTime, v2);
+            transform.rotation.SetLookRotation(t.transform.position - transform.position, a);
         }
         void LateUpdate()
         {
@@ -90,8 +92,12 @@ namespace Diaco.SoccerStar.Marble
         private void FixedUpdate()
         {
             VlocityBall = rigidbody.velocity;
-
+   
         }
+
+        public Vector3 a, b;
+        public Transform t;
+        public float v, v2;
         void OnCollisionEnter(Collision collision)
         {
 
@@ -119,7 +125,8 @@ namespace Diaco.SoccerStar.Marble
                     var direction_move = (hit_point - transform.position).normalized;
                     var speed = collision.relativeVelocity.magnitude;
                     collision.rigidbody.maxAngularVelocity = 150;
-                    collision.rigidbody.AddRelativeTorque((direction_move * speed )* 2, forceMode);
+                    
+                    collision.rigidbody.AddTorque((direction_move * speed )* 2, forceMode);
                     ///Debug.Log("Impact Ball ::: " + direction_move * speed * AccelerationBallAfterHit);
                 }
             }

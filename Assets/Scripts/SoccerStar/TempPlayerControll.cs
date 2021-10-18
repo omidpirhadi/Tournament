@@ -151,6 +151,7 @@ public class TempPlayerControll : MonoBehaviour
                     Handler_OnShoot(ID, dir.normalized, pow);
                     aimCricle.StopRecordAim();
                     aimCricle.ResetAimCircle();
+                    MarbleSelected = null;
 
 
                 }
@@ -164,7 +165,7 @@ public class TempPlayerControll : MonoBehaviour
                     Handler_EnableRingEffect(true);
 
                 }
-                //Deselect();
+                return;
             }
 
         }
@@ -221,6 +222,20 @@ public class TempPlayerControll : MonoBehaviour
                 }
             }
             //Debug.Log("Two Finger");
+        }
+
+        if(Input.touchCount ==  0 && aimCricle.CurrentAimPower > 3.5f)
+        {
+            Touch2Clicked = false;
+            rotateType2 = false;
+            var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
+
+            var dir = aimCricle.DirectionShoot();
+            Handler_OnShoot(ID, dir.normalized, pow);
+            aimCricle.StopRecordAim();
+            aimCricle.ResetAimCircle();
+            MarbleSelected = null;
+            return;
         }
     }
     private  void SetAimCircleOnMarble( Transform marble)
