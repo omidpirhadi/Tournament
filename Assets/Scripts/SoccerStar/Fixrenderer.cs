@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class Fixrenderer : MonoBehaviour
 {
     public Transform FixRenderer;
-
-    void  LateUpdate()
+   // public Transform Flag;
+  
+    void  Update()
     {
-        FixRenderer.eulerAngles = Vector3.zero;
+      
+       
+        FixRenderer.eulerAngles = new Vector3(0, 0, 0);
 
     }
 }
