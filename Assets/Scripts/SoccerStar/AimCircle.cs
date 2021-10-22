@@ -10,7 +10,7 @@ public class AimCircle : MonoBehaviour
     public bool RecordAim = false;
     public float SendRateAimDataToServer = 0.04f;
     public BodyCircle bodyCircle;
-
+    public Transform MaskCircle;
     public GameObject indicator;
     public GameObject indicatorNegativ;
 
@@ -101,23 +101,8 @@ public class AimCircle : MonoBehaviour
             Debug.Log("Negativ_X");
             side = 1;
         }
-        if (dir.z > 0)
-        {
-           // Debug.Log("Positiv_Z");
-        }
-        else
-        {
-          //  Debug.Log("Negativ_Z");
-        }
-        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f));
-        /*   SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData
-           {
-               ID = marbleId,
-               Position = this.transform.position,
-               CircleRotate_Y = this.transform.eulerAngles.y,
-               CricleScale = this.transform.localScale.x,
 
-           });*/
+        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f));
     }
     public Vector3  DirectionShoot()
     {

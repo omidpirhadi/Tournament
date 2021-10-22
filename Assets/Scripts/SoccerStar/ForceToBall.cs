@@ -32,26 +32,33 @@ namespace Diaco.SoccerStar.Marble
         public float SelectEffectRotateSenciviti = 1.5f;
 
         public Transform Flag;
-        
-        public float StepRotateMarble = 0.1f;
-        public float DurationStep = 0.1f;
-        public Ease EaseRotateMarble;
 
-public bool IsRotatingMarble = false;
+        public float StepRotateMarble = 0.1f;
+        public bool IsRotatingMarble = false;
+        public float StepRotateBall;
+        public bool IsRotateBall = false;
+
+        public float DurationStep = 0.1f;
+        public Ease EaseTypeRotate;
+
+         public float ThresholdSleep = 0.09f;
+public bool InMove = false;
+
+
         private new Rigidbody rigidbody;
 
         private ServerManager server;
 
         private TempPlayerControll playerControll;
 
-        public float ThresholdSleep = 0.09f;
+       
         private Vector3 VlocityBall;
         
-        private Vector3 LastPos;
-       [SerializeField] private float Y_Pos_Refrence = 0.0f;
-        public bool InMove = false;
-        private float StepPower;
-        private Vector3 DirectionMove;
+       //// private Vector3 LastPos;
+       //[SerializeField] private float Y_Pos_Refrence = 0.0f;
+        
+        //private float StepPower;
+       // private Vector3 DirectionMove;
 
         private RaycastHit hit;
         private Ray ray;
@@ -61,7 +68,7 @@ public bool IsRotatingMarble = false;
             rigidbody = GetComponent<Rigidbody>();
             server = FindObjectOfType<ServerManager>();
             SetYPositionRefrence();
-            LastPos = transform.position;
+           // LastPos = transform.position;
             TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
 
@@ -80,6 +87,8 @@ public bool IsRotatingMarble = false;
         }
         void Update()
         {
+          
+       
         }
         void LateUpdate()
         {
@@ -92,7 +101,9 @@ public bool IsRotatingMarble = false;
             VlocityBall = rigidbody.velocity;
             if (IsRotatingMarble)
                 RotateMarble();
-   
+            if (IsRotateBall)
+                RotateBall();
+           
         }
 
 
@@ -104,18 +115,22 @@ public bool IsRotatingMarble = false;
 
                 if (tag_collider == "ball")
                 {
-                    var hit_point = collision.contacts[0].point;
-                    var direction_move = (hit_point - transform.position).normalized;
-                    var speed = collision.relativeVelocity.magnitude;
-                    collision.rigidbody.maxAngularVelocity = 150;
-
-                    collision.rigidbody.AddTorque((direction_move * speed) * 2, forceMode);
-                    ///Debug.Log("Impact Ball ::: " + direction_move * speed * AccelerationBallAfterHit);
+                  ///  collision.gameObject.transform.LookAt(this.transform);
+                    collision.gameObject.GetComponent<ForceToBall>().IsRotateBall = true;
                 }
                 if (tag_collider == "wall" || tag_collider == "marble" )
                     IsRotatingMarble = true;
             }
+            else if (MarbleType == Marble_Type.Ball)
+            {
+                if (tag_collider == "wall")
+                {
 
+                  /////  transform.LookAt(collision.contacts[0].point);
+                    IsRotateBall = true;
+                    
+                }
+            }
         }
 
         private void OnEnable()
@@ -183,7 +198,7 @@ public bool IsRotatingMarble = false;
         {
             if(marbleID == ID)
             {
-                DirectionMove = dir; 
+               // DirectionMove = dir; 
                // StepPower = pow;
                 Move(dir, pow);
                 
@@ -288,6 +303,7 @@ public bool IsRotatingMarble = false;
                 //rigidbody.isKinematic = true;
                 InMove = false;
                 IsRotatingMarble = false;
+                IsRotateBall = false;
                 // frFlag = false;
                 // Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
 
@@ -394,15 +410,33 @@ public bool IsRotatingMarble = false;
         private void RotateMarble()
         {
             var speed = rigidbody.velocity.magnitude;
-            Debug.Log(speed);
+           /// Debug.Log(speed);
             if (speed>0.0f)
             {
+
+                //Flag.transform.localEulerAngles = new Vector3(90,  StepRotateMarble * speed, 0);
+                // Flag.transform.DOLocalRotate(new Vector3(90, (Flag.transform.eulerAngles.y + StepRotateMarble) * speed, 0), DurationStep);
+
                 DOVirtual.Float(0, 1, DurationStep, (x) =>
                 {
-                    Flag.transform.eulerAngles = new Vector3(90, (Flag.transform.eulerAngles.y )+ StepRotateMarble * speed, 0);
-                }).SetEase(EaseRotateMarble);
-                
+                    Flag.transform.eulerAngles = new Vector3(90, (Flag.transform.eulerAngles.y) + StepRotateMarble * speed, 0);
+                }).SetEase(EaseTypeRotate);
             }
+        }
+        private void RotateBall()
+        {
+            Vector3 normal = new Vector3(0, 1, 0);
+            Vector3 movement = rigidbody.velocity *Time.fixedDeltaTime;
+            Vector3 aix = Vector3.Cross(normal, movement).normalized;
+
+            float distance = movement.magnitude;
+            float angle = distance * (180 / Mathf.PI) / StepRotateBall;
+            /// Debug.Log(speed);
+            transform.DOLocalRotateQuaternion(Quaternion.Euler(aix * angle) * transform.localRotation, DurationStep).SetEase(EaseTypeRotate);
+            //transform.localRotation =;
+
+               // IsRotateBall = true;
+
         }
         private void PhysicFreeze(bool enable)
         {

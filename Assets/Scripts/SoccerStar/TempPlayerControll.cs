@@ -242,6 +242,7 @@ public class TempPlayerControll : MonoBehaviour
     {
      //   aimCricle.gameObject.transform.parent = marble.transform;
         aimCricle.gameObject.transform.position = marble.transform.position;
+        aimCricle.MaskCircle.position = marble.transform.position;
     }
     public bool CheckOwnerMarble(int ID)
     {

@@ -1,24 +1,32 @@
 ﻿
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 public class Test_soccer : MonoBehaviour
 {
+    public new Rigidbody rigidbody;
+    public float StepRotateBall;
+    public float DurationStep;
 
-    ScrollRect Scroll;
-    public void Start()
+    public Ease EaseTypeRotate;
+
+
+    void FixedUpdate()
     {
-        Scroll = GetComponent<ScrollRect>();
-
-        Scroll.onValueChanged.AddListener(call => {
-
-
-            Debug.Log(call);
-        });
-       
+        RotateBall();
     }
+    private void RotateBall()
+    {
+        Vector3 normal = new Vector3(0, 1, 0);
+        Vector3 movement = rigidbody.velocity * Time.fixedDeltaTime;
+        Vector3 aix = Vector3.Cross(normal, movement).normalized;
 
+        float distance = movement.magnitude;
+        float angle = distance * (180 / Mathf.PI) / StepRotateBall;
+        /// Debug.Log(speed);
+        transform.DOLocalRotateQuaternion(Quaternion.Euler(aix * angle) * transform.localRotation, DurationStep).SetEase(EaseTypeRotate);
+        //transform.localRotation =;
+
+        // IsRotateBall = true;
+
+    }
 }
