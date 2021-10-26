@@ -13,6 +13,7 @@ namespace Diaco.Store.Billiard
         public Image PrograssBarAim;
         public Image PrograssBarSpin;
         public RectTransform RentPanel;
+        public RectTransform InfoPanel;
         public BilliardShopRentCoinOption RentCoinOption;
         public BilliardShopRentCoinAndGemOption RentCoinAndGemOption;
 
@@ -57,6 +58,7 @@ namespace Diaco.Store.Billiard
         private void UseButtonClick()
         {
             Btn_ShowRentPanel.gameObject.SetActive(false);
+            InfoPanel.gameObject.SetActive(false);
             RentPanel.gameObject.SetActive(true);
             Debug.Log("Show Rent Panel");
 

@@ -450,7 +450,7 @@ namespace Diaco.EightBall.CueControllers
                         bool find = false;
 
                         var limited0_x = Mathf.Clamp(hit.point.x, -5.1f, +5.94f);
-                        var limited0_z = Mathf.Clamp(hit.point.z, -2.67f, 2.67f);
+                        var limited0_z = Mathf.Clamp(hit.point.z, -2.64f, 2.64f);
                         Vector3 pos_point = new Vector3(limited0_x, 0.0f, limited0_z);
 
                         // Debug.Log("Touch" +hit.collider.name+":::"+ hit.point);
@@ -469,7 +469,7 @@ namespace Diaco.EightBall.CueControllers
 
                         {
                             var limited_x = Mathf.Clamp(hit.point.x, -5.1f, +5.94f);
-                            var limited_z = Mathf.Clamp(hit.point.z, -2.67f, 2.67f);
+                            var limited_z = Mathf.Clamp(hit.point.z, -2.64f, 2.64f);
                             transform.DOMove(new Vector3(limited_x, transform.position.y, limited_z), 00.01f, false);
                             LargeCueBall.transform.DOMove(new Vector3(limited_x, 0.64f, limited_z), 00.01f, false);
                             // Debug.Log("Touch" + hit.collider.name + ":::" + hit.point);
@@ -492,7 +492,7 @@ namespace Diaco.EightBall.CueControllers
 
                         bool find = false;
                         var limited0_x = Mathf.Clamp(hit.point.x, -5.1f, -2.47f);
-                        var limited0_z = Mathf.Clamp(hit.point.z, -2.67f, 2.67f);
+                        var limited0_z = Mathf.Clamp(hit.point.z, -2.64f, 2.64f);
                         Vector3 pos_point = new Vector3(limited0_x, 0.0f, limited0_z);
                         /// Debug.Log("Touch" +hit.collider.name+":::"+ hit.point);
                         var col = Physics.OverlapSphere(pos_point, RadiusGhostBall, mask_for_move_cue_ball).ToList();
@@ -508,7 +508,7 @@ namespace Diaco.EightBall.CueControllers
 
                         {
                             var limited_x = Mathf.Clamp(hit.point.x, -5.1f, -2.47f);
-                            var limited_z = Mathf.Clamp(hit.point.z, -2.67f, 2.67f);
+                            var limited_z = Mathf.Clamp(hit.point.z, -2.64f, 2.64f);
                             LargeCueBall.transform.DOMove(new Vector3(limited_x, 0.64f, limited_z), 00.01f, false);
                             transform.DOMove(new Vector3(limited_x, transform.position.y, limited_z), 00.01f, false);
 
@@ -655,7 +655,8 @@ namespace Diaco.EightBall.CueControllers
             var dir2 = (GhostBall.transform.position - transform.position).normalized;
             dir2.y = 0;
             rigidbody.AddForceAtPosition(dir2 * powcue, AtPosition, Forcemode);
-
+           // rigidbody.AddRelativeTorque(AtPosition, Forcemode);
+           rigidbody.velocity = dir2 * powcue;
             if (Server.InRecordMode == false)
             {
                 StartCoroutine(Server.PositionsBallsSendToServer());

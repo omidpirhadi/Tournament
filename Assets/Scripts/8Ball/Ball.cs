@@ -138,15 +138,15 @@ namespace Diaco.EightBall.CueControllers
                 }
                 else if (target != ID)
                 {
-                 //   lineRenderer.enabled = false;
-                 //   SetlineDirection(new Vector3(0, -10f, 0));
+                    lineRenderer.enabled = false;
+                   SetlineDirection(new Vector3(0, -10f, 0));
       
                 }
             }
             else
             {
-              //  lineRenderer.enabled = false;
-              //  SetlineDirection(new Vector3(0, -10f, 0));
+                lineRenderer.enabled = false;
+               SetlineDirection(new Vector3(0, -10f, 0));
               
 
             }

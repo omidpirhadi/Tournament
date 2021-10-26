@@ -9,6 +9,9 @@ namespace Diaco.Store.Billiard
 {
     public class BilliardShop : MonoBehaviour
     {
+        public bool InGame = false;
+
+
         public Diaco.ImageContainerTool.ImageContainer ContainerImages;
         public BilliardInuseElement InUseTeamElement;
         public BilliardOwnerElement OwnerTeamElement;
@@ -16,13 +19,47 @@ namespace Diaco.Store.Billiard
         public RectTransform Grid;
 
         private List<GameObject> ListElementsShop;
-        public void initTeamsShop(BilliardShopDatas shopData)
+
+        public void OnEnable()
         {
             ListElementsShop = new List<GameObject>();
+            if (!InGame)
+            {
+
+            }
+            else
+            {
+              
+                    FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().InitShop += BilliardShop_InitShop;
+                    FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_Shop();
+
+            }
+          
+        }
+        public void OnDisable()
+        {
+            if (InGame)
+            {
+                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().InitShop -= BilliardShop_InitShop;
+                ClearShop();
+            }
+        }
+        private void BilliardShop_InitShop(BilliardShopDatas data)
+        {
+            initShop(data);
+            
+        }
+
+        public void initShop(BilliardShopDatas shopData)
+        {
+            if (ListElementsShop.Count > 0)
+                ClearShop();
+            
+            
             var data = shopData.billiardshopteamsData;
             for (int i = 0; i < data.Count; i++)
             {
-                var image = ContainerImages.LoadImage(data[i].teamImage);
+                var image = ContainerImages.LoadImage(data[i].cueImage);
                 var id = data[i].id;
                 var force = data[i].force;
                 var aim = data[i].aim;
@@ -38,7 +75,7 @@ namespace Diaco.Store.Billiard
                     else
                     {
                         var ownerElement = Instantiate(OwnerTeamElement, Grid);
-                        ownerElement.Set(id, image, force, aim, spin,data[i].time);
+                        ownerElement.Set(id, image, force, aim, spin,data[i].time,InGame);
                         ListElementsShop.Add(ownerElement.gameObject);
                     }
                 }
@@ -51,25 +88,25 @@ namespace Diaco.Store.Billiard
                 }
 
             }
+            Debug.Log("ShopLoaded");
         }
 
-        private void ClearShopTeams()
+        private void ClearShop()
         {
             for (int i = 0; i < ListElementsShop.Count; i++)
             {
                 Destroy(ListElementsShop[i]);
             }
+            Debug.Log("ClearShopBiliard");
         }
     }
 
+
+
     [Serializable]
-    public struct BilliardShopRentOptionData
+    public struct BilliardShopDatas
     {
-        public int rentId;
-        public int typeOption;//// 0 Coin,1 CoinWithGem
-        public int day;
-        public int coin;
-        public int gem;
+        public List<BilliardShopData> billiardshopteamsData;
     }
     [Serializable]
     public struct BilliardShopData
@@ -78,15 +115,19 @@ namespace Diaco.Store.Billiard
         public bool owner;
         public bool inUse;
         public List<BilliardShopRentOptionData> rentData;
-        public string teamImage;
+        public string cueImage;
         public float force;
         public float aim;
         public float spin;
         public string time;
     }
     [Serializable]
-    public struct BilliardShopDatas
+    public struct BilliardShopRentOptionData
     {
-        public List<BilliardShopData> billiardshopteamsData;
+        public int rentId;
+        public int typeOption;//// 0 Coin,1 CoinWithGem
+        public int day;//10-20-30
+        public int coin;
+        public int gem;
     }
 }

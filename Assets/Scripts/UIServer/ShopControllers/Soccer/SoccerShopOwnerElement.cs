@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 namespace Diaco.Store.Soccer
 {
+    
     public class SoccerShopOwnerElement : MonoBehaviour
     {
+        public TypeElement typeElement;
         public int ID;
         public Image TeamImage;
         public Image PrograssBarForce;
@@ -22,17 +24,35 @@ namespace Diaco.Store.Soccer
             PrograssBarAim.fillAmount = aim;
             RemainderTime.text = time;
             Btn_Use.onClick.AddListener(UseButtonClick);
+            typeElement = TypeElement.Team;
         }
         public void SetForFormationElement(int id, Sprite teamImage, string time)
         {
             ID = id;
             TeamImage.sprite = teamImage;
             RemainderTime.text = time;
+            typeElement = TypeElement.Formation;
             Btn_Use.onClick.AddListener(UseButtonClick);
         }
         private void UseButtonClick()
         {
-            Debug.Log("Use This Team:" + ID);
+            if(typeElement  ==  TypeElement.Team)
+            {
+                Debug.Log("Use This Team:" + ID);
+            }
+            else if(typeElement == TypeElement.Formation)
+            {
+                if (FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>())///in game
+                {
+                    FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_UseFormation(ID);
+                    Debug.Log("Use This Formation:" + ID);
+                }
+                else//in ui
+                {
+                    Debug.Log("Use This Formation:" + ID);
+                }
+            }
+           
 
         }
     }

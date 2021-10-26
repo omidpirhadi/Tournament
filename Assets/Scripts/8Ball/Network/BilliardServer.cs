@@ -185,9 +185,9 @@ namespace Diaco.EightBall.Server
         [FoldoutGroup("BillboardUI")]
         public Text TotalCoin;
         [FoldoutGroup("BillboardUI")]
-        public Text GameResult;
+        public Image WoodInhHud;
         [FoldoutGroup("BillboardUI")]
-        public Text VisualLogOnScreen;
+        public ImageContainerTool.ImageContainer WoodImages;
 
         #endregion
 
@@ -263,7 +263,7 @@ namespace Diaco.EightBall.Server
                     {
                         SetPlayerTwo(gameData);
                     }
-                    // Handler_GameReady();
+                    //Handler_GameReady();
                     //  Debug.Log(m[0].ToString());
                 });
                 socket.On("RoomId", (s, p, m) =>
@@ -322,6 +322,16 @@ namespace Diaco.EightBall.Server
                     var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(m[0].ToString());
                     Handler_OnGameResult(result);
                     Debug.Log("GameResult");
+                });
+                socket.On("shop", (s, p, m) => {
+
+                    var data  = JsonUtility.FromJson<Diaco.Store.Billiard.BilliardShopDatas>(m[0].ToString());
+                    Handler_InitShop(data);
+                    Debug.Log("ShopInGameRecive");
+                });
+                socket.On("cueState", (s, p, m) => {
+                    var data = JsonUtility.FromJson<CueStateData>(m[0].ToString());
+                    SetWoodState(data);
                 });
             }
             else
@@ -406,6 +416,19 @@ namespace Diaco.EightBall.Server
             socket.Emit("play-again");
             
           //  luncher.PlayAgainGame(1);
+        }
+        public void Emit_Shop()
+        {
+            socket.Emit("shop");
+        }
+        public void Emit_UseCue(int id)
+        {
+            socket.Emit("useCue", id);
+        }
+        public void Emit_RentCue(int id, int rentId)
+        {
+            socket.Emit("rentCue", id, rentId);
+            Debug.Log("Emit_ShopformationRent=" + id + "::" + rentId);
         }
         #endregion
 
@@ -580,7 +603,11 @@ namespace Diaco.EightBall.Server
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().inPlayPos = false;
             Handler_GameReady();
         }
-
+        public void SetWoodState(CueStateData state)
+        {
+            WoodInhHud.sprite = WoodImages.LoadImage(state.name);
+            Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
+        }
         public void initializTurn(Diaco.EightBall.Structs.GameData data)
         {
             DOVirtual.Float(0f, 0.1f, 1, (x) => { }).OnComplete(() =>
@@ -1065,9 +1092,10 @@ namespace Diaco.EightBall.Server
                 {
                     if (AddressBalls[i] != null)
                     {
-                        AddressBalls[i].GetComponent<Rigidbody>().isKinematic = true;
+                        
                         AddressBalls[i].GetComponent<Rigidbody>().useGravity = false;
                         AddressBalls[i].GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+                        AddressBalls[i].GetComponent<Rigidbody>().isKinematic = true;
                         AddressBalls[i].GetComponent<SphereCollider>().enabled = false;
                     }
 
@@ -1420,6 +1448,8 @@ namespace Diaco.EightBall.Server
             ProfileImage[1].sprite = pic2;
 
         }
+
+        
         private void EnableCoolDown(Diaco.EightBall.Structs.Side side, int Time)
         {
             PlayerCoolDowns[0].fillAmount = 1;
@@ -1864,6 +1894,27 @@ namespace Diaco.EightBall.Server
             }
 
         }
+
+        private Action<Diaco.Store.Billiard.BilliardShopDatas> initshop;
+        public event Action<Diaco.Store.Billiard.BilliardShopDatas> InitShop
+        {
+            add
+            {
+                initshop += value;
+            }
+            remove
+            {
+                initshop -= value;
+            }
+        }
+        protected void Handler_InitShop(Diaco.Store.Billiard.BilliardShopDatas data)
+        {
+            if (initshop != null)
+            {
+                initshop(data);
+            }
+
+        }
         #endregion
     }
     [Serializable]
@@ -1907,5 +1958,13 @@ namespace Diaco.EightBall.Server
         public string level;
         public int totalPoint;
     }
+    [Serializable]
 
+    public struct CueStateData
+    {
+        public string name;
+        public float force;
+        public float spin;
+        public float aim;
+    }
 }

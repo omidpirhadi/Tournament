@@ -408,6 +408,7 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
+
         socket.On("shop", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -456,6 +457,7 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
+
         socket.On("competitions", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error

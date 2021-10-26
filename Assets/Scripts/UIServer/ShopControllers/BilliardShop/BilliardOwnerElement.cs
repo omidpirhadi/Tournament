@@ -7,6 +7,9 @@ namespace Diaco.Store.Billiard
 {
     public class BilliardOwnerElement : MonoBehaviour
     {
+        public bool InGame = false;
+        public _GameLobby Lobby;
+
         public int ID;
         public Image CueImage;
         public Image PrograssBarForce;
@@ -15,20 +18,29 @@ namespace Diaco.Store.Billiard
         public Text RemainderTime;
         public Button Btn_Use;
 
-        public void Set(int id, Sprite teamImage, float force, float aim,float spin, string time)
+        public void Set(int id, Sprite teamImage, float force, float aim,float spin, string time,bool ingame)
         {
             ID = id;
             CueImage.sprite = teamImage;
             PrograssBarForce.fillAmount = force;
             PrograssBarAim.fillAmount = aim;
-            PrograssBarAim.fillAmount = spin;
+            PrograssBarspin.fillAmount = spin;
             RemainderTime.text = time;
+            InGame = ingame;
+            
             Btn_Use.onClick.AddListener(UseButtonClick);
         }
      
         private void UseButtonClick()
         {
-            Debug.Log("Use This Team:" + ID);
+            if(!InGame)
+            {
+
+            }
+            else
+            {
+                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_UseCue(ID);
+            }
 
         }
     }

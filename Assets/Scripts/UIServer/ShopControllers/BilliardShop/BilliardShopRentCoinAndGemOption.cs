@@ -24,6 +24,11 @@ namespace Diaco.Store.Billiard
         }
         private void onClick()
         {
+            if (FindObjectOfType<Diaco.EightBall.Server.BilliardServer>())
+            {
+                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_RentCue(cueId, rentId);
+            }
+
             Debug.Log("Rent this Cue:" + cueId + "For:" + Day);
         }
     }

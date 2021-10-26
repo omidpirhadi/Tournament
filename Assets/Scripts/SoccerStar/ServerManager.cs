@@ -297,6 +297,12 @@ namespace Diaco.SoccerStar.Server
                     Debug.Log("GameResult");
                     //Debug.Log("GameRes Rec");
                 });
+                socket.On("formationShop", (s, p, m) => {
+
+                    var data = JsonUtility.FromJson<Diaco.Store.Soccer.SoccerShopDatas>(m[0].ToString());
+                    Handler_InitShop(data);
+                    Debug.Log("formationShopInGameRecive");
+                });
             }
             else
             {
@@ -868,7 +874,24 @@ namespace Diaco.SoccerStar.Server
 
 
         }
-
+        public void Emit_Shopformation()
+        {
+            socket.Emit("formationShop");
+            Debug.Log("Emit_Shopformation");
+        }
+        public void Emit_UseFormation(int id)
+        {
+            socket.Emit("useFormation", id);
+        }
+        public void Emit_RentFormation(int id, int rentId)
+        {
+            socket.Emit("rentFormation", id, rentId);
+            Debug.Log("Emit_ShopformationRent="+id+"::"+rentId);
+        }
+            /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="active"></param>
         public void KinimaticMarblesAndBall(bool active)
         {
             /*  if (active)
@@ -1221,7 +1244,26 @@ namespace Diaco.SoccerStar.Server
                 physicfreeze(enable);
             }
         }
+        private Action<Diaco.Store.Soccer.SoccerShopDatas> initshop;
+        public event Action<Diaco.Store.Soccer.SoccerShopDatas> InitShop
+        {
+            add
+            {
+                initshop += value;
+            }
+            remove
+            {
+                initshop -= value;
+            }
+        }
+        protected void Handler_InitShop(Diaco.Store.Soccer.SoccerShopDatas data)
+        {
+            if (initshop != null)
+            {
+                initshop(data);
+            }
 
+        }
         #endregion
 
 

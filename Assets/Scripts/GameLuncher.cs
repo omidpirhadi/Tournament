@@ -64,7 +64,7 @@ public class GameLuncher : MonoBehaviour
     private void ServerGamesController_GameReady()
     {
         LoadGameCompeleted = true;
-       // Debug.Log("GameREADY");
+      Debug.Log("GameREADY");
     }
     /// <summary>
     /// 

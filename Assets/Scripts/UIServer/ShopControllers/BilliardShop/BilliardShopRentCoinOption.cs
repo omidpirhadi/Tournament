@@ -22,7 +22,16 @@ namespace Diaco.Store.Billiard
         }
         private void onClick()
         {
-            Debug.Log("Rent this Team:" + cueId + "For:" + Day);
+            if (FindObjectOfType<Diaco.EightBall.Server.BilliardServer>())///in game
+            {
+                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_RentCue(cueId, rentId);
+
+            }
+            else//in ui
+            {
+
+            }
+            Debug.Log("Rent this Cue:" + cueId + "For:" + Day);
         }
     }
 }

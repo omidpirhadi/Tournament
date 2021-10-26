@@ -10,6 +10,7 @@ namespace Diaco.Store.Soccer
     {
         public int teamId;
         public int rentId;
+        public TypeElement typeElement;
         public Text Day;
         public Text CostCoin;
         public Text CostGem;
@@ -24,7 +25,30 @@ namespace Diaco.Store.Soccer
         }
         private void onClick()
         {
-            Debug.Log("Rent this Team:" + teamId + "For:" + Day);
+            if (FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>())/// in game
+            {
+                if (typeElement == TypeElement.Team)
+                {
+                    //// do nothing 
+                }
+                else
+                {
+                    FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_RentFormation(teamId, rentId);
+                    Debug.Log("Rent this Formation:" + teamId + "For:" + Day);
+                }
+            }
+            else if (FindObjectOfType<ServerUI>())/// in ui
+            {
+                if (typeElement == TypeElement.Team)
+                {
+                    Debug.Log("Rent this Team:" + teamId + "For:" + Day);
+                }
+                else
+                {
+                    Debug.Log("Rent this Formation:" + teamId + "For:" + Day);
+                }
+            }
+            
         }
     }
 }
