@@ -25,7 +25,8 @@ namespace Diaco.Store.Billiard
             ListElementsShop = new List<GameObject>();
             if (!InGame)
             {
-
+                FindObjectOfType<ServerUI>().InitshopBilliard += BilliardShop_InitShop;
+                FindObjectOfType<ServerUI>().Emit_BilliardShop();
             }
             else
             {
@@ -41,6 +42,11 @@ namespace Diaco.Store.Billiard
             if (InGame)
             {
                 FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().InitShop -= BilliardShop_InitShop;
+                ClearShop();
+            }
+            else if(!InGame)
+            {
+                FindObjectOfType<ServerUI>().InitshopBilliard -= BilliardShop_InitShop;
                 ClearShop();
             }
         }
@@ -111,7 +117,7 @@ namespace Diaco.Store.Billiard
     [Serializable]
     public struct BilliardShopData
     {
-        public int id;
+        public string id;
         public bool owner;
         public bool inUse;
         public List<BilliardShopRentOptionData> rentData;
@@ -124,7 +130,7 @@ namespace Diaco.Store.Billiard
     [Serializable]
     public struct BilliardShopRentOptionData
     {
-        public int rentId;
+        public string rentId;
         public int typeOption;//// 0 Coin,1 CoinWithGem
         public int day;//10-20-30
         public int coin;

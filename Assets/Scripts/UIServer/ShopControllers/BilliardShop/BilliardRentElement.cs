@@ -7,7 +7,7 @@ namespace Diaco.Store.Billiard
 {
     public class BilliardRentElement : MonoBehaviour
     {
-        public int ID;
+        public string ID;
         public Image CueImage;
         public Image PrograssBarForce;
         public Image PrograssBarAim;
@@ -19,7 +19,7 @@ namespace Diaco.Store.Billiard
 
         public Button Btn_ShowRentPanel;
 
-        public void Set(int id, Sprite teamImage, float force, float aim,float spin, List<BilliardShopRentOptionData> rentOptionDatas)
+        public void Set(string id, Sprite teamImage, float force, float aim,float spin, List<BilliardShopRentOptionData> rentOptionDatas)
         {
             ID = id;
             CueImage.sprite = teamImage;

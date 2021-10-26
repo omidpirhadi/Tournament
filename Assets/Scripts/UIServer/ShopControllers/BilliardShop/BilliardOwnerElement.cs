@@ -10,7 +10,7 @@ namespace Diaco.Store.Billiard
         public bool InGame = false;
         public _GameLobby Lobby;
 
-        public int ID;
+        public string ID;
         public Image CueImage;
         public Image PrograssBarForce;
         public Image PrograssBarAim;
@@ -18,7 +18,7 @@ namespace Diaco.Store.Billiard
         public Text RemainderTime;
         public Button Btn_Use;
 
-        public void Set(int id, Sprite teamImage, float force, float aim,float spin, string time,bool ingame)
+        public void Set(string id, Sprite teamImage, float force, float aim,float spin, string time,bool ingame)
         {
             ID = id;
             CueImage.sprite = teamImage;
@@ -35,7 +35,7 @@ namespace Diaco.Store.Billiard
         {
             if(!InGame)
             {
-
+                FindObjectOfType<ServerUI>().Emit_UseCue(ID);
             }
             else
             {

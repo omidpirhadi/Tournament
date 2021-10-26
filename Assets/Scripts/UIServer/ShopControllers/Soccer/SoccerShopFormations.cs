@@ -24,7 +24,8 @@ namespace Diaco.Store.Soccer
             ListElementsShop = new List<GameObject>();
             if (!InGame)
             {
-
+                FindObjectOfType<ServerUI>().InitSoccerFormationShop += Shopformation_InitShop;
+                FindObjectOfType<ServerUI>().Emit_SoccerShopformation();
             }
             else
             {
@@ -42,6 +43,11 @@ namespace Diaco.Store.Soccer
                 FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().InitShop -= Shopformation_InitShop;
                 ClearShop();
             }
+            else
+            {
+                FindObjectOfType<ServerUI>().InitSoccerFormationShop -= Shopformation_InitShop;
+                ClearShop();
+            }
         }
         private void Shopformation_InitShop(SoccerShopDatas data)
         {
@@ -56,7 +62,7 @@ namespace Diaco.Store.Soccer
             var data = Data.soccershopteamsData;
             for (int i = 0; i < data.Count; i++)
             {
-                Debug.Log(data[i].teamImage);
+              //  Debug.Log(data[i].teamImage);
                 var image = ContainerImages.LoadImage(data[i].teamImage);
                 var id = data[i].id;
              
@@ -65,7 +71,7 @@ namespace Diaco.Store.Soccer
                 {
                     if (data[i].inUse)
                     {
-
+                        
                         InUseFormationElement.SetForFormationElement(id, image, data[i].time);
                     }
                     else

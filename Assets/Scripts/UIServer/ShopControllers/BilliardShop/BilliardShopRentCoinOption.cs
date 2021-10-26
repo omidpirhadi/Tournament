@@ -8,11 +8,11 @@ namespace Diaco.Store.Billiard
     [RequireComponent(typeof(Button))]
     public class BilliardShopRentCoinOption : MonoBehaviour
     {
-        public int cueId;
-        public int rentId;
+        public string cueId;
+        public string rentId;
         public Text Day;
         public Text Cost;
-        public void Set(int cueid, int rentid, int day, int cost)
+        public void Set(string cueid, string rentid, int day, int cost)
         {
             cueId = cueid;
             rentId = rentid;
@@ -24,12 +24,12 @@ namespace Diaco.Store.Billiard
         {
             if (FindObjectOfType<Diaco.EightBall.Server.BilliardServer>())///in game
             {
-                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_RentCue(cueId, rentId);
+                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_RentCue( rentId);
 
             }
-            else//in ui
+            else if (FindObjectOfType<ServerUI>())
             {
-
+                FindObjectOfType<ServerUI>().Emit_RentCue(rentId);
             }
             Debug.Log("Rent this Cue:" + cueId + "For:" + Day);
         }

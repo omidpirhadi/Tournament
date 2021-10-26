@@ -332,6 +332,7 @@ namespace Diaco.EightBall.Server
                 socket.On("cueState", (s, p, m) => {
                     var data = JsonUtility.FromJson<CueStateData>(m[0].ToString());
                     SetWoodState(data);
+                    Debug.Log("ChangeCueSate");
                 });
             }
             else
@@ -421,14 +422,14 @@ namespace Diaco.EightBall.Server
         {
             socket.Emit("shop");
         }
-        public void Emit_UseCue(int id)
+        public void Emit_UseCue(string id)
         {
             socket.Emit("useCue", id);
         }
-        public void Emit_RentCue(int id, int rentId)
+        public void Emit_RentCue( string rentId)
         {
-            socket.Emit("rentCue", id, rentId);
-            Debug.Log("Emit_ShopformationRent=" + id + "::" + rentId);
+            socket.Emit("rentCue",  rentId);
+            Debug.Log("Emit_ShopformationRent=" +  "::" + rentId);
         }
         #endregion
 

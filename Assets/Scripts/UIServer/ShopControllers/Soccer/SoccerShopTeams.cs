@@ -8,6 +8,7 @@ namespace Diaco.Store.Soccer
 {
     public class SoccerShopTeams : MonoBehaviour
     {
+        public bool InGame = false;
         public Diaco.ImageContainerTool.ImageContainer ContainerImages;
         public SoccerShopInUseElement InUseTeamElement;
         public SoccerShopOwnerElement OwnerTeamElement;
@@ -15,8 +16,36 @@ namespace Diaco.Store.Soccer
         public RectTransform Grid;
 
         private List<GameObject> ListElementsShop;
+
+        public void OnEnable()
+        {
+            ListElementsShop = new List<GameObject>();
+            if (!InGame)
+            {
+                FindObjectOfType<ServerUI>().InitSoccerTeamShop += ShopTeam_InitShop;
+                FindObjectOfType<ServerUI>().Emit_SoccerShopTeam();
+            }
+            
+
+        }
+        public void OnDisable()
+        {
+           
+            if(!InGame)
+            {
+                FindObjectOfType<ServerUI>().InitSoccerFormationShop -= ShopTeam_InitShop;
+                ClearShop();
+            }
+        }
+        private void ShopTeam_InitShop(SoccerShopDatas data)
+        {
+            initTeamsShop(data);
+
+        }
         public void initTeamsShop(SoccerShopDatas teamsData)
         {
+            if (ListElementsShop.Count > 0)
+                ClearShop();
             ListElementsShop = new List<GameObject>();
             var data = teamsData.soccershopteamsData;
             for (int i = 0; i < data.Count; i++)
@@ -51,7 +80,7 @@ namespace Diaco.Store.Soccer
             }
         }
 
-        private void ClearShopTeams()
+        private void ClearShop()
         {
             for (int i = 0; i < ListElementsShop.Count; i++)
             {
@@ -64,7 +93,7 @@ namespace Diaco.Store.Soccer
     [Serializable]
      public struct  SoccerShopRentOptionData
     {
-        public int rentId;
+        public string rentId;
         public int typeOption;//// 0 Coin,1 CoinWithGem
         public int day;
         public int coin;
@@ -73,7 +102,7 @@ namespace Diaco.Store.Soccer
     [Serializable]
     public struct SoccerShopData
     {
-        public int id;
+        public string id;
         public bool owner;
         public bool inUse;
         public List<SoccerShopRentOptionData> rentData;

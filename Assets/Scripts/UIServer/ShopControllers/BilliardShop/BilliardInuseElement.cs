@@ -7,13 +7,13 @@ namespace Diaco.Store.Billiard
 {
     public class BilliardInuseElement : MonoBehaviour
     {
-        public int ID;
+        public string ID;
         public Image TeamImage;
         public Image PrograssBarForce;
         public Image PrograssBarAim;
         public Image PrograssBarSpin;
         public Text RemainderTime;
-        public void Set(int id, Sprite teamImage, float force, float aim,float spin, string time)
+        public void Set(string id, Sprite teamImage, float force, float aim,float spin, string time)
         {
             ID = id;
             TeamImage.sprite = teamImage;

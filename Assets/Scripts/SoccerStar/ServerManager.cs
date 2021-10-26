@@ -298,7 +298,7 @@ namespace Diaco.SoccerStar.Server
                     //Debug.Log("GameRes Rec");
                 });
                 socket.On("formationShop", (s, p, m) => {
-
+                   /// Debug.Log("kjkjkjkjkjkjjjkjkjkjk");
                     var data = JsonUtility.FromJson<Diaco.Store.Soccer.SoccerShopDatas>(m[0].ToString());
                     Handler_InitShop(data);
                     Debug.Log("formationShopInGameRecive");
@@ -879,14 +879,14 @@ namespace Diaco.SoccerStar.Server
             socket.Emit("formationShop");
             Debug.Log("Emit_Shopformation");
         }
-        public void Emit_UseFormation(int id)
+        public void Emit_UseFormation(string id)
         {
             socket.Emit("useFormation", id);
         }
-        public void Emit_RentFormation(int id, int rentId)
+        public void Emit_RentFormation( string rentId)
         {
-            socket.Emit("rentFormation", id, rentId);
-            Debug.Log("Emit_ShopformationRent="+id+"::"+rentId);
+            socket.Emit("rentFormation",  rentId);
+            Debug.Log("Emit_ShopformationRent="+"::"+rentId);
         }
             /// <summary>
         /// 

@@ -31,6 +31,8 @@ public class ServerUI : MonoBehaviour
 
     private bool loadedpage = false;
     private int  intergation = 0;
+
+    #region Server_ON
     public void ConnectToUIServer()
     {
         Luncher = FindObjectOfType<GameLuncher>();
@@ -425,23 +427,42 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
-        socket.On("shop-soccer", (s, p, m) =>
+
+        socket.On("soccershopFormation", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
-                Debug.Log("Error: ShopSoccer: " + m[1].ToString());
+                Debug.Log("Error: FormationShopSoccer: " + m[1].ToString());
 
             }
             else
             {
-                SoccerShopProducts = new SoccerShopProducts();
-                SoccerShopProducts = JsonUtility.FromJson<SoccerShopProducts>(m[1].ToString());
-                Handler_OnSoccerShopLoaded(SoccerShopProducts);
-                Debug.Log("Shop Soccer Loaded" + m[1].ToString());
+
+                var data = JsonUtility.FromJson<Diaco.Store.Soccer.SoccerShopDatas>(m[1].ToString());
+                Handler_InitSoccerFormationShop(data);
+                Debug.Log("Formation Shop Soccer Loaded" + m[1].ToString());
             }
             navigationUi.StopLoadingPage();
         });
-        socket.On("shop-billiard", (s, p, m) =>
+
+        socket.On("soccershopTeam", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("Error: ShopSoccerTeam: " + m[1].ToString());
+
+            }
+            else
+            {
+
+                var data = JsonUtility.FromJson<Diaco.Store.Soccer.SoccerShopDatas>(m[1].ToString());
+                Handler_InitSoccerTeamShop(data);
+                Debug.Log("Shop Soccer Team Loaded" + m[1].ToString());
+            }
+            navigationUi.StopLoadingPage();
+        });
+
+        socket.On("billiardShop", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
@@ -450,9 +471,9 @@ public class ServerUI : MonoBehaviour
             }
             else
             {
-                BilliardShopProducts = new BilliardShopProducts();
-                BilliardShopProducts = JsonUtility.FromJson<BilliardShopProducts>(m[1].ToString());
-                Handler_OnBilliardShopLoaded(BilliardShopProducts);
+
+                var data = JsonUtility.FromJson<Diaco.Store.Billiard.BilliardShopDatas>(m[1].ToString());
+                Handler_InitshopBilliard(data);
                 Debug.Log("ShopBilliard Loaded");
             }
             navigationUi.StopLoadingPage();
@@ -565,6 +586,7 @@ public class ServerUI : MonoBehaviour
         });
 
     }
+    #endregion
     #region EmitServer
     public void SendRequestGetFriends()
     {
@@ -744,18 +766,63 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Shop Requested");
     }
-    public void RequestItemShopSoccer()
+   
+
+    #region Emits_Shop
+    public void Emit_SoccerShopTeam()
     {
-        socket.Emit("shop-soccer");
+        socket.Emit("soccershopTeam");
         navigationUi.StartLoadingPageShow();
-        Debug.Log("Shop Soccer Requested");
+        Debug.Log("Emit_ShopTeam");
     }
-    public void RequestItemShopBiliard()
+    public void Emit_UseTeam(string id)
     {
-        socket.Emit("shop-billiard");
-        navigationUi.StartLoadingPageShow();
-        Debug.Log("Shop billiard Requested");
+        socket.Emit("useTeam", id);
+        Debug.Log("USE Team:" + id);
     }
+    public void Emit_RentTeam(string rentId)
+    {
+        socket.Emit("rentTeam", rentId);
+        Debug.Log("Emit_ShopTeamRent=" + "::" + rentId);
+    }
+
+
+    public void Emit_SoccerShopformation()
+    {
+        socket.Emit("soccershopFormation");
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Emit_Shopformation");
+    }
+    public void Emit_UseFormation(string id)
+    {
+        socket.Emit("useFormation", id);
+        Debug.Log("USE Formation:" + id);
+    }
+    public void Emit_RentFormation(string rentId)
+    {
+        socket.Emit("rentFormation", rentId);
+        Debug.Log("Emit_ShopformationRent=" + "::" + rentId);
+    }
+
+
+    public void Emit_BilliardShop()
+    {
+        socket.Emit("billiardShop");
+        Debug.Log("billiardShop");
+    }
+    public void Emit_UseCue(string id)
+    {
+        socket.Emit("useCue", id);
+        Debug.Log("Use Cue :"+id);
+    }
+    public void Emit_RentCue(string rentId)
+    {
+        socket.Emit("rentCue", rentId);
+        Debug.Log("Emit_ShopformationRent=" + "::" + rentId);
+    }
+
+
+    #endregion
     /// <summary>
     /// 
     /// </summary>
@@ -983,6 +1050,12 @@ public class ServerUI : MonoBehaviour
         }
     }
 
+
+
+
+
+
+
     public event Action<Shop> OnShopLoaded;
     protected void Handler_OnShopLoaded(Shop shop)
     {
@@ -992,23 +1065,75 @@ public class ServerUI : MonoBehaviour
         }
     }
 
-    public event Action<BilliardShopProducts> OnBilliardShopLoaded;
-    protected void Handler_OnBilliardShopLoaded(BilliardShopProducts billiardshop)
+
+    private Action<Diaco.Store.Billiard.BilliardShopDatas> initshopBilliard;
+    public event Action<Diaco.Store.Billiard.BilliardShopDatas> InitshopBilliard
     {
-        if (OnBilliardShopLoaded != null)
+        add
         {
-            OnBilliardShopLoaded(billiardshop);
+            initshopBilliard += value;
         }
+        remove
+        {
+            initshopBilliard -= value;
+        }
+    }
+    protected void Handler_InitshopBilliard(Diaco.Store.Billiard.BilliardShopDatas data)
+    {
+        if (initshopBilliard != null)
+        {
+            initshopBilliard(data);
+        }
+
     }
 
-    public event Action<SoccerShopProducts> OnSoccerShopLoaded;
-    protected void Handler_OnSoccerShopLoaded(SoccerShopProducts soccershop)
+
+
+    private Action<Diaco.Store.Soccer.SoccerShopDatas> initsoccerformationshop;
+    public event Action<Diaco.Store.Soccer.SoccerShopDatas> InitSoccerFormationShop
     {
-        if (OnSoccerShopLoaded != null)
+        add
         {
-            OnSoccerShopLoaded(soccershop);
+            initsoccerformationshop += value;
+        }
+        remove
+        {
+            initsoccerformationshop -= value;
         }
     }
+    protected void Handler_InitSoccerFormationShop(Diaco.Store.Soccer.SoccerShopDatas data)
+    {
+        if (initsoccerformationshop != null)
+        {
+            initsoccerformationshop(data);
+        }
+
+    }
+
+
+
+    private Action<Diaco.Store.Soccer.SoccerShopDatas> initsoccerteamshop;
+    public event Action<Diaco.Store.Soccer.SoccerShopDatas> InitSoccerTeamShop
+    {
+        add
+        {
+            initsoccerteamshop += value;
+        }
+        remove
+        {
+            initsoccerteamshop -= value;
+        }
+    }
+    protected void Handler_InitSoccerTeamShop(Diaco.Store.Soccer.SoccerShopDatas data)
+    {
+        if (initsoccerteamshop != null)
+        {
+            initsoccerteamshop(data);
+        }
+
+    }
+
+
 
     public event Action<string, string> OnOpponentFind;
     protected void Handler_OnOpponentFind(string username, string avatar)

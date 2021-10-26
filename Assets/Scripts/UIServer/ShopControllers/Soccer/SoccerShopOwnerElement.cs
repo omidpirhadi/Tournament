@@ -9,14 +9,14 @@ namespace Diaco.Store.Soccer
     public class SoccerShopOwnerElement : MonoBehaviour
     {
         public TypeElement typeElement;
-        public int ID;
+        public string ID;
         public Image TeamImage;
         public Image PrograssBarForce;
         public Image PrograssBarAim;
         public Text RemainderTime;
         public Button Btn_Use;
 
-        public void SetForTeamElement(int id, Sprite teamImage, float force, float aim, string time)
+        public void SetForTeamElement(string id, Sprite teamImage, float force, float aim, string time)
         {
             ID = id;
             TeamImage.sprite = teamImage;
@@ -26,7 +26,7 @@ namespace Diaco.Store.Soccer
             Btn_Use.onClick.AddListener(UseButtonClick);
             typeElement = TypeElement.Team;
         }
-        public void SetForFormationElement(int id, Sprite teamImage, string time)
+        public void SetForFormationElement(string id, Sprite teamImage, string time)
         {
             ID = id;
             TeamImage.sprite = teamImage;
@@ -38,7 +38,13 @@ namespace Diaco.Store.Soccer
         {
             if(typeElement  ==  TypeElement.Team)
             {
-                Debug.Log("Use This Team:" + ID);
+                if(FindObjectOfType<ServerUI>())//in ui
+                {
+                    FindObjectOfType<ServerUI>().Emit_UseTeam(ID);
+                    Debug.Log("Use This Team:" + ID);
+                  
+                }
+                
             }
             else if(typeElement == TypeElement.Formation)
             {
@@ -49,6 +55,7 @@ namespace Diaco.Store.Soccer
                 }
                 else//in ui
                 {
+                    FindObjectOfType<ServerUI>().Emit_UseFormation(ID);
                     Debug.Log("Use This Formation:" + ID);
                 }
             }
