@@ -31,6 +31,7 @@ namespace Diaco.SoccerStar.Marble
         public GameObject SelectEffect;
         public float SelectEffectRotateSenciviti = 1.5f;
 
+        public SpriteRenderer Flagrenderer;
         public Transform Flag;
 
         public float StepRotateMarble = 0.1f;
@@ -42,7 +43,7 @@ namespace Diaco.SoccerStar.Marble
         public Ease EaseTypeRotate;
 
          public float ThresholdSleep = 0.09f;
-public bool InMove = false;
+        public bool InMove = false;
 
 
         private new Rigidbody rigidbody;
@@ -365,10 +366,10 @@ public bool InMove = false;
 
             }
         }
-        public void SetSkinMarble(Texture2D  skin)
+        public void SetSkinMarble(Sprite skin)
         {
-            var mat = GetComponent<MeshRenderer>().material;
-            mat.mainTexture = skin;
+
+            Flagrenderer.sprite = skin;
         }
        /* private void SoftPositionAndRotation()
         {

@@ -19,9 +19,9 @@ public class ServerUI : MonoBehaviour
     public GameObject MainMenu, Footer, Header, Login, Register, SplashScreen;
     [SerializeField]
     public BODY BODY;
-    public Shop Shop;
-    public SoccerShopProducts SoccerShopProducts;
-    public BilliardShopProducts BilliardShopProducts;
+   ///public Shop Shop;
+  ///  public SoccerShopProducts SoccerShopProducts;
+   // public BilliardShopProducts BilliardShopProducts;
     public Socket socket;
     public SocketManager socketmanager;
     public GameLuncher Luncher;
@@ -420,8 +420,8 @@ public class ServerUI : MonoBehaviour
             }
             else
             {
-                Shop = new Shop();
-                Shop = JsonUtility.FromJson<Shop>(m[1].ToString());
+                ///Shop = new Shop();
+               var Shop = JsonUtility.FromJson<Shop>(m[1].ToString());
                 Handler_OnShopLoaded(Shop);
                 Debug.Log("Shop Loaded" + m[1].ToString());
             }
@@ -769,6 +769,13 @@ public class ServerUI : MonoBehaviour
    
 
     #region Emits_Shop
+
+    public  void Emit_Shop(string id)
+    {
+        socket.Emit("shopBuy", id);
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Emit_Shop");
+    }
     public void Emit_SoccerShopTeam()
     {
         socket.Emit("soccershopTeam");

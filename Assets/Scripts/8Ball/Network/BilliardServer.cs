@@ -188,6 +188,10 @@ namespace Diaco.EightBall.Server
         public Image WoodInhHud;
         [FoldoutGroup("BillboardUI")]
         public ImageContainerTool.ImageContainer WoodImages;
+        [FoldoutGroup("BillboardUI")]
+        public StickerShareViwer StickerViwerLeft;
+        [FoldoutGroup("BillboardUI")]
+        public StickerShareViwer StickerViwerRight;
 
         #endregion
 
@@ -334,6 +338,23 @@ namespace Diaco.EightBall.Server
                     SetWoodState(data);
                     Debug.Log("ChangeCueSate");
                 });
+                socket.On("getSticker", (s, p, m) => {
+
+                    var data = JsonUtility.FromJson<StickerData>(m[0].ToString());
+                    Handler_GetStickers(data);
+                    Debug.Log("StickerRecived");
+                });
+                socket.On("shareSticker", (s, p, m) => {
+
+                    StickerViwer(m[0], m[1]);
+                    Debug.Log("ShareStickerRecived");
+                });
+                socket.On("message", (s, p, m) => {
+
+                    var message = Convert.ToString(m[0]);
+                    Handler_IncomingMessage(message);
+                    Debug.Log("ReciveMessage:" + message);
+                });
             }
             else
             {
@@ -430,6 +451,24 @@ namespace Diaco.EightBall.Server
         {
             socket.Emit("rentCue",  rentId);
             Debug.Log("Emit_ShopformationRent=" +  "::" + rentId);
+        }
+
+
+        public void Emit_GetSticker()
+        {
+            socket.Emit("getSticker");
+            Debug.Log("Emit_getSticker");
+        }
+        public void Emit_ShareSticker(int name)
+        {
+            socket.Emit("shareSticker", name + 1);
+            Debug.Log("Emit_shareSticker");
+        }
+        public void Emit_Message(string message)
+        {
+            socket.Emit("message", message);
+            Debug.Log("Emit_Message");
+
         }
         #endregion
 
@@ -1531,7 +1570,21 @@ namespace Diaco.EightBall.Server
             }
             
         }
-
+        public void StickerViwer(object namesticker, object side)
+        {
+            int name = Convert.ToInt32(namesticker);
+            int sideshow = Convert.ToInt32(side);///0 left, 1 right
+            if (sideshow == 0)
+            {
+                StickerViwerLeft.StickerSelected = name - 1;
+                StickerViwerLeft.gameObject.SetActive(true);
+            }
+            else
+            {
+                StickerViwerRight.StickerSelected = name - 1;
+                StickerViwerRight.gameObject.SetActive(true);
+            }
+        }
         private void SetUIInRecordMode(int totalpoint, string level, int time, int[] pointsibl)
         {
             UIControllInRecordMode.SetTotalPoint(totalpoint);
@@ -1913,6 +1966,46 @@ namespace Diaco.EightBall.Server
             if (initshop != null)
             {
                 initshop(data);
+            }
+
+        }
+        private Action<StickerData> getsticker;
+        public event Action<StickerData> GetStickers
+        {
+            add
+            {
+                getsticker += value;
+            }
+            remove
+            {
+                getsticker -= value;
+            }
+        }
+        protected void Handler_GetStickers(StickerData data)
+        {
+            if (getsticker != null)
+            {
+                getsticker(data);
+            }
+
+        }
+        private Action<string> incomingmessage;
+        public event Action<string> InComingMessage
+        {
+            add
+            {
+                incomingmessage += value;
+            }
+            remove
+            {
+                incomingmessage -= value;
+            }
+        }
+        protected void Handler_IncomingMessage(string mess)
+        {
+            if (incomingmessage != null)
+            {
+                incomingmessage(mess);
             }
 
         }

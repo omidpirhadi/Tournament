@@ -31,6 +31,7 @@ namespace Diaco.SoccerStar.CustomTypes
        
         public string ground;
         public string type;
+
         public int game;
         public int cost;
         public int costType;

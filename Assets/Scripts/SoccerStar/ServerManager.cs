@@ -91,7 +91,12 @@ namespace Diaco.SoccerStar.Server
         public GameObject[] MarbleRegistered;
         [FoldoutGroup("ServerSettings")]
         public List<ForceToBall> Marbles;
-       // [FoldoutGroup("ServerSettings")]
+        [FoldoutGroup("ServerSettings")]
+        public List<ARENA> Arena;
+        [FoldoutGroup("ServerSettings")]
+        public List<FLAG> Flags;
+
+        // [FoldoutGroup("ServerSettings")]
         //public List<Goal> Goals;
         [FoldoutGroup("ServerSettings")]
         public int MarbleInGoal = 0;
@@ -134,13 +139,16 @@ namespace Diaco.SoccerStar.Server
         public Text CoinIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
         public List<Image> IndicatorTime;
-
+        [FoldoutGroup("NetworkedUI")]
+        public StickerShareViwer StickerViwerLeft;
+        [FoldoutGroup("NetworkedUI")]
+        public StickerShareViwer StickerViwerRight;
         //public Slider slider;
         // [SerializeField]
         // public List<MarbleState> Frames;
-       // public Button Interpolate;
-      //  public Text marbledebug;
-       // public Text balldebug;
+        // public Button Interpolate;
+        //  public Text marbledebug;
+        // public Text balldebug;
 
         // public float speed = 1.0f;
         // public bool play = false;
@@ -162,6 +170,7 @@ namespace Diaco.SoccerStar.Server
 
         public void Start()
         {
+          
             //  Frames = new List<Frame>();
             QueuemovementPackets = new Queue<MarbleMovementPackets>();
   
@@ -250,6 +259,7 @@ namespace Diaco.SoccerStar.Server
                         //SetPlayerTwo(gameData);
 
                     }
+                    SelectArena(gameData.ground);
                     SetPlayer();
                     //  Debug.Log(m[0].ToString());
 
@@ -302,6 +312,23 @@ namespace Diaco.SoccerStar.Server
                     var data = JsonUtility.FromJson<Diaco.Store.Soccer.SoccerShopDatas>(m[0].ToString());
                     Handler_InitShop(data);
                     Debug.Log("formationShopInGameRecive");
+                });
+                socket.On("getSticker", (s, p, m) => {
+                   
+                    var data = JsonUtility.FromJson<StickerData>(m[0].ToString());
+                    Handler_GetStickers(data);
+                    Debug.Log("StickerRecived");
+                });
+                socket.On("shareSticker", (s, p, m) => {
+
+                    StickerViwer(m[0], m[1]);
+                    Debug.Log("ShareStickerRecived");
+                });
+                socket.On("message", (s, p, m) => {
+
+                    var message = Convert.ToString(m[0]);
+                    Handler_IncomingMessage(message);
+                    Debug.Log("ReciveMessage:" + message);
                 });
             }
             else
@@ -476,7 +503,7 @@ namespace Diaco.SoccerStar.Server
             {
                 if (SpwanedMarbels == false)
                 {
-                    RunSpawnMarble_New(gameData, 1, "a", "b");
+                    RunSpawnMarble_New(gameData, 1, gameData.playerOne.skin, gameData.playerTwo.skin);
                 }
                 else
                 {
@@ -497,7 +524,7 @@ namespace Diaco.SoccerStar.Server
             {
                 if (SpwanedMarbels == false)
                 {
-                    RunSpawnMarble_New(gameData, -1, "a", "b");
+                    RunSpawnMarble_New(gameData, -1, gameData.playerOne.skin, gameData.playerTwo.skin);
                 }
                 else
                 {
@@ -530,13 +557,14 @@ namespace Diaco.SoccerStar.Server
 
                     var marble = Instantiate(MarbleRegistered[0], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
-                    //  marble_0.GetComponent<ForceToBall>().SetSkinMarble(MarbleSkins.LoadSkinMarble(selfskin));
+                    
+                     marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(selfskin));
                 }
                 else if (i < 10)
                 {
                     var marble = Instantiate(MarbleRegistered[1], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
-                    //  marble_0.GetComponent<ForceToBall>().SetSkinMarble(MarbleSkins.LoadSkinMarble(enemyskin));
+                    marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(enemyskin));
                 }
             }
             SpwanedMarbels = true;
@@ -567,8 +595,71 @@ namespace Diaco.SoccerStar.Server
 
         }
 
+        public void SelectArena(string name)
+        {
+            Arena.ForEach(e => {
 
+                if(e.name == name)
+                {
+                    e.arena.SetActive(true);
 
+                }
+                else if(e.name != name)
+                {
+                    e.arena.SetActive(false);
+                }
+                else if (e.name =="")
+                {
+                    Arena[0].arena.SetActive(true);
+                }
+
+            });
+        }
+        public Sprite SelectFlag(string name)
+        {
+
+           Texture2D texture = new Texture2D(512, 512);
+
+            //var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            Flags.ForEach(e => {
+
+                if (e.name == name)
+                {
+                    texture = e.flag;
+                    Debug.Log(e.name + "sssddssdd");
+                }
+
+                else if (e.name == "")
+                {
+                    texture = Flags[0].flag;
+                    Debug.Log(e.name + "xxxxx");
+                }
+
+            });
+
+            return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 512);
+        }
+
+        /// <summary>
+        /// Set Sticker Viwer
+        /// </summary>
+        /// <param name="namesticker">Name Sticker</param>
+        /// <param name="side">0=Left,1=Right</param>
+        public void StickerViwer(object namesticker, object side)
+        {
+            int name = Convert.ToInt32(namesticker);
+            int sideshow = Convert.ToInt32(side);///0 left, 1 right
+            if (sideshow == 0)
+            {
+                StickerViwerLeft.StickerSelected = name - 1;
+                StickerViwerLeft.gameObject.SetActive(true);
+            }
+            else
+            {
+                StickerViwerRight.StickerSelected = name - 1;
+                StickerViwerRight.gameObject.SetActive(true);
+            }
+        }
 
         public IEnumerator SendDataMarblesMovement()
         {
@@ -716,6 +807,7 @@ namespace Diaco.SoccerStar.Server
             ImagePlayerIndicatorOnBiliboard[0].sprite = left;
             ImagePlayerIndicatorOnBiliboard[1].sprite = right;
         }
+
 
         private void Timerleft()
         {
@@ -888,7 +980,24 @@ namespace Diaco.SoccerStar.Server
             socket.Emit("rentFormation",  rentId);
             Debug.Log("Emit_ShopformationRent="+"::"+rentId);
         }
-            /// <summary>
+
+        public void Emit_GetSticker()
+        {
+            socket.Emit("getSticker");
+            Debug.Log("Emit_getSticker");
+        }
+        public void  Emit_ShareSticker(int name)
+        {
+            socket.Emit("shareSticker" , name + 1);
+            Debug.Log("Emit_shareSticker");
+        }
+        public void  Emit_Message(string message)
+        {
+            socket.Emit("message", message);
+            Debug.Log("Emit_Message");
+
+        }
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="active"></param>
@@ -1264,6 +1373,47 @@ namespace Diaco.SoccerStar.Server
             }
 
         }
+        private Action<StickerData> getsticker;
+        public event Action<StickerData> GetStickers
+        {
+            add
+            {
+                getsticker += value;
+            }
+            remove
+            {
+                getsticker -= value;
+            }
+        }
+        protected void Handler_GetStickers(StickerData data)
+        {
+            if (getsticker != null)
+            {
+                getsticker(data);
+            }
+
+        }
+
+        private Action<string> incomingmessage;
+        public event Action<string>InComingMessage
+        {
+            add
+            {
+                incomingmessage += value;
+            }
+            remove
+            {
+                incomingmessage -= value;
+            }
+        }
+        protected void Handler_IncomingMessage(string mess)
+        {
+            if (incomingmessage != null)
+            {
+                incomingmessage(mess);
+            }
+
+        }
         #endregion
 
 
@@ -1320,4 +1470,18 @@ public class SoftFloat
         return Math.Round(digit, 2);
     }
 
+}
+
+
+[Serializable]
+public struct ARENA
+{
+    public string name;
+    public GameObject arena;
+}
+[Serializable]
+public struct FLAG
+{
+    public string name;
+    public Texture2D flag;
 }

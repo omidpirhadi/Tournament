@@ -33,6 +33,7 @@ namespace Diaco.ImageContainerTool
             }
             return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         }
+     
         public Texture2D LoadSkinMarble(string name)
         {
             texture = new Texture2D(512, 512);
