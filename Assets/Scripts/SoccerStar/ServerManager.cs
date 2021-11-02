@@ -259,9 +259,12 @@ namespace Diaco.SoccerStar.Server
                         //SetPlayerTwo(gameData);
 
                     }
-                    SelectArena(gameData.ground);
+
+                    if (!SpwanedMarbels)
+                        SelectArena(gameData.ground);
+
                     SetPlayer();
-                    //  Debug.Log(m[0].ToString());
+      
 
                     Handler_GameReady();
                     Debug.Log("gameData");
@@ -456,7 +459,7 @@ namespace Diaco.SoccerStar.Server
                 SetGoalUIText(gameData.playerOne.score.ToString(), gameData.playerTwo.score.ToString());
                 SetGoalUIName(gameData.playerOne.userName, gameData.playerTwo.userName);
                 SetImageUI(imageContainer.LoadImage(gameData.playerOne.avatar), imageContainer.LoadImage(gameData.playerTwo.avatar));
-                SetTime(gameData.turnTime);
+                SetTime(gameData.turnTime, gameData.totalTime);
             }
             else if (Side == 2)
             {
@@ -465,7 +468,7 @@ namespace Diaco.SoccerStar.Server
                 SetGoalUIText(gameData.playerTwo.score.ToString(), gameData.playerOne.score.ToString());
                 SetGoalUIName(gameData.playerTwo.userName, gameData.playerOne.userName);
                 SetImageUI(imageContainer.LoadImage(gameData.playerTwo.avatar), imageContainer.LoadImage(gameData.playerOne.avatar));
-                SetTime(gameData.turnTime);
+                SetTime(gameData.turnTime, gameData.totalTime);
             }
 
             if (Convert.ToInt16(gameData.state) == -1)
@@ -626,13 +629,13 @@ namespace Diaco.SoccerStar.Server
                 if (e.name == name)
                 {
                     texture = e.flag;
-                    Debug.Log(e.name + "sssddssdd");
+                  
                 }
 
                 else if (e.name == "")
                 {
                     texture = Flags[0].flag;
-                    Debug.Log(e.name + "xxxxx");
+                    
                 }
 
             });
@@ -865,20 +868,23 @@ namespace Diaco.SoccerStar.Server
             IndicatorTime[1].fillAmount = 1.0f;
             //    Debug.Log("TimeCancelAndReset");
         }
-        public void SetTime(float t)
+        public void SetTime(float t, float totaltime)
         {
             CancleInvokeTime();
             TimeTurn = t / 1000;////convert to  sec
+            float fill = t / totaltime;
+            
 
 
 
             if (gameData.ownerTurn == Side)
             {
-
+               // IndicatorTime[0].fillAmount = fill; 
                 StartInvokeTimerLeft();
             }
             else
             {
+               // IndicatorTime[1].fillAmount = fill;
                 StartInvokeTimerRight();
             }
 

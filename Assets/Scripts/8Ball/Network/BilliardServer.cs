@@ -44,8 +44,10 @@ namespace Diaco.EightBall.Server
         // public bool TurnRecived = false;
         [FoldoutGroup("ServerSettings")]
         public List<AddressBall> AddressBalls;
-
-
+        [FoldoutGroup("ServerSettings")]
+        public List<TABLE> Tables;
+        [FoldoutGroup("ServerSettings")]
+        public MeshRenderer TableRenderer;
         [FoldoutGroup("ServerSettings")]
         private int intergateplayposition;
         [SerializeField]
@@ -267,6 +269,8 @@ namespace Diaco.EightBall.Server
                     {
                         SetPlayerTwo(gameData);
                     }
+                    if (!SpwnedBall)
+                        SelectTable(gameData.table);
                     //Handler_GameReady();
                     //  Debug.Log(m[0].ToString());
                 });
@@ -524,12 +528,12 @@ namespace Diaco.EightBall.Server
             {
                 initializTurn(data);
 
-                EnableCoolDown(Side.Left, data.turnTime);
+                EnableCoolDown(Side.Left, data.turnTime,data.totalTime);
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
-                EnableCoolDown(Side.Right, data.turnTime);
+                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
                 CheckEnable8BallRightInOtherClient();
 
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
@@ -610,12 +614,12 @@ namespace Diaco.EightBall.Server
             {
                 initializTurn(data);
                 /// CheckPitok(data.pitok, data.positions.CueBall);
-                EnableCoolDown(Side.Left, data.turnTime);
+                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
-                EnableCoolDown(Side.Right, data.turnTime);
+                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
                 CheckEnable8BallRightInOtherClient();
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
 
@@ -1321,6 +1325,27 @@ namespace Diaco.EightBall.Server
             if (!BallInBasket.Contains(id))
                 BallInBasket.Add(id); 
         }
+        public void SelectTable(string name)
+        {
+
+           
+            Tables.ForEach(e => {
+
+                if (e.name == name)
+                {
+                    TableRenderer.material = e.table;
+                    
+                }
+
+                else if (e.name == "")
+                {
+                    TableRenderer.material = Tables[0].table;
+                   
+                }
+
+            });
+            
+        }
         #endregion
         #region IN RECORD MODE
         /// <summary>
@@ -1490,21 +1515,25 @@ namespace Diaco.EightBall.Server
         }
 
         
-        private void EnableCoolDown(Diaco.EightBall.Structs.Side side, int Time)
+        private void EnableCoolDown(Diaco.EightBall.Structs.Side side, int Time ,int totaltime)
         {
             PlayerCoolDowns[0].fillAmount = 1;
             PlayerCoolDowns[1].fillAmount = 1;
             Timer = Time/1000;
+
+            float fill = Time / totaltime;
             ////  Debug.Log("Time" + Timer);
 
             if (side == 0)
             {
+              // PlayerCoolDowns[0].fillAmount = fill;
                 InvokeRepeating("SetLeftCoolDown", 0.0f, 0.01f * UnityEngine.Time.timeScale);
               
                  //Debug.Log("EnableCooldownLeft");
             }
             else
             {
+              //  PlayerCoolDowns[0].fillAmount = fill;
                 InvokeRepeating("SetRightCoolDown", 0.0f, 0.01f * UnityEngine.Time.timeScale);
                   /// Debug.Log("EnableCooldownRight");
             }
@@ -2061,4 +2090,11 @@ namespace Diaco.EightBall.Server
         public float spin;
         public float aim;
     }
+    [Serializable]
+    public struct TABLE
+    {
+        public string name;
+        public Material table;
+    }
+
 }
