@@ -49,15 +49,16 @@ namespace Diaco.SoccerStar.Server
                 turn = value;
 
                 handler_OnTurnChange(turn);
+               // Debug.Log("GENERAlTURN");
                 if (turn == true)
                 {
-                    DOVirtual.Float(0, 1, 0.3f, x =>
+               /*     DOVirtual.Float(0, 1, 0.3f, x =>
                     {
 
                     }).OnComplete(() =>
                     {
                         Handler_OnPhysicFreeze(false);
-                    });
+                    });*/
                 }
 
 
@@ -143,6 +144,8 @@ namespace Diaco.SoccerStar.Server
         public StickerShareViwer StickerViwerLeft;
         [FoldoutGroup("NetworkedUI")]
         public StickerShareViwer StickerViwerRight;
+        [FoldoutGroup("NetworkedUI")]
+        public GameObject im_BadConnection;
         //public Slider slider;
         // [SerializeField]
         // public List<MarbleState> Frames;
@@ -232,6 +235,8 @@ namespace Diaco.SoccerStar.Server
             socket.On("connect", (s, p, a) =>
             {
                 socket.Emit("authToken", ReadToken("token"));
+                BadConnectionShow(false);
+                Time.timeScale = 1;
                 print("Connected");
                 // Handler_GameReady();
             });
@@ -330,8 +335,25 @@ namespace Diaco.SoccerStar.Server
                 socket.On("message", (s, p, m) => {
 
                     var message = Convert.ToString(m[0]);
-                    Handler_IncomingMessage(message);
+                    var durtaion = Convert.ToSingle(m[1]);
+                    if (Convert.ToInt16(m[2]) == 0)
+                        Time.timeScale = 0;
+                    else
+                        Time.timeScale = 1;
+
+
+                    Handler_IncomingMessage(message, durtaion);
+
                     Debug.Log("ReciveMessage:" + message);
+                });
+
+                socket.On("BackToMenu", (s, p, m) => {
+
+                    
+                   //// CloseSocket();
+                    var Luncher = FindObjectOfType<GameLuncher>();
+                    Luncher.BackToMenu();
+                    
                 });
             }
             else
@@ -362,6 +384,17 @@ namespace Diaco.SoccerStar.Server
             }
             socket.On("disconnect", (s, p, a) =>
             {
+                BadConnectionShow(true);
+                
+                if(FindObjectOfType<GameLuncher>().InBackToMenu  == false)
+                {
+                    Time.timeScale = 0;
+                }
+                else
+                {
+                    FindObjectOfType<GameLuncher>().InBackToMenu = false;
+                    Time.timeScale = 1;
+                }
                 print("disConnected");
             });
         }
@@ -505,8 +538,18 @@ namespace Diaco.SoccerStar.Server
             if (Side == 1)
             {
                 if (SpwanedMarbels == false)
+
                 {
-                    RunSpawnMarble_New(gameData, 1, gameData.playerOne.skin, gameData.playerTwo.skin);
+
+                    if (gameData.playerOne.skin == gameData.playerTwo.skin)
+                    {
+                        RunSpawnMarble_New(gameData, 1, gameData.playerOne.skin, "D2");
+                    }
+                    else
+                    {
+                        RunSpawnMarble_New(gameData, 1, gameData.playerOne.skin, gameData.playerTwo.skin);
+                    }
+                   
                 }
                 else
                 {
@@ -515,7 +558,7 @@ namespace Diaco.SoccerStar.Server
                 if (gameData.ownerTurn == Side)
                 {
                     Turn = true;
-                    //   Debug.Log("TRUN1");
+                   //  Debug.Log("TRUN1");
                     /// KinimaticMarblesAndBall(false);
                 }
                 else
@@ -527,7 +570,16 @@ namespace Diaco.SoccerStar.Server
             {
                 if (SpwanedMarbels == false)
                 {
-                    RunSpawnMarble_New(gameData, -1, gameData.playerOne.skin, gameData.playerTwo.skin);
+
+                    if(gameData.playerOne.skin  == gameData.playerTwo.skin)
+                    {
+                        RunSpawnMarble_New(gameData, -1, "D2", gameData.playerTwo.skin);
+                    }
+                    else
+                    {
+                        RunSpawnMarble_New(gameData, -1, gameData.playerOne.skin, gameData.playerTwo.skin);
+                    }
+                    
                 }
                 else
                 {
@@ -536,7 +588,7 @@ namespace Diaco.SoccerStar.Server
                 if (gameData.ownerTurn == Side)
                 {
                     Turn = true;
-                    /// Debug.Log("TRUN2");
+                   ///  Debug.Log("TRUN2");
                   //  KinimaticMarblesAndBall(false);
                 }
                 else
@@ -557,15 +609,16 @@ namespace Diaco.SoccerStar.Server
             {
                 if (i < 5)
                 {
-
-                    var marble = Instantiate(MarbleRegistered[0], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
+                    var type = SelectBottomFlag(selfskin);
+                    var marble = Instantiate(MarbleRegistered[type], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
                     
                      marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(selfskin));
                 }
                 else if (i < 10)
                 {
-                    var marble = Instantiate(MarbleRegistered[1], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
+                    var type = SelectBottomFlag(enemyskin);
+                    var marble = Instantiate(MarbleRegistered[type], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
                     marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(enemyskin));
                 }
@@ -577,7 +630,7 @@ namespace Diaco.SoccerStar.Server
         }
         public IEnumerator MoveMarbelsToPositionFromServer(GameData data, int side, float speed)
         {
-           // Handler_OnPhysicFreeze(true);
+            Handler_OnPhysicFreeze(true);
             var count_movement = data.positions.Count;
             for (int i = 0; i < count_movement; i++)
             {
@@ -590,10 +643,10 @@ namespace Diaco.SoccerStar.Server
 
 
                 ///Marbles[index_marble].transform.eulerAngles = rotate;
-                Marbles[index_marble].transform.DOMove(pos, 0.1f);
+                Marbles[index_marble].transform.DOMove(pos, 0.01f);
                 // Debug.Log("MOVVVVEEEEEE");
             }
-           // Handler_OnPhysicFreeze(false);
+            Handler_OnPhysicFreeze(false);
             yield return null;
 
         }
@@ -642,12 +695,28 @@ namespace Diaco.SoccerStar.Server
 
             return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 512);
         }
-
         /// <summary>
-        /// Set Sticker Viwer
+        /// 
         /// </summary>
-        /// <param name="namesticker">Name Sticker</param>
-        /// <param name="side">0=Left,1=Right</param>
+        /// <param name="name">NameOfMarble</param>
+        /// <returns>TypeOfBottomMarble : 0 = gold, 1 = silver</returns>
+        public int SelectBottomFlag(string name)
+        {
+            int type = 0;
+            Flags.ForEach(e => {
+
+                if (e.name == name)
+                {
+                    if (e.BottomGold)
+                        type = 0;
+                    else
+                        type = 1;
+
+                }
+
+            });
+            return type;
+        }
         public void StickerViwer(object namesticker, object side)
         {
             int name = Convert.ToInt32(namesticker);
@@ -663,7 +732,13 @@ namespace Diaco.SoccerStar.Server
                 StickerViwerRight.gameObject.SetActive(true);
             }
         }
+        public void BadConnectionShow(bool show)
+        {
 
+            im_BadConnection.SetActive(show);
+           
+
+        }
         public IEnumerator SendDataMarblesMovement()
         {
           //  Debug.Log("ForceT2222T");
@@ -707,7 +782,7 @@ namespace Diaco.SoccerStar.Server
                    //Debug.Log("SendPositions");
             }
             while (CheckMarbleMove());
-            Handler_OnPhysicFreeze(true);
+            ///Handler_OnPhysicFreeze(true);
             socket.Emit("EndTurn", IsGoal);
             Debug.Log("ISGoal::"+ IsGoal);
             IsGoal = -1;
@@ -1400,8 +1475,8 @@ namespace Diaco.SoccerStar.Server
 
         }
 
-        private Action<string> incomingmessage;
-        public event Action<string>InComingMessage
+        private Action<string,float> incomingmessage;
+        public event Action<string,float>InComingMessage
         {
             add
             {
@@ -1412,11 +1487,11 @@ namespace Diaco.SoccerStar.Server
                 incomingmessage -= value;
             }
         }
-        protected void Handler_IncomingMessage(string mess)
+        protected void Handler_IncomingMessage(string mess,float d)
         {
             if (incomingmessage != null)
             {
-                incomingmessage(mess);
+                incomingmessage(mess,d);
             }
 
         }
@@ -1490,4 +1565,5 @@ public struct FLAG
 {
     public string name;
     public Texture2D flag;
+    public bool BottomGold;
 }

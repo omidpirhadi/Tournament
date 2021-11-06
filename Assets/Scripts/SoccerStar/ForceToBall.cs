@@ -65,19 +65,16 @@ namespace Diaco.SoccerStar.Marble
         private Ray ray;
         public void Start()
         {
+            server = FindObjectOfType<ServerManager>();
             TestSetting = FindObjectOfType<SoccerTestSettings>();
             rigidbody = GetComponent<Rigidbody>();
-            server = FindObjectOfType<ServerManager>();
-            SetYPositionRefrence();
-           // LastPos = transform.position;
-            TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
-
+            
+           
 
             if (MarbleType == Marble_Type.Marble)
             {
                 server.OnChangeTurn += Server_OnChangeTurn;
                 server.EnableRingMarbleForOpponent += Server_EnableRingMarbleForOpponent;
-                ///  server.Move += Server_Move;
                 playerControll = FindObjectOfType<TempPlayerControll>();
                 playerControll.EnableSelectRingEffect += PlayerControll_EnableSelectRingEffect;
                 playerControll.OnShoot += PlayerControll_OnShoot;
@@ -85,6 +82,15 @@ namespace Diaco.SoccerStar.Marble
             }
             server.OnPhysicFreeze += Server_OnPhysicFreeze;
             TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
+            SetYPositionRefrence();
+            if(server.Turn)
+            {
+                SelectEffectEnable(true);
+            }
+            else
+            {
+                SelectEffectEnableForOpponent(true);
+            }
         }
         void Update()
         {
@@ -138,6 +144,29 @@ namespace Diaco.SoccerStar.Marble
         {
 
         }
+        public void OnDestroy()
+        {
+
+            if (MarbleType == Marble_Type.Marble)
+            {
+
+              //  playerControll.EnableSelectRingEffect -= PlayerControll_EnableSelectRingEffect;
+                playerControll.OnShoot -= PlayerControll_OnShoot;
+               // server.EnableRingMarbleForOpponent -= Server_EnableRingMarbleForOpponent;
+                server.OnChangeTurn -= Server_OnChangeTurn;
+
+            }
+            server.OnPhysicFreeze -= Server_OnPhysicFreeze;
+            TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
+        }
+
+        public void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            var reflect = Vector3.Reflect(ray.direction, hit.normal);
+            Gizmos.DrawRay(transform.position, ray.direction);
+            Gizmos.DrawRay(hit.point, reflect);
+        }
 
         private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationMarbleAfterhit, float MassBall, float DragBall, float AngularDragBall,float speedtheshold)
         {
@@ -166,33 +195,11 @@ namespace Diaco.SoccerStar.Marble
             PhysicFreeze(obj);
         }
 
-        public void OnDestroy()
-        {
-     
-                if (MarbleType == Marble_Type.Marble)
-                {
-
-                    playerControll.EnableSelectRingEffect -= PlayerControll_EnableSelectRingEffect;
-                    playerControll.OnShoot -= PlayerControll_OnShoot;
-                    server.EnableRingMarbleForOpponent -= Server_EnableRingMarbleForOpponent;
-                    server.OnChangeTurn -= Server_OnChangeTurn;
-
-                }
-            server.OnPhysicFreeze -= Server_OnPhysicFreeze;
-            TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
-        }
-
-        public void OnDrawGizmos()
-        {
-            Gizmos.color = Color.green;
-           var reflect =  Vector3.Reflect(ray.direction, hit.normal);
-            Gizmos.DrawRay(transform.position, ray.direction);
-            Gizmos.DrawRay(hit.point, reflect);
-        }
 
         private void Server_EnableRingMarbleForOpponent( bool enable)
         {
             SelectEffectEnableForOpponent(enable);
+            Debug.Log("SelectEffectEnableForOpponent SelectEffectEnable");
         }
 
         private void PlayerControll_OnShoot(int marbleID,Vector3 dir, float pow)
@@ -209,6 +216,7 @@ namespace Diaco.SoccerStar.Marble
         private void PlayerControll_EnableSelectRingEffect(bool obj)
         {
             SelectEffectEnable(obj);
+            //Debug.Log("PlayerControll SelectEffectEnable");
         }
 
       
@@ -216,7 +224,7 @@ namespace Diaco.SoccerStar.Marble
         private void Server_OnChangeTurn(bool obj)
         {
             SelectEffectEnable(obj);
-            ///Debug.Log("TURN" + obj.ToString());
+           // Debug.Log("TURN SelectEffectEnable");
         }
 
 
@@ -344,12 +352,12 @@ namespace Diaco.SoccerStar.Marble
                 //Debug.Log("34343");
                 if (CheckOwnerMarble())
                 {
-                    SelectEffect.SetActive(Active); //Debug.Log("sdasd");
+                    SelectEffect.SetActive(Active);
+
+                    ///Debug.Log("SelectEffectOwner");
                 }
-                else
-                {
-                    SelectEffect.SetActive(false);
-                }
+
+             
                
             }
         }
@@ -441,11 +449,13 @@ namespace Diaco.SoccerStar.Marble
         }
         private void PhysicFreeze(bool enable)
         {
-          /*  if (enable)
+            if (enable)
 
             {
-                this.rigidbody.isKinematic = true;
                 this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+                this.rigidbody.isKinematic = true;
+                
+
                 Debug.Log("PhysicFreeze");
             }
 
@@ -455,7 +465,7 @@ namespace Diaco.SoccerStar.Marble
                 this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 Debug.Log("Physic UnFreeze");
 
-            }*/
+            }
         }
     }
 }

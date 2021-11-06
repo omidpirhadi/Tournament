@@ -107,7 +107,7 @@ namespace Diaco.SoccerStar.CustomTypes
         public float CricleScale;
         public float CircleRotate_Y;
         public float AimPower;
-       /// public Vector3 PositionIndicator;
+       // public Vector3 MaskPosition;
        //// public float RotateIndicator_Y;
     }
     [Serializable]

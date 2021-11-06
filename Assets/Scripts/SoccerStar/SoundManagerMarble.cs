@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PostSoundManager : MonoBehaviour
+public class SoundManagerMarble : MonoBehaviour
 {
     public bool SoundEnable = true;
     public AudioClip[] audios;
@@ -12,17 +12,14 @@ public class PostSoundManager : MonoBehaviour
     {
         //audios = new AudioClip[2];
         audioSource = GetComponent<AudioSource>();
-
     }
 
-    void OnTriggerEnter(Collider obj)
+    void OnCollisionEnter(Collision obj)
     {
-      if (obj.gameObject.tag == "marble"  && SoundEnable)
+        if (obj.gameObject.tag == "marble" && SoundEnable)
         {
             audioSource.clip = audios[0];
             audioSource.Play();
-            Debug.Log("aAaAAAA");
-
         }
     }
 }

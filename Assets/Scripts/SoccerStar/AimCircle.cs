@@ -117,6 +117,7 @@ public class AimCircle : MonoBehaviour
         this.transform.localScale = new Vector3(0, 0, 0);
         this.transform.position = new Vector3(0, 0, 0);
         this.transform.eulerAngles = new Vector3(0, 0, 0);
+        this.MaskCircle.position = new Vector3(0, 0, 0); 
         CurrentAimPower = 0.0f;
         //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
@@ -162,7 +163,9 @@ public class AimCircle : MonoBehaviour
                 Position = this.transform.position,
                 CircleRotate_Y = this.transform.eulerAngles.y,
                 CricleScale = this.transform.localScale.x,
-                AimPower = CurrentAimPower
+                AimPower = CurrentAimPower,
+                ///MaskPosition = MaskCircle.position
+                
 
             });
             yield return new WaitForSeconds(SendRateAimDataToServer);
@@ -178,6 +181,7 @@ public class AimCircle : MonoBehaviour
 
     private void Server_OnAimRecive(Diaco.SoccerStar.CustomTypes.AimData aimdata)
     {
+        this.MaskCircle.position = new Vector3(-1 * aimdata.Position.x, aimdata.Position.y, aimdata.Position.z);
         this.transform.position = new Vector3(-1 * aimdata.Position.x, aimdata.Position.y, aimdata.Position.z);
         this.transform.DOScale(aimdata.CricleScale, SendRateAimDataToServer);
         this.transform.DORotate(new Vector3(this.transform.eulerAngles.x, -aimdata.CircleRotate_Y, this.transform.eulerAngles.z), SendRateAimDataToServer);

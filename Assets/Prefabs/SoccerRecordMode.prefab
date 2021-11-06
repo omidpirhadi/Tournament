@@ -256,11 +256,11 @@ MonoBehaviour:
   RecordAim: 0
   SendRateAimDataToServer: 0.04
   bodyCircle:
-    lineRendererCircle: {fileID: 1522740769595150880}
     lineRendererArrowForward: {fileID: 1522740770669135430}
     lineRendererArrowBackward: {fileID: 1522740770435319825}
     Cricletexture: {fileID: 1522740770259503632}
     Arrowtexture: {fileID: 1522740771204552173}
+  MaskCircle: {fileID: 0}
   indicator: {fileID: 1522740770669135432}
   indicatorNegativ: {fileID: 1522740770435319827}
   SensivitiScale: 1
@@ -2200,6 +2200,7 @@ RectTransform:
   - {fileID: 1522740771517278661}
   - {fileID: 1522740770114896643}
   - {fileID: 1522740770614843421}
+  - {fileID: 7895782518820140161}
   m_Father: {fileID: 1522740770807496984}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
@@ -3329,6 +3330,7 @@ MonoBehaviour:
     - id: 0
       position: {x: 0, y: 0, z: 0}
       rotate_y: 0
+    totalTime: 0
     turnTime: 0
     ownerTurn: 0
     winner: 
@@ -3349,6 +3351,8 @@ MonoBehaviour:
   - {fileID: 4867411009215751049, guid: fa72bf48d8e32994c8b84b952a7cbbc1, type: 3}
   - {fileID: 4867411009215751049, guid: c9671fe592edb3d4a9d3474ba194e74f, type: 3}
   Marbles: []
+  Arena: []
+  Flags: []
   MarbleInGoal: 0
   IsGoal: -1
   smooth: 0.01
@@ -3382,6 +3386,9 @@ MonoBehaviour:
   IndicatorTime:
   - {fileID: 0}
   - {fileID: 0}
+  StickerViwerLeft: {fileID: 0}
+  StickerViwerRight: {fileID: 0}
+  im_BadConnection: {fileID: 6444991936418825597}
   ThresholdSleep: 0.09
 --- !u!114 &1522740771422078535
 MonoBehaviour:
@@ -3403,11 +3410,15 @@ MonoBehaviour:
   MaskForMove:
     serializedVersion: 2
     m_Bits: 1024
-  DistanceFingerFromMarble: 6
   MarbleSelected: {fileID: 0}
   ID: 0
   Sensiviti: 0.1
   LastPos: {x: 0, y: 0, z: 0}
+  FirstPosFinger2: {x: 0, y: 0, z: 0}
+  firstouch: {x: 0, y: 0, z: 0}
+  secondtouch: {x: 0, y: 0, z: 0}
+  Touch2Clicked: 0
+  rotateType2: 0
 --- !u!1 &1522740771517278662
 GameObject:
   m_ObjectHideFlags: 0
@@ -5834,6 +5845,80 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6444991936418825597
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7895782518820140161}
+  - component: {fileID: 5913969388236422977}
+  - component: {fileID: 4655046706220814270}
+  m_Layer: 5
+  m_Name: img_ServerBadPing
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &7895782518820140161
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6444991936418825597}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1522740770848501678}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -53.49353, y: -70.71997}
+  m_SizeDelta: {x: 657.0217, y: 608.60864}
+  m_Pivot: {x: 0.49999997, y: 0.50000006}
+--- !u!222 &5913969388236422977
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6444991936418825597}
+  m_CullTransparentMesh: 0
+--- !u!114 &4655046706220814270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6444991936418825597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_Maskable: 0
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 8a72f43dc3136284a80aac4006e8013b, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 1
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &7599251057646004836
 GameObject:
   m_ObjectHideFlags: 0

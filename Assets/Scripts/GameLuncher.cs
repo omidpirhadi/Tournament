@@ -30,8 +30,8 @@ public class GameLuncher : MonoBehaviour
     private GameObject BilliardRecordGame;
     //public Diaco.EightBall.Server.BilliardServer ServerBilliardRecordGameController;
 
-   
-   
+
+    public bool InBackToMenu = false;
 
     public CanvasGroup FadeOutFadeInGroup;
     public float FadeInDuration = 0.2f;
@@ -104,6 +104,7 @@ public class GameLuncher : MonoBehaviour
     }*/
     public void BackToMenu()
     {
+        InBackToMenu = true;
         StartCoroutine(BackToMenuWithClearDataScene());
     }
     public void PlayAgainGame(int index)
@@ -313,6 +314,7 @@ public class GameLuncher : MonoBehaviour
         yield return new WaitUntil(() => FadeOutCompelete);
         FadeInCompelete = false;
         FadeOutCompelete = false;
+
     }
    
     private IEnumerator ClearEventsAndDestroyScene()

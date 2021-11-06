@@ -9,8 +9,11 @@ public class ChatBubble : MonoBehaviour
     public RectTransform background;
     public Text context;
     public Vector2 Padding;
+    
+    public Tweener timer;
     private void OnEnable()
     {
+        
         if (FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>())
         {
 
@@ -37,20 +40,23 @@ public class ChatBubble : MonoBehaviour
 
         }
     }
-    private void ChatBubble_InComingMessage(string mess)
+    private void ChatBubble_InComingMessage(string mess,float duration)
     {
-        SetBubble(mess);
+       
+        timer.Kill(false);
+        SetBubble(mess,duration);
     }
 
-
-    public void SetBubble(string mess)
+    
+    public void SetBubble(string mess,float duration)
     {
         context.text = mess;
         background.sizeDelta= new Vector2( context.preferredWidth, context.preferredHeight )+Padding;
-        DOVirtual.Float(0, 1, 10, (x) => { }).OnComplete(() =>
+        timer = DOVirtual.Float(0, 1, duration, (x) => { }).OnComplete(() =>
         {
-            SetBubble("");
+            SetBubble("", 0);
         });
 
     }
+
 }

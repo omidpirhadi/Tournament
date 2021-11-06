@@ -356,7 +356,8 @@ namespace Diaco.EightBall.Server
                 socket.On("message", (s, p, m) => {
 
                     var message = Convert.ToString(m[0]);
-                    Handler_IncomingMessage(message);
+                    var durtaion = Convert.ToSingle(m[1]);
+                    Handler_IncomingMessage(message, durtaion);
                     Debug.Log("ReciveMessage:" + message);
                 });
             }
@@ -2018,8 +2019,8 @@ namespace Diaco.EightBall.Server
             }
 
         }
-        private Action<string> incomingmessage;
-        public event Action<string> InComingMessage
+        private Action<string, float> incomingmessage;
+        public event Action<string, float> InComingMessage
         {
             add
             {
@@ -2030,11 +2031,11 @@ namespace Diaco.EightBall.Server
                 incomingmessage -= value;
             }
         }
-        protected void Handler_IncomingMessage(string mess)
+        protected void Handler_IncomingMessage(string mess, float d)
         {
             if (incomingmessage != null)
             {
-                incomingmessage(mess);
+                incomingmessage(mess, d);
             }
 
         }

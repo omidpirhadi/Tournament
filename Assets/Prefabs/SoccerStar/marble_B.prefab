@@ -108,11 +108,12 @@ GameObject:
   - component: {fileID: 4867411009215750224}
   - component: {fileID: 4867411009215750323}
   - component: {fileID: 4867411009215750209}
-  - component: {fileID: 1319628950}
+  - component: {fileID: 1006858266168262852}
   - component: {fileID: 4867411009215750318}
   - component: {fileID: 4867411009215750293}
   - component: {fileID: 4867411009215750598}
   - component: {fileID: 4867411009215750599}
+  - component: {fileID: -2057902040313522674}
   m_Layer: 8
   m_Name: marble_B
   m_TagString: marble
@@ -183,19 +184,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &1319628950
-SphereCollider:
+--- !u!64 &1006858266168262852
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4867411009215751049}
-  m_Material: {fileID: 13400000, guid: 97cefb26a54d2b94eabd4ca9862de54e, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.35
-  m_Center: {x: 0.028666494, y: 0, z: -0.07715299}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 3fec631664af36e4982531424ccae0e6, type: 3}
 --- !u!54 &4867411009215750318
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -219,7 +221,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4867411009215751049}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: eac80e19db2a55b49a470602f2c5e6db, type: 3}
@@ -351,6 +353,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FixRenderer: {fileID: 4867411009215750250}
+--- !u!114 &-2057902040313522674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4867411009215751049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f8bf009552afc3499f433c3a49b006a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SoundEnable: 1
+  audios:
+  - {fileID: 8300000, guid: e8be81231cc641349960be70dd7829c6, type: 3}
 --- !u!1 &4867411009215751129
 GameObject:
   m_ObjectHideFlags: 0
@@ -421,7 +438,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: f3e7f1d5240490e4280babdc3e3f1aeb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 927ffee48d5429f45a368faad9108477, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
