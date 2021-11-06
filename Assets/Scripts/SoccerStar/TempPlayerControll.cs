@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Profiling;
 using Diaco.SoccerStar.Server;
 using Diaco.SoccerStar.Marble;
 public class TempPlayerControll : MonoBehaviour
@@ -32,6 +33,29 @@ public class TempPlayerControll : MonoBehaviour
     void FixedUpdate()
     {
         TouchControll();
+        MarbleRingEffect();
+    }
+
+    public void MarbleRingEffect()
+    {
+        Profiler.BeginSample("OMID");
+        if(server.Turn && aimCricle.CurrentAimPower<3.5f)
+        {
+            Handler_EnableRingEffectOwner(true);
+        }
+        else if (server.Turn && aimCricle.CurrentAimPower > 3.5f)
+        {
+            Handler_EnableRingEffectOwner(false);
+        }
+        if(!server.Turn && aimCricle.CurrentAimPower < 3.5f)
+        {
+            Handler_EnableRingEffectOppenent(true);
+        }
+        else if (!server.Turn && aimCricle.CurrentAimPower > 3.5f)
+        {
+            Handler_EnableRingEffectOppenent(false);
+        }
+        Profiler.EndSample();
     }
     public void TouchControll()
     {
@@ -323,5 +347,44 @@ public class TempPlayerControll : MonoBehaviour
         }
     }
 
+    private Action<bool> enableRingEffectForOwner;
+    public event Action<bool> EnableRingEffectOwner
+    {
+        add
+        {
+            enableRingEffectForOwner += value;
+        }
+        remove
+        {
+            enableRingEffectForOwner -= value;
+        }
+    }
+    protected void Handler_EnableRingEffectOwner(bool enable)
+    {
+        if (enableRingEffectForOwner != null)
+        {
+            enableRingEffectForOwner(enable);
+        }
+    }
+
+    private Action<bool> enableRingEffectForOpponent;
+    public event Action<bool> EnableRingEffectOpponent
+    {
+        add
+        {
+            enableRingEffectForOpponent += value;
+        }
+        remove
+        {
+            enableRingEffectForOpponent -= value;
+        }
+    }
+    protected void Handler_EnableRingEffectOppenent(bool enable)
+    {
+        if (enableRingEffectForOpponent != null)
+        {
+            enableRingEffectForOpponent(enable);
+        }
+    }
 }
 

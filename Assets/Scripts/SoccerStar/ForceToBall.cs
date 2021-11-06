@@ -74,24 +74,37 @@ namespace Diaco.SoccerStar.Marble
             if (MarbleType == Marble_Type.Marble)
             {
                 server.OnChangeTurn += Server_OnChangeTurn;
-                server.EnableRingMarbleForOpponent += Server_EnableRingMarbleForOpponent;
+               // server.EnableRingMarbleForOpponent += Server_EnableRingMarbleForOpponent;
                 playerControll = FindObjectOfType<TempPlayerControll>();
-                playerControll.EnableSelectRingEffect += PlayerControll_EnableSelectRingEffect;
+                // playerControll.EnableSelectRingEffect += PlayerControll_EnableSelectRingEffect;
+                playerControll.EnableRingEffectOwner += PlayerControll_EnableRingEffectOwner;
+                playerControll.EnableRingEffectOpponent += PlayerControll_EnableRingEffectOpponent;
                 playerControll.OnShoot += PlayerControll_OnShoot;
 
             }
             server.OnPhysicFreeze += Server_OnPhysicFreeze;
             TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
             SetYPositionRefrence();
-            if(server.Turn)
+           /* if(server.Turn)
             {
                 SelectEffectEnable(true);
             }
             else
             {
                 SelectEffectEnableForOpponent(true);
-            }
+            }*/
         }
+
+        private void PlayerControll_EnableRingEffectOpponent(bool obj)
+        {
+            SelectEffectEnableForOpponent(obj);
+        }
+
+        private void PlayerControll_EnableRingEffectOwner(bool obj)
+        {
+            SelectEffectEnable(obj);
+        }
+
         void Update()
         {
           
@@ -198,7 +211,7 @@ namespace Diaco.SoccerStar.Marble
 
         private void Server_EnableRingMarbleForOpponent( bool enable)
         {
-            SelectEffectEnableForOpponent(enable);
+           // SelectEffectEnableForOpponent(enable);
             Debug.Log("SelectEffectEnableForOpponent SelectEffectEnable");
         }
 
@@ -215,7 +228,7 @@ namespace Diaco.SoccerStar.Marble
 
         private void PlayerControll_EnableSelectRingEffect(bool obj)
         {
-            SelectEffectEnable(obj);
+          //  SelectEffectEnable(obj);
             //Debug.Log("PlayerControll SelectEffectEnable");
         }
 
@@ -223,7 +236,7 @@ namespace Diaco.SoccerStar.Marble
 
         private void Server_OnChangeTurn(bool obj)
         {
-            SelectEffectEnable(obj);
+           // SelectEffectEnable(obj);
            // Debug.Log("TURN SelectEffectEnable");
         }
 
