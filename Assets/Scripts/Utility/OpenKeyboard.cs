@@ -4,22 +4,13 @@ using UnityEngine;
 
 public class OpenKeyboard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    TouchScreenKeyboard keyboard;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     public void Open()
     {
-        TouchScreenKeyboard keyboard = new TouchScreenKeyboard("", TouchScreenKeyboardType.ASCIICapable, true, true, false, false, "sss", 255);
-        keyboard.active = true;
+         keyboard = TouchScreenKeyboard.Open("hI", TouchScreenKeyboardType.ASCIICapable, true, true, false, false, "sss", 255);
+       
         
     }
 }

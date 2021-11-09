@@ -51,7 +51,7 @@ namespace Diaco.SoccerStar.Marble
         private ServerManager server;
 
         private TempPlayerControll playerControll;
-
+        private AimCircle aim;
        
         private Vector3 VlocityBall;
         
@@ -76,9 +76,10 @@ namespace Diaco.SoccerStar.Marble
                 server.OnChangeTurn += Server_OnChangeTurn;
                // server.EnableRingMarbleForOpponent += Server_EnableRingMarbleForOpponent;
                 playerControll = FindObjectOfType<TempPlayerControll>();
+                aim = FindObjectOfType<AimCircle>();
                 // playerControll.EnableSelectRingEffect += PlayerControll_EnableSelectRingEffect;
-                playerControll.EnableRingEffectOwner += PlayerControll_EnableRingEffectOwner;
-                playerControll.EnableRingEffectOpponent += PlayerControll_EnableRingEffectOpponent;
+                aim.EnableRingEffectOwner += PlayerControll_EnableRingEffectOwner;
+                aim.EnableRingEffectOpponent += PlayerControll_EnableRingEffectOpponent;
                 playerControll.OnShoot += PlayerControll_OnShoot;
 
             }
@@ -105,11 +106,7 @@ namespace Diaco.SoccerStar.Marble
             SelectEffectEnable(obj);
         }
 
-        void Update()
-        {
-          
-       
-        }
+
         void LateUpdate()
         {
 
@@ -153,21 +150,15 @@ namespace Diaco.SoccerStar.Marble
             }
         }
 
-        private void OnEnable()
-        {
-
-        }
         public void OnDestroy()
         {
 
             if (MarbleType == Marble_Type.Marble)
             {
-
-              //  playerControll.EnableSelectRingEffect -= PlayerControll_EnableSelectRingEffect;
+                aim.EnableRingEffectOwner -= PlayerControll_EnableRingEffectOwner;
+                aim.EnableRingEffectOpponent -= PlayerControll_EnableRingEffectOpponent;
                 playerControll.OnShoot -= PlayerControll_OnShoot;
-               // server.EnableRingMarbleForOpponent -= Server_EnableRingMarbleForOpponent;
                 server.OnChangeTurn -= Server_OnChangeTurn;
-
             }
             server.OnPhysicFreeze -= Server_OnPhysicFreeze;
             TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;

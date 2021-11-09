@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1285777980}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 10.5, y: -0, z: 0}
+  m_LocalPosition: {x: 39.99, y: -0, z: 1.68}
   m_LocalScale: {x: 6.786112, y: 7.421585, z: 7.421585}
   m_Children: []
   m_Father: {fileID: 2383272044396646624}
@@ -9801,7 +9801,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: dbb666741630dc941a539c9d57ad689e, type: 2}
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9823,7 +9823,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 5157e323bb71a494bb464aec78110b05, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 0.1764706}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -9831,7 +9831,7 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
+  m_MaskInteraction: 2
   m_SpriteSortPoint: 0
 --- !u!1 &2383272044396646122
 GameObject:
@@ -12528,6 +12528,7 @@ GameObject:
   - component: {fileID: 2383272044396649707}
   - component: {fileID: 2383272044396657769}
   - component: {fileID: 2383272044396657770}
+  - component: {fileID: 1892457580605792816}
   m_Layer: 5
   m_Name: btn_chat
   m_TagString: Untagged
@@ -12633,7 +12634,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2383272044396657769}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1892457580605792816}
+        m_MethodName: Open
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1892457580605792816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383272044396646170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56d8485ad093b14292e976720df331e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2383272044396646171
 GameObject:
   m_ObjectHideFlags: 0

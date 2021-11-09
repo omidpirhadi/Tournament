@@ -27,8 +27,39 @@ public class AimCircle : MonoBehaviour
         server.OnAimRecive += Server_OnAimRecive;
         server.ResetAim += Server_ResetAim;
     }
+    void FixedUpdate()
+    {
+       
+        MarbleRingEffect();
+    }
+    public void MarbleRingEffect()
+    {
+        ///  Profiler.BeginSample("OMID");
+        if (server.Turn && CurrentAimPower < 3.5f)
+        {
+            Handler_EnableRingEffectOwner(true);
+           //// Handler_EnableRingEffectOppenent(false);
+        }
+         if (server.Turn && CurrentAimPower > 3.5f)
+        {
+            Handler_EnableRingEffectOwner(false);
+           // Handler_EnableRingEffectOppenent(false);
+        }
+        if (!server.Turn && CurrentAimPower < 3.5f)
+        {
+            Handler_EnableRingEffectOppenent(true);
+           // Handler_EnableRingEffectOwner(false);
 
-   
+            Debug.Log("eR");
+        }
+         if (!server.Turn && CurrentAimPower > 3.5f)
+        {
+            Handler_EnableRingEffectOppenent(false);
+           // Handler_EnableRingEffectOwner(false);
+            Debug.Log("eRD");
+        }
+        //// Profiler.EndSample();
+    }
 
     public void BuildCircleAim()
     {
@@ -185,8 +216,8 @@ public class AimCircle : MonoBehaviour
         this.transform.position = new Vector3(-1 * aimdata.Position.x, aimdata.Position.y, aimdata.Position.z);
         this.transform.DOScale(aimdata.CricleScale, SendRateAimDataToServer);
         this.transform.DORotate(new Vector3(this.transform.eulerAngles.x, -aimdata.CircleRotate_Y, this.transform.eulerAngles.z), SendRateAimDataToServer);
-
-        if (aimdata.AimPower < 3.5f)
+        this.CurrentAimPower = aimdata.AimPower; 
+       /* if (aimdata.AimPower < 3.5f)
         {
             server.Handler_EnableRingMarbleForOpponent(true);
             HideAimCricle(true);
@@ -196,6 +227,45 @@ public class AimCircle : MonoBehaviour
         {
             server.Handler_EnableRingMarbleForOpponent(false );
             HideAimCricle(false);
+        }*/
+    }
+    private Action<bool> enableRingEffectForOwner;
+    public event Action<bool> EnableRingEffectOwner
+    {
+        add
+        {
+            enableRingEffectForOwner += value;
+        }
+        remove
+        {
+            enableRingEffectForOwner -= value;
+        }
+    }
+    protected void Handler_EnableRingEffectOwner(bool enable)
+    {
+        if (enableRingEffectForOwner != null)
+        {
+            enableRingEffectForOwner(enable);
+        }
+    }
+
+    private Action<bool> enableRingEffectForOpponent;
+    public event Action<bool> EnableRingEffectOpponent
+    {
+        add
+        {
+            enableRingEffectForOpponent += value;
+        }
+        remove
+        {
+            enableRingEffectForOpponent -= value;
+        }
+    }
+    protected void Handler_EnableRingEffectOppenent(bool enable)
+    {
+        if (enableRingEffectForOpponent != null)
+        {
+            enableRingEffectForOpponent(enable);
         }
     }
 }
