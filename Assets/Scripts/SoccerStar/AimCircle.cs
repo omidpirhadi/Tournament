@@ -38,25 +38,25 @@ public class AimCircle : MonoBehaviour
         if (server.Turn && CurrentAimPower < 3.5f)
         {
             Handler_EnableRingEffectOwner(true);
-           //// Handler_EnableRingEffectOppenent(false);
+           Handler_EnableRingEffectOppenent(false);
         }
          if (server.Turn && CurrentAimPower > 3.5f)
         {
             Handler_EnableRingEffectOwner(false);
-           // Handler_EnableRingEffectOppenent(false);
+            Handler_EnableRingEffectOppenent(false);
         }
         if (!server.Turn && CurrentAimPower < 3.5f)
         {
             Handler_EnableRingEffectOppenent(true);
-           // Handler_EnableRingEffectOwner(false);
+            Handler_EnableRingEffectOwner(false);
 
-            Debug.Log("eR");
+           // Debug.Log("eR");
         }
          if (!server.Turn && CurrentAimPower > 3.5f)
         {
             Handler_EnableRingEffectOppenent(false);
-           // Handler_EnableRingEffectOwner(false);
-            Debug.Log("eRD");
+            Handler_EnableRingEffectOwner(false);
+            //Debug.Log("eRD");
         }
         //// Profiler.EndSample();
     }
