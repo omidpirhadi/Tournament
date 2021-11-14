@@ -29,7 +29,7 @@ namespace Diaco.Alart
     [Serializable]
     public struct AlartData
     {
-        public int alartType;
+        public int alartType;//0 
         public string[] images;
         public string[] contexts;
         public int buttonType;
