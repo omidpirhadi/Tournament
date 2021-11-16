@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEditor;
 
 namespace Diaco.Notification
 {
-   
+  
     public class NotificationPopUp : MonoBehaviour
     {
         public NotificationMessage notificationMessage;
@@ -23,4 +23,5 @@ namespace Diaco.Notification
         }
    
     }
+    
 }

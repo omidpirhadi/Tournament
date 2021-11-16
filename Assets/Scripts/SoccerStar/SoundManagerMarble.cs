@@ -18,8 +18,8 @@ public class SoundManagerMarble : MonoBehaviour
     {
         if (obj.gameObject.tag == "marble" && SoundEnable)
         {
-            audioSource.clip = audios[0];
-            audioSource.Play();
+          //  audioSource.clip = audios[0];
+           // audioSource.Play();
         }
     }
 }

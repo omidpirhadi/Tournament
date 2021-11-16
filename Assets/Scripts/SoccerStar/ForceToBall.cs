@@ -54,13 +54,14 @@ namespace Diaco.SoccerStar.Marble
         private AimCircle aim;
        
         private Vector3 VlocityBall;
-        
-       //// private Vector3 LastPos;
-       //[SerializeField] private float Y_Pos_Refrence = 0.0f;
-        
-        //private float StepPower;
-       // private Vector3 DirectionMove;
 
+        //// private Vector3 LastPos;
+       [SerializeField] private float Y_Pos_Refrence = 0.0f;
+
+        //private float StepPower;
+        // private Vector3 DirectionMove;
+        public Vector3 LastPosition;
+        public Vector3 LastRotation;
         private RaycastHit hit;
         private Ray ray;
         public void Start()
@@ -86,14 +87,16 @@ namespace Diaco.SoccerStar.Marble
             server.OnPhysicFreeze += Server_OnPhysicFreeze;
             TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
             SetYPositionRefrence();
-           /* if(server.Turn)
-            {
-                SelectEffectEnable(true);
-            }
-            else
-            {
-                SelectEffectEnableForOpponent(true);
-            }*/
+            /* if(server.Turn)
+             {
+                 SelectEffectEnable(true);
+             }
+             else
+             {
+                 SelectEffectEnableForOpponent(true);
+             }*/
+            LastPosition = this.transform.position;
+            LastRotation = this.transform.eulerAngles;
         }
 
         private void PlayerControll_EnableRingEffectOpponent(bool obj)
@@ -120,7 +123,8 @@ namespace Diaco.SoccerStar.Marble
                 RotateMarble();
             if (IsRotateBall)
                 RotateBall();
-           
+            LastPosition = this.transform.position;
+            LastRotation = this.transform.eulerAngles;
         }
 
 
@@ -200,11 +204,7 @@ namespace Diaco.SoccerStar.Marble
         }
 
 
-        private void Server_EnableRingMarbleForOpponent( bool enable)
-        {
-           // SelectEffectEnableForOpponent(enable);
-            Debug.Log("SelectEffectEnableForOpponent SelectEffectEnable");
-        }
+   
 
         private void PlayerControll_OnShoot(int marbleID,Vector3 dir, float pow)
         {
@@ -222,8 +222,45 @@ namespace Diaco.SoccerStar.Marble
           //  SelectEffectEnable(obj);
             //Debug.Log("PlayerControll SelectEffectEnable");
         }
+        private void Server_EnableRingMarbleForOpponent(bool enable)
+        {
+            // SelectEffectEnableForOpponent(enable);
+            Debug.Log("SelectEffectEnableForOpponent SelectEffectEnable");
+        }
+        public void SelectEffectEnable(bool Active)
+        {
+            // Debug.Log("aaaszx");
+            if (MarbleType == Marble_Type.Marble)
+            {
+                if (CheckMoveBall() == false)
+                {
+                    //Debug.Log("34343");
+                    if (CheckOwnerMarble())
+                    {
+                        SelectEffect.SetActive(Active);
 
-      
+                        ///Debug.Log("SelectEffectOwner");
+                    }
+
+                }
+
+            }
+        }
+        public void SelectEffectEnableForOpponent(bool Active)
+        {
+            // Debug.Log("aaaszx");
+            if (MarbleType == Marble_Type.Marble)
+            {
+                if (CheckMoveBall() == false)
+                {
+                    //Debug.Log("34343");
+                    if (!CheckOwnerMarble())
+                    {
+                        SelectEffect.SetActive(Active); //Debug.Log("sdasd");
+                    }
+                }
+            }
+        }
 
         private void Server_OnChangeTurn(bool obj)
         {
@@ -282,7 +319,7 @@ namespace Diaco.SoccerStar.Marble
         }
         private void FixOverflowMovment()
         {
-           /* if (Y_Pos_Refrence > 0.0f)
+            if (Y_Pos_Refrence > 0.0f)
             {
                 var conflict_Y = Mathf.Abs(transform.position.y - Y_Pos_Refrence);
                 if (conflict_Y > 0.1f)
@@ -290,23 +327,23 @@ namespace Diaco.SoccerStar.Marble
 
                     transform.position = new Vector3(transform.position.x, Y_Pos_Refrence, transform.position.z);
 
-                    Debug.Log("Fix Y Ball");
+                   /// Debug.Log("Fix Y Ball");
                 }
 
 
                
-            }*/
-            if (CheckBallMove() == true && InMove == false)
+            }
+            if (CheckMoveBall() == true && InMove == false)
             {
-                DOVirtual.Float(0, 1, 1.0f, (x) => { }).OnComplete(() =>
-                {
+               // DOVirtual.Float(0, 1, 1.0f, (x) => { }).OnComplete(() =>
+               // {
 
-                }).OnComplete(() =>
-                {
+              //  }).OnComplete(() =>
+              //  {
 
                     InMove = true;
                     //Debug.Log("BallMove");
-                });
+               // });
             }
             if (VlocityBall.magnitude < ThresholdSleep  && VlocityBall.magnitude >0.001f && InMove == true)
             {
@@ -323,7 +360,7 @@ namespace Diaco.SoccerStar.Marble
             }
                 
         }
-        private bool CheckBallMove()
+        /*private bool CheckBallMove()
         {
             var move = false;
 
@@ -337,7 +374,7 @@ namespace Diaco.SoccerStar.Marble
 
 
             return move;
-        }
+        }*/
 
         public bool CheckOwnerMarble()
         {
@@ -348,36 +385,7 @@ namespace Diaco.SoccerStar.Marble
             }
             return c;
         }
-        public void SelectEffectEnable(bool Active)
-        {
-           // Debug.Log("aaaszx");
-            if (MarbleType == Marble_Type.Marble)
-            {
-                //Debug.Log("34343");
-                if (CheckOwnerMarble())
-                {
-                    SelectEffect.SetActive(Active);
 
-                    ///Debug.Log("SelectEffectOwner");
-                }
-
-             
-               
-            }
-        }
-        public void SelectEffectEnableForOpponent(bool Active)
-        {
-            // Debug.Log("aaaszx");
-            if (MarbleType == Marble_Type.Marble)
-            {
-                //Debug.Log("34343");
-                if (!CheckOwnerMarble())
-                {
-                    SelectEffect.SetActive(Active); //Debug.Log("sdasd");
-                }
-
-            }
-        }
         public void SetSkinMarble(Sprite skin)
         {
 
@@ -451,6 +459,49 @@ namespace Diaco.SoccerStar.Marble
                // IsRotateBall = true;
 
         }
+
+
+        private bool EqeulPosition(Vector3 a, Vector3 b)
+        {
+            bool eqeul = false;
+            var x = a.x - b.x;
+            var z = a.z - b.z;
+            if (x == 0.0f && z == 0.0f)
+            {
+                eqeul = true;
+            }
+            //  LastPosition = this.transform.position;
+            return eqeul;
+
+        }
+        private bool EqeulRotation(Vector3 a, Vector3 b)
+        {
+            bool eqeul = false;
+            var x = a.x - b.x;
+            var y = a.y - b.y;
+            var z = a.z - b.z;
+            if (x == 0.0f && y == 0.0f && z == 0.0f)
+            {
+                eqeul = true;
+            }
+            //// LastRotation = this.transform.eulerAngles;
+            return eqeul;
+        }
+        public bool CheckMoveBall()
+        {
+            var move = false;
+            var domove = EqeulPosition(transform.position, LastPosition);
+            var dorotate = EqeulRotation(transform.eulerAngles, LastPosition);
+
+            if (domove == false && dorotate == false)
+            {
+
+                move = true;
+            }
+
+            return move;
+        }
+
         private void PhysicFreeze(bool enable)
         {
             if (enable)
