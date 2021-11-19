@@ -529,12 +529,12 @@ namespace Diaco.EightBall.Server
             {
                 initializTurn(data);
 
-                EnableCoolDown(Side.Left, data.turnTime,data.totalTime);
+                EnableCoolDown(Side.Left, data.turnTime,0);
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
-                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Right, data.turnTime, 0);
                 CheckEnable8BallRightInOtherClient();
 
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
@@ -615,12 +615,12 @@ namespace Diaco.EightBall.Server
             {
                 initializTurn(data);
                 /// CheckPitok(data.pitok, data.positions.CueBall);
-                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Left, data.turnTime, 0);
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
-                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Right, data.turnTime, 0);
                 CheckEnable8BallRightInOtherClient();
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
 
@@ -1522,7 +1522,7 @@ namespace Diaco.EightBall.Server
             PlayerCoolDowns[1].fillAmount = 1;
             Timer = Time/1000;
 
-            float fill = Time / totaltime;
+           // float fill = Time / totaltime;
             ////  Debug.Log("Time" + Timer);
 
             if (side == 0)

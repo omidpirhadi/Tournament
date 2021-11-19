@@ -97,8 +97,8 @@ namespace Diaco.EightBall.CueControllers
             AimControllerUI.OnChangeValueAimControll += AimControllerUI_OnChangeValueAimControll;
 
             CueSpin.OnChangeValueSpin += HitBallController_OnChangeValueSpin;
-            testSetting = FindObjectOfType<BillardTestSetting>();
-            testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
+          //  testSetting = FindObjectOfType<BillardTestSetting>();
+          //  testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
 
             UI.OnUIActive += UI_OnUIActive;
            /* if (Server.Turn)

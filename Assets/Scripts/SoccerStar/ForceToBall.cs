@@ -53,7 +53,7 @@ namespace Diaco.SoccerStar.Marble
         private TempPlayerControll playerControll;
         private AimCircle aim;
        
-        private Vector3 VlocityBall;
+       public Vector3 GetVlocity;
 
         //// private Vector3 LastPos;
        [SerializeField] private float Y_Pos_Refrence = 0.0f;
@@ -67,7 +67,7 @@ namespace Diaco.SoccerStar.Marble
         public void Start()
         {
             server = FindObjectOfType<ServerManager>();
-            TestSetting = FindObjectOfType<SoccerTestSettings>();
+           //// TestSetting = FindObjectOfType<SoccerTestSettings>();
             rigidbody = GetComponent<Rigidbody>();
             
            
@@ -85,7 +85,7 @@ namespace Diaco.SoccerStar.Marble
 
             }
             server.OnPhysicFreeze += Server_OnPhysicFreeze;
-            TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
+           // TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
             SetYPositionRefrence();
             /* if(server.Turn)
              {
@@ -118,7 +118,7 @@ namespace Diaco.SoccerStar.Marble
        
         private void FixedUpdate()
         {
-            VlocityBall = rigidbody.velocity;
+            GetVlocity = rigidbody.velocity;
             if (IsRotatingMarble)
                 RotateMarble();
             if (IsRotateBall)
@@ -165,7 +165,7 @@ namespace Diaco.SoccerStar.Marble
                 server.OnChangeTurn -= Server_OnChangeTurn;
             }
             server.OnPhysicFreeze -= Server_OnPhysicFreeze;
-            TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
+           // TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
         }
 
         public void OnDrawGizmos()
@@ -232,7 +232,7 @@ namespace Diaco.SoccerStar.Marble
             // Debug.Log("aaaszx");
             if (MarbleType == Marble_Type.Marble)
             {
-                if (CheckMoveBall() == false)
+                if (server.EnablerRingEffect )
                 {
                     //Debug.Log("34343");
                     if (CheckOwnerMarble())
@@ -251,7 +251,7 @@ namespace Diaco.SoccerStar.Marble
             // Debug.Log("aaaszx");
             if (MarbleType == Marble_Type.Marble)
             {
-                if (CheckMoveBall() == false)
+                if (server.EnablerRingEffect)
                 {
                     //Debug.Log("34343");
                     if (!CheckOwnerMarble())
@@ -274,8 +274,8 @@ namespace Diaco.SoccerStar.Marble
 
         public void Move(Vector3 dir, float pow)
         {
-
-
+            server.IsGoal = -1;
+            server.EnablerRingEffect = false;
             var d_n = new Vector3(dir.x, 0, dir.z).normalized;
             var P_F = SoftFloat.Soft((PowerForce) * pow);
 
@@ -287,7 +287,7 @@ namespace Diaco.SoccerStar.Marble
                 server.StarCheckMovment();
 
 
-
+            
         }
         
 
@@ -345,7 +345,7 @@ namespace Diaco.SoccerStar.Marble
                     //Debug.Log("BallMove");
                // });
             }
-            if (VlocityBall.magnitude < ThresholdSleep  && VlocityBall.magnitude >0.001f && InMove == true)
+            if (GetVlocity.magnitude < ThresholdSleep  && GetVlocity.magnitude >0.001f && InMove == true)
             {
 
                 rigidbody.velocity = Vector3.zero;
@@ -418,7 +418,7 @@ namespace Diaco.SoccerStar.Marble
 
 
             var normal = collision.contacts[0].normal;
-            var reflect2 = Vector3.Reflect(VlocityBall, normal).normalized;
+            var reflect2 = Vector3.Reflect(GetVlocity, normal).normalized;
             if (reflect2.magnitude > 0.0f)
                 rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
             Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
@@ -460,6 +460,45 @@ namespace Diaco.SoccerStar.Marble
 
         }
 
+        public void RotateMarbleFromServer(bool Do, Vector3 velocity)
+        {
+            if (Do)
+
+            {
+                var v = new Vector3(-velocity.x, velocity.y, velocity.z);
+                var speed = v.magnitude;
+                /// Debug.Log(speed);
+                if (speed > 0.0f)
+                {
+
+                    //Flag.transform.localEulerAngles = new Vector3(90,  StepRotateMarble * speed, 0);
+                    // Flag.transform.DOLocalRotate(new Vector3(90, (Flag.transform.eulerAngles.y + StepRotateMarble) * speed, 0), DurationStep);
+
+                    DOVirtual.Float(0, 1, DurationStep, (x) =>
+                    {
+                        Flag.transform.eulerAngles = new Vector3(90, (Flag.transform.eulerAngles.y) + StepRotateMarble * speed, 0);
+                    }).SetEase(EaseTypeRotate);
+                }
+            }
+        }
+        public void RotateBallFromServer(bool Do, Vector3 velocity)
+        {
+            if (Do)
+            {
+                var v = new Vector3(-velocity.x, velocity.y, velocity.z);
+                Vector3 normal = new Vector3(0, 1, 0);
+                Vector3 movement = v * Time.fixedDeltaTime;
+                Vector3 aix = Vector3.Cross(normal, movement).normalized;
+
+                float distance = movement.magnitude;
+                float angle = distance * (180 / Mathf.PI) / StepRotateBall;
+                /// Debug.Log(speed);
+                transform.DOLocalRotateQuaternion(Quaternion.Euler(aix * angle) * transform.localRotation, DurationStep).SetEase(EaseTypeRotate);
+                //transform.localRotation =;
+
+                // IsRotateBall = true;
+            }
+        }
 
         private bool EqeulPosition(Vector3 a, Vector3 b)
         {

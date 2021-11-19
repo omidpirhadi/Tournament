@@ -9,6 +9,7 @@ namespace Diaco.Alart
 
     public class Alart : MonoBehaviour
     {
+        public Diaco.ImageContainerTool.ImageContainer Logo;
         public void AlartShow(AlartData alartData)
         {
             if (alartData.alartType == (int)AlartType.Notification)

@@ -91,7 +91,10 @@ namespace Diaco.SoccerStar.CustomTypes
         //public int frame;
         public short id;
         public Vector3 position;
-        public float rotate_y;
+        // public float rotate_y;
+        public Vector3 velocity;
+        public bool IsRotateBall;
+        public bool IsRotateMarble;
        
     }
     public struct MarbleMovementPackets

@@ -165,7 +165,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 13120721421948192}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -109.18, y: -11.494936, z: -46.749172}
+  m_LocalPosition: {x: -109.82, y: -11.494936, z: -46.749172}
   m_LocalScale: {x: 42.641026, y: 33.55728, z: 2.0880432}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -528,7 +528,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 185039009611861347}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -128.11, y: -11.494936, z: -25.257845}
+  m_LocalPosition: {x: -129.25, y: -11.494936, z: -25.8}
   m_LocalScale: {x: 40.186092, y: 33.55728, z: 2.2156005}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -7528,6 +7528,7 @@ MonoBehaviour:
   NamespaceServer: 0
   SendRate: 100
   TimeTurn: 10
+  EnablerRingEffect: 0
   Info:
     userName: 
   gameData:
@@ -7545,70 +7546,114 @@ MonoBehaviour:
     positions:
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      rotate_y: 0
+      velocity: {x: 0, y: 0, z: 0}
+      IsRotateBall: 0
+      IsRotateMarble: 0
     totalTime: 0
     turnTime: 0
     ownerTurn: 0
@@ -8089,8 +8134,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383272044396646038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.08, y: 2, z: -0.96}
-  m_LocalScale: {x: 3.001518, y: 3.001518, z: 3.001518}
+  m_LocalPosition: {x: 0.17, y: 2, z: -1.02}
+  m_LocalScale: {x: 3.3638012, y: 3.3638012, z: 3.3638012}
   m_Children: []
   m_Father: {fileID: 2383272044396646624}
   m_RootOrder: 11
@@ -8199,8 +8244,9 @@ MonoBehaviour:
   IsRotateBall: 0
   DurationStep: 0.1
   EaseTypeRotate: 1
-  ThresholdSleep: 0.09
+  ThresholdSleep: 2.5
   InMove: 0
+  GetVlocity: {x: 0, y: 0, z: 0}
   Y_Pos_Refrence: 0
   LastPosition: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0}
@@ -8338,7 +8384,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383272044396646041}
   m_LocalRotation: {x: -0, y: -0.33380687, z: -0, w: 0.94264156}
-  m_LocalPosition: {x: -106.84, y: -8.958123, z: -66.3}
+  m_LocalPosition: {x: -107.17, y: -8.958123, z: -68.13}
   m_LocalScale: {x: 2.8632634, y: 5.236141, z: 10.520809}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -8745,7 +8791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383272044396646113}
   m_LocalRotation: {x: -0, y: 0.3384838, z: -0, w: 0.9409722}
-  m_LocalPosition: {x: 107.1, y: -8.958123, z: -66.17}
+  m_LocalPosition: {x: 107.32, y: -8.958123, z: -68.75}
   m_LocalScale: {x: 2.864907, y: 5.236141, z: 10.514705}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -8911,7 +8957,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383272044396646114}
   m_LocalRotation: {x: -0, y: 0.3384838, z: -0, w: 0.9409722}
-  m_LocalPosition: {x: -106.51, y: -8.958123, z: 66.68}
+  m_LocalPosition: {x: -107.28, y: -8.958123, z: 64.01}
   m_LocalScale: {x: 2.864907, y: 5.236141, z: 10.514705}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -9945,7 +9991,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2383272044396646125}
   m_LocalRotation: {x: -0, y: -0.33380687, z: -0, w: 0.94264156}
-  m_LocalPosition: {x: 106.86, y: -8.958123, z: 66.68}
+  m_LocalPosition: {x: 107.48, y: -8.958123, z: 64.34}
   m_LocalScale: {x: 2.8632634, y: 5.236141, z: 10.520809}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -14985,7 +15031,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3211506052064128946}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.62641305, y: -11.494936, z: 68.55}
+  m_LocalPosition: {x: 0.62641305, y: -11.494936, z: 66.8}
   m_LocalScale: {x: 230.56094, y: 33.55728, z: 2.2156005}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -15151,7 +15197,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3211506052232665047}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.62641305, y: -11.494936, z: -68.44}
+  m_LocalPosition: {x: 0.62641305, y: -11.494936, z: -71.1}
   m_LocalScale: {x: 230.56094, y: 33.55728, z: 2.2156005}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -15426,7 +15472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3211506052995109365
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16146,7 +16192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3865963182556251250}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -128.03, y: -11.494936, z: 22.6}
+  m_LocalPosition: {x: -128.79, y: -11.494936, z: 22.3}
   m_LocalScale: {x: 40.186092, y: 33.55728, z: 2.2156005}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -18502,7 +18548,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6748339758516871351}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 128.27, y: -11.494936, z: 22.6}
+  m_LocalPosition: {x: 128.9, y: -11.494936, z: 22.6}
   m_LocalScale: {x: 40.186092, y: 33.55728, z: 2.2156005}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -18991,7 +19037,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6875440434908571656}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 109.46, y: -11.494936, z: -45.75}
+  m_LocalPosition: {x: 110.1, y: -11.494936, z: -45.75}
   m_LocalScale: {x: 42.641026, y: 33.55728, z: 2.0880432}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -19442,7 +19488,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7126100664151068474}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 128.26, y: -11.494936, z: -25.257845}
+  m_LocalPosition: {x: 128.8, y: -11.494936, z: -25.257845}
   m_LocalScale: {x: 40.186092, y: 33.55728, z: 2.2156005}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}
@@ -20615,7 +20661,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9163469558532858858}
   m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 109.33, y: -11.494936, z: 46.25}
+  m_LocalPosition: {x: 110.3, y: -11.494936, z: 46.25}
   m_LocalScale: {x: 45.30609, y: 33.55728, z: 2.0880432}
   m_Children: []
   m_Father: {fileID: 2383272044396646725}

@@ -69,6 +69,8 @@ namespace Diaco.SoccerStar.Server
             }
         }
         [FoldoutGroup("ServerSettings")]
+        public bool EnablerRingEffect = false;
+        [FoldoutGroup("ServerSettings")]
         public UserInfo Info;
         [FoldoutGroup("ServerSettings")]
         public GameData gameData;
@@ -471,7 +473,7 @@ namespace Diaco.SoccerStar.Server
         }
         public void SetPlayer()
         {
-            IsGoal = -1;
+            
             GameDataRecive = false;
             Turn = false;
             // Debug.Log("TRUN5");
@@ -531,7 +533,7 @@ namespace Diaco.SoccerStar.Server
                 InitializTurn_new();
 
             }
-       
+            IsGoal = -1;
         }
         public void InitializTurn_new()
         {
@@ -558,12 +560,14 @@ namespace Diaco.SoccerStar.Server
                 if (gameData.ownerTurn == Side)
                 {
                     Turn = true;
+                    EnablerRingEffect = true;
                    //  Debug.Log("TRUN1");
                     /// KinimaticMarblesAndBall(false);
                 }
                 else
                 {
-                    Handler_EnableRingMarbleForOpponent(true);
+                    EnablerRingEffect = true;
+                    ///Handler_EnableRingMarbleForOpponent(true);
                 }
             }
             else if (Side == 2)
@@ -588,12 +592,15 @@ namespace Diaco.SoccerStar.Server
                 if (gameData.ownerTurn == Side)
                 {
                     Turn = true;
+
+                    EnablerRingEffect = true;
                    ///  Debug.Log("TRUN2");
                   //  KinimaticMarblesAndBall(false);
                 }
                 else
                 {
-                    Handler_EnableRingMarbleForOpponent(true);
+                    EnablerRingEffect = true;
+                    //Handler_EnableRingMarbleForOpponent(true);
                 }
             }
 
@@ -630,6 +637,7 @@ namespace Diaco.SoccerStar.Server
         }
         public IEnumerator MoveMarbelsToPositionFromServer(GameData data, int side, float speed)
         {
+            EnablerRingEffect = false;
             Handler_OnPhysicFreeze(true);
             var count_movement = data.positions.Count;
             for (int i = 0; i < count_movement; i++)
@@ -747,17 +755,21 @@ namespace Diaco.SoccerStar.Server
             do
             {
                 marbleMovments = new List<MarbleMovementData>();
-                Vector3 CurrentPositionMarbles = new Vector3();
-                float rotate = new float();
+                Vector3 CurrentPositionMarbles;
+                Vector3 velocity;
                 for (int i = 0; i < Marbles.Count; i++)
                 {
                     CurrentPositionMarbles = Marbles[i].transform.position;
-                    rotate = Marbles[i].transform.eulerAngles.y;
+                    velocity = Marbles[i].GetVlocity;
                     marbleMovments.Add(new MarbleMovementData
                     {
                         id = (short)Marbles[i].ID,
                         position = CurrentPositionMarbles,
-                        rotate_y = rotate,
+                        velocity = velocity,
+                        IsRotateBall = Marbles[i].IsRotateBall,
+                        IsRotateMarble = Marbles[i].IsRotatingMarble,
+
+
                     });
                 }
                 MarbleMovementPackets movementPackets = new MarbleMovementPackets();
@@ -797,7 +809,8 @@ namespace Diaco.SoccerStar.Server
         {
 
             DoResetAim();
-            Handler_EnableRingMarbleForOpponent(false);
+            EnablerRingEffect = false;
+            // Handler_EnableRingMarbleForOpponent(false);
             //yield return new WaitForSecondsRealtime(slider.value);
             while (QueuemovementPackets.Count > 0)
             {
@@ -805,17 +818,24 @@ namespace Diaco.SoccerStar.Server
                 var count_movement_in_packet = movement_packet.marbleMovements.Count;
                 for (int i = 0; i < count_movement_in_packet; i++)
                 {
-                    ////
-                    var index_marble = movement_packet.marbleMovements[i].id;
+                    var data = movement_packet.marbleMovements[i];
+                    var index_marble = data.id;
 
-                    var temp_pos = movement_packet.marbleMovements[i].position;
+                    var temp_pos = data.position;
                     var pos = new Vector3(-1 * temp_pos.x, Marbles[index_marble].transform.position.y, temp_pos.z);
 
-                    var rotate = new Vector3(0.0f, movement_packet.marbleMovements[i].rotate_y, 0.0f);
-
-                    var s = Marbles[index_marble].transform.DOMove(pos, movement_packet.TimeStepPacket);
-
-                    Marbles[index_marble].transform.DORotate(rotate, movement_packet.TimeStepPacket);
+                    /// var rotate = new Vector3(0.0f, movement_packet.marbleMovements[i].rotate_y, 0.0f);
+                    Marbles[index_marble].transform.DOMove(pos, movement_packet.TimeStepPacket);
+                    if (index_marble < 10)
+                    {
+                        
+                        Marbles[index_marble].RotateMarbleFromServer(data.IsRotateMarble, data.velocity);
+                    }
+                    else
+                    {
+                        Marbles[index_marble].RotateBallFromServer(data.IsRotateBall, data.velocity);
+                    }
+                  /////  Marbles[index_marble].transform.DORotate(rotate, movement_packet.TimeStepPacket);
 
                 }
                 yield return new WaitForSecondsRealtime(movement_packet.TimeStepPacket);
@@ -974,7 +994,7 @@ namespace Diaco.SoccerStar.Server
             Debug.Log("update");
         }
         public float ThresholdSleep = 0.09f;
-        private bool CheckMarbleMove()
+        public bool CheckMarbleMove()
         {
             var move = false;
             if (InRecordMode == false)
@@ -1370,7 +1390,7 @@ namespace Diaco.SoccerStar.Server
 
         }
 
-        private Action<bool> enableringmarblforopponent;
+        /*private Action<bool> enableringmarblforopponent;
         public event Action<bool> EnableRingMarbleForOpponent
         {
 
@@ -1390,7 +1410,7 @@ namespace Diaco.SoccerStar.Server
 
                 enableringmarblforopponent(enable);
             }
-        }
+        }*/
 
         private Action softpositionandrotation;
         public event Action SoftPositionAndRotation
