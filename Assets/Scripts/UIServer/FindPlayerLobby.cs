@@ -29,11 +29,13 @@ namespace Diaco.Lobby
         [SerializeField] private bool FindOpponent = false;
         [SerializeField] private bool RepeatAnimation = true;
         [SerializeField] private float DurationSequence = 0.01f;
+        [SerializeField] private SoundEffectControll soundeffectcontroll;
         public void Awake()
         {
             Luncher = FindObjectOfType<GameLuncher>();
             Server.OnOpponentFind += Server_OnOpponentFind;
             CancelLobbyButton.onClick.AddListener(() => { CancelLobby(); });
+            soundeffectcontroll = GetComponent<SoundEffectControll>();
 
 
         }
@@ -55,7 +57,8 @@ namespace Diaco.Lobby
 
         private IEnumerator LobbyController()
         {
-            /// var ingergate = 0;
+            GetComponent<AudioSource>().loop = true;
+            soundeffectcontroll.PlaySoundMenu(0);
             SetDataPlayer();
             if (NavigationUi.GameLobby == _GameLobby.Soccer)
             {
@@ -72,11 +75,14 @@ namespace Diaco.Lobby
             yield return new WaitUntil(() => FindOpponent);
             if (FindOpponent)
             {
+                GetComponent<AudioSource>().loop = false;
+                soundeffectcontroll.PlaySoundMenu(1);
                 RepeatAnimation = false;
                 StopCoroutine(animation_Coroutine);
-                yield return new WaitForSecondsRealtime(0.5f);
+                yield return new WaitForSecondsRealtime(2.0f);
+                soundeffectcontroll.PlaySoundMenu(2);
                 SetDataOpponent(opponentData.userName, opponentData.avatar);
-                yield return new WaitForSecondsRealtime(2.00f);
+                yield return new WaitForSecondsRealtime(3.00f);
                 if (NavigationUi.GameLobby == _GameLobby.Soccer)
 
                     Luncher.SwitchScene(0);

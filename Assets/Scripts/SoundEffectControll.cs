@@ -6,8 +6,11 @@ public class SoundEffectControll : MonoBehaviour
 {
     public bool Mute = false;
     public List<AudioClip> audios;
-    private AudioSource audioSource;
-
+   [SerializeField] private AudioSource audioSource;
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
     void Start()
     {
        // audios = new List<AudioClip>();
@@ -35,6 +38,8 @@ public class SoundEffectControll : MonoBehaviour
     }
     public void PlaySoundMenu(int index)
     {
+        if (audioSource == null)
+            audioSource = GetComponent<AudioSource>();
         audioSource.clip = audios[index];
         audioSource.Play();
     }

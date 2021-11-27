@@ -21,6 +21,7 @@ namespace Diaco.UI.PopupTournumentRanking
         public Button btn_Leave;
         private void OnEnable()
         {
+            GetComponent<SoundEffectControll>().PlaySoundMenu(0);
             server = FindObjectOfType<ServerUI>();
             server.OnStartTournument += Server_OnStartTournument;
             btn_Leave.onClick.AddListener(() => {
