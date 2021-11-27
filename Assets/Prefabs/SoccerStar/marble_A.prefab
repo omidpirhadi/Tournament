@@ -421,6 +421,7 @@ MonoBehaviour:
   EaseTypeRotate: 1
   ThresholdSleep: 4
   InMove: 0
+  GetVlocity: {x: 0, y: 0, z: 0}
   Y_Pos_Refrence: 0
   LastPosition: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0}
@@ -449,8 +450,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f8bf009552afc3499f433c3a49b006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SoundEnable: 1
-  audios: []
+  Mute: 0
+  clips:
+  - {fileID: 8300000, guid: d7bae084cbfeefb48b5fa521619307fd, type: 3}
+  - {fileID: 8300000, guid: e8be81231cc641349960be70dd7829c6, type: 3}
+  - {fileID: 8300000, guid: 43177ddfa875de44fb7bd013ed25bbf0, type: 3}
+  MaxSpeed: 100
 --- !u!1 &4867411009215751129
 GameObject:
   m_ObjectHideFlags: 0

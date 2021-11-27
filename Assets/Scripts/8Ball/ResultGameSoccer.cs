@@ -92,6 +92,7 @@ public class ResultGameSoccer : MonoBehaviour
                 result.loser.xp,
                 result.winner.rank
                 );
+            
         }
         else if (Server.Info.userName == result.loser.userName)
         {

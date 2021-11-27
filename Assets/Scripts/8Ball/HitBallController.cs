@@ -11,6 +11,7 @@ namespace Diaco.EightBall.CueControllers
     {
         public BillardTestSetting testSetting;
         public Diaco.EightBall.Server.BilliardServer Server;
+        public SoundEffectControll soundeffectControll;
         public CueSpinController CueSpin;
         public EnergyCUEController EnergyCue;
         public AimController AimControllerUI;
@@ -138,6 +139,7 @@ namespace Diaco.EightBall.CueControllers
                     CheckPitok();
 
                 }
+                soundeffectControll.PlaySound(1);///play sound change turn
                 waitForAim = false;
             }
             if ( (CheckMoveBall() == true && inPlayPos ) || DragIsBusy)
@@ -255,6 +257,7 @@ namespace Diaco.EightBall.CueControllers
                         CheckPitok();
 
                     }
+                    soundeffectControll.PlaySound(1);///play sound change turn
                 }
                 last_value_cue_energy = 0;
                 count_imapct = 0;
@@ -328,6 +331,7 @@ namespace Diaco.EightBall.CueControllers
                     }
 
 
+                    soundeffectControll.PlaySound(0);
 
                     Server.Turn = false;
                     LimitedMovePitok = false;

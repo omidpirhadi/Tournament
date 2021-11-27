@@ -4,22 +4,45 @@ using UnityEngine;
 
 public class SoundManagerMarble : MonoBehaviour
 {
-    public bool SoundEnable = true;
-    public AudioClip[] audios;
+    
+  
     private AudioSource audioSource;
+    public bool Mute = false;
+    public List<AudioClip> clips;
+    public float MaxSpeed = 100;
+
+    private new Rigidbody rigidbody;
+    private new AudioSource audio;
 
     void Start()
     {
-        //audios = new AudioClip[2];
-        audioSource = GetComponent<AudioSource>();
+        rigidbody = GetComponent<Rigidbody>();
+        audio = GetComponent<AudioSource>();
     }
 
-    void OnCollisionEnter(Collision obj)
+    private void OnCollisionEnter(Collision obj)
     {
-        if (obj.gameObject.tag == "marble" && SoundEnable)
+        var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
+
+        if (obj.transform.tag == "ball")
         {
-          //  audioSource.clip = audios[0];
-           // audioSource.Play();
+            PlaySound(0, speedVolume);
+
         }
+        else if (obj.transform.tag == "marble")
+        {
+            PlaySound(1, speedVolume);
+        }
+        else if (obj.transform.tag == "wall")
+        {
+            PlaySound(2, speedVolume);
+        }
+
+    }
+    public void PlaySound(int index, float volume)
+    {
+        audio.volume = volume;
+        audio.clip = clips[index];
+        audio.Play();
     }
 }

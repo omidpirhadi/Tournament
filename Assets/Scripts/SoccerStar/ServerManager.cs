@@ -19,10 +19,12 @@ namespace Diaco.SoccerStar.Server
 {
     public class ServerManager : MonoBehaviour
     {
-
+        public SoundEffectControll soundeffectcontrollLayer1;
+        public SoundEffectControll soundeffectcontrollLayer2;
         public Transform ParentForSpawn;
         public bool InRecordMode = false;
         public float TimeStep = 0.0f;
+        public bool FreePlay = false;
         #region DataMemberGlobal
         [FoldoutGroup("ServerSettings")]
         public GameObject ResultGamePage;
@@ -226,7 +228,7 @@ namespace Diaco.SoccerStar.Server
 
         public void ConnectToServer(string URL)
         {
-
+            soundeffectcontrollLayer1.PlaySoundSoccer(0);
             SocketOptions options = new SocketOptions();
 
             options.AutoConnect = true;
@@ -310,11 +312,9 @@ namespace Diaco.SoccerStar.Server
                      });
                 socket.On("game-result", (s, p, a) =>
                 {
-                    ResultGamePage.SetActive(true);
 
-                    var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(a[0].ToString());
-                    Handler_OnGameResult(result);
-                    Debug.Log("GameResult");
+                    StartCoroutine(ShowResualtPage(a)); 
+
                     //Debug.Log("GameRes Rec");
                 });
                 socket.On("formationShop", (s, p, m) => {
@@ -561,6 +561,7 @@ namespace Diaco.SoccerStar.Server
                 {
                     Turn = true;
                     EnablerRingEffect = true;
+                    soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
                    //  Debug.Log("TRUN1");
                     /// KinimaticMarblesAndBall(false);
                 }
@@ -594,8 +595,10 @@ namespace Diaco.SoccerStar.Server
                     Turn = true;
 
                     EnablerRingEffect = true;
-                   ///  Debug.Log("TRUN2");
-                  //  KinimaticMarblesAndBall(false);
+                    soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
+                    
+                                                     ///  Debug.Log("TRUN2");
+                    //  KinimaticMarblesAndBall(false);
                 }
                 else
                 {
@@ -881,7 +884,22 @@ namespace Diaco.SoccerStar.Server
         }
 
 
+        public IEnumerator ShowResualtPage(object []a)
+        {
+            soundeffectcontrollLayer1.PlaySoundSoccer(1);
+            yield return new WaitForSeconds(2);
+            ResultGamePage.SetActive(true);
 
+            var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(a[0].ToString());
+            Handler_OnGameResult(result);
+            soundeffectcontrollLayer2.PlaySoundSoccer(3);
+            yield return new WaitForSeconds(3);
+            if (Info.userName == result.winner.userName)
+            {
+                soundeffectcontrollLayer1.PlaySoundSoccer(2);
+            }
+                Debug.Log("GameResult");
+        }
         public void SetGoalUIText(string left, string right)
         {
             GoalIndicatorOnBiliboard[0].text = left;

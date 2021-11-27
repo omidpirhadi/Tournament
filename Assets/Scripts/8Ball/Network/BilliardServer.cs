@@ -15,6 +15,7 @@ namespace Diaco.EightBall.Server
 {
     public class BilliardServer : MonoBehaviour
     {
+        public SoundEffectControll soundeffectcontroll;
         public bool InRecordMode = false;
         public Transform ParentForspwan;
         public bool SpwnedBall = false;
@@ -325,11 +326,7 @@ namespace Diaco.EightBall.Server
                 });
                 socket.On("game-result", (s, p, m) =>
                 {
-                    ResultGamePage.SetActive(true);
-
-                    var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(m[0].ToString());
-                    Handler_OnGameResult(result);
-                    Debug.Log("GameResult");
+                   
                 });
                 socket.On("shop", (s, p, m) => {
 
@@ -405,7 +402,8 @@ namespace Diaco.EightBall.Server
         public void Emit_AimCueBall(AimData aimdata)
         {
             var json = JsonUtility.ToJson(aimdata);
-            socket.Emit("Aim", json);
+            if (socket != null)
+                socket.Emit("Aim", json);
             //   Debug.Log("Sending Aim To Server");
         }
         public void Emit_PositionCueBallInPitoks(CueBallData data)
@@ -1307,6 +1305,7 @@ namespace Diaco.EightBall.Server
 
 
             }
+            soundeffectcontroll.PlaySound(2);////  play arrange  ball;
             SpwnedBall = true;
         }
         public string ReadToken(string FileName)
@@ -1346,6 +1345,17 @@ namespace Diaco.EightBall.Server
 
             });
             
+        }
+        public IEnumerator ShowResualtPage(object[]m)
+        {
+            ResultGamePage.SetActive(true);
+
+            var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(m[0].ToString());
+            Handler_OnGameResult(result);
+            soundeffectcontroll.PlaySound(3);////  play resault sound;
+            yield return new WaitForSeconds(3);
+            soundeffectcontroll.PlaySound(4);////  play resault sound;
+            Debug.Log("GameResult");
         }
         #endregion
         #region IN RECORD MODE
