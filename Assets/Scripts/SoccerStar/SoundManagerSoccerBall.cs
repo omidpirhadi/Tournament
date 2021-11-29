@@ -11,17 +11,22 @@ public class SoundManagerSoccerBall : MonoBehaviour
 
     private new Rigidbody rigidbody;
     private new AudioSource audio;
-
+    private Vector3 LastPosition;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
+        LastPosition = transform.position;
+    }
+    private void FixedUpdate()
+    {
+        LastPosition = this.transform.position;
     }
 
     private void OnCollisionEnter(Collision obj)
     {
-        var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
-
+        ///var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
+        var speedVolume = (Vector3.Distance(transform.position, LastPosition) / Time.deltaTime)/MaxSpeed;
 
         if (obj.transform.tag == "wall")
         {

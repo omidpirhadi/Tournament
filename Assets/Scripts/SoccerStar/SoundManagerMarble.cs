@@ -13,16 +13,25 @@ public class SoundManagerMarble : MonoBehaviour
 
     private new Rigidbody rigidbody;
     private new AudioSource audio;
-
+    private Vector3 LastPosition;
+    [SerializeField] private float speedVolume;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
+        LastPosition = transform.position;
     }
-
+    private void FixedUpdate()
+    {
+       //speedVolume = Vector3.Distance(transform.position, LastPosition) / Time.deltaTime;
+        
+        LastPosition = this.transform.position;
+    }
     private void OnCollisionEnter(Collision obj)
     {
-        var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
+        //var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
+        var speedVolume = (Vector3.Distance(transform.position, LastPosition) / Time.deltaTime)/MaxSpeed;
+
 
         if (obj.transform.tag == "ball")
         {
@@ -41,6 +50,7 @@ public class SoundManagerMarble : MonoBehaviour
     }
     public void PlaySound(int index, float volume)
     {
+       
         audio.volume = volume;
         audio.clip = clips[index];
         audio.Play();

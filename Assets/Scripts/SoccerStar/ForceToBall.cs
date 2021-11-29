@@ -123,6 +123,7 @@ namespace Diaco.SoccerStar.Marble
                 RotateMarble();
             if (IsRotateBall)
                 RotateBall();
+       
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
         }
@@ -430,7 +431,8 @@ namespace Diaco.SoccerStar.Marble
 
         private void RotateMarble()
         {
-            var speed = rigidbody.velocity.magnitude;
+            //var speed = rigidbody.velocity.magnitude;
+            var speed = Vector3.Distance(transform.position, LastPosition) / Time.deltaTime;
            /// Debug.Log(speed);
             if (speed>0.0f)
             {
@@ -447,7 +449,8 @@ namespace Diaco.SoccerStar.Marble
         private void RotateBall()
         {
             Vector3 normal = new Vector3(0, 1, 0);
-            Vector3 movement = rigidbody.velocity *Time.fixedDeltaTime;
+            Vector3 velocity = (transform.position - LastPosition) / Time.deltaTime;
+            Vector3 movement = velocity * Time.deltaTime;
             Vector3 aix = Vector3.Cross(normal, movement).normalized;
 
             float distance = movement.magnitude;
