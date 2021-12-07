@@ -768,7 +768,7 @@ namespace Diaco.SoccerStar.Server
                     {
                         id = (short)Marbles[i].ID,
                         position = CurrentPositionMarbles,
-                        velocity = velocity,
+                       // velocity = velocity,
                         IsRotateBall = Marbles[i].IsRotateBall,
                         IsRotateMarble = Marbles[i].IsRotatingMarble,
 
@@ -832,11 +832,11 @@ namespace Diaco.SoccerStar.Server
                     if (index_marble < 10)
                     {
                         
-                        Marbles[index_marble].RotateMarbleFromServer(data.IsRotateMarble, data.velocity);
+                        Marbles[index_marble].RotateMarbleFromServer(data.IsRotateMarble);
                     }
                     else
                     {
-                        Marbles[index_marble].RotateBallFromServer(data.IsRotateBall, data.velocity);
+                        Marbles[index_marble].RotateBallFromServer(data.IsRotateBall);
                     }
                   /////  Marbles[index_marble].transform.DORotate(rotate, movement_packet.TimeStepPacket);
 

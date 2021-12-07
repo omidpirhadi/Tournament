@@ -11,25 +11,32 @@ public class SoundPlayInCollision : MonoBehaviour
 
     private new Rigidbody rigidbody;
     private new AudioSource audio;
-
+    private Vector3 LastPosition;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
+
+        LastPosition = transform.position;
     }
+    private void FixedUpdate()
+    {
+        LastPosition = this.transform.position;
+    }
+
 
 
 
     private void OnCollisionEnter(Collision obj)
     {
-        var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
-
-        if(obj.transform.tag == "ball")
+        //var speedVolume = rigidbody.velocity.magnitude / MaxSpeed;
+        var speedVolume = (Vector3.Distance(transform.position, LastPosition) / Time.deltaTime) / MaxSpeed;
+        if (obj.transform.tag == "ball")
         {
             PlaySound(0, speedVolume);
 
         }
-        else if(obj.transform.tag == "wall")
+        else if (obj.transform.tag == "wall")
         {
             PlaySound(1, speedVolume);
         }

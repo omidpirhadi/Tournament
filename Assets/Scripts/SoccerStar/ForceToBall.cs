@@ -463,30 +463,32 @@ namespace Diaco.SoccerStar.Marble
 
         }
 
-        public void RotateMarbleFromServer(bool Do, Vector3 velocity)
+        public void RotateMarbleFromServer(bool Do)
         {
-            if (Do)
+            /* if (Do)
 
-            {
-                var v = new Vector3(-velocity.x, velocity.y, velocity.z);
-                var speed = v.magnitude;
-                /// Debug.Log(speed);
-                if (speed > 0.0f)
-                {
+             {
+                 var v = new Vector3(-velocity.x, velocity.y, velocity.z);
+                 var speed = v.magnitude;
+                 /// Debug.Log(speed);
+                 if (speed > 0.0f)
+                 {
 
-                    //Flag.transform.localEulerAngles = new Vector3(90,  StepRotateMarble * speed, 0);
-                    // Flag.transform.DOLocalRotate(new Vector3(90, (Flag.transform.eulerAngles.y + StepRotateMarble) * speed, 0), DurationStep);
+                     //Flag.transform.localEulerAngles = new Vector3(90,  StepRotateMarble * speed, 0);
+                     // Flag.transform.DOLocalRotate(new Vector3(90, (Flag.transform.eulerAngles.y + StepRotateMarble) * speed, 0), DurationStep);
 
-                    DOVirtual.Float(0, 1, DurationStep, (x) =>
-                    {
-                        Flag.transform.eulerAngles = new Vector3(90, (Flag.transform.eulerAngles.y) + StepRotateMarble * speed, 0);
-                    }).SetEase(EaseTypeRotate);
-                }
-            }
+                     DOVirtual.Float(0, 1, DurationStep, (x) =>
+                     {
+                         Flag.transform.eulerAngles = new Vector3(90, (Flag.transform.eulerAngles.y) + StepRotateMarble * speed, 0);
+                     }).SetEase(EaseTypeRotate);
+                 }
+             }*/
+
+            IsRotatingMarble = Do;
         }
-        public void RotateBallFromServer(bool Do, Vector3 velocity)
+        public void RotateBallFromServer(bool Do)
         {
-            if (Do)
+           /* if (Do)
             {
                 var v = new Vector3(-velocity.x, velocity.y, velocity.z);
                 Vector3 normal = new Vector3(0, 1, 0);
@@ -500,7 +502,8 @@ namespace Diaco.SoccerStar.Marble
                 //transform.localRotation =;
 
                 // IsRotateBall = true;
-            }
+            }*/
+            IsRotateBall = Do;
         }
 
         private bool EqeulPosition(Vector3 a, Vector3 b)
