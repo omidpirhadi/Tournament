@@ -141,7 +141,7 @@ namespace Diaco.SoccerStar.Server
         [FoldoutGroup("NetworkedUI")]
         public List<Text> NameIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
-        public Text CoinIndicatorOnBiliboard;
+        public Text CoinOrTimeIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
         public List<Image> IndicatorTime;
         [FoldoutGroup("NetworkedUI")]
@@ -253,9 +253,10 @@ namespace Diaco.SoccerStar.Server
                 });
                 socket.On("gameData", (s, p, m) =>
                 {
-
+                    
                     DoResetAim();
                     gameData = JsonUtility.FromJson<GameData>(m[0].ToString());
+
                     if (gameData.playerOne.userName == Info.userName)
                     {
                         Side = 1;
@@ -273,7 +274,12 @@ namespace Diaco.SoccerStar.Server
                         SelectArena(gameData.ground);
 
                     SetPlayer();
-      
+
+
+                    if (NamespaceServer != "_classic")
+                        CalculateGameTime(gameData.gameTime / 1000.0f);
+                    else
+                        SetUICoin(gameData.cost.ToString());
 
                     Handler_GameReady();
                     Debug.Log("gameData");
@@ -348,7 +354,6 @@ namespace Diaco.SoccerStar.Server
 
                     Debug.Log("ReciveMessage:" + message);
                 });
-
                 socket.On("BackToMenu", (s, p, m) => {
 
                     
@@ -357,6 +362,7 @@ namespace Diaco.SoccerStar.Server
                     Luncher.BackToMenu();
                     
                 });
+
             }
             else
             {
@@ -530,7 +536,8 @@ namespace Diaco.SoccerStar.Server
             }
             else
             {
-                InitializTurn_new();
+               
+                    InitializTurn_new();
 
             }
             IsGoal = -1;
@@ -551,24 +558,28 @@ namespace Diaco.SoccerStar.Server
                     {
                         RunSpawnMarble_New(gameData, 1, gameData.playerOne.skin, gameData.playerTwo.skin);
                     }
-                   
+
                 }
                 else
                 {
                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, smooth));
                 }
-                if (gameData.ownerTurn == Side)
+
+                if (gameData.state == 1)
                 {
-                    Turn = true;
-                    EnablerRingEffect = true;
-                    soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
-                   //  Debug.Log("TRUN1");
-                    /// KinimaticMarblesAndBall(false);
-                }
-                else
-                {
-                    EnablerRingEffect = true;
-                    ///Handler_EnableRingMarbleForOpponent(true);
+                    if (gameData.ownerTurn == Side)
+                    {
+                        Turn = true;
+                        EnablerRingEffect = true;
+                        soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
+                                                                     //  Debug.Log("TRUN1");
+                                                                     /// KinimaticMarblesAndBall(false);
+                    }
+                    else
+                    {
+                        EnablerRingEffect = true;
+                        ///Handler_EnableRingMarbleForOpponent(true);
+                    }
                 }
             }
             else if (Side == 2)
@@ -576,7 +587,7 @@ namespace Diaco.SoccerStar.Server
                 if (SpwanedMarbels == false)
                 {
 
-                    if(gameData.playerOne.skin  == gameData.playerTwo.skin)
+                    if (gameData.playerOne.skin == gameData.playerTwo.skin)
                     {
                         RunSpawnMarble_New(gameData, -1, "D2", gameData.playerTwo.skin);
                     }
@@ -584,27 +595,31 @@ namespace Diaco.SoccerStar.Server
                     {
                         RunSpawnMarble_New(gameData, -1, gameData.playerOne.skin, gameData.playerTwo.skin);
                     }
-                    
+
                 }
                 else
                 {
                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, -1, smooth));
                 }
-                if (gameData.ownerTurn == Side)
+                if (gameData.state == 1)
                 {
-                    Turn = true;
+                    if (gameData.ownerTurn == Side)
+                    {
+                        Turn = true;
 
-                    EnablerRingEffect = true;
-                    soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
-                    
-                                                     ///  Debug.Log("TRUN2");
-                    //  KinimaticMarblesAndBall(false);
+                        EnablerRingEffect = true;
+                        soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
+
+                        ///  Debug.Log("TRUN2");
+                        //  KinimaticMarblesAndBall(false);
+                    }
+                    else
+                    {
+                        EnablerRingEffect = true;
+                        //Handler_EnableRingMarbleForOpponent(true);
+                    }
                 }
-                else
-                {
-                    EnablerRingEffect = true;
-                    //Handler_EnableRingMarbleForOpponent(true);
-                }
+
             }
 
 
@@ -912,9 +927,15 @@ namespace Diaco.SoccerStar.Server
             NameIndicatorOnBiliboard[1].text = right;
             //    Debug.Log("UIChanged");
         }
-        public void SetGoalUICoin(string Count)
+        public void SetUICoin(string Count)
         {
-            CoinIndicatorOnBiliboard.text = Count;
+            CoinOrTimeIndicatorOnBiliboard.text = Count;
+
+            //    Debug.Log("UIChanged");
+        }
+        public void SetUITimer(string Count)
+        {
+            CoinOrTimeIndicatorOnBiliboard.text = Count;
 
             //    Debug.Log("UIChanged");
         }
@@ -984,25 +1005,84 @@ namespace Diaco.SoccerStar.Server
         public void SetTime(float t, float totaltime)
         {
             CancleInvokeTime();
-            TimeTurn = t / 1000;////convert to  sec
-            float fill = t / totaltime;
-            
-
-
-
-            if (gameData.ownerTurn == Side)
+            if (gameData.state == 1)
             {
-               // IndicatorTime[0].fillAmount = fill; 
-                StartInvokeTimerLeft();
-            }
-            else
-            {
-               // IndicatorTime[1].fillAmount = fill;
-                StartInvokeTimerRight();
-            }
+                TimeTurn = t / 1000;////convert to  sec
+                float fill = t / totaltime;
 
-            //   Debug.Log("TimerSet:" + t);
+                if (gameData.ownerTurn == Side)
+                {
+                    // IndicatorTime[0].fillAmount = fill; 
+                    StartInvokeTimerLeft();
+                }
+                else
+                {
+                    // IndicatorTime[1].fillAmount = fill;
+                    StartInvokeTimerRight();
+                }
+
+                //   Debug.Log("TimerSet:" + t);
+            }
         }
+
+        private void CalculateGameTime(float time)
+        {
+
+            H = 0;
+            M = 0;
+            S = 0;
+            CancelInvoke("RunGameTimerForNormalMode");
+
+
+            H = (float)Math.Floor(time / 3600);
+            M = (float)Math.Floor(time / 60 % 60);
+            S = (float)Math.Floor(time % 60);
+            if (gameData.state == 1)
+                InvokeRepeating("RunGameTimerForNormalMode", 0, 1.0f);
+        }
+        /// <summary>
+        /// INVOKE IN Calculate
+        /// </summary>
+        private void RunGameTimerForNormalMode()
+        {
+            S--;
+            if (S < 0)
+            {
+                if (M > 0 || H > 0)
+                {
+                    S = 59;
+                    M--;
+                    if (M < 0)
+                    {
+                        if (H > 0)
+                        {
+                            M = 59;
+                            H--;
+                        }
+                        else
+                        {
+                            M = 0;
+                        }
+                    }
+
+                }
+                else
+                {
+                    S = 0;
+                }
+            }
+
+            string ss = S < 10 ? "0" + S.ToString() : S.ToString();
+            string mm = M < 10 ? "0" + M.ToString() : M.ToString();
+            CoinOrTimeIndicatorOnBiliboard.text = mm + ":" + ss;
+            if (S == 0 && M == 0 && H == 0)
+            {
+                CancelInvoke("RunGameTimerForNormalMode");
+
+
+            }
+        }
+
 
         public void UpdateListMarbles()
         {
@@ -1163,8 +1243,7 @@ namespace Diaco.SoccerStar.Server
 
 
 
-
-
+      
 
 
         #endregion

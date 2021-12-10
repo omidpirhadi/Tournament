@@ -67,11 +67,9 @@ namespace Diaco.EightBall.Server
         [SerializeField]
         [FoldoutGroup("UIInRecordMode")]
         public UIElements UIControllInRecordMode;
-        [FoldoutGroup("UIInRecordMode")]
+
         private float H;
-        [FoldoutGroup("UIInRecordMode")]
         private float M;
-        [FoldoutGroup("UIInRecordMode")]
         private float S;
 
         private Queue<PositionAndRotateBalls> QueuePositionsBallFromServer;
@@ -187,6 +185,12 @@ namespace Diaco.EightBall.Server
         public List<Image> PlayerCoolDowns;
         [FoldoutGroup("BillboardUI")]
         public Text TotalCoin;
+
+        [FoldoutGroup("BillboardUI")]
+        public Text PlayerTimeLeft;
+        [FoldoutGroup("BillboardUI")]
+        public Text PlayerTimeRight;
+
         [FoldoutGroup("BillboardUI")]
         public Image WoodInhHud;
         [FoldoutGroup("BillboardUI")]
@@ -195,6 +199,8 @@ namespace Diaco.EightBall.Server
         public StickerShareViwer StickerViwerLeft;
         [FoldoutGroup("BillboardUI")]
         public StickerShareViwer StickerViwerRight;
+        [FoldoutGroup("BillboardUI")]
+        public GameObject im_BadConnection;
 
         #endregion
 
@@ -246,6 +252,8 @@ namespace Diaco.EightBall.Server
             socket.On("connect", (s, p, m) =>
             {
                 socket.Emit("authToken", ReadToken("token"));
+                BadConnectionShow(false);
+                Time.timeScale = 2;
                 Debug.Log("Connection");
             });
             if (InRecordMode == false)
@@ -261,7 +269,8 @@ namespace Diaco.EightBall.Server
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
                     Turn = false;
-                    
+                    if (!SpwnedBall)
+                        SelectTable(gameData.table);
                     if (gameData.playerOne.userName == UserName.userName)
                     {
                         SetPlayerOne(gameData);
@@ -270,8 +279,11 @@ namespace Diaco.EightBall.Server
                     {
                         SetPlayerTwo(gameData);
                     }
-                    if (!SpwnedBall)
-                        SelectTable(gameData.table);
+                   
+
+
+
+
                     //Handler_GameReady();
                     //  Debug.Log(m[0].ToString());
                 });
@@ -319,7 +331,7 @@ namespace Diaco.EightBall.Server
                 });
                 socket.On("CancelCooldown", (s, p, m) =>
                 {
-
+                    
                     CancelCoolDownTimer();
                     // Pitok = 0;
 
@@ -354,9 +366,30 @@ namespace Diaco.EightBall.Server
 
                     var message = Convert.ToString(m[0]);
                     var durtaion = Convert.ToSingle(m[1]);
+                    if (Convert.ToInt16(m[2]) == 0)
+                        Time.timeScale = 0;
+                    else
+                        Time.timeScale = 2;
                     Handler_IncomingMessage(message, durtaion);
                     Debug.Log("ReciveMessage:" + message);
                 });
+         
+                socket.On("BackToMenu", (s, p, m) => {
+
+
+                    //// CloseSocket();
+                    var Luncher = FindObjectOfType<GameLuncher>();
+                    Luncher.BackToMenu();
+
+                });
+                socket.On("gameTime", (s, p, m) => {
+
+
+                    SetTimePlayerInUI(Convert.ToSingle(m[0])/1000, Convert.ToSingle(m[1])/1000);
+
+                });
+
+
             }
             else
             {
@@ -384,6 +417,7 @@ namespace Diaco.EightBall.Server
             }
             socket.On("disconnect", (s, p, m) =>
             {
+                BadConnectionShow(true);
                 // Debug.Log("disConnection");
             });
         }
@@ -523,16 +557,19 @@ namespace Diaco.EightBall.Server
 
 
             }
+
+            SetTimePlayerInUI(data.playerOne.time/1000, data.playerTwo.time/1000);
             if (data.ownerTurn == 1)
             {
                 initializTurn(data);
-
                 EnableCoolDown(Side.Left, data.turnTime,0);
+              
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
                 EnableCoolDown(Side.Right, data.turnTime, 0);
+               
                 CheckEnable8BallRightInOtherClient();
 
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
@@ -609,16 +646,20 @@ namespace Diaco.EightBall.Server
                 }
                 SetDisableSharInBiliboard(data.deletedBalls);
             }
+           /// SetTimePlayerInUI(data.playerTwo.time / 1000, data.playerOne.time / 1000);
             if (data.ownerTurn == 2)
             {
                 initializTurn(data);
-                /// CheckPitok(data.pitok, data.positions.CueBall);
+                
                 EnableCoolDown(Side.Left, data.turnTime, 0);
+              
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
                 EnableCoolDown(Side.Right, data.turnTime, 0);
+               
+
                 CheckEnable8BallRightInOtherClient();
                 AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
 
@@ -1328,19 +1369,19 @@ namespace Diaco.EightBall.Server
         public void SelectTable(string name)
         {
 
-           
+           // Debug.Log("e.nsddsasdame"+name);
             Tables.ForEach(e => {
 
                 if (e.name == name)
                 {
                     TableRenderer.material = e.table;
-                    
+                    //Debug.Log(e.name);
                 }
 
                 else if (e.name == "")
                 {
                     TableRenderer.material = Tables[0].table;
-                   
+                  //  Debug.Log(e.name);
                 }
 
             });
@@ -1356,6 +1397,42 @@ namespace Diaco.EightBall.Server
             yield return new WaitForSeconds(3);
             soundeffectcontroll.PlaySound(4);////  play resault sound;
             Debug.Log("GameResult");
+        }
+
+
+      
+
+        private void SetTimePlayerInUI(float playerOneTime, float playerTwoTime)
+        {
+
+            float H1 = 0;
+            float M1 = 0;
+            float S1 = 0;
+
+            float H2 = 0;
+            float M2 = 0;
+            float S2 = 0;
+
+            H1 = (float)Math.Floor(playerOneTime / 3600);
+            M1 = (float)Math.Floor(playerOneTime / 60 % 60);
+            S1 = (float)Math.Floor(playerOneTime % 60);
+
+            H2 = (float)Math.Floor(playerTwoTime / 3600);
+            M2 = (float)Math.Floor(playerTwoTime / 60 % 60);
+            S2 = (float)Math.Floor(playerTwoTime % 60);
+     
+
+
+            if (gameData.playerOne.userName == UserName.userName)
+            {
+                PlayerTimeLeft.text = M1 + ":" + S1;
+                PlayerTimeRight.text = M2 + ":" + S2;
+            }
+            else
+            {
+                PlayerTimeLeft.text = M2 + ":" + S2;
+                PlayerTimeRight.text = M1 + ":" + S1;
+            }
         }
         #endregion
         #region IN RECORD MODE
@@ -1561,6 +1638,7 @@ namespace Diaco.EightBall.Server
             {
                 PlayerCoolDowns[0].fillAmount = 1;
                 CancelInvoke("SetLeftCoolDown");
+              
                 Turn = false;
                 //Pitok = 0;
                 //   Debug.Log("CancleCooldownLeft...");
@@ -1577,6 +1655,7 @@ namespace Diaco.EightBall.Server
             {
                 PlayerCoolDowns[1].fillAmount = 1;
                 CancelInvoke("SetRightCoolDown");
+               
                 //   Debug.Log("CancleCooldownLeft...");
             }
         }
@@ -1584,6 +1663,7 @@ namespace Diaco.EightBall.Server
         {
             CancelInvoke("SetLeftCoolDown");
             CancelInvoke("SetRightCoolDown");
+            
         }
         private void SetCountCostBillboard(string coin)
         {
@@ -1646,9 +1726,7 @@ namespace Diaco.EightBall.Server
             S = (float)Math.Floor(time % 60);
             InvokeRepeating("RunTimer", 0, 2.0f);
         }
-        /// <summary>
-        /// INVOKE IN Calculate
-        /// </summary>
+
         private void RunTimer()
         {
             S--;
@@ -1686,6 +1764,14 @@ namespace Diaco.EightBall.Server
 
 
             }
+        }
+
+        public void BadConnectionShow(bool show)
+        {
+
+            im_BadConnection.SetActive(show);
+
+
         }
         #endregion
 

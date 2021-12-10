@@ -7223,117 +7223,96 @@ MonoBehaviour:
     positions:
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     - id: 0
       position: {x: 0, y: 0, z: 0}
-      velocity: {x: 0, y: 0, z: 0}
       IsRotateBall: 0
       IsRotateMarble: 0
     totalTime: 0
     turnTime: 0
     ownerTurn: 0
+    gameTime: 0
     winner: 
     loser: 
     state: 0
@@ -7439,7 +7418,7 @@ MonoBehaviour:
   NameIndicatorOnBiliboard:
   - {fileID: 2383272044396657686}
   - {fileID: 2383272044396657685}
-  CoinIndicatorOnBiliboard: {fileID: 2383272044396657673}
+  CoinOrTimeIndicatorOnBiliboard: {fileID: 2383272044396657673}
   IndicatorTime:
   - {fileID: 2383272044396657762}
   - {fileID: 2383272044396657682}
@@ -11247,6 +11226,7 @@ MonoBehaviour:
   TimeFadeInTooltip: 1
   TimeFadeOutTooltip: 1
   content: {fileID: 0}
+  soundEffectControll: {fileID: 0}
 --- !u!1 &2383272044396646162
 GameObject:
   m_ObjectHideFlags: 0
@@ -12777,7 +12757,7 @@ MonoBehaviour:
     m_Font: {fileID: 12800000, guid: dbf9aca020bfe2b40be1d33a61427a3a, type: 3}
     m_FontSize: 32
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 0
     m_MaxSize: 65
     m_Alignment: 4
@@ -17350,6 +17330,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 2ffa9ce421605a84a819a8f91819f4c2, type: 3}
   - {fileID: 8300000, guid: 34b9a02c70887ba4baddd4f6e68e85a9, type: 3}
   - {fileID: 8300000, guid: a3682786f14f64744a87ace363ed9b59, type: 3}
+  audioSource: {fileID: 0}
 --- !u!1 &6620545940633071077
 GameObject:
   m_ObjectHideFlags: 0
@@ -18080,6 +18061,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 5daf79801db51e641aff19390540c30f, type: 3}
   - {fileID: 8300000, guid: 005e29546ee7aee4fb3ce5f03dd3ecc8, type: 3}
   - {fileID: 8300000, guid: 29bb4ebbf71e8e644aee6ebbc5932bef, type: 3}
+  audioSource: {fileID: 0}
 --- !u!1 &6987879622572180063
 GameObject:
   m_ObjectHideFlags: 0

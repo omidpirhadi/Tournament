@@ -24,7 +24,7 @@ namespace Diaco.SoccerStar.CustomTypes
         public int totalTime;
         public int turnTime;
         public int ownerTurn;
-
+        public int gameTime;
         public string winner;
         public string loser;
         public int state;
