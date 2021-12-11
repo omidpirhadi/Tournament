@@ -717,7 +717,7 @@ namespace Diaco.EightBall.Server
             Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
         }
 
-        public void CallPacket()
+        public void CallPacketEnable()
         {
             if (GamePlayRule == _GamePlayRule.quick && EightBallEnable)
             {
@@ -741,7 +741,7 @@ namespace Diaco.EightBall.Server
                 FirstBallImpact = 0;
                 
                 Turn = true;
-                CallPacket();
+                CallPacketEnable();
                 // Debug.Log("Turn");
             });
 
