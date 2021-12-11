@@ -9,12 +9,16 @@ namespace Diaco.EightBall.Pockets
    
     public class Pockets : MonoBehaviour
     {
+        public int PocketID = 0;
+        [ColorUsage(true)]
+        public Color PocketNormalColor;
+        [ColorUsage(true)]
+        public Color PocketSelectColor;
         public GameObject PrefabFakeBall;
         public Material[] Skins;
         public float timeDestory = 3.0f;
         private Basket basket;
-        
-        
+        private SpriteRenderer PocketRenderer;
         private Diaco.EightBall.Server.BilliardServer Server;
        // private Diaco.EightBall.CueControllers.HitBallController CueBall;
         private void Start()
@@ -22,9 +26,17 @@ namespace Diaco.EightBall.Pockets
 
             Server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
             basket = FindObjectOfType<Basket>();
-         
+
+            PocketRenderer = GetComponentInChildren<SpriteRenderer>();
+            Server.EnableBoarderPocket += Server_EnableBoarderPocket;
 
         }
+
+        private void Server_EnableBoarderPocket(bool show)
+        {
+            ShowPocketBoarder(show);
+        }
+
         private void OnTriggerEnter(Collider Ball)
         {
             if (Ball.tag == "ball" && Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>())
@@ -35,6 +47,9 @@ namespace Diaco.EightBall.Pockets
 
                 if (Server.InRecordMode == false)
                 {
+                    if (Server.FirstPocketCall == 0)
+                        Server.FirstPocketCall = PocketID;
+
                     Server.DisableAllSharInBiliboard(id);
 
                     Server.AddBallToBasket(id);
@@ -75,7 +90,15 @@ namespace Diaco.EightBall.Pockets
                 // Debug.Log("kkkk");
             }
         }
-
+        private void OnMouseDown()
+        {
+            PocketRenderer.DOColor(PocketSelectColor, 0.5f).OnComplete(() =>
+            {
+                PocketRenderer.DOColor(PocketNormalColor, 0.5f);
+            }).OnComplete(() => { Server.PocketSelected = PocketID; });
+           
+            Debug.Log("Pocket" + this.name);
+        }
 
         private void SpwanFakeBall(int id, Rigidbody originBall)
         {
@@ -95,7 +118,12 @@ namespace Diaco.EightBall.Pockets
             Destroy(fakeball, timeDestory);
 
         }
-        
+
+        private void ShowPocketBoarder(bool show)
+        {
+
+            PocketRenderer.enabled = show;
+        }
         public event Action<int> OnPocket;
         public virtual void  Handler_OnPocket(int id)
         {

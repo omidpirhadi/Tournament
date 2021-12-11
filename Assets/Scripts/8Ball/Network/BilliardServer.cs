@@ -11,8 +11,10 @@ using DG.Tweening;
 using Diaco.EightBall.Structs;
 using Diaco.HTTPBody;
 
+
 namespace Diaco.EightBall.Server
 {
+   public  enum _GamePlayRule { classic = 0, quick = 1, big = 2 };
     public class BilliardServer : MonoBehaviour
     {
         public SoundEffectControll soundeffectcontroll;
@@ -20,6 +22,20 @@ namespace Diaco.EightBall.Server
         public Transform ParentForspwan;
         public bool SpwnedBall = false;
         public float TimeStep = 0.0f;
+        public _GamePlayRule GamePlayRule;
+
+       [SerializeField] private int pocketselected;
+        public int PocketSelected {
+            set {
+                pocketselected = value;
+                if(pocketselected !=0)
+                {
+                    Handler_EnableBoarderPocket(false);
+                }
+
+            }
+            get { return pocketselected; }
+        }
         // public float ThresholdSleep = 0.09f;
         #region ServerSettings
         public Socket socket;
@@ -136,6 +152,8 @@ namespace Diaco.EightBall.Server
         private List<int> PocketedBallsID = new List<int>();
         [FoldoutGroup("GameData")]
         public List<int> BallInBasket = new List<int>();
+        [FoldoutGroup("GameData")]
+        public int FirstPocketCall = 0;
         // [FoldoutGroup("GameData")]
         // public List<Pockets.Pockets> pockets;
         // [FoldoutGroup("GameData")]
@@ -265,6 +283,9 @@ namespace Diaco.EightBall.Server
                 });
                 socket.On("gameData", (s, p, m) =>
                 {
+                    FirstPocketCall = 0;
+
+                    PocketSelected = 0;
 
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
@@ -280,7 +301,14 @@ namespace Diaco.EightBall.Server
                         SetPlayerTwo(gameData);
                     }
                    
-
+                    if(GamePlayRule == _GamePlayRule.quick && EightBallEnable)
+                    {
+                        Handler_EnableBoarderPocket(true);
+                    }
+                    else if( GamePlayRule == _GamePlayRule.big && PlayerShar != Shar.None)
+                    {
+                        Handler_EnableBoarderPocket(true);
+                    }
 
 
 
@@ -338,7 +366,7 @@ namespace Diaco.EightBall.Server
                 });
                 socket.On("game-result", (s, p, m) =>
                 {
-                   
+                    StartCoroutine(ShowResualtPage(m));
                 });
                 socket.On("shop", (s, p, m) => {
 
@@ -459,8 +487,10 @@ namespace Diaco.EightBall.Server
         public void Emit_SendDataOfGameOnEndTurn(Vector3 LastPosCueBall)
         {
             var LastPosition = JsonUtility.ToJson(LastPosCueBall);
-
-            socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition);
+            if (GamePlayRule == _GamePlayRule.classic)
+                socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition);
+            else
+                socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition, PocketSelected, FirstPocketCall);
             //   Debug.Log("End Record And SendData Of Turn");
         }
         public void Emit_LeftGame()
@@ -1376,12 +1406,18 @@ namespace Diaco.EightBall.Server
                 {
                     TableRenderer.material = e.table;
                     //Debug.Log(e.name);
+                    if (name == "classic")
+                        GamePlayRule = _GamePlayRule.classic;
+                    else if (name == "quick")
+                        GamePlayRule = _GamePlayRule.quick;
+                    else if (name == "big")
+                        GamePlayRule = _GamePlayRule.big;
                 }
 
                 else if (e.name == "")
                 {
                     TableRenderer.material = Tables[0].table;
-                  //  Debug.Log(e.name);
+                    //  Debug.Log(e.name);
                 }
 
             });
@@ -2132,6 +2168,27 @@ namespace Diaco.EightBall.Server
             if (incomingmessage != null)
             {
                 incomingmessage(mess, d);
+            }
+
+        }
+
+        private Action<bool> enableboarderpocket;
+        public event Action<bool> EnableBoarderPocket
+        {
+            add
+            {
+                enableboarderpocket += value;
+            }
+            remove
+            {
+                enableboarderpocket -= value;
+            }
+        }
+        protected void Handler_EnableBoarderPocket(bool show)
+        {
+            if (enableboarderpocket != null)
+            {
+                enableboarderpocket(show);
             }
 
         }
