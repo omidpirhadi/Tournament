@@ -105,6 +105,7 @@ namespace Diaco.EightBall.Server
             set
             {
                 turn = value;
+                
                 Handler_OnTurn(turn);
                 //  print("trun");
             }
@@ -301,14 +302,7 @@ namespace Diaco.EightBall.Server
                         SetPlayerTwo(gameData);
                     }
                    
-                    if(GamePlayRule == _GamePlayRule.quick && EightBallEnable)
-                    {
-                        Handler_EnableBoarderPocket(true);
-                    }
-                    else if( GamePlayRule == _GamePlayRule.big && PlayerShar != Shar.None)
-                    {
-                        Handler_EnableBoarderPocket(true);
-                    }
+                   
 
 
 
@@ -722,22 +716,33 @@ namespace Diaco.EightBall.Server
             WoodInhHud.sprite = WoodImages.LoadImage(state.name);
             Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
         }
+
+        public void CallPacket()
+        {
+            if (GamePlayRule == _GamePlayRule.quick && EightBallEnable)
+            {
+                Handler_EnableBoarderPocket(true);
+            }
+            else if (GamePlayRule == _GamePlayRule.big && PlayerShar != Shar.None)
+            {
+                Handler_EnableBoarderPocket(true);
+            }
+        }
         public void initializTurn(Diaco.EightBall.Structs.GameData data)
         {
             DOVirtual.Float(0f, 0.1f, 1, (x) => { }).OnComplete(() =>
             {
-                Turn = true;
-
 
                 CheckEnable8Ball();
-
-                FirstBallImpact = 0;
                 ClearPocketedBallList();
                 IDImpactToWall.Clear();
-                //  SendEndLimit = 0;
-
-
-               // Debug.Log("Turn");
+                
+                
+                FirstBallImpact = 0;
+                
+                Turn = true;
+                CallPacket();
+                // Debug.Log("Turn");
             });
 
             /*   TurnRecived = false;

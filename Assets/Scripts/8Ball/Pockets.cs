@@ -18,7 +18,7 @@ namespace Diaco.EightBall.Pockets
         public Material[] Skins;
         public float timeDestory = 3.0f;
         private Basket basket;
-        private SpriteRenderer PocketRenderer;
+      [SerializeField]  private SpriteRenderer PocketRenderer;
         private Diaco.EightBall.Server.BilliardServer Server;
        // private Diaco.EightBall.CueControllers.HitBallController CueBall;
         private void Start()
@@ -32,10 +32,7 @@ namespace Diaco.EightBall.Pockets
 
         }
 
-        private void Server_EnableBoarderPocket(bool show)
-        {
-            ShowPocketBoarder(show);
-        }
+     
 
         private void OnTriggerEnter(Collider Ball)
         {
@@ -95,10 +92,19 @@ namespace Diaco.EightBall.Pockets
             PocketRenderer.DOColor(PocketSelectColor, 0.5f).OnComplete(() =>
             {
                 PocketRenderer.DOColor(PocketNormalColor, 0.5f);
-            }).OnComplete(() => { Server.PocketSelected = PocketID; });
+            }).OnComplete(() => {
+                
+                PocketRenderer.color = PocketNormalColor;
+                Server.PocketSelected = PocketID;
+            });
            
             Debug.Log("Pocket" + this.name);
         }
+        private void Server_EnableBoarderPocket(bool show)
+        {
+            ShowPocketBoarder(show);
+        }
+
 
         private void SpwanFakeBall(int id, Rigidbody originBall)
         {
@@ -124,6 +130,8 @@ namespace Diaco.EightBall.Pockets
 
             PocketRenderer.enabled = show;
         }
+
+
         public event Action<int> OnPocket;
         public virtual void  Handler_OnPocket(int id)
         {
