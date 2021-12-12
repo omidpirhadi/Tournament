@@ -228,14 +228,14 @@ public class TempPlayerControll : MonoBehaviour
             //Debug.Log("Two Finger");
         }
 
-        if(Input.touchCount ==  0 && aimCricle.CurrentAimPower > 3.5f)
+        if(Input.touchCount ==  0 && MarbleSelected != null  )
         {
             Touch2Clicked = false;
             rotateType2 = false;
-            var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
+           // var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
 
-            var dir = aimCricle.DirectionShoot();
-            Handler_OnShoot(ID, dir.normalized, pow);
+          //  var dir = aimCricle.DirectionShoot();
+            //Handler_OnShoot(ID, dir.normalized, pow);
             aimCricle.StopRecordAim();
             aimCricle.ResetAimCircle();
             MarbleSelected = null;

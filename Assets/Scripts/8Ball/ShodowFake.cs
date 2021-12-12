@@ -18,6 +18,8 @@ public class ShodowFake : MonoBehaviour
         if (GameObject.Find("BilliardGame"))
             Parent = GameObject.Find("BilliardGame").transform;
         shadow.parent = Parent;
+        shadow.localRotation = Quaternion.Euler(90.0f, 0, 0);
+        transform.localEulerAngles = new Vector3(90, 0, 0);
     }
     private void Update()
     {

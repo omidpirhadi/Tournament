@@ -1353,31 +1353,27 @@ namespace Diaco.EightBall.Server
                 new Vector3(gameData.positions.Ball_8.x,0.08885605f,gameData.positions.Ball_8.y),
                 new Vector3(gameData.positions.Ball_9.x,0.08885605f,gameData.positions.Ball_9.y),
                 new Vector3(gameData.positions.Ball_10.x,0.08885605f,gameData.positions.Ball_10.y),
-                new Vector3(gameData.positions.Ball_11.x,0.08885605f,gameData.positions.Ball_1.y),
-                new Vector3(gameData.positions.Ball_12.x,0.08885605f,gameData.positions.Ball_2.y),
-                new Vector3(gameData.positions.Ball_13.x,0.08885605f,gameData.positions.Ball_3.y),
-                new Vector3(gameData.positions.Ball_14.x,0.08885605f,gameData.positions.Ball_4.y),
-                new Vector3(gameData.positions.Ball_15.x,0.08885605f,gameData.positions.Ball_5.y),
+                new Vector3(gameData.positions.Ball_11.x,0.08885605f,gameData.positions.Ball_11.y),
+                new Vector3(gameData.positions.Ball_12.x,0.08885605f,gameData.positions.Ball_12.y),
+                new Vector3(gameData.positions.Ball_13.x,0.08885605f,gameData.positions.Ball_13.y),
+                new Vector3(gameData.positions.Ball_14.x,0.08885605f,gameData.positions.Ball_14.y),
+                new Vector3(gameData.positions.Ball_15.x,0.08885605f,gameData.positions.Ball_15.y),
 
             };
+            var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
+            cueball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
+
+            cueball.transform.position = positions[0];
+            AddressBalls.Add(cueball.GetComponent<AddressBall>());
             for (int i = 0; i < BallsPrefabs.Count; i++)
             {
 
-                if (i == 0)
-                {
-                    var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
-                    cueball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
-
-                    cueball.transform.position = positions[i];
-                    AddressBalls.Add(cueball.GetComponent<AddressBall>());
-                }
-                else
-                {
-                    var ball = Instantiate(BallsPrefabs[i], positions[i], Quaternion.identity, ParentForspwan);
-                    ball.transform.eulerAngles = new Vector3(0.0f, 90f, 180f);
+    
+                    var ball = Instantiate(BallsPrefabs[i], positions[i+1], Quaternion.identity, ParentForspwan);
+                    ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
                     ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
                     AddressBalls.Add(ball.GetComponent<AddressBall>());
-                }
+                
 
 
             }

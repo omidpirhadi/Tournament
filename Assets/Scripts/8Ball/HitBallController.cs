@@ -314,7 +314,7 @@ namespace Diaco.EightBall.CueControllers
         }
         private void force(float step)
         {
-            TouchWorkInUI = false;
+           /// TouchWorkInUI = false;
             if (step > 0)
             {
                 float t_step = step / 5.0f;
@@ -373,9 +373,10 @@ namespace Diaco.EightBall.CueControllers
 
                 }
 
-
+                
                 // OffsetPositionCueWoodFromCueBall = new Vector3(-0.3f, 0.0f, 0.00f);
             }
+            TouchWorkInUI = false;
         }
         private void AimControllerUI_OnChangeValueAimControll(float value)
         {
@@ -562,7 +563,7 @@ namespace Diaco.EightBall.CueControllers
             float curAngle = prevAngle;
             if (Input.touchCount > 0 && Server.Turn && !DragIsBusy)
             {
-
+                Debug.Log("TTTTT11111");
                 Touch touch = Input.GetTouch(0);
                 var ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit_touch;
@@ -589,7 +590,7 @@ namespace Diaco.EightBall.CueControllers
                                 CancelAnimationHand();
                                 HandIconShow(0.0f);
                             }
-
+                            Debug.Log("TTTTT2222");
                         }
                         else if (touch.phase == TouchPhase.Moved)
                         {
@@ -604,6 +605,7 @@ namespace Diaco.EightBall.CueControllers
                             CUEWood.transform.Rotate(0f, -angularDistance * SensitivityRotate, 0f); ;
                             //   }
                             Server.Emit_AimCueBall(new Diaco.EightBall.Structs.AimData { X_position = CUEWood.transform.position.x, Z_position = CUEWood.transform.position.z, YY_rotation = CUEWood.transform.eulerAngles.y, PosCueBall = this.transform.position });
+                            Debug.Log("TTTTT3333");
                         }
                         else if (touch.phase == TouchPhase.Ended)
                         {
@@ -622,7 +624,7 @@ namespace Diaco.EightBall.CueControllers
                                 Server.Emit_AimCueBall(new Diaco.EightBall.Structs.AimData { X_position = CUEWood.transform.position.x, Z_position = CUEWood.transform.position.z, YY_rotation = CUEWood.transform.eulerAngles.y, PosCueBall = this.transform.position });
 
                             }
-
+                            Debug.Log("TTTTT4444");
                         }
                     }
 
