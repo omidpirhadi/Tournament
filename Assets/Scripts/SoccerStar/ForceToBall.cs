@@ -53,8 +53,10 @@ namespace Diaco.SoccerStar.Marble
         private TempPlayerControll playerControll;
         private AimCircle aim;
        
-       public Vector3 GetVlocity;
-
+        public Vector3 GetVlocity;
+        public float GetSpeed;
+        public Vector3 GetDirectionForce;
+        public Vector3 PositionBeforForce;
         //// private Vector3 LastPos;
        [SerializeField] private float Y_Pos_Refrence = 0.0f;
 
@@ -118,7 +120,10 @@ namespace Diaco.SoccerStar.Marble
        
         private void FixedUpdate()
         {
-            GetVlocity = rigidbody.velocity;
+            // GetVlocity = rigidbody.velocity;
+
+            GetVlocity = (this.transform.position - LastPosition) / Time.deltaTime;
+            GetSpeed = GetVlocity.magnitude;
             if (IsRotatingMarble)
                 RotateMarble();
             if (IsRotateBall)
@@ -132,23 +137,32 @@ namespace Diaco.SoccerStar.Marble
         void OnCollisionEnter(Collision collision)
         {
             var tag_collider = collision.collider.tag;
+            
             if (MarbleType == Marble_Type.Marble)
             {
-
+                if (tag_collider == "wall" )
+                {
+                    BounceBall(collision);
+                    
+                }
                 if (tag_collider == "ball")
                 {
                   ///  collision.gameObject.transform.LookAt(this.transform);
                     collision.gameObject.GetComponent<ForceToBall>().IsRotateBall = true;
                 }
-                if (tag_collider == "wall" || tag_collider == "marble" )
+
+
+                if( tag_collider == "marble")
+                {
                     IsRotatingMarble = true;
+                }
             }
             else if (MarbleType == Marble_Type.Ball)
             {
                 if (tag_collider == "wall")
                 {
-
-                  /////  transform.LookAt(collision.contacts[0].point);
+                    BounceBall(collision);
+                    /////  transform.LookAt(collision.contacts[0].point);
                     IsRotateBall = true;
                     
                 }
@@ -279,7 +293,8 @@ namespace Diaco.SoccerStar.Marble
             server.EnablerRingEffect = false;
             var d_n = new Vector3(dir.x, 0, dir.z).normalized;
             var P_F = SoftFloat.Soft((PowerForce) * pow);
-
+            GetDirectionForce = d_n * (float)P_F;
+            PositionBeforForce = this.transform.position;
             rigidbody.AddForce(d_n * (float)P_F, forceMode);
             if (server.InRecordMode == false)
 
@@ -419,10 +434,21 @@ namespace Diaco.SoccerStar.Marble
 
 
             var normal = collision.contacts[0].normal;
+            var distance = Vector3.Distance(PositionBeforForce, collision.contacts[0].point);
             var reflect2 = Vector3.Reflect(GetVlocity, normal).normalized;
-            if (reflect2.magnitude > 0.0f)
+            var reflect3 = Vector3.Reflect(GetDirectionForce, normal).normalized;
+
+            if (GetVlocity.magnitude == 0.0f)
+            {
+                rigidbody.velocity = reflect3 * GetDirectionForce.magnitude;
+            }
+            else
+            {
                 rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
-            Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
+            }
+                
+           // Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
+            Debug.Log(distance+"wallvelocity:" + GetVlocity);
 
         }
 
