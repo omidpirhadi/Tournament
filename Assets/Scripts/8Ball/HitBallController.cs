@@ -78,7 +78,7 @@ namespace Diaco.EightBall.CueControllers
         public Vector3 LastRotation;
         public Vector3 vvv;
         private float powscalefactor;
-        private bool CueBallMoveInPitoke = false;
+       [SerializeField] private bool CueBallMoveInPitoke = false;
         void Start()
         {
             // temp_PowerCUE = PowerCUE;
@@ -162,11 +162,11 @@ namespace Diaco.EightBall.CueControllers
             AimSystem();
 
             TouchOrderControll();
-            if (CueBallMoveInPitoke == true)
+            if (CueBallMoveInPitoke == true && Server.Pitok>0)
                 CueBallMoveInPitokTouchController();
             else
                 CueRotate();
-
+            //CueBallMoveInPitoke = false;
 
 
 
@@ -408,6 +408,7 @@ namespace Diaco.EightBall.CueControllers
                     {
                         CueBallMoveInPitoke = true;
                     }
+                   
 
                 }
             }
@@ -441,26 +442,18 @@ namespace Diaco.EightBall.CueControllers
                     }
                     else if (touch.phase == TouchPhase.Ended)
                     {
-
+                        CueBallMoveInPitoke = false;
                         LargeCueBall.enabled = false;
-                        ActiveAimSystem(true);
-
                         IntergatioShowAnimation = 1;
-
-
-
-                        //GetComponent<SphereCollider>().isTrigger = false;
                         rigidbody.isKinematic = false;
                         rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-
-                        Handler_FreazeBall(false);
                         DragIsBusy = false;
+                        ActiveAimSystem(true);
+                        Handler_FreazeBall(false);
                         CancelAnimationHand();
-                        ///    Debug.Log("PITOOKKKK UP");
                         GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
-
                         Server.Emit_PositionCueBallInPitoks(new Structs.CueBallData { position = this.transform.position, isDrag = DragIsBusy });
-                        CueBallMoveInPitoke = false;
+                        Debug.Log("CueBallMOve" + CueBallMoveInPitoke);
 
                     }
                 }
@@ -561,6 +554,7 @@ namespace Diaco.EightBall.CueControllers
         private void CueRotate()
         {
             float curAngle = prevAngle;
+            Debug.Log($"touchCount:{Input.touchCount}++ServerTurn:{Server.Turn}++DragISBusy:{DragIsBusy}+++CueBallMoveInPitoke:{CueBallMoveInPitoke}");
             if (Input.touchCount > 0 && Server.Turn && !DragIsBusy)
             {
                 Debug.Log("TTTTT11111");
@@ -703,11 +697,6 @@ namespace Diaco.EightBall.CueControllers
                 StartCoroutine(Server.CheckMovementAndSendDataInRecordMode());
             }
         }
-
-
-
-    
-
 
         float ShortestDistance(float curAngle, float prevAngle)
         {

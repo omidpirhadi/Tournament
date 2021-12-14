@@ -1370,7 +1370,7 @@ namespace Diaco.EightBall.Server
 
     
                     var ball = Instantiate(BallsPrefabs[i], positions[i+1], Quaternion.identity, ParentForspwan);
-                    ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
+                    //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
                     ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
                     AddressBalls.Add(ball.GetComponent<AddressBall>());
                 
