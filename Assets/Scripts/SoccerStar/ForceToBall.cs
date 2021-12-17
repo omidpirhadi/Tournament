@@ -142,8 +142,9 @@ namespace Diaco.SoccerStar.Marble
             {
                 if (tag_collider == "wall" )
                 {
-                    BounceBall(collision);
-                    
+                    // BounceBall(collision);
+                    IsRotatingMarble = true;
+
                 }
                 if (tag_collider == "ball")
                 {
@@ -154,6 +155,8 @@ namespace Diaco.SoccerStar.Marble
 
                 if( tag_collider == "marble")
                 {
+
+
                     IsRotatingMarble = true;
                 }
             }
@@ -161,7 +164,7 @@ namespace Diaco.SoccerStar.Marble
             {
                 if (tag_collider == "wall")
                 {
-                    BounceBall(collision);
+                   // BounceBall(collision);
                     /////  transform.LookAt(collision.contacts[0].point);
                     IsRotateBall = true;
                     
@@ -232,7 +235,7 @@ namespace Diaco.SoccerStar.Marble
             }
         }
 
-        private void PlayerControll_EnableSelectRingEffect(bool obj)
+        /*private void PlayerControll_EnableSelectRingEffect(bool obj)
         {
           //  SelectEffectEnable(obj);
             //Debug.Log("PlayerControll SelectEffectEnable");
@@ -241,22 +244,32 @@ namespace Diaco.SoccerStar.Marble
         {
             // SelectEffectEnableForOpponent(enable);
             Debug.Log("SelectEffectEnableForOpponent SelectEffectEnable");
-        }
+        }*/
         public void SelectEffectEnable(bool Active)
         {
-            // Debug.Log("aaaszx");
+           //  Debug.Log("r4");
             if (MarbleType == Marble_Type.Marble)
             {
-                if (server.EnablerRingEffect )
+                if (server.EnablerRingEffect  && server.InRecordMode == false)
                 {
-                    //Debug.Log("34343");
+                  ///  Debug.Log("r5");
                     if (CheckOwnerMarble())
                     {
                         SelectEffect.SetActive(Active);
 
-                        ///Debug.Log("SelectEffectOwner");
+                     ///  Debug.Log("SelectEffectOwner");
                     }
 
+                }
+                else
+                {
+                   // Debug.Log("r5-2");
+                    if (CheckOwnerMarble())
+                    {
+                        SelectEffect.SetActive(Active);
+
+                      //  Debug.Log("SelectEffectOwner");
+                    }
                 }
 
             }

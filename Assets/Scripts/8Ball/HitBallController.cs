@@ -194,7 +194,17 @@ namespace Diaco.EightBall.CueControllers
                 {
                     vvv.y = 0;
 
-                    collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude * powscalefactor);
+                   //collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude * powscalefactor);
+                    collision.rigidbody.AddForceAtPosition((vvv.normalized) * (collision.relativeVelocity.magnitude)
+                        , collision.contacts[0].point,
+                    ForceMode.Force); 
+
+                /*collision.rigidbody.AddForceAtPosition(
+                    collision.impulse/Time.fixedDeltaTime, 
+                    collision.contacts[0].point,
+                    ForceMode.Force);*/
+                    
+                  //  collision.rigidbody.velocity = (vvv.normalized);
                     // Debug.Log("WhiteToBallXxXXXxX11");
                 }
                 // Debug.Log(vvv.magnitude  +"  WhiteToBallXxXXXxX;:::222222   " + collision.relativeVelocity.magnitude);
@@ -404,7 +414,7 @@ namespace Diaco.EightBall.CueControllers
                     var hitpos = new Vector3(hit_touch.point.x, 00, hit_touch.point.z);
                     var cueball_pos = new Vector3(transform.position.x, 00, transform.position.z);
                     var dist = Vector3.Distance(hitpos, cueball_pos);
-                    if (dist < MinDistancePointTouchToCueBall)
+                    if (dist < MinDistancePointTouchToCueBall && Server.Pitok>0)
                     {
                         CueBallMoveInPitoke = true;
                     }
@@ -554,10 +564,10 @@ namespace Diaco.EightBall.CueControllers
         private void CueRotate()
         {
             float curAngle = prevAngle;
-            Debug.Log($"touchCount:{Input.touchCount}++ServerTurn:{Server.Turn}++DragISBusy:{DragIsBusy}+++CueBallMoveInPitoke:{CueBallMoveInPitoke}");
+          //  Debug.Log($"touchCount:{Input.touchCount}++ServerTurn:{Server.Turn}++DragISBusy:{DragIsBusy}+++CueBallMoveInPitoke:{CueBallMoveInPitoke}");
             if (Input.touchCount > 0 && Server.Turn && !DragIsBusy)
             {
-                Debug.Log("TTTTT11111");
+               // Debug.Log("TTTTT11111");
                 Touch touch = Input.GetTouch(0);
                 var ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit_touch;
@@ -584,7 +594,7 @@ namespace Diaco.EightBall.CueControllers
                                 CancelAnimationHand();
                                 HandIconShow(0.0f);
                             }
-                            Debug.Log("TTTTT2222");
+                           /// Debug.Log("TTTTT2222");
                         }
                         else if (touch.phase == TouchPhase.Moved)
                         {
@@ -599,7 +609,7 @@ namespace Diaco.EightBall.CueControllers
                             CUEWood.transform.Rotate(0f, -angularDistance * SensitivityRotate, 0f); ;
                             //   }
                             Server.Emit_AimCueBall(new Diaco.EightBall.Structs.AimData { X_position = CUEWood.transform.position.x, Z_position = CUEWood.transform.position.z, YY_rotation = CUEWood.transform.eulerAngles.y, PosCueBall = this.transform.position });
-                            Debug.Log("TTTTT3333");
+                          //  Debug.Log("TTTTT3333");
                         }
                         else if (touch.phase == TouchPhase.Ended)
                         {
@@ -618,7 +628,7 @@ namespace Diaco.EightBall.CueControllers
                                 Server.Emit_AimCueBall(new Diaco.EightBall.Structs.AimData { X_position = CUEWood.transform.position.x, Z_position = CUEWood.transform.position.z, YY_rotation = CUEWood.transform.eulerAngles.y, PosCueBall = this.transform.position });
 
                             }
-                            Debug.Log("TTTTT4444");
+                           // Debug.Log("TTTTT4444");
                         }
                     }
 

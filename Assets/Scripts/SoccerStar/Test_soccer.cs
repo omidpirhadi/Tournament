@@ -3,30 +3,25 @@ using UnityEngine;
 using DG.Tweening;
 public class Test_soccer : MonoBehaviour
 {
-    public new Rigidbody rigidbody;
-    public float StepRotateBall;
-    public float DurationStep;
+    public Vector3 t1, t2;
+    public int t;
 
-    public Ease EaseTypeRotate;
-
+    public LineRenderer lineRenderer;
+   
+    void Start()
+    {
+        
+    }
 
     void FixedUpdate()
     {
-        RotateBall();
+
+        lineRenderer.positionCount = t;
+        for (int i = 0; i < t; i++)
+        {
+            var point = Vector3.Slerp(t1, t2, t);
+            lineRenderer.SetPosition(i, point);
+        }
     }
-    private void RotateBall()
-    {
-        Vector3 normal = new Vector3(0, 1, 0);
-        Vector3 movement = rigidbody.velocity * Time.fixedDeltaTime;
-        Vector3 aix = Vector3.Cross(normal, movement).normalized;
-
-        float distance = movement.magnitude;
-        float angle = distance * (180 / Mathf.PI) / StepRotateBall;
-        /// Debug.Log(speed);
-        transform.DOLocalRotateQuaternion(Quaternion.Euler(aix * angle) * transform.localRotation, DurationStep).SetEase(EaseTypeRotate);
-        //transform.localRotation =;
-
-        // IsRotateBall = true;
-
-    }
+    
 }

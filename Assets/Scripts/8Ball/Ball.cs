@@ -133,7 +133,7 @@ namespace Diaco.EightBall.CueControllers
                 if (target == ID)
                 {
                     lineRenderer.enabled = true;
-                    SetlineDirection(dir);
+                   SetlineDirection(dir);
     
                 }
                 else if (target != ID)
@@ -145,7 +145,7 @@ namespace Diaco.EightBall.CueControllers
             }
             else
             {
-                lineRenderer.enabled = false;
+               lineRenderer.enabled = false;
                SetlineDirection(new Vector3(0, -10f, 0));
               
 

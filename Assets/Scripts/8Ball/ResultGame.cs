@@ -56,7 +56,7 @@ public class ResultGame : MonoBehaviour
         {
 
             Server.Emit_LeftGame();
-            Server.CloseConnection();
+           // Server.CloseConnection();
             luncher.BackToMenu();
             CloseGameButton.interactable = false;
             this.gameObject.SetActive(false);
@@ -65,7 +65,7 @@ public class ResultGame : MonoBehaviour
             DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() =>
             {
                 Server.Emit_LeftGame();
-                Server.CloseConnection();
+              //  Server.CloseConnection();
                 luncher.BackToMenu();
                 CloseGameButton.interactable = false;
                 this.gameObject.SetActive(false);

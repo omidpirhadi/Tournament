@@ -402,6 +402,8 @@ namespace Diaco.EightBall.Server
                     //// CloseSocket();
                     var Luncher = FindObjectOfType<GameLuncher>();
                     Luncher.BackToMenu();
+                    Debug.Log("back To menu from Server");
+
 
                 });
                 socket.On("gameTime", (s, p, m) => {
@@ -423,9 +425,11 @@ namespace Diaco.EightBall.Server
                     ClearSceneInRecordMode();
                     SpawnAssetInRecordMode(recordmodeGameData.whiteballPos, recordmodeGameData.colorballPos, recordmodeGameData.siblPos);
                     SetUIInRecordMode(recordmodeGameData.totalPoint, recordmodeGameData.level, recordmodeGameData.timer, recordmodeGameData.points);
-                    Turn = true;
+                    
                     Sibl.Area = 4;
+                    Turn = true;
                     Handler_GameReady();
+                    Debug.Log("ReadyRecordMode");
                 });
                 socket.On("result", (s, p, a) =>
                 {
@@ -434,11 +438,21 @@ namespace Diaco.EightBall.Server
                     resualtInRecordMode.gameObject.SetActive(true);
                     resualtInRecordMode.Set(result);
                     CancelInvoke("RunTimer");
-
+                    Debug.Log("ReadyRecordModeResualt");
                 });
             }
             socket.On("disconnect", (s, p, m) =>
             {
+                if (FindObjectOfType<GameLuncher>().InBackToMenu == false)
+                {
+                    Time.timeScale = 0;
+                }
+                else
+                {
+
+                    FindObjectOfType<GameLuncher>().InBackToMenu = false;
+                    Time.timeScale = 1;
+                }
                 BadConnectionShow(true);
                 // Debug.Log("disConnection");
             });
@@ -490,7 +504,7 @@ namespace Diaco.EightBall.Server
         public void Emit_LeftGame()
         {
             socket.Emit("left-game");
-            CloseConnection();
+            //CloseConnection();
 
         }
         public void Emit_PlayAgain()
@@ -1400,7 +1414,7 @@ namespace Diaco.EightBall.Server
         public void SelectTable(string name)
         {
 
-           // Debug.Log("e.nsddsasdame"+name);
+            // Debug.Log("e.nsddsasdame"+name);
             Tables.ForEach(e => {
 
                 if (e.name == name)
@@ -1409,11 +1423,12 @@ namespace Diaco.EightBall.Server
                     //Debug.Log(e.name);
                     if (name == "classic")
                         GamePlayRule = _GamePlayRule.classic;
-                    else if (name == "quick")
+                    else if (name == "quick" || name == "competition")
                         GamePlayRule = _GamePlayRule.quick;
                     else if (name == "big")
                         GamePlayRule = _GamePlayRule.big;
                 }
+
 
                 else if (e.name == "")
                 {
@@ -1484,7 +1499,8 @@ namespace Diaco.EightBall.Server
             var w_ball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
             w_ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
             w_ball.transform.position = whiteball;
-            
+            w_ball.DragIsBusy = false;
+            w_ball.InMove = false;
             //var rand = UnityEngine.Random.Range(1, BallsPrefabs.Count];
             var c_ball = Instantiate(BallsPrefabs[1], colorball ,Quaternion.identity, ParentForspwan);
             var sibl = Instantiate(SiblPrefab, siblpos, Quaternion.identity, ParentForspwan);

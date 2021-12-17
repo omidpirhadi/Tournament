@@ -7,6 +7,7 @@ using Diaco.SoccerStar.Server;
 public class AimCircle : MonoBehaviour
 {
     public ServerManager server;
+    public bool RecordMode = false;
     public bool RecordAim = false;
     public float SendRateAimDataToServer = 0.04f;
     public BodyCircle bodyCircle;
@@ -24,8 +25,12 @@ public class AimCircle : MonoBehaviour
     public void Awake()
     {
         BuildCircleAim();
-        server.OnAimRecive += Server_OnAimRecive;
+        if(RecordMode  == false)
+        {
+ server.OnAimRecive += Server_OnAimRecive;
         server.ResetAim += Server_ResetAim;
+        }
+       
     }
     void FixedUpdate()
     {
@@ -34,29 +39,47 @@ public class AimCircle : MonoBehaviour
     }
     public void MarbleRingEffect()
     {
-        ///  Profiler.BeginSample("OMID");
-        if (server.Turn && CurrentAimPower < 3.5f)
+        if (server.InRecordMode == false)
         {
-            Handler_EnableRingEffectOwner(true);
-           Handler_EnableRingEffectOppenent(false);
-        }
-         if (server.Turn && CurrentAimPower > 3.5f)
-        {
-            Handler_EnableRingEffectOwner(false);
-            Handler_EnableRingEffectOppenent(false);
-        }
-        if (!server.Turn && CurrentAimPower < 3.5f)
-        {
-            Handler_EnableRingEffectOppenent(true);
-            Handler_EnableRingEffectOwner(false);
 
-           // Debug.Log("eR");
+
+            if (server.Turn && CurrentAimPower < 3.5f)
+            {
+                Handler_EnableRingEffectOwner(true);
+                Handler_EnableRingEffectOppenent(false);
+            }
+            if (server.Turn && CurrentAimPower > 3.5f)
+            {
+                Handler_EnableRingEffectOwner(false);
+                Handler_EnableRingEffectOppenent(false);
+            }
+            if (!server.Turn && CurrentAimPower < 3.5f)
+            {
+                Handler_EnableRingEffectOppenent(true);
+                Handler_EnableRingEffectOwner(false);
+
+                // Debug.Log("eR");
+            }
+            if (!server.Turn && CurrentAimPower > 3.5f)
+            {
+                Handler_EnableRingEffectOppenent(false);
+                Handler_EnableRingEffectOwner(false);
+                //Debug.Log("eRD");
+            }
         }
-         if (!server.Turn && CurrentAimPower > 3.5f)
+        else
         {
-            Handler_EnableRingEffectOppenent(false);
-            Handler_EnableRingEffectOwner(false);
-            //Debug.Log("eRD");
+           // Debug.Log("R1");
+            if (server.Turn && CurrentAimPower < 3.5f)
+            {
+                Handler_EnableRingEffectOwner(true);
+             //   Debug.Log("R4");
+            }
+            if (server.Turn && CurrentAimPower > 3.5f)
+            {
+                Handler_EnableRingEffectOwner(false);
+             //   Debug.Log("R3");
+            }
         }
         //// Profiler.EndSample();
     }
@@ -145,10 +168,10 @@ public class AimCircle : MonoBehaviour
     public void ResetAimCircle()
     {
 
-        this.transform.localScale = new Vector3(0, 0, 0);
-        this.transform.position = new Vector3(0, 0, 0);
-        this.transform.eulerAngles = new Vector3(0, 0, 0);
-        this.MaskCircle.position = new Vector3(0, 0, 0); 
+        this.transform.localScale = new Vector3(0, -10, 0);
+        this.transform.position = new Vector3(0, -10, 0);
+        this.transform.eulerAngles = new Vector3(0, -10, 0);
+        this.MaskCircle.position = new Vector3(0, -10, 0); 
         CurrentAimPower = 0.0f;
         //Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
 

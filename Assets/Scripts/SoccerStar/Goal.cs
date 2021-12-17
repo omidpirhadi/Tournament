@@ -56,13 +56,25 @@ namespace Diaco.SoccerStar.Goals
         {
             if(goal)
             {
-                GoalAnnounceImage.DOFade(255, SpeedFillImage);
-               
+                GoalAnnounceImage.DOColor(new Color(1,1,1,1),SpeedFillImage);
+                
             }
             else
             {
-                FoulAnnounceImage.DOFade(255, SpeedFillImage);
+                FoulAnnounceImage.DOColor(new Color(1, 1, 1, 1), SpeedFillImage);
             }
+            AnnounceDisable();
+        }
+        private void AnnounceDisable()
+        {
+            DOVirtual.Float(0, 1, DurationShow, (x) =>
+            {
+
+            }).OnComplete(() => {
+                GoalAnnounceImage.DOColor(new Color(1, 1, 1, 0), SpeedFillImage);
+                FoulAnnounceImage.DOColor(new Color(1, 1, 1, 0), SpeedFillImage);
+
+            });
         }
     }
 }

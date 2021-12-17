@@ -341,6 +341,9 @@ MonoBehaviour:
   ThresholdSleep: 4
   InMove: 0
   GetVlocity: {x: 0, y: 0, z: 0}
+  GetSpeed: 0
+  GetDirectionForce: {x: 0, y: 0, z: 0}
+  PositionBeforForce: {x: 0, y: 0, z: 0}
   Y_Pos_Refrence: 0
   LastPosition: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0}
@@ -375,6 +378,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e8be81231cc641349960be70dd7829c6, type: 3}
   - {fileID: 8300000, guid: 43177ddfa875de44fb7bd013ed25bbf0, type: 3}
   MaxSpeed: 100
+  speedVolume: 0
 --- !u!1 &4867411009215751129
 GameObject:
   m_ObjectHideFlags: 0
@@ -445,7 +449,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 927ffee48d5429f45a368faad9108477, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9b9f5d37b4a7bc8439c82edc32768e0d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

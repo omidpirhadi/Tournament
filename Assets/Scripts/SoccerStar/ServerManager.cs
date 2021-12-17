@@ -228,7 +228,7 @@ namespace Diaco.SoccerStar.Server
 
         public void ConnectToServer(string URL)
         {
-            soundeffectcontrollLayer1.PlaySoundSoccer(0);
+            
             SocketOptions options = new SocketOptions();
 
             options.AutoConnect = true;
@@ -246,6 +246,7 @@ namespace Diaco.SoccerStar.Server
             });
             if (InRecordMode == false)
             {
+                soundeffectcontrollLayer1.PlaySoundSoccer(0);
                 socket.On("userInformation", (s, p, m) =>
                 {
                     Info = new UserInfo();
@@ -1091,7 +1092,7 @@ namespace Diaco.SoccerStar.Server
             Marbles = Marbles.OrderBy(m => m.ID).ToList();
             Debug.Log("update");
         }
-        public float ThresholdSleep = 0.09f;
+        //public float ThresholdSleep = 0.09f;
         public bool CheckMarbleMove()
         {
             var move = false;
@@ -1119,10 +1120,13 @@ namespace Diaco.SoccerStar.Server
             }
             else
             {
+             //   Debug.Log("MOvE1");
                 for (int i = 0; i < MarblesInRecorodMode.Count; i++)
                 {
+                 //   Debug.Log("MOvE2");
                     if (MarblesInRecorodMode[i])
                     {
+                     //   Debug.Log("MOvE3");
                         if (MarblesInRecorodMode[i].GetComponent<Rigidbody>().velocity != Vector3.zero || MarblesInRecorodMode[i].GetComponent<Rigidbody>().angularVelocity != Vector3.zero)
                         {
                             /*if (MarblesInRecorodMode[i].GetComponent<Rigidbody>().velocity.magnitude < ThresholdSleep)
@@ -1134,11 +1138,13 @@ namespace Diaco.SoccerStar.Server
 
                                 
                             }*/
+                           /// Debug.Log("MOvE4");
                             move = true;
                         }
                     }
                 }
             }
+         //   Debug.Log("MOvE5");
             return move;
         }
         public bool EqeulPosition(Vector3 a, Vector3 b)
@@ -1279,7 +1285,8 @@ namespace Diaco.SoccerStar.Server
         }
 
         public void StarCheckMovment()
-        { Turn = false;
+        {
+            Turn = false;
             InvokeRepeating("CheckMOVE", 1f, 1f * Time.timeScale);
         }
         private void CheckMOVE()
