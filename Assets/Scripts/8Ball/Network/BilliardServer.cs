@@ -248,6 +248,12 @@ namespace Diaco.EightBall.Server
                     //pockets[4].OnPocket += GameManager_OnPocket4;
                     // pockets[5].OnPocket += GameManager_OnPocket5;
                 });
+
+                var namespaceserver = FindObjectOfType<GameLuncher>().NamespaceServer;
+                this.Namespaceserver = namespaceserver;
+                var tableName = (namespaceserver == "_competition")?"_quick" : namespaceserver;
+
+                SelectTable(tableName.Substring(1));
             }
 
         }
@@ -291,8 +297,8 @@ namespace Diaco.EightBall.Server
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
                     Turn = false;
-                    if (!SpwnedBall)
-                        SelectTable(gameData.table);
+                    /*if (!SpwnedBall)
+                        SelectTable(gameData.table);*/
                     if (gameData.playerOne.userName == UserName.userName)
                     {
                         SetPlayerOne(gameData);

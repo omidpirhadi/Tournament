@@ -258,6 +258,14 @@ namespace Diaco.SoccerStar.Server
                     DoResetAim();
                     gameData = JsonUtility.FromJson<GameData>(m[0].ToString());
 
+                    if(gameData.step  ==0 )
+                    {
+                        FreePlay = true;
+                    }
+                    else
+                    {
+                        FreePlay = false;
+                    }
                     if (gameData.playerOne.userName == Info.userName)
                     {
                         Side = 1;

@@ -28,7 +28,7 @@ namespace Diaco.SoccerStar.CustomTypes
         public string winner;
         public string loser;
         public int state;
-       
+        public int step;
        
         public string ground;
         public string type;
