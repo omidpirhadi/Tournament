@@ -197,14 +197,14 @@ namespace Diaco.EightBall.CueControllers
                    //collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude * powscalefactor);
                     collision.rigidbody.AddForceAtPosition((vvv.normalized) * (collision.relativeVelocity.magnitude)
                         , collision.contacts[0].point,
-                    ForceMode.Force); 
+                    ForceMode.Force);
+                    collision.rigidbody.velocity = ((vvv.normalized) * (collision.relativeVelocity.magnitude))*collision.rigidbody.mass;
+                    /*collision.rigidbody.AddForceAtPosition(
+                        collision.impulse/Time.fixedDeltaTime, 
+                        collision.contacts[0].point,
+                        ForceMode.Force);*/
 
-                /*collision.rigidbody.AddForceAtPosition(
-                    collision.impulse/Time.fixedDeltaTime, 
-                    collision.contacts[0].point,
-                    ForceMode.Force);*/
-                    
-                  //  collision.rigidbody.velocity = (vvv.normalized);
+                    //  collision.rigidbody.velocity = (vvv.normalized);
                     // Debug.Log("WhiteToBallXxXXXxX11");
                 }
                 // Debug.Log(vvv.magnitude  +"  WhiteToBallXxXXXxX;:::222222   " + collision.relativeVelocity.magnitude);

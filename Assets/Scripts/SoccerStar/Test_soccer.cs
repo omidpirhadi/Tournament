@@ -7,10 +7,10 @@ public class Test_soccer : MonoBehaviour
     public int t;
 
     public LineRenderer lineRenderer;
-   
+    public new Rigidbody rigidbody;
     void Start()
     {
-        
+       
     }
 
     void FixedUpdate()
