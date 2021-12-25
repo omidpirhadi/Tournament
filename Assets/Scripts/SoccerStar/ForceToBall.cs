@@ -164,7 +164,7 @@ namespace Diaco.SoccerStar.Marble
             {
                 if (tag_collider == "wall")
                 {
-                   // BounceBall(collision);
+                    BounceBall(collision);
                     /////  transform.LookAt(collision.contacts[0].point);
                     IsRotateBall = true;
                     
@@ -496,9 +496,10 @@ namespace Diaco.SoccerStar.Marble
             float angle = distance * (180 / Mathf.PI) / StepRotateBall;
             /// Debug.Log(speed);
             transform.DOLocalRotateQuaternion(Quaternion.Euler(aix * angle) * transform.localRotation, DurationStep).SetEase(EaseTypeRotate);
+           /// rigidbody.AddTorque((aix * angle)*AccelerationBallAfterHit,ForceMode.Impulse) ;
             //transform.localRotation =;
 
-               // IsRotateBall = true;
+            // IsRotateBall = true;
 
         }
 
