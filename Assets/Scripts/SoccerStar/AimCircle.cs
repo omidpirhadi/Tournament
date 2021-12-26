@@ -21,18 +21,18 @@ public class AimCircle : MonoBehaviour
 
     public float CurrentAimPower;
 
-   // private Coroutine AimRecordControll;
+    // private Coroutine AimRecordControll;
     public void Awake()
     {
         BuildCircleAim();
-        if(RecordMode  == false)
+        if (RecordMode == false)
         {
- server.OnAimRecive += Server_OnAimRecive;
-        server.ResetAim += Server_ResetAim;
+            server.OnAimRecive += Server_OnAimRecive;
+            server.ResetAim += Server_ResetAim;
         }
-       
+
     }
-    void FixedUpdate()
+    void Update()
     {
        
         MarbleRingEffect();

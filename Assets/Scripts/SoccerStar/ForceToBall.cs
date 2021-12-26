@@ -164,7 +164,7 @@ namespace Diaco.SoccerStar.Marble
             {
                 if (tag_collider == "wall")
                 {
-                    BounceBall(collision);
+                  //  BounceBall(collision);
                     /////  transform.LookAt(collision.contacts[0].point);
                     IsRotateBall = true;
                     

@@ -963,9 +963,10 @@ namespace Diaco.SoccerStar.Server
             IndicatorTime[0].fillAmount = fill;
             if (IndicatorTime[0].fillAmount < 0.01f)
             {
-                IndicatorTime[0].fillAmount = 1;
-                CancelInvoke("Timerleft");
                 Turn = false;
+                IndicatorTime[0].fillAmount = 1;
+                DoResetAim();
+                CancelInvoke("Timerleft");
                 //  Debug.Log("TRUN8");
                 //Pitok = 0;
                 //   Debug.Log("CancleCooldownLeft...");
@@ -982,9 +983,10 @@ namespace Diaco.SoccerStar.Server
             IndicatorTime[1].fillAmount = fill;
             if (IndicatorTime[1].fillAmount < 0.01f)
             {
-                IndicatorTime[1].fillAmount = 1;
-                CancelInvoke("Timerright");
                 Turn = false;
+                IndicatorTime[1].fillAmount = 1;
+                DoResetAim();
+                CancelInvoke("Timerright");
                 ///  Debug.Log("TRUN9");
                 //Pitok = 0;
                 //   Debug.Log("CancleCooldownLeft...");
@@ -1009,7 +1011,8 @@ namespace Diaco.SoccerStar.Server
             CancelInvoke("Timerright");
             IndicatorTime[0].fillAmount = 1.0f;
             IndicatorTime[1].fillAmount = 1.0f;
-            //    Debug.Log("TimeCancelAndReset");
+            
+         //   Debug.Log("TimeCancelAndReset");
         }
         public void SetTime(float t, float totaltime)
         {

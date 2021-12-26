@@ -30,7 +30,7 @@ public class TempPlayerControll : MonoBehaviour
 
 
 
-    void FixedUpdate()
+    void Update()
     {
         TouchControll();
         //MarbleRingEffect();
