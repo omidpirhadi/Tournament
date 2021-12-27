@@ -1,18 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
-using DG.Tweening;
+
 public class BallStoperInGoals : MonoBehaviour
 {
+    public float Deceleration = 6;
 
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.collider.tag == "ball")
         {
-            DOVirtual.Float(0, 1, 0.5f, (x) =>
-            {
-                collision.rigidbody.velocity *= x;
-            });
+            var speed = collision.rigidbody.velocity.magnitude;
+            var dir = collision.rigidbody.velocity.normalized;
+            collision.rigidbody.velocity = dir * (speed / Deceleration);
             Debug.Log("IN END GOAL");
         }
     }
