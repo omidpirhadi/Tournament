@@ -34,12 +34,12 @@ public class AimDot : MonoBehaviour
         if(aimCircle.CurrentAimPower>3.5 )
         {
             EndPos.localPosition = new Vector3(0, 0, Mathf.Clamp(StepMove * DotPower, -1, 0));
-            Debug.Log("aimdot::" + StepMove * DotPower);
+            //Debug.Log("aimdot::" + StepMove * DotPower);
         }
         else if(aimCircle.CurrentAimPower < 3.5)
         {
             EndPos.localPosition = new Vector3(0, 0, 0);
-            Debug.Log("aimdot::0");
+           // Debug.Log("aimdot::0");
         }
     }
 }

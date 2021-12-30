@@ -140,6 +140,7 @@ namespace Diaco.EightBall.CueControllers
 
                 }
                 soundeffectControll.PlaySound(1);///play sound change turn
+                Handheld.Vibrate();
                 waitForAim = false;
             }
             if ((CheckMoveBall() == true && inPlayPos) || DragIsBusy)
@@ -572,7 +573,7 @@ namespace Diaco.EightBall.CueControllers
                 var ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit_touch;
 
-                if (Physics.Raycast(ray, out hit_touch, 1000, mask_for_move_Aim))
+                if (Physics.Raycast(ray, out hit_touch, 100, mask_for_move_Aim))
                 {
 
 
@@ -784,13 +785,13 @@ namespace Diaco.EightBall.CueControllers
                 lineRenderer.SetPosition(0, transform.position);
 
 
-                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 11, mask_for_Line_Aim))
+                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 20, mask_for_Line_Aim))
                 {
-
+                    
                  ///   Vector3 g_end = new Vector3();
                  //   Vector3 b_end = new Vector3();
                     if (hit2.collider && hit2.collider.GetComponent<Ball>())
-                    {   //Debug.Log(hit2.collider.name);
+                    {   
                         if (Server.CheckBallForAllowHit(hit2.collider.GetComponent<AddressBall>().IDPost))
                         {
                             ////GhostBallChangeAndSetPos///

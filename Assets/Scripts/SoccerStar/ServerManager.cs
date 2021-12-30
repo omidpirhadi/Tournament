@@ -581,8 +581,8 @@ namespace Diaco.SoccerStar.Server
                         Turn = true;
                         EnablerRingEffect = true;
                         soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
-                                                                     //  Debug.Log("TRUN1");
-                                                                     /// KinimaticMarblesAndBall(false);
+                        Handheld.Vibrate();                                  //  Debug.Log("TRUN1");
+                                                                             /// KinimaticMarblesAndBall(false);
                     }
                     else
                     {
@@ -618,7 +618,7 @@ namespace Diaco.SoccerStar.Server
 
                         EnablerRingEffect = true;
                         soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
-
+                        Handheld.Vibrate();
                         ///  Debug.Log("TRUN2");
                         //  KinimaticMarblesAndBall(false);
                     }

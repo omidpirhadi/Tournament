@@ -25,6 +25,6 @@ public class Test_UI : MonoBehaviour
     }
     public void CheckPositionContacts()
     {
-
+        Handheld.Vibrate(); 
     }
 }
