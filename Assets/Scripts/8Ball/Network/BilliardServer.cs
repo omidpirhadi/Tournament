@@ -1447,6 +1447,7 @@ namespace Diaco.EightBall.Server
         }
         public IEnumerator ShowResualtPage(object[]m)
         {
+            Time.timeScale = 2;
             ResultGamePage.SetActive(true);
 
             var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(m[0].ToString());

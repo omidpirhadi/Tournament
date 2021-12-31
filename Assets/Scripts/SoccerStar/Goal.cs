@@ -36,11 +36,13 @@ namespace Diaco.SoccerStar.Goals
                     {
                         server.soundeffectcontrollLayer2.PlaySoundSoccer(2);
                         ShowAnnounceImage(true);
+                        Debug.Log("goal");
                     }
-                    else
+                    else if (server.FreePlay == true)
                     {
                         server.soundeffectcontrollLayer2.PlaySoundSoccer(1);
                         ShowAnnounceImage(false);
+                        Debug.Log("foul");
                     }
                        
                     server.IsGoal = ID;

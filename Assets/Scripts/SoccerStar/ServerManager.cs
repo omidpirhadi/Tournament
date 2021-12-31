@@ -257,10 +257,11 @@ namespace Diaco.SoccerStar.Server
                     
                     DoResetAim();
                     gameData = JsonUtility.FromJson<GameData>(m[0].ToString());
-
+                   // Debug.Log("GameStep::" + gameData.step);
                     if(gameData.step  ==0 )
                     {
                         FreePlay = true;
+                        
                     }
                     else
                     {
@@ -291,7 +292,7 @@ namespace Diaco.SoccerStar.Server
                         SetUICoin(gameData.cost.ToString());
 
                     Handler_GameReady();
-                    Debug.Log("gameData");
+                   // Debug.Log("gameData");
                 });
                 socket.On("Aim", (s, p, a) =>
                 {
@@ -330,7 +331,7 @@ namespace Diaco.SoccerStar.Server
 
                     StartCoroutine(ShowResualtPage(a)); 
 
-                    //Debug.Log("GameRes Rec");
+                    Debug.Log("GameRes Resssss");
                 });
                 socket.On("formationShop", (s, p, m) => {
                    /// Debug.Log("kjkjkjkjkjkjjjkjkjkjk");
@@ -678,9 +679,11 @@ namespace Diaco.SoccerStar.Server
 
 
                 ///Marbles[index_marble].transform.eulerAngles = rotate;
-                Marbles[index_marble].transform.DOMove(pos, 0.01f);
-                // Debug.Log("MOVVVVEEEEEE");
+                Marbles[index_marble].transform.position = pos;
+                //Marbles[index_marble].transform.DOMove(pos, 0.01f);
+                
             }
+            //Debug.Log("MOVVVVEEEEE1212212E:::"+Marbles[10].transform.position); 
             Handler_OnPhysicFreeze(false);
             yield return null;
 
@@ -910,8 +913,11 @@ namespace Diaco.SoccerStar.Server
 
         public IEnumerator ShowResualtPage(object []a)
         {
+            Time.timeScale = 1;
+
             soundeffectcontrollLayer1.PlaySoundSoccer(1);
             yield return new WaitForSeconds(2);
+           /// Debug.Log("ssssesddssddss");
             ResultGamePage.SetActive(true);
 
             var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(a[0].ToString());

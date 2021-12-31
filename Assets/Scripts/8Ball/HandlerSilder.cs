@@ -9,7 +9,8 @@ public class HandlerSilder : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDr
     public float Anchermin = -200, Anchermax = 200;
 
     private RectTransform Handler;
-    private Vector2 startPosition;
+    [SerializeField] private Vector2 startPosition;
+    private float x;
     private void Start()
     {
         Handler = GetComponent<RectTransform>();
@@ -18,7 +19,8 @@ public class HandlerSilder : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDr
     public void OnBeginDrag(PointerEventData eventData)
     {
         Handler_OnBegin();
-      //  Debug.Log("begin");
+        x = Handler.anchoredPosition.x;
+        //  Debug.Log("begin");
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -30,9 +32,9 @@ public class HandlerSilder : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDr
             Handler.position = new Vector3(Handler.position.x, localpos.y, Handler.position.z);
            /// Debug.Log("pos" + localpos);
         }
-        Handler.anchoredPosition = new Vector2(Handler.anchoredPosition.x, Mathf.Clamp(Handler.anchoredPosition.y, Anchermin, Anchermax));
+        Handler.anchoredPosition = new Vector2(x, Mathf.Clamp(Handler.anchoredPosition.y, Anchermin, Anchermax));
         Handler_OnChange(ConvertSpan(Handler.anchoredPosition.y));
-       /// Debug.Log(Panel.anchoredPosition.y);
+        Debug.Log(Handler.anchoredPosition.x);
     }
 
 

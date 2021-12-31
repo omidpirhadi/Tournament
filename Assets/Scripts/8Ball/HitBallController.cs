@@ -122,7 +122,7 @@ namespace Diaco.EightBall.CueControllers
             if (EnableYFix)
                 FixOverflowMovment();
         }
-        private void FixedUpdate()
+        public void FixedUpdate()
         {
 
 
@@ -195,11 +195,13 @@ namespace Diaco.EightBall.CueControllers
                 {
                     vvv.y = 0;
 
-                   //collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude * powscalefactor);
-                    collision.rigidbody.AddForceAtPosition((vvv.normalized) * (collision.relativeVelocity.magnitude)
+                    collision.rigidbody.velocity = (vvv.normalized) * (collision.relativeVelocity.magnitude);
+
+                   /* collision.rigidbody.AddForceAtPosition((vvv.normalized) * (collision.relativeVelocity.magnitude)
                         , collision.contacts[0].point,
                     ForceMode.Force);
-                    collision.rigidbody.velocity = ((vvv.normalized) * (collision.relativeVelocity.magnitude))*collision.rigidbody.mass;
+                    collision.rigidbody.velocity = ((vvv.normalized) * (collision.relativeVelocity.magnitude))*collision.rigidbody.mass;*/
+
                     /*collision.rigidbody.AddForceAtPosition(
                         collision.impulse/Time.fixedDeltaTime, 
                         collision.contacts[0].point,
@@ -208,7 +210,7 @@ namespace Diaco.EightBall.CueControllers
                     //  collision.rigidbody.velocity = (vvv.normalized);
                     // Debug.Log("WhiteToBallXxXXXxX11");
                 }
-                // Debug.Log(vvv.magnitude  +"  WhiteToBallXxXXXxX;:::222222   " + collision.relativeVelocity.magnitude);
+
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
 
@@ -246,7 +248,7 @@ namespace Diaco.EightBall.CueControllers
         }
 
 
-        private void HitBallController_OnTurn(bool turn)
+        public void HitBallController_OnTurn(bool turn)
         {
 
             if (turn)
@@ -269,6 +271,7 @@ namespace Diaco.EightBall.CueControllers
 
                     }
                     soundeffectControll.PlaySound(1);///play sound change turn
+                    Handheld.Vibrate();
                 }
                 last_value_cue_energy = 0;
                 count_imapct = 0;

@@ -16,15 +16,22 @@ public class SoundOnClickButton : MonoBehaviour
         btn = GetComponent<Button>();
 
 
-        btn.onClick.AddListener(() =>
-       {
-           soundEffectControll.PlaySoundMenu(0);////click sound
-           Debug.Log("bbb");
-       });
+        if (btn)
+        {
+            btn.onClick.AddListener(() =>
+           {
+               soundEffectControll.PlaySoundMenu(0);////click sound
+              // Debug.Log("bbb";
+           });
+        }
     }
 
     void OnDisable()
     {
-        btn.onClick.RemoveAllListeners();
+
+        if (btn)
+        {
+            btn.onClick.RemoveAllListeners();
+        }
     }
 }
