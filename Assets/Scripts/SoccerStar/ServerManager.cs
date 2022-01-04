@@ -921,7 +921,10 @@ namespace Diaco.SoccerStar.Server
             ResultGamePage.SetActive(true);
 
             var result = JsonUtility.FromJson<Diaco.EightBall.Structs.ResultGame>(a[0].ToString());
-            Handler_OnGameResult(result);
+
+            bool PlayAgianActive = Convert.ToBoolean(a[1]);/// Enable Button Play Again
+            Handler_OnGameResult(result, PlayAgianActive);
+
             soundeffectcontrollLayer2.PlaySoundSoccer(3);
             yield return new WaitForSeconds(3);
             if (Info.userName == result.winner.userName)
@@ -1417,12 +1420,12 @@ namespace Diaco.SoccerStar.Server
             }
         }
 
-        public event Action<Diaco.EightBall.Structs.ResultGame> OnGameResult;
-        protected void Handler_OnGameResult(Diaco.EightBall.Structs.ResultGame result)
+        public event Action<Diaco.EightBall.Structs.ResultGame, bool> OnGameResult;
+        protected void Handler_OnGameResult(Diaco.EightBall.Structs.ResultGame result, bool playagin)
         {
             if (OnGameResult != null)
             {
-                OnGameResult(result);
+                OnGameResult(result,playagin);
             }
         }
 

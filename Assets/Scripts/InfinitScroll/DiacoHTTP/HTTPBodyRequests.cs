@@ -16,9 +16,9 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct LOGIN
     {
-        public string userName;
+        public string phone;
 
-        public string password;
+        public string code;
     }
     [Serializable]
     public struct TOKEN

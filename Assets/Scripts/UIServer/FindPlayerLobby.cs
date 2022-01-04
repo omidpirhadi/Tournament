@@ -33,18 +33,33 @@ namespace Diaco.Lobby
         public void Awake()
         {
             Luncher = FindObjectOfType<GameLuncher>();
-            Server.OnOpponentFind += Server_OnOpponentFind;
-            CancelLobbyButton.onClick.AddListener(() => { CancelLobby(); });
+           
+           
             soundeffectcontroll = GetComponent<SoundEffectControll>();
 
 
         }
         public void OnEnable()
         {
+            Luncher = FindObjectOfType<GameLuncher>();
+            Server.OnOpponentFind += Server_OnOpponentFind;
+
+            soundeffectcontroll = GetComponent<SoundEffectControll>();
+            CancelLobbyButton.onClick.AddListener(() => { CancelLobby(); });
             ///GameLobby = NavigationUi.GameLobbyType;
             RunLobby();
 
             Debug.Log("LobbyRun");
+        }
+        public void OnDisable()
+        {
+            Server.OnOpponentFind-= Server_OnOpponentFind;
+            CancelLobbyButton.onClick.RemoveAllListeners();
+        }
+        public void OnDestroy()
+        {
+            Server.OnOpponentFind -= Server_OnOpponentFind;
+            CancelLobbyButton.onClick.RemoveAllListeners();
         }
         private void Server_OnOpponentFind(string user, string avatar)
         {

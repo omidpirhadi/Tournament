@@ -16,7 +16,7 @@ public class ServerUI : MonoBehaviour
     public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
 
     public Diaco.ImageContainerTool.ImageContainer AvatarContainer, BadgesContainer, ImageGameType, ImageTypeCosts;
-    public GameObject MainMenu, Footer, Header, Login, Register, SplashScreen;
+    public GameObject MainMenu, Footer, Header, Login, Register, SplashScreen, LoginError;
     [SerializeField]
     public BODY BODY;
    ///public Shop Shop;
@@ -54,6 +54,14 @@ public class ServerUI : MonoBehaviour
         {
             Register.SetActive(true);
             Debug.Log($"<color=red><b>Wrong Token</b></color>");
+        });
+        socket.On("loginError", (S, p, m) => {
+
+            LoginError.SetActive(true);
+
+            Login.SetActive(false);
+           // Register.SetActive(false);
+            SplashScreen.SetActive(false);
         });
         socket.On("main-menu", (s, p, m) =>
         {
@@ -113,7 +121,7 @@ public class ServerUI : MonoBehaviour
             if (loadedpage == false)
             {
                 Login.SetActive(false);
-                Register.SetActive(false);
+              //  Register.SetActive(false);
                 SplashScreen.SetActive(false);
 
                 MainMenu.SetActive(true);
@@ -1141,14 +1149,24 @@ public class ServerUI : MonoBehaviour
     }
 
 
-
-    public event Action<string, string> OnOpponentFind;
+    private Action<string, string> onopponetfind;
+    public event Action<string, string> OnOpponentFind
+    {
+        add
+        {
+            onopponetfind += value;
+        }
+        remove
+        {
+            onopponetfind -= value;
+        }
+    }
     protected void Handler_OnOpponentFind(string username, string avatar)
     {
-        if (OnOpponentFind != null)
+        if (onopponetfind != null)
         {
 
-            OnOpponentFind(username, avatar);
+            onopponetfind(username, avatar);
         }
     }
 

@@ -8,7 +8,7 @@ public class SplashScreen : MonoBehaviour
 {
 
     public ServerUI Server;
-    public GameObject registerpage;
+    public GameObject loginPage;
     public Image Prograssbar;
     public Text CounterPrograssbar;
 
@@ -30,8 +30,8 @@ public class SplashScreen : MonoBehaviour
         {
             yield return new WaitForSeconds(3.0f);
             this.gameObject.SetActive(false);
-            registerpage.SetActive(true);
-            Debug.Log("Go To REGISTER");
+            loginPage.SetActive(true);
+            Debug.Log("Go To LoginPage");
         }
     }
     public void Update()

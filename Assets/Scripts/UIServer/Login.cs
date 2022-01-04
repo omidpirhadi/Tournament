@@ -10,49 +10,93 @@ public class Login : MonoBehaviour
 
     public ServerUI Server;
 
-    public GameObject registerpage;
-    public InputField UserName;
-    public InputField Password;
+    //public GameObject registerpage;
+
+    public InputField phoneNumber;
+    public InputField code;
     public Button EnterButton;
 
-    public Button Forgetpassword;
+    private bool needcode = true;
+  ///  public Button Forgetpassword;
     private void Awake()
     {
-        EnterButton.onClick.AddListener(() =>
-        {
-            LoginSend();
-
-
-        });
-
+        
     }
     private void OnEnable()
     {
-        
-  
+        phoneNumber.onValueChanged.AddListener((context) => {
+            needcode = true;
+            code.interactable = false;
+            code.text = "";
+            if(context.Length == 11 && context.StartsWith("09"))
+            {
+                EnterButton.interactable = true;
+                EnterButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ارسال کد", 255);
 
-       
+            }
+            else
+            {
+                EnterButton.interactable = false;
+                EnterButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ارسال کد", 255);
+
+            }
+        });
+
+        if (EnterButton)
+        {
+            EnterButton.onClick.AddListener(() =>
+            {
+                if(needcode)
+                {
+                    GetCode();
+                    EnterButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ورود", 255);
+                    needcode = false;
+                    code.interactable = true;
+
+                }
+                else
+                {
+                    LoginSend();
+                }
+                
+
+
+            });
+        }
+
+
     }
     private void OnDisable()
     {
-       // EnterButton.onClick.RemoveListener(() => { });
+        EnterButton.onClick.RemoveListener(() => { });
+    }
+    public void GetCode()
+    {
+
+        LOGIN login = new LOGIN() { phone = phoneNumber.text, code = "" };
+
+        var data = JsonUtility.ToJson(login);
+        HTTPRequest SendInfo = new HTTPRequest(LoginAPI, "Content-Type", "application/json", HTTPRequest.Method.POST);
+
+        StartCoroutine(SendInfo.POST(data, HTTPRequest.Decoder.Buffer, true));
+        Debug.Log("GetCode");
+      
+
     }
     public void LoginSend()
     {
 
-        if (UserName.text != null && Password.text != null)
-        {
-            LOGIN login = new LOGIN() { userName = UserName.text, password = Password.text };
 
-            var data = JsonUtility.ToJson(login);
-            HTTPRequest SendInfo = new HTTPRequest(LoginAPI, "Content-Type", "application/json", HTTPRequest.Method.POST);
-            SendInfo.OnResponse += SendInfo_OnResponse;
-            SendInfo.OnRequsetFail += SendInfo_OnRequsetFail;
-            StartCoroutine(SendInfo.POST(data, HTTPRequest.Decoder.Buffer, true));
-            Debug.Log("LoginSended");
-            EnterButton.interactable = false;
-            Password.interactable = false;
-        }
+        LOGIN login = new LOGIN() { phone = phoneNumber.text, code = code.text };
+
+        var data = JsonUtility.ToJson(login);
+        HTTPRequest SendInfo = new HTTPRequest(LoginAPI, "Content-Type", "application/json", HTTPRequest.Method.POST);
+        SendInfo.OnResponse += SendInfo_OnResponse;
+        SendInfo.OnRequsetFail += SendInfo_OnRequsetFail;
+        StartCoroutine(SendInfo.POST(data, HTTPRequest.Decoder.Buffer, true));
+        Debug.Log("SendData");
+      
+
     }
 
 
@@ -65,8 +109,7 @@ public class Login : MonoBehaviour
     }
     private void SendInfo_OnRequsetFail(string obj)
     {
-        EnterButton.interactable = true;
-        Password.interactable = true;
+       
     }
 
 }

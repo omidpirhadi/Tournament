@@ -178,6 +178,7 @@ public class SliderMenu : MonoBehaviour {
         }
         else
         {
+
             GameObject.Find("Buttons").SetActive(false);
         }
         //-------------------------------------------------------------------------------------------

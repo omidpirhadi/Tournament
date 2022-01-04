@@ -142,8 +142,11 @@ namespace Diaco.EightBall.Structs
         public string userName;
         public string avatar;
         public List<string> friends;
-        public string xp;
+       
         public string rank;
+        public string coin;
+        public string cup;
+        public string xp;
         
     }
     [Serializable]
@@ -152,9 +155,7 @@ namespace Diaco.EightBall.Structs
         
         public ResultPlayer winner;
         public ResultPlayer loser;
-        public int cost;
-        public int costType;
-        public int award;
+        
 
     }
 }

@@ -20,10 +20,12 @@ public class ResultGameSoccer : MonoBehaviour
 
     public Text PlayerOneUserName;
     public Text PlayerOneCup;
+    public Text PlayerOneCoin;
     public Text PlayerOneXp;
 
     public Text PlayerTwoUserName;
     public Text PlayerTwoCup;
+    public Text PlayerTwoCoin;
     public Text PlayerTwoXp;
 
     public Text Rank;
@@ -70,25 +72,34 @@ public class ResultGameSoccer : MonoBehaviour
 
     }
 
-    private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result)
+    private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result,  bool playaginactive)
     {
       
         CloseGameButton.interactable = true;
-        RematchButton.interactable = true;
-        SetCostType(result.costType);
+        if (playaginactive)
+            RematchButton.interactable = true;
+        else
+            RematchButton.interactable = false;
+
+       // SetCostType(result.costType);
         if (Server.Info.userName == result.winner.userName)
         {
             WinnerBackground.enabled = true;
             LoserBackground.enabled = false;
+
             EnableAddFriendButton(result.winner.friends, result.loser.userName);
+
             SetResultPageElements(true,
                 Server.imageContainer.LoadImage(result.winner.avatar),
                 Server.imageContainer.LoadImage(result.loser.avatar),
+
                 result.winner.userName,
-               "+" + result.award,
+                result.winner.cup,
+                result.winner.coin,
                 result.winner.xp,
                 result.loser.userName,
-               "-" + result.cost,
+                result.loser.cup,
+                result.loser.coin,
                 result.loser.xp,
                 result.winner.rank
                 );
@@ -98,16 +109,20 @@ public class ResultGameSoccer : MonoBehaviour
         {
             WinnerBackground.enabled = false;
             LoserBackground.enabled = true;
+
             EnableAddFriendButton(result.loser.friends, result.winner.userName);
+
             SetResultPageElements(false,
                Server.imageContainer.LoadImage(result.loser.avatar),
                Server.imageContainer.LoadImage(result.winner.avatar),
-               result.loser.userName,
-                "-" + result.cost,
-               result.loser.xp,
-               result.winner.userName,
-               "+" + result.award,
-               result.winner.xp,
+                result.loser.userName,
+                result.loser.cup,
+                result.loser.coin,
+                result.loser.xp,
+                result.winner.userName,
+                result.winner.cup,
+                result.winner.coin,
+                result.winner.xp,
                result.loser.rank
                );
         }
@@ -149,7 +164,7 @@ public class ResultGameSoccer : MonoBehaviour
             PlayerRightCostType.sprite = Gem;
         }
     }
-    public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername, string leftCup, string leftXP, string rightusername, string rightCup, string rightXP, string rank)
+    public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername, string leftCup,string leftcoin, string leftXP, string rightusername, string rightCup, string rightcoin, string rightXP, string rank)
     {
         if (Winner)
         {
@@ -167,12 +182,12 @@ public class ResultGameSoccer : MonoBehaviour
 
         PlayerOneUserName.text = leftusername;
         PlayerOneCup.text = leftCup;
-
+        PlayerOneCoin.text = leftcoin;
         PlayerOneXp.text = leftXP;
 
         PlayerTwoUserName.text = rightusername;
         PlayerTwoCup.text = rightCup;
-
+        PlayerTwoCoin.text = rightcoin;
         PlayerTwoXp.text = rightXP;
 
         Rank.text = rank;
