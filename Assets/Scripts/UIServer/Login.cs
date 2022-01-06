@@ -48,7 +48,7 @@ public class Login : MonoBehaviour
             {
                 if(needcode)
                 {
-                    GetCode();
+                    RequestConfrimCode();
                     EnterButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ورود", 255);
                     needcode = false;
                     code.interactable = true;
@@ -56,7 +56,7 @@ public class Login : MonoBehaviour
                 }
                 else
                 {
-                    LoginSend();
+                    LoginData();
                 }
                 
 
@@ -70,7 +70,7 @@ public class Login : MonoBehaviour
     {
         EnterButton.onClick.RemoveListener(() => { });
     }
-    public void GetCode()
+    public void RequestConfrimCode()
     {
 
         LOGIN login = new LOGIN() { phone = phoneNumber.text, code = "" };
@@ -78,12 +78,12 @@ public class Login : MonoBehaviour
         var data = JsonUtility.ToJson(login);
         HTTPRequest SendInfo = new HTTPRequest(LoginAPI, "Content-Type", "application/json", HTTPRequest.Method.POST);
 
-        StartCoroutine(SendInfo.POST(data, HTTPRequest.Decoder.Buffer, true));
-        Debug.Log("GetCode");
+        StartCoroutine(SendInfo.POST(data, HTTPRequest.Decoder.Buffer, false));
+        Debug.Log("RequestConfrimCode");
       
 
     }
-    public void LoginSend()
+    public void LoginData()
     {
 
 
@@ -94,7 +94,7 @@ public class Login : MonoBehaviour
         SendInfo.OnResponse += SendInfo_OnResponse;
         SendInfo.OnRequsetFail += SendInfo_OnRequsetFail;
         StartCoroutine(SendInfo.POST(data, HTTPRequest.Decoder.Buffer, true));
-        Debug.Log("SendData");
+        Debug.Log("login");
       
 
     }
@@ -103,13 +103,15 @@ public class Login : MonoBehaviour
 
     private void SendInfo_OnResponse(string Response)
     {
-       
-        Server.ConnectToUIServer();
-        Debug.Log("Login Reponse:"+Response);
+  
+            Server.ConnectToUIServer();
+            Debug.Log("Login Reponse:" + Response);
+        
+      
     }
     private void SendInfo_OnRequsetFail(string obj)
     {
-       
+        Debug.Log("Login Error:" + "ERROR 404!");
     }
 
 }

@@ -43,8 +43,11 @@ public class SoundPlayInCollision : MonoBehaviour
     }
     public void PlaySound(int index, float volume)
     {
-        audio.volume = volume;
-        audio.clip = clips[index];
-        audio.Play();
+        if (!Mute)
+        {
+            audio.volume = volume;
+            audio.clip = clips[index];
+            audio.Play();
+        }
     }
 }

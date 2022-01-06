@@ -38,10 +38,11 @@ namespace Diaco.EightBall.Pockets
         {
             if (Ball.tag == "ball" && Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>())
             {
+                Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().ID;
-                // Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = false;
-                Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
+                Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = false;
 
+                Ball.GetComponent<Rigidbody>().AddForce(Vector3.down * 50);
                 if (Server.InRecordMode == false)
                 {
                     if (Server.FirstPocketCall == 0)
@@ -58,21 +59,22 @@ namespace Diaco.EightBall.Pockets
 
                     Server.DeletedBallCount++;
                 }
-                SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
-                /// Destroy(Ball.gameObject, timeDestory);
+                //SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
+                 Destroy(Ball.gameObject, timeDestory);
                 // Destroy(Ball.GetComponent<ShodowFake>().shadow.gameObject); 
 
             }
             else if (Ball.tag == "whiteball" && Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>())
             {
-
+               
+                Ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+                Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;
                 
                 /// Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = false;
                 // Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
                 ///   Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
-                Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.0f, 0.0f);
-                Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.00f, 0.001f, 0.0f);
+
                 Ball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 Ball.GetComponent<Rigidbody>().isKinematic = true;
                 Ball.transform.DOScale(0.0f, 0.0001f);
@@ -80,7 +82,7 @@ namespace Diaco.EightBall.Pockets
                 if (Server.InRecordMode == false)
                 {
                     
-                    SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
+                   // SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
                     Handler_OnPocket(id);
                 }
 

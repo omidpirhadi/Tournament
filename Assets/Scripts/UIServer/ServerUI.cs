@@ -16,7 +16,7 @@ public class ServerUI : MonoBehaviour
     public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
 
     public Diaco.ImageContainerTool.ImageContainer AvatarContainer, BadgesContainer, ImageGameType, ImageTypeCosts;
-    public GameObject MainMenu, Footer, Header, Login, Register, SplashScreen, LoginError;
+    public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError;
     [SerializeField]
     public BODY BODY;
    ///public Shop Shop;
@@ -52,7 +52,9 @@ public class ServerUI : MonoBehaviour
         });
         socket.On("wrong-token", (s, p, m) =>
         {
-            Register.SetActive(true);
+            Login.SetActive(true);
+            LoginError.SetActive(false);
+            SplashScreen.SetActive(false);
             Debug.Log($"<color=red><b>Wrong Token</b></color>");
         });
         socket.On("loginError", (S, p, m) => {
@@ -60,8 +62,24 @@ public class ServerUI : MonoBehaviour
             LoginError.SetActive(true);
 
             Login.SetActive(false);
-           // Register.SetActive(false);
+           
             SplashScreen.SetActive(false);
+        });
+        socket.On("changePhoneError", (S, p, m) =>
+        {
+            var message = Convert.ToBoolean(m[0]);
+            if(!message)///changed number ;
+            {
+                navigationUi.StopLoadingPage();
+                navigationUi.ClosePopUp("changenumber");
+                Debug.Log("Number Changed");
+            }
+            else
+
+            {
+                Debug.Log("Number Not Changed");
+            }
+
         });
         socket.On("main-menu", (s, p, m) =>
         {
@@ -596,6 +614,14 @@ public class ServerUI : MonoBehaviour
     }
     #endregion
     #region EmitServer
+    public void SendRequestForEditPhone(string phonenumber)
+    {
+        socket.Emit("changePhone", phonenumber);
+    }
+    public void SendPhonAndConfrimCode(string phonenumber,string confrimcode)
+    {
+        socket.Emit("changePhone", phonenumber, confrimcode);
+    }
     public void SendRequestGetFriends()
     {
         socket.Emit("get-friends");

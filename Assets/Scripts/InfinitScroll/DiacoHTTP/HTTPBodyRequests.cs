@@ -237,6 +237,7 @@ namespace Diaco.HTTPBody
         // public string id;
         //public string invitationCode;
         public string userName;
+        public string phone;
         public InGame inGame;
         public PROFILE profile;
         public SOCIAL social;

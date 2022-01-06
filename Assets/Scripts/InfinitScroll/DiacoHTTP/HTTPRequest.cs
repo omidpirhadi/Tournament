@@ -64,13 +64,17 @@ namespace Diaco.HTTPRequests
                 if (decoder == Decoder.Buffer)
                 {
                     Response = Encoding.UTF8.GetString(ClientHTTP.downloadHandler.data);
-                    
+                  
                     if (SaveHeader)
                     {
                         var token = ClientHTTP.GetResponseHeader("auth_token");
-                        SaveToken("token", token);
-                        yield return new WaitForSeconds(0.2f);
-                        Debug.Log(token);
+                        if (token != null || token != "")
+                        {
+                            SaveToken("token", token);
+                            yield return new WaitForSeconds(0.2f);
+                            Debug.Log(token);
+                        }
+                    
                     }
                     Handler_OnResponse(Response);
 
