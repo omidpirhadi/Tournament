@@ -13,7 +13,9 @@ namespace Diaco.EightBall.CueControllers
         public bool HaveTarget = false;
         public float powerbounce = 1.0f;
         private new Rigidbody rigidbody;
-        private LineRenderer lineRenderer;
+        // private LineRenderer lineRenderer;
+        private CustomLineRenderer2 AimLine;
+
         private HitBallController cueball;
         private Diaco.EightBall.Server.BilliardServer server;
         [SerializeField] private float SpeedBallCurrent = 0.0f;
@@ -33,7 +35,7 @@ namespace Diaco.EightBall.CueControllers
         {
 
             rigidbody = GetComponent<Rigidbody>();
-            lineRenderer = GetComponent<LineRenderer>();
+            AimLine = GetComponent<CustomLineRenderer2>();
             cueball = FindObjectOfType<HitBallController>();
             cueball.OnHitBall += Ball_OnHitBall;
             cueball.OnFreazeBall += Cueball_OnFreazeBall;
@@ -132,22 +134,25 @@ namespace Diaco.EightBall.CueControllers
             {
                 if (target == ID)
                 {
-                    lineRenderer.enabled = true;
+                    AimLine.enabled = true;
                    SetlineDirection(dir);
     
                 }
                 else if (target != ID)
                 {
-                    lineRenderer.enabled = false;
-                   SetlineDirection(new Vector3(0, -10f, 0));
-      
+                    // AimLine.enabled = false;
+                    // SetlineDirection(new Vector3(0, -10f, 0));
+                    AimLine.Reset();
+                    AimLine.enabled = false;
+
                 }
             }
             else
             {
-               lineRenderer.enabled = false;
-               SetlineDirection(new Vector3(0, -10f, 0));
-              
+                // AimLine.enabled = false;
+                /// SetlineDirection(new Vector3(0, -10f, 0));
+                AimLine.Reset();
+                AimLine.enabled = false;
 
             }
         }
@@ -155,9 +160,10 @@ namespace Diaco.EightBall.CueControllers
 
         private void SetlineDirection(Vector3 pos)
         {
-            lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0.06f, transform.position.z));
+           //// lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0.06f, transform.position.z));
 
-            lineRenderer.SetPosition(1, (new Vector3(pos.x, 0.06f, pos.z)));
+           /// lineRenderer.SetPosition(1, (new Vector3(pos.x, 0.06f, pos.z)));
+            AimLine.SetPosition(new Vector3(pos.x, 0.06f, pos.z));
 
         }
         public void SetYPositionRefrence()

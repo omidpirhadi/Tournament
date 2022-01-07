@@ -45,7 +45,7 @@ namespace Diaco.EightBall.CueControllers
         public float AimOffset = 3;
         // public Vector3 LastTouchPosition;
         public bool AimSystemShow = true;
-        public GameObject AimLine;
+        public CustomLineRenderer2 AimLine;
         public float ScaleLineAimGhostBall = 2f;
         public float SensitivityRotate;
         public float PowerBounceOnWall = 1.0f;
@@ -84,6 +84,7 @@ namespace Diaco.EightBall.CueControllers
         {
             // temp_PowerCUE = PowerCUE;
             //  temp_PowerSpin = PowerSpin;
+            AimLine = GetComponent<CustomLineRenderer2>();
             rigidbody = GetComponent<Rigidbody>();
             //***lineRenderer = GetComponent<LineRenderer>();
 
@@ -428,6 +429,7 @@ namespace Diaco.EightBall.CueControllers
                 }
             }
         }
+
         private void CueBallMoveInPitokTouchController()
         {
             if (Server.Pitok > 0 && Server.Turn)
@@ -807,7 +809,7 @@ namespace Diaco.EightBall.CueControllers
                             GhostBall.transform.position = ray_line.origin + (ray_line.direction.normalized * hit2.distance);
 
 
-                          ///****  lineRenderer.SetPosition(1, GhostBall.transform.position);
+                            AimLine.SetPosition(GhostBall.transform.position);
 
                             ///Draw  Line WhiteBall Dir
                          //   var dir_ghostball_to_whiteball = hit2.point - transform.position;
@@ -825,11 +827,13 @@ namespace Diaco.EightBall.CueControllers
                             {
                                 //  var d = Vector3.Min(dir_right, dir_left);
                                  a = (angle_right - angle_left) * ScaleLineAimGhostBall;
-                                var line = GhostBall.GetComponent<LineRenderer>();
-                                line.enabled = true;
-                                line.SetPosition(0, GhostBall.transform.position);
+                                var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
+                                Ghostline.enabled = true;
+                                Ghostline.SetPosition((GhostBall.transform.position + dir_left * a));
 
-                                line.SetPosition(1, (GhostBall.transform.position + dir_left * a));
+                               // line.SetPosition(0, GhostBall.transform.position);
+
+                              //  line.SetPosition(1, (GhostBall.transform.position + dir_left * a));
                                 MagnitudVector = (GhostBall.transform.position + dir_left * a).magnitude;
                                // Debug.Log("L"+a);
                                 Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);////absolut
@@ -838,10 +842,14 @@ namespace Diaco.EightBall.CueControllers
                             else 
                             {
                                  a = (angle_left - angle_right) * ScaleLineAimGhostBall;
-                                var line = GhostBall.GetComponent<LineRenderer>();
+
+                                var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
+                                Ghostline.enabled = true;
+                                Ghostline.SetPosition((GhostBall.transform.position + dir_right * a));
+                                /*var line = GhostBall.GetComponent<LineRenderer>();
                                 line.enabled = true;
                                 line.SetPosition(0, GhostBall.transform.position);
-                                line.SetPosition(1, (GhostBall.transform.position + dir_right * a));
+                                line.SetPosition(1, (GhostBall.transform.position + dir_right * a));*/
                                 MagnitudVector = (GhostBall.transform.position + dir_right * a).magnitude;
                                 ///Debug.Log("R" + a);
                                 Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);////absolut
@@ -943,7 +951,7 @@ namespace Diaco.EightBall.CueControllers
                         ////GhostBallChangeAndSetPos///
                         GhostBall.transform.position = ray_line.origin + (ray_line.direction.normalized * hit2.distance);
                         //***lineRenderer.SetPosition(0, transform.position);
-                       //**** lineRenderer.SetPosition(1, GhostBall.transform.position);
+                        AimLine.SetPosition(GhostBall.transform.position);
                         GhostBall.GetComponent<GhostBallControll>().ChangeImage(true);
                         ///Draw  Line WhiteBall Dir
                         var dir_ghostball_to_whiteball = hit2.point - transform.position;
@@ -958,10 +966,12 @@ namespace Diaco.EightBall.CueControllers
                         {
                             //  var d = Vector3.Min(dir_right, dir_left);
                             float a = (angle_right - angle_left) * ScaleLineAimGhostBall;
-                            var line = GhostBall.GetComponent<LineRenderer>();
-                            line.enabled = false;
-                            line.SetPosition(0, GhostBall.transform.position);
-                            line.SetPosition(1, GhostBall.transform.position + dir_left * a);
+
+                            var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
+
+                            Ghostline.Reset();
+                            Ghostline.enabled = false;
+
                             Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);
 
                         }
@@ -969,10 +979,10 @@ namespace Diaco.EightBall.CueControllers
                         {
                             float a = (angle_left - angle_right) * ScaleLineAimGhostBall;
 
-                            var line = GhostBall.GetComponent<LineRenderer>();
-                            line.enabled = false;
-                            line.SetPosition(0, GhostBall.transform.position);
-                            line.SetPosition(1, GhostBall.transform.position + dir_right * a);
+                            var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
+                            
+                            Ghostline.Reset();
+                            Ghostline.enabled = false;
                             Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);
                         }
                         ///  LastTouchPosition = Camera.main.WorldToScreenPoint(hit2.point);
@@ -1053,7 +1063,7 @@ namespace Diaco.EightBall.CueControllers
 
                     //**** lineRenderer.SetPosition(0, Vector3.zero);
                     //*** lineRenderer.SetPosition(1, Vector3.zero);
-                    AimLine.SetActive(show);
+                    AimLine.enabled = (show);
                   //  Debug.Log("AimDisable"+DragIsBusy);
                 }
             }
@@ -1066,7 +1076,7 @@ namespace Diaco.EightBall.CueControllers
                     AimSystemShow = show;
                     CUEWood.SetActive(show);
                     GhostBall.SetActive(show);
-                    AimLine.SetActive(show);
+                    AimLine.enabled = show;
                     //  Debug.Log("AimActive" +DragIsBusy);
                 }
             }
