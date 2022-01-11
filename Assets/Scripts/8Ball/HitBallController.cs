@@ -52,7 +52,7 @@ namespace Diaco.EightBall.CueControllers
         private Vector2 PosCueSpin;
         private new Rigidbody rigidbody;
         //***private LineRenderer lineRenderer;
-        private RaycastHit hit, hit2;
+        private RaycastHit hit, hit2,hit3;
         private Vector3 VlocityBall;
 
         //public Vector3 LastPosition;
@@ -128,7 +128,10 @@ namespace Diaco.EightBall.CueControllers
         {
 
 
-
+           if( rigidbody.SweepTest(Vector3.right, out hit3, 20))
+            {
+                Debug.Log(hit3.collider.name);
+            }
             VlocityBall = rigidbody.velocity;
 
             if (waitForAim && CheckMoveBall() == false)
