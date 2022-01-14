@@ -24,18 +24,18 @@ namespace Diaco.EightBall.Server
         public float TimeStep = 0.0f;
         public _GamePlayRule GamePlayRule;
 
-       [SerializeField] private int pocketselected;
+     /*  [SerializeField] private int pocketselected;
         public int PocketSelected {
             set {
                 pocketselected = value;
                 if(pocketselected !=0)
                 {
-                    Handler_EnableBoarderPocket(false);
+                    Handler_EnableBoarderPocket(false,);
                 }
 
             }
             get { return pocketselected; }
-        }
+        }*/
         // public float ThresholdSleep = 0.09f;
         #region ServerSettings
         public Socket socket;
@@ -292,7 +292,7 @@ namespace Diaco.EightBall.Server
                 {
                     FirstPocketCall = 0;
 
-                    PocketSelected = 0;
+                   // PocketSelected = 0;
 
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
@@ -504,8 +504,14 @@ namespace Diaco.EightBall.Server
             if (GamePlayRule == _GamePlayRule.classic)
                 socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition);
             else
-                socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition, PocketSelected, FirstPocketCall);
+                socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition, FirstPocketCall);
             //   Debug.Log("End Record And SendData Of Turn");
+        }
+        public void Emit_EndPlayRecord()
+        {
+          
+           
+                socket.Emit("EndRecord");
         }
         public void Emit_LeftGame()
         {
@@ -550,6 +556,11 @@ namespace Diaco.EightBall.Server
             socket.Emit("message", message);
             Debug.Log("Emit_Message");
 
+        }
+        public void Emit_CallPocket(int  id)
+        {
+            socket.Emit("selectPocket", id);
+            Debug.Log("selectPocket:" + id);
         }
         #endregion
 
@@ -605,13 +616,35 @@ namespace Diaco.EightBall.Server
             SetTimePlayerInUI(data.playerOne.time/1000, data.playerTwo.time/1000);
             if (data.ownerTurn == 1)
             {
-                initializTurn(data);
+                if (gameData.selectedPocket  ==  -1)
+                {
+                    initializTurn(data);
+                }
+                else if( gameData.selectedPocket == 0)
+                {
+                    Handler_EnableBoarderPocket(true, 0);
+                }
+                else if(gameData.selectedPocket > 0)
+                {
+                    initializTurn(data);
+                    Handler_EnableBoarderPocket(true, gameData.selectedPocket);
+                }
                 EnableCoolDown(Side.Left, data.turnTime,0);
               
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
+                if (gameData.selectedPocket == 0)
+                {
+                    Handler_EnableBoarderPocket(false, 0);
+                }
+                else if (gameData.selectedPocket > 0)
+                {
+                    Handler_EnableBoarderPocket(true, gameData.selectedPocket);
+                }
+
+
                 EnableCoolDown(Side.Right, data.turnTime, 0);
                
                 CheckEnable8BallRightInOtherClient();
@@ -693,14 +726,34 @@ namespace Diaco.EightBall.Server
            /// SetTimePlayerInUI(data.playerTwo.time / 1000, data.playerOne.time / 1000);
             if (data.ownerTurn == 2)
             {
-                initializTurn(data);
-                
+                if (gameData.selectedPocket == -1)
+                {
+                    initializTurn(data);
+                }
+                else if (gameData.selectedPocket == 0)
+                {
+                    Handler_EnableBoarderPocket(true, 0);
+                }
+                else if (gameData.selectedPocket > 0)
+                {
+                    initializTurn(data);
+                    Handler_EnableBoarderPocket(true, gameData.selectedPocket);
+                }
+
                 EnableCoolDown(Side.Left, data.turnTime, 0);
               
                 //  Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
+                if (gameData.selectedPocket == 0)
+                {
+                    Handler_EnableBoarderPocket(false, 0);
+                }
+                else if (gameData.selectedPocket > 0)
+                {
+                    Handler_EnableBoarderPocket(true, gameData.selectedPocket);
+                }
                 EnableCoolDown(Side.Right, data.turnTime, 0);
                
 
@@ -737,6 +790,7 @@ namespace Diaco.EightBall.Server
             Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
         }
 
+       /* [Obsolete]
         public void CallPacketEnable()
         {
             if (GamePlayRule == _GamePlayRule.quick && EightBallEnable)
@@ -747,7 +801,7 @@ namespace Diaco.EightBall.Server
             {
                 Handler_EnableBoarderPocket(true);
             }
-        }
+        }*/
         public void initializTurn(Diaco.EightBall.Structs.GameData data)
         {
             DOVirtual.Float(0f, 0.1f, 1, (x) => { }).OnComplete(() =>
@@ -761,7 +815,7 @@ namespace Diaco.EightBall.Server
                 FirstBallImpact = 0;
                 
                 Turn = true;
-                CallPacketEnable();
+              // CallPacketEnable();
                 // Debug.Log("Turn");
             });
 
@@ -806,6 +860,7 @@ namespace Diaco.EightBall.Server
             PositionAndRotateBalls PositionBalls = new PositionAndRotateBalls();
             do
             {
+              
                 if (AddressBalls[0] != null)
                 {
                     PositionBalls.CueBall = new Vector2(AddressBalls[0].transform.position.x, AddressBalls[0].transform.position.z);
@@ -896,15 +951,15 @@ namespace Diaco.EightBall.Server
                     //  Debug.Log($"<color=green>TimeStepPacket{PositionBalls.TimeStepPacket}</color>");
                 }
 
-
+                PositionBalls.isLastPacket = false;
                 Emit_PositionsBalls(PositionBalls);
                 TimeStep = Time.realtimeSinceStartup;
                 yield return new WaitForSecondsRealtime(SpeedPlayRecord);
             } while (CheckBallsMove());
 
 
-
-            //Emit_PositionsBalls(PositionBalls);
+            PositionBalls.isLastPacket = true;
+            Emit_PositionsBalls(PositionBalls);
             //TimeStep = Time.realtimeSinceStartup;
             Emit_SendDataOfGameOnEndTurn(AddressBalls[0].transform.position);
             TimeStep = 0.0f;
@@ -1008,6 +1063,11 @@ namespace Diaco.EightBall.Server
                     AddressBalls[15].transform.DORotate(PositionBalls.Ball_15_R, PositionBalls.TimeStepPacket);
                 }
                 yield return new WaitForSecondsRealtime(PositionBalls.TimeStepPacket);
+
+                if(PositionBalls.isLastPacket)
+                {
+                    Emit_EndPlayRecord();
+                }
             } while (QueuePositionsBallFromServer.Count > 0);
 
 
@@ -2198,8 +2258,8 @@ namespace Diaco.EightBall.Server
 
         }
 
-        private Action<bool> enableboarderpocket;
-        public event Action<bool> EnableBoarderPocket
+        private Action<bool,int> enableboarderpocket;
+        public event Action<bool,int> EnableBoarderPocket
         {
             add
             {
@@ -2210,11 +2270,11 @@ namespace Diaco.EightBall.Server
                 enableboarderpocket -= value;
             }
         }
-        protected void Handler_EnableBoarderPocket(bool show)
+        protected void Handler_EnableBoarderPocket(bool show, int id)
         {
             if (enableboarderpocket != null)
             {
-                enableboarderpocket(show);
+                enableboarderpocket(show, id);
             }
 
         }

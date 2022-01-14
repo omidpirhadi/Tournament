@@ -18,7 +18,7 @@ public class CueWood : MonoBehaviour
     {
         whiteball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
         this.transform.position = whiteball.transform.position;
-        WoodRenderer.localPosition = new Vector3(-8.5f, 1.0f, 0.0f);
+        WoodRenderer.localPosition = new Vector3(-7.8f, 1.0f, 0f);
     }
     private void OnDisable()
     {
@@ -28,7 +28,7 @@ public class CueWood : MonoBehaviour
     {
         whiteball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
         this.transform.position = whiteball.transform.position;
-        WoodRenderer.localPosition = new Vector3(-8.5f, 1.0f, 0.0f);
+        WoodRenderer.localPosition = new Vector3(-7.8f, 1.0f, 0f);
 
         WoodInHud.gameObject.SetActive(true);
         this.transform.position = whiteball.transform.position;

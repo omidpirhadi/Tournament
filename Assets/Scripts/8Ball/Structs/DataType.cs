@@ -56,6 +56,7 @@ namespace Diaco.EightBall.Structs
         [DataMember] public Vector2 Ball_15;
         [DataMember] public Vector3 Ball_15_R;
         [DataMember] public float TimeStepPacket;
+        [DataMember] public bool isLastPacket;
     }
     [Serializable]
     public  struct AimData
@@ -120,6 +121,8 @@ namespace Diaco.EightBall.Structs
         public int cost;
         public int costType;
         public int award;
+
+        public int selectedPocket;//  -1 = Do notthing, 0 = Call pocket Only Without Turn, >0 = give Turn and Call Pocket 
 
     }
     [Serializable]

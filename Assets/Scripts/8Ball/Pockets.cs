@@ -6,10 +6,11 @@ using DG.Tweening;
 
 namespace Diaco.EightBall.Pockets
 {
-   
+
     public class Pockets : MonoBehaviour
     {
         public int PocketID = 0;
+        public bool Selectable = false;
         [ColorUsage(true)]
         public Color PocketNormalColor;
         [ColorUsage(true)]
@@ -18,9 +19,9 @@ namespace Diaco.EightBall.Pockets
         public Material[] Skins;
         public float timeDestory = 3.0f;
         private Basket basket;
-      [SerializeField]  private SpriteRenderer PocketRenderer;
+        [SerializeField] private SpriteRenderer PocketRenderer;
         private Diaco.EightBall.Server.BilliardServer Server;
-       // private Diaco.EightBall.CueControllers.HitBallController CueBall;
+        // private Diaco.EightBall.CueControllers.HitBallController CueBall;
         private void Start()
         {
 
@@ -32,7 +33,7 @@ namespace Diaco.EightBall.Pockets
 
         }
 
-     
+
 
         private void OnTriggerEnter(Collider Ball)
         {
@@ -60,17 +61,17 @@ namespace Diaco.EightBall.Pockets
                     Server.DeletedBallCount++;
                 }
                 //SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
-                 Destroy(Ball.gameObject, timeDestory);
+                Destroy(Ball.gameObject, timeDestory);
                 // Destroy(Ball.GetComponent<ShodowFake>().shadow.gameObject); 
 
             }
             else if (Ball.tag == "whiteball" && Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>())
             {
-               
+
                 Ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;
-                
+
                 /// Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = false;
                 // Ball.GetComponent<Rigidbody>().velocity = new Vector3(0.001f, 0.001f, 0.001f);
                 ///   Ball.GetComponent<Rigidbody>().angularVelocity = new Vector3(0.001f, 0.001f, 0.001f);
@@ -81,8 +82,8 @@ namespace Diaco.EightBall.Pockets
 
                 if (Server.InRecordMode == false)
                 {
-                    
-                   // SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
+
+                    // SpwanFakeBall(id, Ball.GetComponent<Rigidbody>());
                     Handler_OnPocket(id);
                 }
 
@@ -91,51 +92,71 @@ namespace Diaco.EightBall.Pockets
         }
         private void OnMouseDown()
         {
-            PocketRenderer.DOColor(PocketSelectColor, 0.5f).OnComplete(() =>
+            if (Selectable)
             {
-                PocketRenderer.DOColor(PocketNormalColor, 0.5f);
-            }).OnComplete(() => {
-                
-                PocketRenderer.color = PocketNormalColor;
-                Server.PocketSelected = PocketID;
-            });
-           
-            Debug.Log("Pocket" + this.name);
+                PocketRenderer.DOColor(PocketSelectColor, 0.5f).OnComplete(() =>
+                {
+                    PocketRenderer.DOColor(PocketNormalColor, 0.5f);
+                }).OnComplete(() =>
+                {
+
+                    PocketRenderer.color = PocketNormalColor;
+                    Server.Emit_CallPocket(PocketID);
+                });
+
+                Debug.Log("Pocket" + this.name);
+            }
         }
-        private void Server_EnableBoarderPocket(bool show)
+        private void Server_EnableBoarderPocket(bool show, int id)
         {
-            ShowPocketBoarder(show);
-        }
-
-
-        private void SpwanFakeBall(int id, Rigidbody originBall)
-        {
-
-            Vector3 pos = originBall.transform.position;
-            Quaternion rotate = originBall.transform.rotation;
-
-            if (id != 0)
-                Destroy(originBall.gameObject);
-
-
-
-            var fakeball = Instantiate(PrefabFakeBall, pos, rotate);
-            fakeball.GetComponent<MeshRenderer>().material = Skins[id];
-            var rigidbodyfake = fakeball.GetComponent<Rigidbody>();
-            rigidbodyfake.velocity = originBall.velocity;
-            Destroy(fakeball, timeDestory);
-
+            ShowPocketBoarder(show, id);
         }
 
-        private void ShowPocketBoarder(bool show)
-        {
 
-            PocketRenderer.enabled = show;
+        /* private void SpwanFakeBall(int id, Rigidbody originBall)
+         {
+
+             Vector3 pos = originBall.transform.position;
+             Quaternion rotate = originBall.transform.rotation;
+
+             if (id != 0)
+                 Destroy(originBall.gameObject);
+
+
+
+             var fakeball = Instantiate(PrefabFakeBall, pos, rotate);
+             fakeball.GetComponent<MeshRenderer>().material = Skins[id];
+             var rigidbodyfake = fakeball.GetComponent<Rigidbody>();
+             rigidbodyfake.velocity = originBall.velocity;
+             Destroy(fakeball, timeDestory);
+
+         }*/
+
+        private void ShowPocketBoarder(bool show, int id)
+        {
+            if (id == 0)///all Enable
+            {
+                PocketRenderer.enabled = show;
+                Selectable = show;
+            }
+            else if (id > 0)//Show only this ID
+            {
+                if (id == this.PocketID)
+                {
+                    PocketRenderer.enabled = show;
+                    Selectable = false;
+                }
+                else
+                {
+                    PocketRenderer.enabled = !show;
+                    Selectable = false;
+                }
+            }
         }
 
 
         public event Action<int> OnPocket;
-        public virtual void  Handler_OnPocket(int id)
+        public virtual void Handler_OnPocket(int id)
         {
             if (OnPocket != null)
             {

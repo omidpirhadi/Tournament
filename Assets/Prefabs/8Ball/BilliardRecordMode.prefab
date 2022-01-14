@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 0
+  Selectable: 0
   PocketNormalColor: {r: 0, g: 0, b: 0, a: 0}
   PocketSelectColor: {r: 0, g: 0, b: 0, a: 0}
   PrefabFakeBall: {fileID: 0}
@@ -352,6 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 0
+  Selectable: 0
   PocketNormalColor: {r: 0, g: 0, b: 0, a: 0}
   PocketSelectColor: {r: 0, g: 0, b: 0, a: 0}
   PrefabFakeBall: {fileID: 0}
@@ -521,6 +523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 0
+  Selectable: 0
   PocketNormalColor: {r: 0, g: 0, b: 0, a: 0}
   PocketSelectColor: {r: 0, g: 0, b: 0, a: 0}
   PrefabFakeBall: {fileID: 0}
@@ -2067,7 +2070,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2422890905799766751}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.0015710905, w: 0.9999988}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -2076,9 +2079,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -531.61835, y: -48.664}
-  m_SizeDelta: {x: 558.09784, y: 81.865326}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -500.9156, y: -45.691147}
+  m_SizeDelta: {x: 524.7476, y: 71.62866}
+  m_Pivot: {x: 0.6014454, y: 0.56298393}
 --- !u!222 &5471670329050507844
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2175,6 +2178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 0
+  Selectable: 0
   PocketNormalColor: {r: 0, g: 0, b: 0, a: 0}
   PocketSelectColor: {r: 0, g: 0, b: 0, a: 0}
   PrefabFakeBall: {fileID: 0}
@@ -2393,6 +2397,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 0
+  Selectable: 0
   PocketNormalColor: {r: 0, g: 0, b: 0, a: 0}
   PocketSelectColor: {r: 0, g: 0, b: 0, a: 0}
   PrefabFakeBall: {fileID: 0}
@@ -4450,6 +4455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 0
+  Selectable: 0
   PocketNormalColor: {r: 0, g: 0, b: 0, a: 0}
   PocketSelectColor: {r: 0, g: 0, b: 0, a: 0}
   PrefabFakeBall: {fileID: 0}
@@ -5675,8 +5681,8 @@ Transform:
   - {fileID: 4750951991168165237}
   - {fileID: 4750951991973003140}
   - {fileID: 4750951992094594257}
-  - {fileID: 8294222121291194150}
   - {fileID: 9106313346013541521}
+  - {fileID: 8294222121291194150}
   - {fileID: 4526103655780464388}
   - {fileID: 6277836878943683527}
   m_Father: {fileID: 0}
@@ -9181,7 +9187,6 @@ MonoBehaviour:
   SpwnedBall: 0
   TimeStep: 0
   GamePlayRule: 0
-  pocketselected: 0
   GlobalURL: http://37.152.185.15:8421/socket.io/
   LocalURL: 
   Namespaceserver: 
@@ -9245,6 +9250,7 @@ MonoBehaviour:
       Ball_15: {x: 0, y: 0}
       Ball_15_R: {x: 0, y: 0, z: 0}
       TimeStepPacket: 0
+      isLastPacket: 0
     cueBallLastPosition: {x: 0, y: 0, z: 0}
     table: 
     type: 
@@ -9252,6 +9258,7 @@ MonoBehaviour:
     cost: 0
     costType: 0
     award: 0
+    selectedPocket: 0
   ResultGamePage: {fileID: 0}
   SpeedPlayRecord: 0.02
   AddressBalls: []
@@ -9691,7 +9698,7 @@ Transform:
   - {fileID: 8243557098473320774}
   - {fileID: 9084483535552479013}
   m_Father: {fileID: 4750951991566267327}
-  m_RootOrder: 13
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!120 &1693195783866624761
 LineRenderer:
@@ -10513,12 +10520,12 @@ Transform:
   m_GameObject: {fileID: 7905920253461134978}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.47, y: 0.0812686, z: 0}
-  m_LocalScale: {x: 0.39999998, y: 0.39999998, z: 0.39999998}
+  m_LocalScale: {x: 0.32999998, y: 0.32999998, z: 0.32999998}
   m_Children:
   - {fileID: 5191799570931929068}
   - {fileID: 6759711325672940860}
   m_Father: {fileID: 4750951991566267327}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5555822447197299163
 MeshFilter:

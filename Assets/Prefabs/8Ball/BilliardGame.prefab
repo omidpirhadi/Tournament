@@ -48,7 +48,7 @@ MonoBehaviour:
   blendMode: 1
   scaleMode: 0
   color: {r: 1, g: 1, b: 1, a: 1}
-  detailLevel: 2
+  detailLevel: 3
   renderQueue: -1
   zTest: 4
   zOffsetFactor: 0
@@ -83,7 +83,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 15589995450926845}
-  m_Mesh: {fileID: 43249077458406456, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
+  m_Mesh: {fileID: 43808115565573514, guid: a3d1f56cebf202c448b6fb479f61a9dc, type: 2}
 --- !u!23 &7626344024583210624
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -371,6 +371,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 1
+  Selectable: 0
   PocketNormalColor: {r: 1, g: 0, b: 0, a: 1}
   PocketSelectColor: {r: 1, g: 0.97662324, b: 0, a: 1}
   PrefabFakeBall: {fileID: 1347360228312584865, guid: af1a41e761231d34a809c41783ce441a,
@@ -596,6 +597,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 4
+  Selectable: 0
   PocketNormalColor: {r: 1, g: 0, b: 0, a: 1}
   PocketSelectColor: {r: 1, g: 0.97662324, b: 0, a: 1}
   PrefabFakeBall: {fileID: 1347360228312584865, guid: af1a41e761231d34a809c41783ce441a,
@@ -931,6 +933,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 5
+  Selectable: 0
   PocketNormalColor: {r: 1, g: 0, b: 0, a: 1}
   PocketSelectColor: {r: 1, g: 0.97662324, b: 0, a: 1}
   PrefabFakeBall: {fileID: 1347360228312584865, guid: af1a41e761231d34a809c41783ce441a,
@@ -1364,6 +1367,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 6
+  Selectable: 0
   PocketNormalColor: {r: 1, g: 0, b: 0, a: 1}
   PocketSelectColor: {r: 1, g: 0.97662324, b: 0, a: 1}
   PrefabFakeBall: {fileID: 1347360228312584865, guid: af1a41e761231d34a809c41783ce441a,
@@ -1696,6 +1700,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 2
+  Selectable: 0
   PocketNormalColor: {r: 1, g: 0, b: 0, a: 1}
   PocketSelectColor: {r: 1, g: 0.97662324, b: 0, a: 1}
   PrefabFakeBall: {fileID: 1347360228312584865, guid: af1a41e761231d34a809c41783ce441a,
@@ -5178,7 +5183,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1907238244519471378}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -10746,7 +10751,6 @@ MonoBehaviour:
   SpwnedBall: 0
   TimeStep: 0
   GamePlayRule: 0
-  pocketselected: 0
   GlobalURL: http://37.152.185.15:8421/socket.io/
   LocalURL: 
   Namespaceserver: 
@@ -10810,6 +10814,7 @@ MonoBehaviour:
       Ball_15: {x: 0, y: 0}
       Ball_15_R: {x: 0, y: 0, z: 0}
       TimeStepPacket: 0
+      isLastPacket: 0
     cueBallLastPosition: {x: 0, y: 0, z: 0}
     table: 
     type: 
@@ -10817,6 +10822,7 @@ MonoBehaviour:
     cost: 0
     costType: 0
     award: 0
+    selectedPocket: 0
   ResultGamePage: {fileID: 6979943296784886272}
   SpeedPlayRecord: 0.03
   AddressBalls: []
@@ -16606,6 +16612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PocketID: 3
+  Selectable: 0
   PocketNormalColor: {r: 1, g: 0, b: 0, a: 1}
   PocketSelectColor: {r: 1, g: 0.97662324, b: 0, a: 1}
   PrefabFakeBall: {fileID: 1347360228312584865, guid: af1a41e761231d34a809c41783ce441a,
@@ -17600,7 +17607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6102602900649662652}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -7.87, y: 1, z: -0.13}
+  m_LocalPosition: {x: -7.79, y: 1, z: 0.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7145618190849547305}
@@ -19011,7 +19018,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.032}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -6.530836, y: 134.00888}
+  m_AnchoredPosition: {x: -6.5308304, y: 134.00885}
   m_SizeDelta: {x: 156.65103, y: -289.30148}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6418629318451090836
@@ -22006,7 +22013,7 @@ Transform:
   m_GameObject: {fileID: 7145618190849547308}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.47, y: 0.0812686, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_Children:
   - {fileID: 1463128566311103908}
   - {fileID: 1946322916798117734}
@@ -24495,7 +24502,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8126423496621804816}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0.0015710905, w: 0.9999988}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -24504,9 +24511,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -531.6184, y: -48.66398}
-  m_SizeDelta: {x: 558.09784, y: 81.865326}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -500.9156, y: -45.691147}
+  m_SizeDelta: {x: 524.7476, y: 71.62866}
+  m_Pivot: {x: 0.6014454, y: 0.56298393}
 --- !u!222 &2887984582766332402
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24534,7 +24541,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a0808d650adce714f9f9cb73968dbe39, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a137be00f41e23844be62ffe7b2d868d, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -24543,7 +24550,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 1.18
 --- !u!1 &8222460471410072007
 GameObject:
   m_ObjectHideFlags: 0

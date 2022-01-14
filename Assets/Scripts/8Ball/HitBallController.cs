@@ -361,33 +361,7 @@ namespace Diaco.EightBall.CueControllers
             if (Server.Turn /*&& Server.Record == false*/)
             {
 
-                if (Server.GamePlayRule == EightBall.Server._GamePlayRule.classic)
-                {
-                    force(step);
-                }
-                else if (Server.GamePlayRule == EightBall.Server._GamePlayRule.quick)
-                {
-                    if (Server.EightBallEnable && Server.PocketSelected != 0)
-                    {
-                        force(step);
-                    }
-                    else if (!Server.EightBallEnable)
-                    {
-                        force(step);
-                    }
-                }
-                else if (Server.GamePlayRule == EightBall.Server._GamePlayRule.big)
-                {
-                    if (Server.PlayerShar == Structs.Shar.None)
-                    {
-                        force(step);
-                    }
-                    else if (Server.PocketSelected != 0)
-                    {
-                        force(step);
-                    }
-
-                }
+                force(step);
 
                 
                 // OffsetPositionCueWoodFromCueBall = new Vector3(-0.3f, 0.0f, 0.00f);

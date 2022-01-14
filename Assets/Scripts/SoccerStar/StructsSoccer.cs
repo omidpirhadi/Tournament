@@ -101,6 +101,7 @@ namespace Diaco.SoccerStar.CustomTypes
     {
         public List<MarbleMovementData> marbleMovements;
         public float TimeStepPacket;
+        public bool IsLastPacket;
     }
     [Serializable]
     public struct AimData

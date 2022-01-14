@@ -540,20 +540,22 @@ namespace Diaco.SoccerStar.Server
                 // Debug.Log("TRUN3");
             }
             //*********///****///***///
-            if (QueuemovementPackets.Count > 0)
-            {
-                GameDataRecive = true;
-            }
-            else
-            {
-               
-                    InitializTurn_new();
+            /*   if (QueuemovementPackets.Count > 0)
+               {
+                   GameDataRecive = true;
+               }
+               else
+               {
 
-            }
+
+
+               }*/
+            StartCoroutine(InitializTurn_new());
             IsGoal = -1;
         }
-        public void InitializTurn_new()
+        public IEnumerator InitializTurn_new()
         {
+            Handler_OnPhysicFreeze(true);
             if (Side == 1)
             {
                 if (SpwanedMarbels == false)
@@ -572,7 +574,8 @@ namespace Diaco.SoccerStar.Server
                 }
                 else
                 {
-                    StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, smooth));
+                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, smooth));
+                    yield return new WaitForSeconds(0.4f);
                 }
 
                 if (gameData.state == 1)
@@ -610,6 +613,7 @@ namespace Diaco.SoccerStar.Server
                 else
                 {
                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, -1, smooth));
+                    yield return new WaitForSeconds(0.4f);
                 }
                 if (gameData.state == 1)
                 {
@@ -632,7 +636,7 @@ namespace Diaco.SoccerStar.Server
 
             }
 
-
+            Handler_OnPhysicFreeze(false);
         }
 
         public void RunSpawnMarble_New(GameData data, int Side, string selfskin, string enemyskin)
@@ -666,7 +670,7 @@ namespace Diaco.SoccerStar.Server
         public IEnumerator MoveMarbelsToPositionFromServer(GameData data, int side, float speed)
         {
             EnablerRingEffect = false;
-            Handler_OnPhysicFreeze(true);
+            
             var count_movement = data.positions.Count;
             for (int i = 0; i < count_movement; i++)
             {
@@ -679,12 +683,12 @@ namespace Diaco.SoccerStar.Server
 
 
                 ///Marbles[index_marble].transform.eulerAngles = rotate;
-                Marbles[index_marble].transform.position = pos;
-                //Marbles[index_marble].transform.DOMove(pos, 0.01f);
+               // Marbles[index_marble].transform.position = pos;
+                Marbles[index_marble].transform.DOMove(pos, 0.2f);
                 
             }
             //Debug.Log("MOVVVVEEEEE1212212E:::"+Marbles[10].transform.position); 
-            Handler_OnPhysicFreeze(false);
+            
             yield return null;
 
         }
@@ -782,15 +786,18 @@ namespace Diaco.SoccerStar.Server
           //  Debug.Log("ForceT2222T");
             Turn = false;
             List<MarbleMovementData> marbleMovments;
+            MarbleMovementPackets movementPackets = new MarbleMovementPackets();
+            string json_packet;
             do
             {
                 marbleMovments = new List<MarbleMovementData>();
+                movementPackets.marbleMovements = new List<MarbleMovementData>();
                 Vector3 CurrentPositionMarbles;
-                Vector3 velocity;
+             //   Vector3 velocity;
                 for (int i = 0; i < Marbles.Count; i++)
                 {
                     CurrentPositionMarbles = Marbles[i].transform.position;
-                    velocity = Marbles[i].GetVlocity;
+                   // velocity = Marbles[i].GetVlocity;
                     marbleMovments.Add(new MarbleMovementData
                     {
                         id = (short)Marbles[i].ID,
@@ -802,7 +809,7 @@ namespace Diaco.SoccerStar.Server
 
                     });
                 }
-                MarbleMovementPackets movementPackets = new MarbleMovementPackets();
+                
                 movementPackets.marbleMovements = marbleMovments;
                 
 
@@ -816,7 +823,7 @@ namespace Diaco.SoccerStar.Server
                    // Debug.Log($"<color=green>TimeStepPacket{movementPackets.TimeStepPacket}</color>");
                 }
 
-                var json_packet = JsonUtility.ToJson(movementPackets);
+                 json_packet = JsonUtility.ToJson(movementPackets);
                 socket.Emit("Position", json_packet);
 
                 this.TimeStep = TimeStep = Time.realtimeSinceStartup;
@@ -824,6 +831,14 @@ namespace Diaco.SoccerStar.Server
                    //Debug.Log("SendPositions");
             }
             while (CheckMarbleMove());
+
+
+            movementPackets.IsLastPacket = true;
+            json_packet = JsonUtility.ToJson(movementPackets);
+            Debug.Log("ISLastPacket::" + movementPackets.IsLastPacket+"Count"+movementPackets.marbleMovements.Count);
+            socket.Emit("Position", json_packet);
+
+
             ///Handler_OnPhysicFreeze(true);
             socket.Emit("EndTurn", IsGoal);
             Debug.Log("ISGoal::"+ IsGoal);
@@ -846,9 +861,11 @@ namespace Diaco.SoccerStar.Server
             {
                 var movement_packet = QueuemovementPackets.Dequeue();
                 var count_movement_in_packet = movement_packet.marbleMovements.Count;
+               
                 for (int i = 0; i < count_movement_in_packet; i++)
                 {
                     var data = movement_packet.marbleMovements[i];
+
                     var index_marble = data.id;
 
                     var temp_pos = data.position;
@@ -869,13 +886,23 @@ namespace Diaco.SoccerStar.Server
 
                 }
                 yield return new WaitForSecondsRealtime(movement_packet.TimeStepPacket);
+                Debug.Log("Endpacket "+ movement_packet.IsLastPacket); 
+                if (movement_packet.IsLastPacket)
+                {
+                    socket.Emit("EndTurn");
+
+                    Debug.Log("iSLaaaaA");
+
+                }
                 //   Debug.Log("C");
             }
+
+
             intergate = true;
-            if (GameDataRecive)
+           /* if (GameDataRecive)
             {
                 InitializTurn_new();
-            }
+            }*/
             yield return null;
         }
 

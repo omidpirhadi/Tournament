@@ -592,8 +592,10 @@ namespace Diaco.SoccerStar.Marble
             if (enable)
 
             {
+                
                 this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 this.rigidbody.isKinematic = true;
+                this.GetComponent<Collider>().enabled = false;
                 
 
                 Debug.Log("PhysicFreeze");
@@ -601,6 +603,7 @@ namespace Diaco.SoccerStar.Marble
 
             else
             {
+                this.GetComponent<Collider>().enabled = true;
                 this.rigidbody.isKinematic = false;
                 this.rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                 Debug.Log("Physic UnFreeze");

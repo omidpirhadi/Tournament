@@ -24,7 +24,7 @@ public class BackToMainMenu : MonoBehaviour
             {//
                 ui.CloseAllPopUp();
                 seversoccer.Emit_LeftGame();
-               luncher.BackToMenu();
+             //  luncher.BackToMenu();
                
             
                // Debug.Log("VCVVVVV");
@@ -34,7 +34,7 @@ public class BackToMainMenu : MonoBehaviour
                 ui.CloseAllPopUp();
                 severbilliard.Emit_LeftGame();
                 
-              luncher.BackToMenu();
+            //  luncher.BackToMenu();
               //  
               //  
               //  Debug.Log("DDDDDDDDDDDDD");
