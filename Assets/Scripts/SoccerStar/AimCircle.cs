@@ -143,20 +143,26 @@ public class AimCircle : MonoBehaviour
     public void AimCircleRotate(int marbleId,float angel)
     {
         ////Debug.Log(this.transform.localEulerAngles.y);
-        var dir = DirectionShoot().normalized;
+       
         int side = 0;
-        if(dir.x>0)
-        {
-            Debug.Log("Positiv_X");
-            side = -1;
-        }
-        else
-        {
-            Debug.Log("Negativ_X");
-            side = 1;
-        }
 
-        this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f));
+        if(Input.touchCount>1)
+        {
+            var pos1 =  Input.GetTouch(0).position;
+            var pos2 = Input.GetTouch(1).position;
+            var d = (pos2 - pos1).normalized;
+            if(d.x>0)
+            {
+                side = -1;
+            }
+            else
+            {
+                side = 1;
+            }
+        }
+        //Debug.Log($"Angel:{angel * side}");
+       // this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f));
+        this.transform.localEulerAngles = new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f);
     }
     public Vector3  DirectionShoot()
     {

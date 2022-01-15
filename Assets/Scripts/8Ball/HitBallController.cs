@@ -1,4 +1,5 @@
 ﻿using System;
+
 using System.Linq;
 using System.Collections;
 using UnityEngine;
@@ -127,12 +128,12 @@ namespace Diaco.EightBall.CueControllers
         public void FixedUpdate()
         {
 
-
-           if( rigidbody.SweepTest(Vector3.right, out hit3, 20))
+            VlocityBall = rigidbody.velocity;
+        /*   if( rigidbody.SweepTest(Vector3.right, out hit3, 20))
             {
                 Debug.Log(hit3.collider.name);
             }
-            VlocityBall = rigidbody.velocity;
+            
 
             if (waitForAim && CheckMoveBall() == false)
             {
@@ -147,8 +148,8 @@ namespace Diaco.EightBall.CueControllers
                 soundeffectControll.PlaySound(1);///play sound change turn
                 Handheld.Vibrate();
                 waitForAim = false;
-            }
-            if ((CheckMoveBall() == true && inPlayPos) || DragIsBusy)
+            }*/
+            if (CheckMoveBall() == true  || DragIsBusy)
             {
 
 
@@ -163,7 +164,7 @@ namespace Diaco.EightBall.CueControllers
 
                 ///Debug.Log("Stop111" );
             }
-
+            
 
             AimSystem();
 
@@ -258,32 +259,41 @@ namespace Diaco.EightBall.CueControllers
 
             if (turn)
             {
+                // ActiveAimSystem111(true);
+
+                if (Server.Pitok > 0)
+                {
+                    CheckPitok();
+
+                }
+                EnergyCue.Show(true);
+                AimControllerUI.Show(true);
                 // ActiveAimSystem(true);
                 /// CUEWoodSetPosition(LastTouchPosition);
                 //  Debug.Log("TRUEEEEE");
-                if (CheckMoveBall() == true)
-                {
-                    waitForAim = true;
-                }
-                else
-                {
-                    EnergyCue.Show(true);
-                    AimControllerUI.Show(true);
-
-                    if (Server.Pitok > 0)
+                /*    if (CheckMoveBall() == true)
                     {
-                        CheckPitok();
-
+                        waitForAim = true;
                     }
-                    soundeffectControll.PlaySound(1);///play sound change turn
-                    Handheld.Vibrate();
-                }
+                    else
+                    {
+                        EnergyCue.Show(true);
+                        AimControllerUI.Show(true);
+
+                        if (Server.Pitok > 0)
+                        {
+                            CheckPitok();
+
+                        }
+                        soundeffectControll.PlaySound(1);///play sound change turn
+                        Handheld.Vibrate();
+                    }*/
                 last_value_cue_energy = 0;
                 count_imapct = 0;
             }
             else if (turn == false)
             {
-                ///ActiveAimSystem(false);
+                //ActiveAimSystem111(false);
                 EnergyCue.Show(false);
                 AimControllerUI.Show(false);
                 HandIcon.enabled = false;
@@ -661,6 +671,10 @@ namespace Diaco.EightBall.CueControllers
                 StartAnimationHand();
                 LimitedMovePitok = true;
                 //Debug.Log("BBBBBB");
+            }
+            else if( Server.Pitok == 0)
+            {
+
             }
         }
 

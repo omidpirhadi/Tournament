@@ -214,7 +214,8 @@ public class TempPlayerControll : MonoBehaviour
 
                     LastPos = hit2.point;
                     aimCricle.AimCircleRotate(ID, Input.GetTouch(1).deltaPosition.y * Sensiviti);
-                   // aimCricle.AimCircleAndIndicatorRotate2(ID, hit2.point);
+                   // aimCricle.AimCircleRotate(ID, Input.GetTouch(1).deltaPosition.x * Sensiviti);
+                    // aimCricle.AimCircleAndIndicatorRotate2(ID, hit2.point);
                 }
                 if (aimCricle.CurrentAimPower < 3.5f)
                 {
