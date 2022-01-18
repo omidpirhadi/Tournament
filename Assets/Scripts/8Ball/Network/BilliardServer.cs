@@ -291,12 +291,12 @@ namespace Diaco.EightBall.Server
                 socket.On("gameData", (s, p, m) =>
                 {
                     FirstPocketCall = 0;
-
-                   // PocketSelected = 0;
-
+                    Pitok = 0;
+                    // PocketSelected = 0;
+                    Turn = false;
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
-                    Turn = false;
+                    
                     /*if (!SpwnedBall)
                         SelectTable(gameData.table);*/
                     if (gameData.playerOne.userName == UserName.userName)

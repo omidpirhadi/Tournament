@@ -870,9 +870,15 @@ namespace Diaco.EightBall.CueControllers
 
                                 GhostBall.transform.position = ray_line.origin + (ray_line.direction.normalized * hit2.distance);
                                 //****lineRenderer.SetPosition(0, transform.position);
-                               //**** lineRenderer.SetPosition(1, GhostBall.transform.position);
+                                //**** lineRenderer.SetPosition(1, GhostBall.transform.position);
+                                AimLine.SetPosition(GhostBall.transform.position);
 
-                               var dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
+                                var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
+                                Ghostline.Reset();
+                                Ghostline.enabled = false;
+
+
+                                var dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
                                 vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
                                  Handler_OnHitBall(-1, Vector3.zero);
 
@@ -883,6 +889,12 @@ namespace Diaco.EightBall.CueControllers
 
 
                                 GhostBall.transform.position = ray_line.origin + (ray_line.direction.normalized * hit2.distance);
+                                AimLine.SetPosition(GhostBall.transform.position);
+
+                                var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
+                                Ghostline.Reset();
+                                Ghostline.enabled = false;
+
                                 //****lineRenderer.SetPosition(0, transform.position);
                                 //****lineRenderer.SetPosition(1, GhostBall.transform.position);
                                 ///Draw  Line WhiteBall Dir
