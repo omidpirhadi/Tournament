@@ -1924,10 +1924,10 @@ namespace Diaco.EightBall.Server
         {
 
             int count = 0;
-            for (int i = 0; i < UI_Biliboard_SharLeft.Count; i++)
+            for (int i = 0; i < UI_Biliboard_SharRight.Count; i++)
             {
 
-                if (!UI_Biliboard_SharLeft[i].interactable)
+                if (!UI_Biliboard_SharRight[i].interactable)
                 {
                     count++;
                 }
@@ -1935,8 +1935,8 @@ namespace Diaco.EightBall.Server
             if (count == 7)
             {
                 EightBallEnable = true;
-                UI_Biliboard_SharLeft[0].interactable = true;
-                UI_Biliboard_SharLeft[0].image.sprite = EightBall;
+                UI_Biliboard_SharRight[0].interactable = true;
+                UI_Biliboard_SharRight[0].image.sprite = EightBall;
                 //  Debug.Log("EightBallEnable");
             }
 

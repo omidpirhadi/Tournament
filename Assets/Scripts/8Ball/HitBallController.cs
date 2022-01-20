@@ -892,8 +892,8 @@ namespace Diaco.EightBall.CueControllers
                                 AimLine.SetPosition(GhostBall.transform.position);
 
                                 var Ghostline = GhostBall.GetComponent<CustomLineRenderer2>();
-                                Ghostline.Reset();
-                                Ghostline.enabled = false;
+                              //  Ghostline.Reset();
+                                Ghostline.enabled = true;
 
                                 //****lineRenderer.SetPosition(0, transform.position);
                                 //****lineRenderer.SetPosition(1, GhostBall.transform.position);
@@ -911,23 +911,24 @@ namespace Diaco.EightBall.CueControllers
                                 {
                                     //  var d = Vector3.Min(dir_right, dir_left);
                                      a = (angle_right - angle_left) * ScaleLineAimGhostBall;
-                                    var line = GhostBall.GetComponent<LineRenderer>();
-                                    line.enabled = true;
-                                    line.SetPosition(0, GhostBall.transform.position);
-                                    line.SetPosition(1, GhostBall.transform.position + dir_left * a);
+                                    /* var line = GhostBall.GetComponent<LineRenderer>();
+                                     line.enabled = true;
+                                     line.SetPosition(0, GhostBall.transform.position);
+                                     line.SetPosition(1, GhostBall.transform.position + dir_left * a);*/
+                                    Ghostline.SetPosition(GhostBall.transform.position + dir_left * a);
                                    
-                                    Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);////absolut
+                                     ///Debug.DrawRay(GhostBall.transform.position, dir_left * a, Color.green);////absolut
 
                                 }
                                 else
                                 {
                                      a = (angle_left - angle_right) * ScaleLineAimGhostBall;
-                                    var line = GhostBall.GetComponent<LineRenderer>();
+                                    /*var line = GhostBall.GetComponent<LineRenderer>();
                                     line.enabled = true;
                                     line.SetPosition(0, GhostBall.transform.position);
-                                    line.SetPosition(1, GhostBall.transform.position + dir_right * a);
-                                   
-                                    Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);////absolut
+                                    line.SetPosition(1, GhostBall.transform.position + dir_right * a);*/
+                                    Ghostline.SetPosition(GhostBall.transform.position + dir_right * a);
+                                   // Debug.DrawRay(GhostBall.transform.position, dir_right * a, Color.cyan);////absolut
                                 }
 
                                 ////Dir  Other ball
