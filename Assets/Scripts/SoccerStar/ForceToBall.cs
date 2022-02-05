@@ -160,12 +160,12 @@ namespace Diaco.SoccerStar.Marble
                 {
                     ///  
                     /////  transform.LookAt(collision.contacts[0].point);
-                    hitpointballtowall = collision.contacts[0].point;
+                   hitpointballtowall = collision.contacts[0].point;
                     IsRotateBall = true;
-                    BounceBall(collision);
+                   BounceBall(collision);
 
                 }
-                if (tag_collider == "marble")
+               if (tag_collider == "marble")
                 {
                      hitpointballtomarbl = collision.contacts[0].point;
                     
@@ -426,19 +426,21 @@ namespace Diaco.SoccerStar.Marble
             var normal = collision.contacts[0].normal;
             
             var reflect2 = Vector3.Reflect(GetVlocity, normal).normalized;
-            var reflect3 = Vector3.Reflect(dir, normal).normalized;
-
+             var reflect3 = Vector3.Reflect(dir, normal).normalized;
+            
+rigidbody.velocity = reflect3 * 100;
             if (GetVlocity.magnitude == 0.0f)
             {
-                rigidbody.velocity = reflect3 * 200;
+               
+               /// rigidbody.AddForce(reflect3 * 2000, ForceMode.Force);
                 Debug.Log("zero");
             }
-            else
+           
+          /*  if (GetSpeed > ThresholdSleep)
             {
                 rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
                 Debug.Log("normal");
-            }
-
+            }*/
             // Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
             //Debug.Log(distance + "wallvelocity:" + GetVlocity);
 
