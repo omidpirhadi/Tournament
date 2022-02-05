@@ -134,14 +134,14 @@ namespace Diaco.EightBall.Pockets
 
         private void ShowPocketBoarder(bool show, int id)
         {
-            if (id == 0)///all Enable
+            if (id == 0)///id 0  =  all, Enable : show = true / Disable :show = false;
             {
                 PocketRenderer.enabled = show;
                 Selectable = show;
             }
-            else if (id > 0)//Show only this ID
+            else if (id > 0)// only this ID
             {
-                if (id == this.PocketID)
+                if (id == this.PocketID)//enable
                 {
                     PocketRenderer.enabled = show;
                     Selectable = false;

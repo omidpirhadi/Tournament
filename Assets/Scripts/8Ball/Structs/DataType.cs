@@ -10,51 +10,72 @@ namespace Diaco.EightBall.Structs
     {
         [DataMember] public Vector2 CueBall;
         [DataMember] public Vector3 CueBall_R;
+     ////   [DataMember] public bool CueBallInPocket;
 
         [DataMember] public Vector2 Ball_1;
         [DataMember] public Vector3 Ball_1_R;
+       //// [DataMember] public bool Ball_1InPocket;
+
+
 
         [DataMember] public Vector2 Ball_2;
         [DataMember] public Vector3 Ball_2_R;
+      ///  [DataMember] public bool Ball_2InPocket;
 
         [DataMember] public Vector2 Ball_3;
         [DataMember] public Vector3 Ball_3_R;
+       /// [DataMember] public bool Ball_3InPocket;
 
         [DataMember] public Vector2 Ball_4;
         [DataMember] public Vector3 Ball_4_R;
+      ////  [DataMember] public bool Ball_4InPocket;
+
 
         [DataMember] public Vector2 Ball_5;
         [DataMember] public Vector3 Ball_5_R;
+       // [DataMember] public bool Ball_5InPocket;
 
         [DataMember] public Vector2 Ball_6;
         [DataMember] public Vector3 Ball_6_R;
+     ///   [DataMember] public bool Ball_6InPocket;
 
         [DataMember] public Vector2 Ball_7;
         [DataMember] public Vector3 Ball_7_R;
+       /// [DataMember] public bool Ball_7InPocket;
 
         [DataMember] public Vector2 Ball_8;
         [DataMember] public Vector3 Ball_8_R;
+      ///  [DataMember] public bool Ball_8InPocket;
 
         [DataMember] public Vector2 Ball_9;
         [DataMember] public Vector3 Ball_9_R;
+       /// [DataMember] public bool Ball_9InPocket;
 
         [DataMember] public Vector2 Ball_10;
         [DataMember] public Vector3 Ball_10_R;
+       // [DataMember] public bool Ball_10InPocket;
+
 
         [DataMember] public Vector2 Ball_11;
         [DataMember] public Vector3 Ball_11_R;
+       // [DataMember] public bool Ball_11InPocket;
 
         [DataMember] public Vector2 Ball_12;
         [DataMember] public Vector3 Ball_12_R;
+       /// [DataMember] public bool Ball_12InPocket;
 
         [DataMember] public Vector2 Ball_13;
         [DataMember] public Vector3 Ball_13_R;
+      //  [DataMember] public bool Ball_13InPocket;
 
         [DataMember] public Vector2 Ball_14;
         [DataMember] public Vector3 Ball_14_R;
+       /// [DataMember] public bool Ball_14InPocket;
 
         [DataMember] public Vector2 Ball_15;
         [DataMember] public Vector3 Ball_15_R;
+      //  [DataMember] public bool Ball_15InPocket;
+
         [DataMember] public float TimeStepPacket;
         [DataMember] public bool isLastPacket;
     }

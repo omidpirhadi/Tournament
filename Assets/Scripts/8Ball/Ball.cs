@@ -29,8 +29,10 @@ namespace Diaco.EightBall.CueControllers
         public LayerMask layer;
        [SerializeField] private float MaxAngularvelocity = 150;
 
+        public Vector3 LastPosition;
+        public Vector3 LastRotation;
 
-        
+
         void Start()
         {
 
@@ -45,6 +47,7 @@ namespace Diaco.EightBall.CueControllers
             if (testSetting)
                 testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
             //InvokeRepeating("CheckballMove", 0, gamemanager.SendRate.value);//
+         ///  DOVirtual.DelayedCall(1.0f, () => {  }); 
             SetYPositionRefrence();
         }
 
@@ -66,12 +69,18 @@ namespace Diaco.EightBall.CueControllers
                  rigidbody.velocity = d * SpeedBallCurrent;
 
              }*/
-          
+           
+            LastPosition = this.transform.position;
+            LastRotation = this.transform.eulerAngles;
         }
         void LateUpdate()
         {
             if (EnableYFix)
                 FixOverflowMovment();
+
+           
+
+            DisableFixY();
         }
 
 
@@ -168,13 +177,10 @@ namespace Diaco.EightBall.CueControllers
         }
         public void SetYPositionRefrence()
         {
-            DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
+            DOVirtual.Float(0, 1, 5.0f, (x) => { }).OnComplete(() =>
              {
-
-             }).OnComplete(() =>
-             {
-                //rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
-                Y_Pos_Refrence = transform.position.y;
+                 Y_Pos_Refrence = transform.position.y;
+                 Debug.Log("YDDDdD");
              });
         }
         private void FixOverflowMovment()
@@ -212,6 +218,20 @@ namespace Diaco.EightBall.CueControllers
                // Debug.Log("Fix Move Ball");
 
             }
+        }
+        private void DisableFixY()
+        {
+            float minX = -5.35f;
+            float maxX = 6.2f;
+            float minZ = -2.98f;
+            float maxZ = 2.98f;
+            if ((LastPosition.x< minX || LastPosition.x > maxX)  || (LastPosition.z < minZ || LastPosition.z > maxZ))
+            {
+                    EnableYFix = false;
+                Debug.Log("DisableY" + this.name + "LAST" + LastPosition);
+
+            }
+    
         }
         private bool CheckBallMove()
         {

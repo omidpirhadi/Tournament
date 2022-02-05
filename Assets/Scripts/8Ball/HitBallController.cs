@@ -434,7 +434,7 @@ namespace Diaco.EightBall.CueControllers
                         rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                         rigidbody.isKinematic = true;
                         GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
-                        ActiveAimSystem(false);
+                       // ActiveAimSystem(false);
                         CancelAnimationHand();
                         Handler_FreazeBall(true);
                         Handler_OnHitBall(-1, Vector3.zero);
@@ -452,7 +452,7 @@ namespace Diaco.EightBall.CueControllers
                         rigidbody.isKinematic = false;
                         rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                         DragIsBusy = false;
-                        ActiveAimSystem(true);
+                     //   ActiveAimSystem(true);
                         Handler_FreazeBall(false);
                         CancelAnimationHand();
                         GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
@@ -698,7 +698,7 @@ namespace Diaco.EightBall.CueControllers
 
             if (Server.InRecordMode == false)
             {
-                StartCoroutine(Server.PositionsBallsSendToServer());
+                Server.StarSendPositionToServer();
             }
             else
             {
@@ -1178,7 +1178,7 @@ namespace Diaco.EightBall.CueControllers
                 
             }
         }
-
+        
         public void CueBallMoveFromServer(Diaco.EightBall.Structs.CueBallData data, float speed)
         {
 

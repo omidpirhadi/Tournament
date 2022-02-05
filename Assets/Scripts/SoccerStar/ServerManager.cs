@@ -1149,7 +1149,7 @@ namespace Diaco.SoccerStar.Server
                 {
                     if (Marbles[i])
                     {
-                        if (Marbles[i].GetComponent<Rigidbody>().velocity != Vector3.zero || Marbles[i].GetComponent<Rigidbody>().angularVelocity != Vector3.zero)
+                        if (Marbles[i].GetVlocity != Vector3.zero )
                         {
                             /* if (Marbles[i].GetComponent<Rigidbody>().velocity.magnitude < ThresholdSleep)
                              {
@@ -1194,7 +1194,7 @@ namespace Diaco.SoccerStar.Server
          //   Debug.Log("MOvE5");
             return move;
         }
-        public bool EqeulPosition(Vector3 a, Vector3 b)
+       /* public bool EqeulPosition(Vector3 a, Vector3 b)
         {
             bool eqeul = false;
             var x = a.x - b.x;
@@ -1204,7 +1204,7 @@ namespace Diaco.SoccerStar.Server
                 eqeul = true;
             }
             return eqeul;
-        }
+        }*/
         public void Emit_LeftGame()
         {
             socket.Emit("left-game");
