@@ -180,7 +180,7 @@ namespace Diaco.EightBall.CueControllers
             DOVirtual.Float(0, 1, 5.0f, (x) => { }).OnComplete(() =>
              {
                  Y_Pos_Refrence = transform.position.y;
-                 Debug.Log("YDDDdD");
+             //    Debug.Log("YDDDdD");
              });
         }
         private void FixOverflowMovment()

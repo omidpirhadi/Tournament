@@ -34,7 +34,7 @@ public class HandlerSilder : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDr
         }
         Handler.anchoredPosition = new Vector2(x, Mathf.Clamp(Handler.anchoredPosition.y, Anchermin, Anchermax));
         Handler_OnChange(ConvertSpan(Handler.anchoredPosition.y));
-        Debug.Log(Handler.anchoredPosition.x);
+       // Debug.Log(Handler.anchoredPosition.x);
     }
 
 

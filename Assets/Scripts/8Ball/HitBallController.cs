@@ -81,6 +81,8 @@ namespace Diaco.EightBall.CueControllers
         public Vector3 vvv;
         private float powscalefactor;
        [SerializeField] private bool CueBallMoveInPitoke = false;
+
+        #region MonoBehaviourFunctions
         void Start()
         {
             // temp_PowerCUE = PowerCUE;
@@ -229,10 +231,10 @@ namespace Diaco.EightBall.CueControllers
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(GhostBall.transform.position, RadiusGhostBall);
+            Gizmos.DrawWireSphere(vvv, RadiusGhostBall);
 
         }
-
+        #endregion
         private void UI_OnUIActive(bool obj)
         {
             if (obj == true)
@@ -857,7 +859,8 @@ namespace Diaco.EightBall.CueControllers
                             powscalefactor = (180 * ScaleLineAimGhostBall - a);
                             Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * powscalefactor);
 
-                            vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
+                            // vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
+                            vvv = pos3;
                             Handler_OnHitBall(hit2.collider.GetComponent<AddressBall>().IDPost,pos3 );
                             Debug.DrawLine(GhostBall.transform.position, pos3, Color.blue);
                         
@@ -879,8 +882,9 @@ namespace Diaco.EightBall.CueControllers
 
 
                                 var dir_ghostballTo_targetball = hit2.transform.position - hit2.point;
-                                vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
-                                 Handler_OnHitBall(-1, Vector3.zero);
+                                // vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
+                                vvv = Vector3.zero;
+                                Handler_OnHitBall(-1, Vector3.zero);
 
                             }
                             else
@@ -942,8 +946,9 @@ namespace Diaco.EightBall.CueControllers
                                 Vector3 pos3 = hit2.transform.position + (dir_ghostballTo_targetball.normalized * powscalefactor);
                                 Debug.DrawLine(GhostBall.transform.position, pos3, Color.blue);
                                 // hit2.collider.GetComponent<Ball>().SetlineDirection(dir_ghostballTo_targetball + hit2.transform.position);
-                               
-                                vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
+
+                                // vvv = (hit2.transform.position + (AimOffset + 30 * 0.25f) * dir_ghostballTo_targetball) - hit2.transform.position;
+                                vvv = pos3;
                                 Handler_OnHitBall(hit2.collider.GetComponent<AddressBall>().IDPost, pos3);
                                 ///  b_end = hit2.transform.position + (AimOffset + cueAim * 0.25f) * dir_ghostballTo_targetball;
 

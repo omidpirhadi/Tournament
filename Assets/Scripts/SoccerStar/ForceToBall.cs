@@ -428,10 +428,10 @@ namespace Diaco.SoccerStar.Marble
             var reflect2 = Vector3.Reflect(GetVlocity, normal).normalized;
              var reflect3 = Vector3.Reflect(dir, normal).normalized;
             
-rigidbody.velocity = reflect3 * 100;
+
             if (GetVlocity.magnitude == 0.0f)
             {
-               
+               rigidbody.velocity = reflect3 * 100;
                /// rigidbody.AddForce(reflect3 * 2000, ForceMode.Force);
                 Debug.Log("zero");
             }

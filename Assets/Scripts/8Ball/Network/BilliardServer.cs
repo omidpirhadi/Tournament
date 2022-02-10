@@ -244,7 +244,7 @@ namespace Diaco.EightBall.Server
                 PocketsInScene.ForEach(pocket =>
                 {
                     pocket.OnPocket += GameManager_OnPocket0;
-                    Debug.Log("pocket find");
+                 //   Debug.Log("pocket find");
                     // pockets[1].OnPocket += GameManager_OnPocket1;
                     // pockets[2].OnPocket += GameManager_OnPocket2;
                     // pockets[3].OnPocket += GameManager_OnPocket3;
