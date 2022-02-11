@@ -60,6 +60,7 @@ namespace Diaco.SoccerStar.Marble
         //private float StepPower;
         // private Vector3 DirectionMove;
         private Vector3 LastPosition;
+        public Vector3 LastVelocity;
         private Vector3 LastRotation;
         private RaycastHit hit;
         private Ray ray;
@@ -108,7 +109,7 @@ namespace Diaco.SoccerStar.Marble
         void LateUpdate()
         {
 
-            FixOverflowMovment();
+            
         }
 
         private void FixedUpdate()
@@ -116,12 +117,13 @@ namespace Diaco.SoccerStar.Marble
             // GetVlocity = rigidbody.velocity;
 
             GetVlocity = (this.transform.position - LastPosition) / Time.deltaTime;
+            ///LastVelocity = GetVlocity; 
             GetSpeed = GetVlocity.magnitude;
             if (IsRotatingMarble)
                 RotateMarble();
             if (IsRotateBall)
                 RotateBall();
-
+            FixOverflowMovment();
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
         }
@@ -135,7 +137,7 @@ namespace Diaco.SoccerStar.Marble
             {
                 if (tag_collider == "wall")
                 {
-                    // BounceBall(collision);
+                    // BounceMarble(collision);
                     IsRotatingMarble = true;
 
                 }
@@ -173,7 +175,10 @@ namespace Diaco.SoccerStar.Marble
                 }
             }
         }
-
+        void OnCollisionStay(Collision collision)
+        {
+            Debug.Log("sSssSsSs");
+        }
         public void OnDestroy()
         {
 
@@ -377,10 +382,10 @@ namespace Diaco.SoccerStar.Marble
                 rigidbody.velocity = Vector3.zero;
                 rigidbody.angularVelocity = Vector3.zero;
 
-                InMove = false;
+                
                 IsRotatingMarble = false;
                 IsRotateBall = false;
-
+                InMove = false;
                 // Debug.Log(VlocityBall.magnitude + ":::Fix Move Ball");
 
             }
@@ -429,13 +434,17 @@ namespace Diaco.SoccerStar.Marble
              var reflect3 = Vector3.Reflect(dir, normal).normalized;
             
 
-            if (GetVlocity.magnitude == 0.0f)
+            if (GetVlocity.magnitude <= 4.0f)
             {
-               rigidbody.velocity = reflect3 * 100;
+               rigidbody.velocity = reflect3 * 5;
                /// rigidbody.AddForce(reflect3 * 2000, ForceMode.Force);
                 Debug.Log("zero");
             }
-           
+           else
+            {
+                rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+                Debug.Log("normal");
+            }
           /*  if (GetSpeed > ThresholdSleep)
             {
                 rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
@@ -445,7 +454,37 @@ namespace Diaco.SoccerStar.Marble
             //Debug.Log(distance + "wallvelocity:" + GetVlocity);
 
         }
+        private void BounceMarble(Collision collision)
+        {
 
+            var normal = collision.contacts[0].normal;
+            var dir = collision.contacts[0].point - transform.position;
+            
+
+            var reflect2 = Vector3.Reflect(GetVlocity, normal).normalized;
+            var reflect3 = Vector3.Reflect(dir, normal).normalized;
+
+
+            if (GetVlocity.magnitude <= 4.0f)
+            {
+                rigidbody.velocity = reflect3 * 5;
+                /// rigidbody.AddForce(reflect3 * 2000, ForceMode.Force);
+                Debug.Log("zeromm");
+            }
+            else
+            {
+                rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+                Debug.Log("normalmmm");
+            }
+            /*  if (GetSpeed > ThresholdSleep)
+              {
+                  rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
+                  Debug.Log("normal");
+              }*/
+            // Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
+            //Debug.Log(distance + "wallvelocity:" + GetVlocity);
+
+        }
         private void RotateMarble()
         {
             //var speed = rigidbody.velocity.magnitude;

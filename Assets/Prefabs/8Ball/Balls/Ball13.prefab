@@ -458,20 +458,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4220abdd007937143b119b155bf89534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  testSetting: {fileID: 0}
   ID: 13
   ThresholdSleep: 0.097
   TargetVelocity: {x: 0, y: 0, z: 0}
   HaveTarget: 0
   powerbounce: 0.92
-  SpeedBallCurrent: 0
   EnableYFix: 1
   Y_Pos_Refrence: 0
   InMove: 0
   layer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
   MaxAngularvelocity: 150
+  LastPosition: {x: 0, y: 0, z: 0}
+  LastRotation: {x: 0, y: 0, z: 0}
 --- !u!114 &8462753417267779755
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,27 +6,31 @@ namespace Diaco.EightBall.CueControllers
 {
     public class Ball : MonoBehaviour
     {
-        public BillardTestSetting testSetting;
+       // public BillardTestSetting testSetting;
         public int ID = 0;
         public float ThresholdSleep = 0.09f;
         public Vector3 TargetVelocity;
         public bool HaveTarget = false;
+        public bool IsCueBallMove = false;
         public float powerbounce = 1.0f;
+        public bool EnableYFix = true;
+
+        private int intergatDestinationBall = 0;
         private new Rigidbody rigidbody;
         // private LineRenderer lineRenderer;
         private CustomLineRenderer2 AimLine;
 
         private HitBallController cueball;
-        private Diaco.EightBall.Server.BilliardServer server;
-        [SerializeField] private float SpeedBallCurrent = 0.0f;
+      //  private Diaco.EightBall.Server.BilliardServer server;
+       // [SerializeField] private float SpeedBallCurrent = 0.0f;
         private Vector3 VlocityBallCurrent;
-        public bool EnableYFix = true;
+        
         [SerializeField] private float Y_Pos_Refrence;
 
         [SerializeField] private bool InMove = false;
-        private Ray ray;
-        private RaycastHit hit;
-        public LayerMask layer;
+        //private Ray ray;
+       private RaycastHit hit;
+       public LayerMask layer;
        [SerializeField] private float MaxAngularvelocity = 150;
 
         public Vector3 LastPosition;
@@ -41,35 +45,29 @@ namespace Diaco.EightBall.CueControllers
             cueball = FindObjectOfType<HitBallController>();
             cueball.OnHitBall += Ball_OnHitBall;
             cueball.OnFreazeBall += Cueball_OnFreazeBall;
-            cueball.OnFristHit += Cueball_OnFristHit;
-            server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
-           testSetting =  FindObjectOfType<BillardTestSetting>();
+            cueball.OnShotCueBall += Cueball_OnShotCueBall;
+            cueball.OnMissTarget += Cueball_OnMissTarget;
+          /* testSetting =  FindObjectOfType<BillardTestSetting>();
             if (testSetting)
-                testSetting.OnChangeSetting += HitBallController_OnChangeSetting;
-            //InvokeRepeating("CheckballMove", 0, gamemanager.SendRate.value);//
-         ///  DOVirtual.DelayedCall(1.0f, () => {  }); 
+                testSetting.OnChangeSetting += HitBallController_OnChangeSetting;*/
+
             SetYPositionRefrence();
+            rigidbody.maxAngularVelocity = MaxAngularvelocity;
         }
 
-        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3 ,float arg, float arg4,float arg6,float arg7)
+        private void Cueball_OnMissTarget()
         {
-            SetSetting(arg1, arg2, arg3,arg, arg4,arg7);
+            ClearDestinationBall();
         }
 
+
+
+
+        #region MonoFunctions
         private void FixedUpdate()
         {
             VlocityBallCurrent = rigidbody.velocity;
-            SpeedBallCurrent = rigidbody.velocity.magnitude;
-
-            rigidbody.maxAngularVelocity = MaxAngularvelocity;
-
-            /* if (HaveTarget && SpeedBallCurrent > ThresholdSleep )
-             {
-                 var d = (TargetVelocity - rigidbody.velocity).normalized;
-                 rigidbody.velocity = d * SpeedBallCurrent;
-
-             }*/
-           
+            TravelToTarget();
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
         }
@@ -91,87 +89,96 @@ namespace Diaco.EightBall.CueControllers
             {
                 cueball.OnHitBall -= Ball_OnHitBall;
                 cueball.OnFreazeBall -= Cueball_OnFreazeBall;
+                cueball.OnShotCueBall -= Cueball_OnShotCueBall;
             }
-            if (testSetting)
-                testSetting.OnChangeSetting -= HitBallController_OnChangeSetting;
+          /*  if (testSetting)
+                testSetting.OnChangeSetting -= HitBallController_OnChangeSetting;*/
 
         }
 
         private void OnCollisionEnter(Collision collision)
         {
+            if(HaveTarget && intergatDestinationBall == 0)
+            {
+                intergatDestinationBall = 1;
+            }
+            else
+            {
+                HaveTarget = false;
+                intergatDestinationBall = 0;
+            }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);
+            
         }
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
-
-            Gizmos.DrawRay(ray);
-            Gizmos.DrawWireSphere(hit.point, 0.4f);
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawSphere(hit.point, 0.1f);
         }
 
-
-
+        #endregion
+        #region CallBackFunctions
         private void Cueball_OnFreazeBall(bool active)
         {
-            if(active == true)
+            if (active == true)
             {
                 rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 rigidbody.isKinematic = active;
             }
-            else if(active == false)
+            else if (active == false)
             {
                 rigidbody.isKinematic = active;
                 rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-                
+
             }
-            
+
             // Debug.Log("Firize");
         }
-        private void Cueball_OnFristHit(int id)
-        {
-            /*if (id != this.ID)
-            {
-                TargetVelocity = Vector3.zero;
-                HaveTarget = false;
-            }*/
-        }
-        private void Ball_OnHitBall(int target, Vector3 dir)
+        private void Ball_OnHitBall(int target, Vector3 point)
         {
 
-            if (target != -1)
+            if (target != -1)// we have a target
             {
-                if (target == ID)
+                if (target == ID) // target = this ball and TurnOn Aim
                 {
                     AimLine.enabled = true;
-                   SetlineDirection(dir);
-    
+                    SetlineDirection(point);
+                    SetDestinationBall(point);
                 }
-                else if (target != ID)
+                else if (target != ID) // target != this ball and TurnOff Aim
                 {
-                    // AimLine.enabled = false;
-                    // SetlineDirection(new Vector3(0, -10f, 0));
+                    ClearDestinationBall();
                     AimLine.Reset();
                     AimLine.enabled = false;
-
+                    
+                    
                 }
             }
-            else
+            else // target  Empty and clear All Aim
             {
-                // AimLine.enabled = false;
-                /// SetlineDirection(new Vector3(0, -10f, 0));
+                //ClearDestinationBall();
                 AimLine.Reset();
                 AimLine.enabled = false;
+                
 
             }
         }
+        /*private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3, float arg, float arg4, float arg6, float arg7)
+        {
+            SetSetting(arg1, arg2, arg3, arg, arg4, arg7);
+        }*/
+        private void Cueball_OnShotCueBall()
+        {
+            IsCueBallMove = true;
+        }
+        #endregion
+
 
 
         private void SetlineDirection(Vector3 pos)
         {
-           //// lineRenderer.SetPosition(0, new Vector3(transform.position.x, 0.06f, transform.position.z));
 
-           /// lineRenderer.SetPosition(1, (new Vector3(pos.x, 0.06f, pos.z)));
             AimLine.SetPosition(new Vector3(pos.x, 0.06f, pos.z));
 
         }
@@ -214,7 +221,8 @@ namespace Diaco.EightBall.CueControllers
                 rigidbody.velocity = Vector3.zero;
                 rigidbody.angularVelocity = Vector3.zero;
                 InMove = false;
-
+                IsCueBallMove = false;
+                ClearDestinationBall();
                // Debug.Log("Fix Move Ball");
 
             }
@@ -246,9 +254,6 @@ namespace Diaco.EightBall.CueControllers
         }
         private void BounceBall(Collision collision)
         {
-
-
-
             var normal = collision.contacts[0].normal;
             var reflect2 = Vector3.Reflect(VlocityBallCurrent.normalized, normal).normalized;
             rigidbody.velocity = (reflect2 * collision.relativeVelocity.magnitude)*powerbounce;
@@ -256,6 +261,29 @@ namespace Diaco.EightBall.CueControllers
 
         }
 
+        private void SetDestinationBall(Vector3 point)
+        {
+            HaveTarget = true;
+            intergatDestinationBall = 0;
+            var dir = point - transform.position;
+            if (Physics.Raycast(transform.position, dir, out hit, 100, layer))
+            {
+                TargetVelocity = dir.normalized;
+                TargetVelocity.y = 0;
+            }
+        }
+        private void ClearDestinationBall()
+        {
+
+            HaveTarget = false;
+            intergatDestinationBall = 0;
+            TargetVelocity = Vector3.zero;
+        }
+        private void TravelToTarget()
+        {
+            if (HaveTarget && IsCueBallMove)
+                rigidbody.velocity = TargetVelocity * rigidbody.velocity.magnitude;
+        }
         private void  SetSetting(float PowerCue, float Drag, float AngularDrag, float MaxAngular,float SpeedThershold,float powbounce)
         {
             MaxAngularvelocity = MaxAngular;
