@@ -175,6 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efb3c9dd33f5a4a42a194aa837b90403, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  EffectRenderer: {fileID: 0}
   SpeedRotate: 2
   loopType: 2
   ease: 1
@@ -403,14 +404,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9e07734ad6eb040835adccd7c5522e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TestSetting: {fileID: 0}
-  MarbleType: 0
   ID: 0
+  MarbleType: 0
   forceMode: 1
   PowerForce: 145
-  AccelerationBallAfterHit: 3
-  SelectEffect: {fileID: 1310513243937252174}
-  SelectEffectRotateSenciviti: 0.5
+  SelectEffect: {fileID: 0}
   Flagrenderer: {fileID: 4867411009215750378}
   Flag: {fileID: 4867411009215750248}
   StepRotateMarble: 0.1
@@ -422,9 +420,10 @@ MonoBehaviour:
   ThresholdSleep: 4
   InMove: 0
   GetVlocity: {x: 0, y: 0, z: 0}
-  Y_Pos_Refrence: 0
-  LastPosition: {x: 0, y: 0, z: 0}
-  LastRotation: {x: 0, y: 0, z: 0}
+  GetSpeed: 0
+  LastVelocity: {x: 0, y: 0, z: 0}
+  hitpointballtomarbl: {x: 0, y: 0, z: 0}
+  hitpointballtowall: {x: 0, y: 0, z: 0}
 --- !u!114 &4867411009215750599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,6 +455,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e8be81231cc641349960be70dd7829c6, type: 3}
   - {fileID: 8300000, guid: 43177ddfa875de44fb7bd013ed25bbf0, type: 3}
   MaxSpeed: 100
+  speedVolume: 0
 --- !u!1 &4867411009215751129
 GameObject:
   m_ObjectHideFlags: 0

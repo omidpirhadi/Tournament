@@ -62,9 +62,10 @@ namespace Diaco.SoccerStar.Marble
         private Vector3 LastPosition;
         public Vector3 LastVelocity;
         private Vector3 LastRotation;
-        private RaycastHit hit;
+        private RaycastHit hit, hitwall;
         private Ray ray;
-
+        public LayerMask hitwall_layer;
+        public float MaxDisFromWall = 100f;
         [SerializeField] private Vector3 hitpointballtomarbl;
         [SerializeField] private Vector3 hitpointballtowall;
         #region MonoBehaviour Function
@@ -124,6 +125,8 @@ namespace Diaco.SoccerStar.Marble
             if (IsRotateBall)
                 RotateBall();
             FixOverflowMovment();
+
+            WallHit();
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
         }
@@ -177,7 +180,7 @@ namespace Diaco.SoccerStar.Marble
         }
         void OnCollisionStay(Collision collision)
         {
-            Debug.Log("sSssSsSs");
+         //   Debug.Log("sSssSsSs");
         }
         public void OnDestroy()
         {
@@ -256,6 +259,32 @@ namespace Diaco.SoccerStar.Marble
         #endregion
 
 
+
+
+        private void WallHit()
+        {
+
+
+            if (MarbleType == Marble_Type.Marble)
+            {
+                if (rigidbody.SweepTest(GetVlocity, out hitwall, 1000))
+                {
+
+                    var dis = Vector3.Distance(transform.position, hitwall.point);
+                    if (hitwall.collider.tag == "wall")
+                    {
+                        if (dis < MaxDisFromWall)
+                        {
+                            BounceMarble();
+                            // Debug.Log("WallHit");
+                        }
+                    }
+                    // Debug.Log("swap test :" + hitwall.collider.name);
+                }
+            }
+
+            Debug.DrawRay(transform.position, GetVlocity, Color.yellow);
+        }
         public void Move(Vector3 dir, float pow)
         {
             server.IsGoal = -1;
@@ -318,16 +347,6 @@ namespace Diaco.SoccerStar.Marble
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
        /* public void SetYPositionRefrence()
         {
 
@@ -454,28 +473,17 @@ namespace Diaco.SoccerStar.Marble
             //Debug.Log(distance + "wallvelocity:" + GetVlocity);
 
         }
-        private void BounceMarble(Collision collision)
+        private void BounceMarble()
         {
 
-            var normal = collision.contacts[0].normal;
-            var dir = collision.contacts[0].point - transform.position;
+            var normal = hitwall.normal;
             
-
+            
+            
             var reflect2 = Vector3.Reflect(GetVlocity, normal).normalized;
-            var reflect3 = Vector3.Reflect(dir, normal).normalized;
 
-
-            if (GetVlocity.magnitude <= 4.0f)
-            {
-                rigidbody.velocity = reflect3 * 5;
-                /// rigidbody.AddForce(reflect3 * 2000, ForceMode.Force);
-                Debug.Log("zeromm");
-            }
-            else
-            {
-                rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
-                Debug.Log("normalmmm");
-            }
+            rigidbody.velocity = reflect2 * GetVlocity.magnitude;
+            Debug.Log("BounceMarble");
             /*  if (GetSpeed > ThresholdSleep)
               {
                   rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
