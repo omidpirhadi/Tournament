@@ -15,7 +15,7 @@ namespace Diaco.SoccerStar.Goals
         public Image GoalAnnounceImage;
         public float SpeedFillImage = 0.5f;
         public float DurationShow = 3f;
-        //public Collider FrontArea;
+        [SerializeField] private int once = 0;
         public void Start()
         {
             server = FindObjectOfType<ServerManager>();
@@ -25,32 +25,29 @@ namespace Diaco.SoccerStar.Goals
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.tag == "marble" || other.tag == "ball")
+            if (other.tag == "ball" && once == 0)
             {
                 if (other.GetComponent<ForceToBall>().MarbleType == ForceToBall.Marble_Type.Ball)
                 {
-                    //   Debug.Log("GOAL");
-                    var rigibody = other.GetComponent<Rigidbody>();
+                    once = 1;
+                   /// var rigibody = other.GetComponent<Rigidbody>();
 
                     if (server.FreePlay == false)
                     {
                         server.soundeffectcontrollLayer2.PlaySoundSoccer(2);
                         ShowAnnounceImage(true);
-                        Debug.Log("goal");
+                       // Debug.Log("goal");
                     }
                     else if (server.FreePlay == true)
                     {
                         server.soundeffectcontrollLayer2.PlaySoundSoccer(1);
                         ShowAnnounceImage(false);
-                        Debug.Log("foul");
+                       // Debug.Log("foul");
                     }
                        
                     server.IsGoal = ID;
                 }
-                if (other.GetComponent<ForceToBall>().MarbleType == ForceToBall.Marble_Type.Marble)
-                {
-                   /// other.GetComponent<ForceToBall>().FrontAreaforMoveout = FrontArea; 
-                }
+
             }
         }
 
@@ -58,6 +55,7 @@ namespace Diaco.SoccerStar.Goals
         {
             if(goal)
             {
+
                 GoalAnnounceImage.DOColor(new Color(1,1,1,1),SpeedFillImage);
                 
             }
@@ -75,7 +73,7 @@ namespace Diaco.SoccerStar.Goals
             }).OnComplete(() => {
                 GoalAnnounceImage.DOColor(new Color(1, 1, 1, 0), SpeedFillImage);
                 FoulAnnounceImage.DOColor(new Color(1, 1, 1, 0), SpeedFillImage);
-
+                once = 0;
             });
         }
     }

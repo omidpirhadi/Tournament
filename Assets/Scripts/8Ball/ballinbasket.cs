@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using DG.Tweening;
 public class ballinbasket : MonoBehaviour
 {
     public int BallID = -1;
@@ -12,6 +12,8 @@ public class ballinbasket : MonoBehaviour
     private new AudioSource audio;
 
     public Vector3 LastPosition;
+    private bool check = true;
+
     void Start()
     {
 
@@ -20,17 +22,30 @@ public class ballinbasket : MonoBehaviour
     }
     private void Update()
     {
-        if(CheckMoveBall())
+        if (check)
         {
-            PlaySound();
+            if (CheckMoveBall())
+            {
+                PlaySound();
+            }
+            if (!CheckMoveBall())
+            {
+                audio.Stop();
+
+            }
+            LastPosition = this.transform.position;
         }
-        if(!CheckMoveBall())
+
+    }
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.GetComponent<ballinbasket>())
         {
             audio.Stop();
-        }
-        LastPosition = this.transform.position;
-    }
 
+            check = false;
+        }
+    }
     private bool EqeulPosition(Vector3 a, Vector3 b)
     {
         bool eqeul = false;
@@ -48,9 +63,9 @@ public class ballinbasket : MonoBehaviour
     {
         var move = false;
         var domove = EqeulPosition(transform.position, LastPosition);
-        
 
-        if (domove == false )
+
+        if (domove == false)
         {
 
             move = true;
@@ -58,7 +73,7 @@ public class ballinbasket : MonoBehaviour
 
         return move;
     }
-   private void PlaySound()
+    private void PlaySound()
     {
         if (!Mute)
         {
@@ -66,6 +81,13 @@ public class ballinbasket : MonoBehaviour
             {
                 audio.clip = clips;
                 audio.Play();
+                DOVirtual.DelayedCall(10.0f, () =>
+                {
+
+                    audio.Stop();
+
+                    check = false;
+                });
             }
         }
     }

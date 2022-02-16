@@ -69,6 +69,7 @@ public class AimCircle : MonoBehaviour
         }
         else
         {
+            Handler_EnableRingEffectOppenent(false);
            // Debug.Log("R1");
             if (server.Turn && CurrentAimPower < 3.5f)
             {
@@ -80,6 +81,7 @@ public class AimCircle : MonoBehaviour
                 Handler_EnableRingEffectOwner(false);
              //   Debug.Log("R3");
             }
+            
         }
         //// Profiler.EndSample();
     }

@@ -1309,7 +1309,8 @@ namespace Diaco.SoccerStar.Server
             MarblesInRecorodMode.Add(player);
             //player.InRecordMode = true;
             player.ID = 0;
-           
+            MinRangMarblesId = 0;
+            MaxRangMarblesId = 4;
             for (int i = 0; i < marblePos.Length; i++)
             {
                 var marble = Instantiate(MarblesRegisteredForRecordMode[1], marblePos[i], Quaternion.identity, ParentForSpawn);

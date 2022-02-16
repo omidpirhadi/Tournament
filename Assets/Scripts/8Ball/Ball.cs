@@ -236,7 +236,7 @@ namespace Diaco.EightBall.CueControllers
             if ((LastPosition.x< minX || LastPosition.x > maxX)  || (LastPosition.z < minZ || LastPosition.z > maxZ))
             {
                     EnableYFix = false;
-                Debug.Log("DisableY" + this.name + "LAST" + LastPosition);
+            //    Debug.Log("DisableY" + this.name + "LAST" + LastPosition);
 
             }
     
