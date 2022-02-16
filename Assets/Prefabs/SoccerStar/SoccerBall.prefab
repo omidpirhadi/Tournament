@@ -32,7 +32,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8508796437853943257}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10.58, y: 1.78, z: 12.96}
+  m_LocalPosition: {x: 10.58, y: 1.68, z: 12.96}
   m_LocalScale: {x: 0.45894966, y: 0.45894966, z: 0.45894966}
   m_Children: []
   m_Father: {fileID: 0}
@@ -113,7 +113,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 4
+  m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!114 &8508796437853943253
 MonoBehaviour:
@@ -145,9 +145,6 @@ MonoBehaviour:
   GetVlocity: {x: 0, y: 0, z: 0}
   GetSpeed: 0
   LastVelocity: {x: 0, y: 0, z: 0}
-  hitwall_layer:
-    serializedVersion: 2
-    m_Bits: 0
   MaxDisFromWall: 100
   hitpointballtomarbl: {x: 0, y: 0, z: 0}
   hitpointballtowall: {x: 0, y: 0, z: 0}

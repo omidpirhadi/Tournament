@@ -28,7 +28,7 @@ public class Login : MonoBehaviour
             needcode = true;
             code.interactable = false;
             code.text = "";
-            if(context.Length == 11 && context.StartsWith("09"))
+            if(context.Length == 11 && (context.StartsWith("09") || context.StartsWith("۰۹")))
             {
                 EnterButton.interactable = true;
                 EnterButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ارسال کد", 255);

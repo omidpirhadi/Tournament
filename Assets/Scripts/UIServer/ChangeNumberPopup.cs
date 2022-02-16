@@ -21,7 +21,7 @@ public class ChangeNumberPopup : MonoBehaviour
             needcode = true;
             ConfirmCode.interactable = false;
             ConfirmCode.text = "";
-            if (context.Length == 11 && context.StartsWith("09"))
+            if (context.Length == 11 && (context.StartsWith("09") || context.StartsWith("۰۹")))
             {
                 AcceptButton.interactable = true;
                 AcceptButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ارسال کد", 255);

@@ -65,8 +65,8 @@ namespace Diaco.SoccerStar.Marble
         
       //  public LayerMask hitwall_layer;
         public float MaxDisFromWall = 5.00f;
-      //  [SerializeField] private Vector3 hitpointballtomarbl;
-      ///  [SerializeField] private Vector3 hitpointballtowall;
+       [SerializeField] private Vector3 hitpointballtomarbl;
+        [SerializeField] private Vector3 hitpointballtowall;
         #region MonoBehaviour Function
         public void Start()
         {
@@ -152,12 +152,12 @@ namespace Diaco.SoccerStar.Marble
                     /////  transform.LookAt(collision.contacts[0].point);
                   // hitpointballtowall = collision.contacts[0].point;
                     IsRotateBall = true;
-                  // BounceBall(collision);
+                   BounceMarble(collision);
 
                 }
                if (tag_collider == "marble")
                 {
-                    // hitpointballtomarbl = collision.contacts[0].point;
+                     //hitpointballtomarbl = collision.contacts[0].point;
                     
 
                 }
@@ -245,8 +245,7 @@ namespace Diaco.SoccerStar.Marble
         {
 
 
-            if (MarbleType == Marble_Type.Marble )
-            {
+            
                 if (rigidbody.SweepTest(GetVlocity, out hitwall, 10))
                 {
 
@@ -266,7 +265,7 @@ namespace Diaco.SoccerStar.Marble
                     }
                     // Debug.Log("swap test :" + hitwall.collider.name);
                 }
-            }
+            
 
             Debug.DrawRay(transform.position, GetVlocity, Color.yellow);
         }
@@ -434,7 +433,7 @@ namespace Diaco.SoccerStar.Marble
             Flagrenderer.sprite = skin;
         }
 
-       /* private void BounceBall(Collision collision)
+        private void BounceBall(Collision collision)
         {
 
 
@@ -462,9 +461,9 @@ namespace Diaco.SoccerStar.Marble
                 Debug.Log("normal");
             }
             // Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
-            //Debug.Log(distance + "wallvelocity:" + GetVlocity);
+            //Debug.Log(distance + "wallvelocity:" + GetVlocity);*/
 
-        }*/
+        }
         private void BounceMarble(Collision collision)
         {
 
