@@ -715,14 +715,14 @@ namespace Diaco.EightBall.Server
                 //return;
             }
             DeletedBallCount = 0;
-            ResetSharBillboard();
+            
             CancelCoolDownTimer();
             KinimaticBalls(true);
             SetUserNameInBillboard(data.playerTwo.userName, data.playerOne.userName);
             UpdateAvatarProfile(Avatars.LoadImage(data.playerTwo.avatar), Avatars.LoadImage(data.playerOne.avatar));
             SetTypeCost(Convert.ToInt16(data.costType));
             SetCountCostBillboard(data.cost.ToString());
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.01f);
 
             yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
             QueuePositionsBallFromServer.Enqueue(data.positions);
@@ -730,7 +730,7 @@ namespace Diaco.EightBall.Server
 
 
 
-           
+            ResetSharBillboard();
             if (data.sharSeted)
             {
                 if (data.playerTwo.shar == "solid")
@@ -803,7 +803,7 @@ namespace Diaco.EightBall.Server
                 }
             }
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().inPlayPos = false;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.01f);
             Handler_GameReady();
         }
         public void SetWoodState(CueStateData state)
@@ -1296,7 +1296,7 @@ namespace Diaco.EightBall.Server
                 }
             }
            /// Debug.Log("basket length : " + BallInBasket.Count);
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(0.5f);
             
             for (int i = 0; i < BallInBasket.Count; i++)///check for Wrong Ball In Basket
             {
@@ -1325,7 +1325,7 @@ namespace Diaco.EightBall.Server
                 }
   // Debug.Log("VBBBVBVBVBVBVBVBVBVBV"+id);
             }
-            yield return new WaitForSecondsRealtime(1f);
+            yield return new WaitForSecondsRealtime(0.5f);
             StartCoroutine(Basket.ExtractBallFast());
         }
         public void CloseConnection()

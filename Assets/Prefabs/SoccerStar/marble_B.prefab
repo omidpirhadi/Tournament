@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 4867411009215750224}
   - component: {fileID: 4867411009215750323}
   - component: {fileID: 4867411009215750209}
-  - component: {fileID: 8639393152413639535}
+  - component: {fileID: 1628928719893983103}
   - component: {fileID: 4867411009215750318}
   - component: {fileID: 4867411009215750293}
   - component: {fileID: 4867411009215750598}
@@ -185,8 +185,8 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!135 &8639393152413639535
-SphereCollider:
+--- !u!64 &1628928719893983103
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -195,9 +195,10 @@ SphereCollider:
   m_Material: {fileID: 13400000, guid: 97cefb26a54d2b94eabd4ca9862de54e, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.34
-  m_Center: {x: 0.028666494, y: 0, z: -0.07715299}
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: 3fec631664af36e4982531424ccae0e6, type: 3}
 --- !u!54 &4867411009215750318
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -341,6 +342,8 @@ MonoBehaviour:
   GetSpeed: 0
   LastVelocity: {x: 0, y: 0, z: 0}
   MaxDisFromWall: 5
+  hitpointballtomarbl: {x: 0, y: 0, z: 0}
+  hitpointballtowall: {x: 0, y: 0, z: 0}
 --- !u!114 &4867411009215750599
 MonoBehaviour:
   m_ObjectHideFlags: 0

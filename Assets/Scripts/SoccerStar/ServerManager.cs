@@ -646,15 +646,15 @@ namespace Diaco.SoccerStar.Server
 
             for (int i = 0; i < count_movement; i++)
             {
-                if (i < 5)
+                if (i >= 0 && i < 5)
                 {
                     var type = SelectBottomFlag(selfskin);
                     var marble = Instantiate(MarbleRegistered[type], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
-                    
-                     marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(selfskin));
+
+                    marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(selfskin));
                 }
-                else if (i < 10)
+                else if (i > 4 && i < 10)
                 {
                     var type = SelectBottomFlag(enemyskin);
                     var marble = Instantiate(MarbleRegistered[type], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
@@ -891,7 +891,7 @@ namespace Diaco.SoccerStar.Server
                 {
                     socket.Emit("EndTurn");
 
-                    Debug.Log("iSLaaaaA");
+                    ///Debug.Log("iSLaaaaA");
 
                 }
                 //   Debug.Log("C");
