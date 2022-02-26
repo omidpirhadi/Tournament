@@ -140,12 +140,15 @@ public class NavigationUI : MonoBehaviour
     {
         UIPopUps.ForEach((pop) =>
         {
+            
             if (pop.Name == Popup)
             {
                 if (pop.PopUpObject)
                 {
+                    //Debug.Log("AAA");
                     pop.PopUpObject.SetActive(true);
                     CurrentPage = pop.Name;
+                  //  Debug.Log("ShowPopup"+pop.Name);
                     if (soundEffectControll)
                     {
                         soundEffectControll.PlaySoundMenu(1);
@@ -159,6 +162,7 @@ public class NavigationUI : MonoBehaviour
             }
         });
         Handler_OnUIActive(true);
+        
     }
     
     public void ShowTooltip(GameObject Tooltip)

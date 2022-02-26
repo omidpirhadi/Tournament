@@ -8,23 +8,8 @@ using DG.Tweening;
 public class Test_UI : MonoBehaviour
 {
 
-    public Transform target;
-
-    void Start()
+    private void Start()
     {
- 
-    }
-
-  
-    void Update()
-    {
-
-        transform.LookAt(target,Vector3.up);
-
-       
-    }
-    public void CheckPositionContacts()
-    {
-        Handheld.Vibrate(); 
+        GetComponent<Button>().onClick.AddListener(() => { Debug.Log ("Click"); });
     }
 }
