@@ -7,9 +7,11 @@ using Sirenix.OdinInspector;
 public class UIRegisterOnServer : MonoBehaviour
 {
     [FoldoutGroup("HeaderUIs")]
-    public Image   ImageUser_inPageSelectGame;
+    public Image ImageUser_inPageSelectGame;
     [FoldoutGroup("HeaderUIs")]
     public Text UserName_inPageSelectGame;
+    [FoldoutGroup("HeaderUIs")]
+    public Text Xp_inPageSelectGame;
     [FoldoutGroup("HeaderUIs")]
     public Text Cupbilliard_inPageSelectGame;
     [FoldoutGroup("HeaderUIs")]
@@ -23,14 +25,14 @@ public class UIRegisterOnServer : MonoBehaviour
     [FoldoutGroup("FooterUIs")]
     public List<Diaco.UI.TournumentCard.TournumentCard> TournumentCards;
 
-    public void initTournmentCard(List< Diaco.HTTPBody.TOURNOMENTS> data)
+    public void initTournmentCard(List<Diaco.HTTPBody.TOURNOMENTS> data)
     {
         SetIdleTounumentCard();
-        for(int i = 0; i<data.Count; i++)
+        for (int i = 0; i < data.Count; i++)
         {
             TournumentCards[i].gameObject.SetActive(true);
             TournumentCards[i].Set(data[i].id, data[i].name, data[i].time, data[i].type);
-            
+
         }
     }
     private void SetIdleTounumentCard()

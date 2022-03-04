@@ -19,9 +19,9 @@ public class ServerUI : MonoBehaviour
     public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError;
     [SerializeField]
     public BODY BODY;
-   ///public Shop Shop;
-  ///  public SoccerShopProducts SoccerShopProducts;
-   // public BilliardShopProducts BilliardShopProducts;
+    ///public Shop Shop;
+    ///  public SoccerShopProducts SoccerShopProducts;
+    // public BilliardShopProducts BilliardShopProducts;
     public Socket socket;
     public SocketManager socketmanager;
     public GameLuncher Luncher;
@@ -30,12 +30,15 @@ public class ServerUI : MonoBehaviour
     public UIRegisterOnServer UIInFooterAndHeader;
 
     private bool loadedpage = false;
-    private int  intergation = 0;
+    private int intergation = 0;
 
     #region Server_ON
     public void ConnectToUIServer()
     {
         Luncher = FindObjectOfType<GameLuncher>();
+        navigationUi = FindObjectOfType<NavigationUI>();
+        navigationUi.OnChangePage += ServerUI_OnChangePage;
+
         SocketOptions options = new SocketOptions();
         options.AutoConnect = true;
         socketmanager = new SocketManager(new Uri(UIServerURL), options);
@@ -62,13 +65,13 @@ public class ServerUI : MonoBehaviour
             LoginError.SetActive(true);
 
             Login.SetActive(false);
-           
+
             SplashScreen.SetActive(false);
         });
         socket.On("changePhoneError", (S, p, m) =>
         {
             var message = Convert.ToBoolean(m[0]);
-            if(!message)///changed number ;
+            if (!message)///changed number ;
             {
                 navigationUi.StopLoadingPage();
                 navigationUi.ClosePopUp("changenumber");
@@ -139,7 +142,7 @@ public class ServerUI : MonoBehaviour
             if (loadedpage == false)
             {
                 Login.SetActive(false);
-              //  Register.SetActive(false);
+                //  Register.SetActive(false);
                 SplashScreen.SetActive(false);
 
                 MainMenu.SetActive(true);
@@ -249,11 +252,11 @@ public class ServerUI : MonoBehaviour
             }
         });
         socket.On("get-team-time", (s, p, m) =>
-         {
-             Handler_OnGetTimeTeam(Convert.ToSingle(m[1]));
-             navigationUi.StopLoadingPage();
-             Debug.Log("GetTime" + Convert.ToSingle(m[1]));
-         });
+        {
+            Handler_OnGetTimeTeam(Convert.ToSingle(m[1]));
+            navigationUi.StopLoadingPage();
+            Debug.Log("GetTime" + Convert.ToSingle(m[1]));
+        });
         socket.On("get-teams", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -447,7 +450,7 @@ public class ServerUI : MonoBehaviour
             else
             {
                 ///Shop = new Shop();
-               var Shop = JsonUtility.FromJson<Shop>(m[1].ToString());
+                var Shop = JsonUtility.FromJson<Shop>(m[1].ToString());
                 Handler_OnShopLoaded(Shop);
                 Debug.Log("Shop Loaded" + m[1].ToString());
             }
@@ -612,13 +615,27 @@ public class ServerUI : MonoBehaviour
         });
 
     }
+    private void ServerUI_OnChangePage(string pagename)
+    {
+        if (pagename == "modesoccer")
+        {
+
+            UIInFooterAndHeader.Xp_inPageSelectGame.text = "111";
+        }
+        if (pagename == "modepool")
+        {
+            UIInFooterAndHeader.Xp_inPageSelectGame.text = "222";
+        }
+
+    }
+
     #endregion
     #region EmitServer
     public void SendRequestForEditPhone(string phonenumber)
     {
         socket.Emit("changePhone", phonenumber);
     }
-    public void SendPhonAndConfrimCode(string phonenumber,string confrimcode)
+    public void SendPhonAndConfrimCode(string phonenumber, string confrimcode)
     {
         socket.Emit("changePhone", phonenumber, confrimcode);
     }
@@ -800,11 +817,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Shop Requested");
     }
-   
+
 
     #region Emits_Shop
 
-    public  void Emit_Shop(string id)
+    public void Emit_Shop(string id)
     {
         socket.Emit("shopBuy", id);
         navigationUi.StartLoadingPageShow();
@@ -854,7 +871,7 @@ public class ServerUI : MonoBehaviour
     public void Emit_UseCue(string id)
     {
         socket.Emit("useCue", id);
-        Debug.Log("Use Cue :"+id);
+        Debug.Log("Use Cue :" + id);
     }
     public void Emit_RentCue(string rentId)
     {
@@ -880,7 +897,7 @@ public class ServerUI : MonoBehaviour
         socket.Emit("acceptPlayWithFriend", friend, game, subGame);
         Debug.Log("acceptPlayWithFriend:::" + friend + ":::::" + game + ":::::" + subGame);
     }
-    public void RequestGetMatch( string Type)
+    public void RequestGetMatch(string Type)
     {
         socket.Emit("competitions", (int)navigationUi.GameLobby, Type);
         navigationUi.StartLoadingPageShow();
@@ -921,7 +938,7 @@ public class ServerUI : MonoBehaviour
         socket.Emit("join-record", (int)navigationUi.GameLobby);
         Debug.Log("JoinRecord");
     }
- 
+
     #endregion
     #region Function
     public void SetElementInHeaderAndFooter()
@@ -929,7 +946,7 @@ public class ServerUI : MonoBehaviour
         // ui.ImageUser_inPageSelectGame.sprite = ConvertImageToSprite(BODY.profile.avatar);
         UIInFooterAndHeader.ImageUser_inPageSelectGame.sprite = AvatarContainer.LoadImage(BODY.profile.avatar);
         UIInFooterAndHeader.UserName_inPageSelectGame.text = BODY.userName;
-       UIInFooterAndHeader.Coin_inPageSelectGame.text = BODY.profile.coin.ToString();
+        UIInFooterAndHeader.Coin_inPageSelectGame.text = BODY.profile.coin.ToString();
         UIInFooterAndHeader.Cupbilliard_inPageSelectGame.text = BODY.profile.billiard_cup.ToString();
         UIInFooterAndHeader.Cupsoccer_inPageSelectGame.text = BODY.profile.soccer_cup.ToString();
         UIInFooterAndHeader.Gem_inPageSelectGame.text = BODY.profile.gem.ToString();
@@ -941,6 +958,7 @@ public class ServerUI : MonoBehaviour
         socket.Off();
         socket.Manager.Close();
         socket.Disconnect();
+        navigationUi.OnChangePage -= ServerUI_OnChangePage;
         Debug.Log("MainMenuCloseConnection");
 
     }

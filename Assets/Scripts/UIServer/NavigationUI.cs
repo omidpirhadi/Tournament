@@ -11,7 +11,16 @@ public enum _SubGame { Classic = 0, Quick = 1, Challenge = 2 }
 public class NavigationUI : MonoBehaviour
 {
     public ServerUI Server;
-    public string CurrentPage = "";
+    private string currentpage;
+    public string CurrentPage
+    {
+        set
+        {
+            currentpage = value;
+            Handler_OnChangePage(currentpage);
+        }
+        get { return currentpage; }
+    }
     public string LastProfileChecked = "";
     public string LastTeamInfoChecked = "";
     public GameObject LoadingPage;
@@ -54,31 +63,31 @@ public class NavigationUI : MonoBehaviour
     public SoundEffectControll soundEffectControll;
     public void Start()
     {
-        if(Server)
+        if (Server)
         {
             soundEffectControll = GameObject.Find("SoundEffectlLayer2").GetComponent<SoundEffectControll>();
         }
     }
     public void SwitchUI(string UIName)
     {
-        
+
         CanvansManager.ForEach((ui) =>
         {
-            if(ui.Name == UIName)
+            if (ui.Name == UIName)
             {
-                
+
                 ui.UIObject.SetActive(true);
                 if (soundEffectControll)
                 {
                     soundEffectControll.PlaySoundMenu(1);
                 }
                 CurrentPage = ui.Name;
-                if(ui.HeaderShow)
+                if (ui.HeaderShow)
                 {
                     if (Header)
                     {
                         Header.SetActive(true);
-                        
+
                     }
                 }
                 else
@@ -93,7 +102,7 @@ public class NavigationUI : MonoBehaviour
                     if (Footer)
                     {
                         Footer.SetActive(true);
-                        if(ui.ShowBackButtonInFooter)
+                        if (ui.ShowBackButtonInFooter)
                         {
                             BackButton.SetActive(true);
                         }
@@ -108,7 +117,7 @@ public class NavigationUI : MonoBehaviour
                     if (Footer)
                     {
 
-                    
+
                         Footer.SetActive(false);
                     }
                 }
@@ -124,7 +133,7 @@ public class NavigationUI : MonoBehaviour
     }
     public void ColorButtonFix(Button button)
     {
-       var block =  button.colors;
+        var block = button.colors;
         block.normalColor = SelectedHeaderButtonsColor;
         button.colors = block;
         ListButtonOfHeader.ForEach((btn) => {
@@ -136,19 +145,19 @@ public class NavigationUI : MonoBehaviour
             }
         });
     }
+
+    private int OrderPopup = 0;
     public void ShowPopUp(string Popup)
     {
         UIPopUps.ForEach((pop) =>
         {
-            
             if (pop.Name == Popup)
             {
                 if (pop.PopUpObject)
                 {
-                    //Debug.Log("AAA");
                     pop.PopUpObject.SetActive(true);
+                    OrderPopup = pop.PopUpObject.GetComponent<Canvas>().sortingOrder;
                     CurrentPage = pop.Name;
-                  //  Debug.Log("ShowPopup"+pop.Name);
                     if (soundEffectControll)
                     {
                         soundEffectControll.PlaySoundMenu(1);
@@ -162,9 +171,29 @@ public class NavigationUI : MonoBehaviour
             }
         });
         Handler_OnUIActive(true);
-        
     }
-    
+    public void ShowPopUpOnPopup(string Popup)
+    {
+        UIPopUps.ForEach((pop) =>
+        {
+            if (pop.Name == Popup)
+            {
+                if (pop.PopUpObject)
+                {
+                    pop.PopUpObject.SetActive(true);
+                    pop.PopUpObject.GetComponent<Canvas>().sortingOrder = OrderPopup + 3;
+
+                    CurrentPage = pop.Name;
+                    if (soundEffectControll)
+                    {
+                        soundEffectControll.PlaySoundMenu(1);
+                    }
+                }
+            }
+
+        });
+        Handler_OnUIActive(true);
+    }
     public void ShowTooltip(GameObject Tooltip)
     {
         /// Tooltip.SetActive(true);
@@ -189,7 +218,7 @@ public class NavigationUI : MonoBehaviour
                 if (pop.PopUpObject)
                 {
                     pop.PopUpObject.SetActive(false);
-                    
+
                 }
             }
         });
@@ -213,12 +242,12 @@ public class NavigationUI : MonoBehaviour
 
     private IEnumerator LoadingPageShow()
     {
-         
-         LoadingPage.SetActive(true);
-         yield return new WaitForSecondsRealtime(5.0f);
-         LoadingPage.SetActive(false);
-         Debug.Log("Close Self loading");
-        
+
+        LoadingPage.SetActive(true);
+        yield return new WaitForSecondsRealtime(5.0f);
+        LoadingPage.SetActive(false);
+        Debug.Log("Close Self loading");
+
     }
     public void StartLoadingPageShow()
     {
@@ -230,18 +259,18 @@ public class NavigationUI : MonoBehaviour
 
         if (LoadingPageshow != null)
             StopCoroutine(LoadingPageshow);
-     //   Debug.Log("Closeloading");
+        //   Debug.Log("Closeloading");
     }
     public void loadTeaminfoWithLastTeamID()
     {
         Server.GetTeamInfo(LastTeamInfoChecked);
-       
+
     }
     public void LoadProfileWithLastProfile()
     {
         Server.GetProfilePerson(LastProfileChecked);
     }
-    public void SetLobby( string lobby)
+    public void SetLobby(string lobby)
     {
         if (lobby == "soccer")
             GameLobby = _GameLobby.Soccer;
@@ -252,15 +281,15 @@ public class NavigationUI : MonoBehaviour
 
     public void SetSubGame(string SubGame)
     {
-        if(SubGame == "classic")
+        if (SubGame == "classic")
         {
             this.SubGame = _SubGame.Classic;
         }
-        else if( SubGame == "quick")
+        else if (SubGame == "quick")
         {
             this.SubGame = _SubGame.Quick;
         }
-        else if(SubGame == "challenge")
+        else if (SubGame == "challenge")
         {
             this.SubGame = _SubGame.Challenge;
         }
@@ -275,6 +304,15 @@ public class NavigationUI : MonoBehaviour
         if (OnUIActive != null)
         {
             OnUIActive(active);
+        }
+    }
+
+    public event Action<string> OnChangePage;
+    protected void Handler_OnChangePage(string pagename)
+    {
+        if (OnChangePage != null)
+        {
+            OnChangePage(pagename);
         }
     }
 }
