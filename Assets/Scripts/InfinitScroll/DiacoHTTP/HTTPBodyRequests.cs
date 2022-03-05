@@ -55,7 +55,7 @@ namespace Diaco.HTTPBody
         public string description;
         
         public PersonInformation information;
-        public BiliardProfile biliard;
+        public BiliardProfile billiard;
         public SoccerProfile soccer;
 
         public List<TOURNOMENTS> tournaments;
@@ -246,6 +246,7 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct Inventory
     {
+        public List<string> avatars;
        public  List<Badge> badges;
         public int tickets;
     }
@@ -278,16 +279,16 @@ namespace Diaco.HTTPBody
     public struct Achievement
     {
         public string name;
-        public string require;
-        public string image;
+        //public string require;
+        //public string image;
         public string description;
     }
     [Serializable]
     public struct BiliardProfile
     {
-        public int total;
-        public int win;
-        public int lose;
+        public float total;
+        public float win;
+        public float lose;
         public int purple;
         public int blue;
         public int green;
@@ -296,9 +297,9 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct SoccerProfile
     {
-        public int total;
-        public int win;
-        public int lose;
+        public float total;
+        public float win;
+        public float lose;
         public int purple;
         public int blue;
         public int green;

@@ -22,6 +22,7 @@ namespace Diaco.SoccerStar.Server
         public SoundEffectControll soundeffectcontrollLayer1;
         public SoundEffectControll soundeffectcontrollLayer2;
         public Transform ParentForSpawn;
+      
         public bool InRecordMode = false;
         public float TimeStep = 0.0f;
         public bool FreePlay = false;

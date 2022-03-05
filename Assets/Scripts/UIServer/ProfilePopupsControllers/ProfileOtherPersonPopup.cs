@@ -115,11 +115,11 @@ namespace Diaco.Profile
             S_GreenCardCount.text = (profile.profile.soccer.green).ToString();
             S_YellowCardCount.text = (profile.profile.soccer.yellow).ToString();
 
-            B_WinCount.text = (profile.profile.biliard.win).ToString() + "/" + (profile.profile.biliard.total).ToString();
+            B_WinCount.text = (profile.profile.billiard.win).ToString() + "/" + (profile.profile.billiard.total).ToString();
 
             try
             {
-                B_WinRate.text = ((profile.profile.biliard.win / profile.profile.biliard.total) * 100.00f).ToString();
+                B_WinRate.text = ((profile.profile.billiard.win / profile.profile.billiard.total) * 100.00f).ToString();
             }
             catch (DivideByZeroException e)
             {
@@ -131,10 +131,10 @@ namespace Diaco.Profile
             }
 
 
-            B_PurpleCardCount.text = (profile.profile.biliard.purple).ToString();
-            B_BlueCardCount.text = (profile.profile.biliard.blue).ToString();
-            B_GreenCardCount.text = (profile.profile.biliard.green).ToString();
-            B_YellowCardCount.text = (profile.profile.biliard.yellow).ToString();
+            B_PurpleCardCount.text = (profile.profile.billiard.purple).ToString();
+            B_BlueCardCount.text = (profile.profile.billiard.blue).ToString();
+            B_GreenCardCount.text = (profile.profile.billiard.green).ToString();
+            B_YellowCardCount.text = (profile.profile.billiard.yellow).ToString();
 
 
             SettingButtons(profile);

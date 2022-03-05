@@ -609,6 +609,23 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
 
         });
+        socket.On("edit-avatar", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
+
+            }
+            else
+            {
+                BODY.profile.avatar = m[1].ToString();
+                UIInFooterAndHeader.ImageUser_inPageSelectGame.sprite = AvatarContainer.LoadImage(m[1].ToString());
+                FindObjectOfType<Diaco.PopupAvatar.PopUpAvatarChange>().initPopupAvatar(BODY.inventory.avatars);
+                Debug.Log("EditedAvatar");
+            }
+            navigationUi.StopLoadingPage();
+
+        });
         socket.On("disconnect", (s, p, m) =>
         {
             Debug.Log("disConnection");
@@ -817,7 +834,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Shop Requested");
     }
-
+    public void RequestEditAvatar(string name)
+    {
+        socket.Emit("edit-avatar",name);
+        Debug.Log("Edit Avatars Requested");
+    }
 
     #region Emits_Shop
 

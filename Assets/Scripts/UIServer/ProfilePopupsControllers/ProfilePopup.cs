@@ -9,8 +9,8 @@ namespace Diaco.Profile
 
     public class ProfilePopup : MonoBehaviour
     {
-      public   ServerUI Server;
-        
+        public   ServerUI Server;
+        public Diaco.ImageContainerTool.ImageContainer AchivmentImage;
         public Image Avatar;
         public Text Username;
         public Text Cup;
@@ -54,16 +54,14 @@ namespace Diaco.Profile
             S_WinCount.text = (Server.BODY.profile.soccer.win).ToString() + "/" + (Server.BODY.profile.soccer.total).ToString();
             try
             {
-                S_WinRate.text = ((Server.BODY.profile.soccer.win / Server.BODY.profile.soccer.total) * 100.00f).ToString();
+                S_WinRate.text = ((Server.BODY.profile.soccer.win / Server.BODY.profile.soccer.total) * 100.00f).ToString()+"%";
             }
             catch(DivideByZeroException e)
             {
                 Debug.Log(e.Data.ToString());
-            }
-            finally
-            {
                 S_WinRate.text = "0%";
             }
+    
 
 
             S_PurpleCardCount.text = (Server.BODY.profile.soccer.purple).ToString();
@@ -71,28 +69,33 @@ namespace Diaco.Profile
             S_GreenCardCount.text = (Server.BODY.profile.soccer.green).ToString();
             S_YellowCardCount.text = (Server.BODY.profile.soccer.yellow).ToString();
 
-            B_WinCount.text = (Server.BODY.profile.biliard.win).ToString() + "/" + (Server.BODY.profile.biliard.total).ToString();
+            B_WinCount.text = (Server.BODY.profile.billiard.win).ToString() + "/" + (Server.BODY.profile.billiard.total).ToString();
 
             try
             {
-                B_WinRate.text = ((Server.BODY.profile.biliard.win / Server.BODY.profile.biliard.total) * 100.00f).ToString();
+                B_WinRate.text = ((Server.BODY.profile.billiard.win / Server.BODY.profile.billiard.total) * 100.00f).ToString()+"%";
             }
             catch (DivideByZeroException e)
             {
                 Debug.Log(e.Data.ToString());
-            }
-            finally
-            {
                 B_WinRate.text = "0%";
             }
+
            
 
-            B_PurpleCardCount.text = (Server.BODY.profile.biliard.purple).ToString();
-            B_BlueCardCount.text = (Server.BODY.profile.biliard.blue).ToString();
-            B_GreenCardCount.text = (Server.BODY.profile.biliard.green).ToString();
-            B_YellowCardCount.text = (Server.BODY.profile.biliard.yellow).ToString();
+            B_PurpleCardCount.text = (Server.BODY.profile.billiard.purple).ToString();
+            B_BlueCardCount.text = (Server.BODY.profile.billiard.blue).ToString();
+            B_GreenCardCount.text = (Server.BODY.profile.billiard.green).ToString();
+            B_YellowCardCount.text = (Server.BODY.profile.billiard.yellow).ToString();
 
 
+        }
+        private void Achivment_Init()
+        {
+            foreach(Diaco.HTTPBody.Achievement ach in Server.BODY.profile.achievements)
+            {
+
+            }
         }
     }
 }
