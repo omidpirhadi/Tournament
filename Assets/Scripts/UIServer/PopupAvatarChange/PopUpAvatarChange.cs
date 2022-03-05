@@ -26,7 +26,16 @@ namespace Diaco.PopupAvatar
                 ClearShop();
 
             DefaultAvatar.sprite = Avatars.LoadImage(server.BODY.profile.avatar);
-            
+
+            LoadActiveAndOwnerAvatar(avatars);
+            LoadDeactiveAvatars(avatars);
+
+           
+        }
+
+
+        private void LoadActiveAndOwnerAvatar(List<string>avatars)
+        {
             for (int i = 0; i < avatars.Count; i++)
             {
                 var element = Instantiate(avatarElement, Grid);
@@ -37,12 +46,13 @@ namespace Diaco.PopupAvatar
 
                 ListElements.Add(element.gameObject);
             }
-
-
+        }
+        private void LoadDeactiveAvatars(List<string> avatars)
+        {
             for (int i = 0; i < Avatars.imageContainers.Count; i++)
             {
-                
-                if(!avatars.Contains( Avatars.imageContainers[i].name))
+
+                if (!avatars.Contains(Avatars.imageContainers[i].name))
                 {
                     var element = Instantiate(avatarElement, Grid);
                     element.Set(Avatars.LoadImage(Avatars.imageContainers[i].name), false, false, Avatars.imageContainers[i].name);

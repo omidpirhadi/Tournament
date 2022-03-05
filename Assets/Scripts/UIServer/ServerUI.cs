@@ -621,6 +621,8 @@ public class ServerUI : MonoBehaviour
                 BODY.profile.avatar = m[1].ToString();
                 UIInFooterAndHeader.ImageUser_inPageSelectGame.sprite = AvatarContainer.LoadImage(m[1].ToString());
                 FindObjectOfType<Diaco.PopupAvatar.PopUpAvatarChange>().initPopupAvatar(BODY.inventory.avatars);
+                FindObjectOfType<Diaco.Profile.ProfilePopup>().InitializeProfile();
+                navigationUi.StopLoadingPage();
                 Debug.Log("EditedAvatar");
             }
             navigationUi.StopLoadingPage();
@@ -837,6 +839,7 @@ public class ServerUI : MonoBehaviour
     public void RequestEditAvatar(string name)
     {
         socket.Emit("edit-avatar",name);
+        navigationUi.StartLoadingPageShow();
         Debug.Log("Edit Avatars Requested");
     }
 

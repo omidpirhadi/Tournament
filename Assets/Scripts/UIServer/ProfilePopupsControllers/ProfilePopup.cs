@@ -95,6 +95,18 @@ namespace Diaco.Profile
             foreach(Diaco.HTTPBody.Achievement ach in Server.BODY.profile.achievements)
             {
 
+                int i = 0;
+                if(ach.Active)
+                {
+                    Achivments[i].color = new Color(1f, 1f, 1f, 1f);
+                    Achivments[i].sprite = AchivmentImage.LoadImage(ach.name);
+                }
+                else
+                {
+                    Achivments[i].color = new Color(1f, 1f, 1f, 0.4f);
+                    Achivments[i].sprite = AchivmentImage.LoadImage(ach.name);
+                }
+                i++;
             }
         }
     }
