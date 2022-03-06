@@ -15,7 +15,7 @@ namespace Diaco.UI.Reports
         public RectTransform Content;
         private List<ReportWithdrawCard> listReportWithdrawCard;
 
-        public void InitializReportWithdraw(MYWithdraw mywithdraw)
+        public void InitializReportWithdraw(WithdrawData mywithdraw)
         {
             listReportWithdrawCard = new List<ReportWithdrawCard>();
             TotalWithdraw.text = mywithdraw.totalwithdraw;
@@ -44,7 +44,7 @@ namespace Diaco.UI.Reports
         public string Cash;
     }
     [Serializable]
-    public struct MYWithdraw
+    public struct WithdrawData
     {
         public string totalwithdraw;
         public List<Withdraw> withdraws;

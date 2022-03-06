@@ -279,7 +279,7 @@ namespace Diaco.HTTPBody
     public struct Achievement
     {
         public string name;
-        public bool Active;
+        public bool active;
         //public string require;
         //public string image;
         public string description;

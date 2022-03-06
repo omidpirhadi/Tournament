@@ -24,7 +24,7 @@ namespace Diaco.UI.Reports
 
 
 
-        public void InitializeMyTeams(MYTEAMESINFO myTeams )
+        public void InitializeMyTeams(MyTeamsData myTeams )
         {
             listCreateTeams = new List<ReportCreatedTeamsCard>();
             TimeRemaining.text = myTeams.award.timeRemaining;
@@ -74,7 +74,7 @@ namespace Diaco.UI.Reports
         public short cost;
     }
     [Serializable]
-    public struct MYTEAMESINFO
+    public struct MyTeamsData
     {
         public Award award;
         public List<CreatedTeam> createdTeams;

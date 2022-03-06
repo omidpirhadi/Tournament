@@ -93,7 +93,7 @@ public class ServerUI : MonoBehaviour
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
 
-            if (BODY.inGame.id != "" && intergation == 0)
+            if (BODY.inGame.id!= "" && intergation == 0)
             {
                 Debug.Log("InGame");
                 if (BODY.inGame.gameType == "soccer")
@@ -628,6 +628,25 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
 
         });
+        socket.On("edit-description", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
+
+            }
+            else
+            {
+                BODY.profile.description = m[1].ToString();
+             
+                FindObjectOfType<Diaco.Profile.ProfilePopup>().InitializeProfile();
+                navigationUi.StopLoadingPage();
+                Debug.Log("EditedDescription");
+            }
+            navigationUi.StopLoadingPage();
+
+        });
+
         socket.On("disconnect", (s, p, m) =>
         {
             Debug.Log("disConnection");
@@ -842,7 +861,12 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Edit Avatars Requested");
     }
-
+    public void RequestEditDescription(string des)
+    {
+        socket.Emit("edit-description", des);
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Request Edit Description ");
+    }
     #region Emits_Shop
 
     public void Emit_Shop(string id)

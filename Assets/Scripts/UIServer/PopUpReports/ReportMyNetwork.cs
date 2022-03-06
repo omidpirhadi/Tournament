@@ -21,12 +21,14 @@ namespace Diaco.UI.Reports
         [Header("InvitedPlayer")]
         public RectTransform Content;
         public ReportInvitedPlayerCard InvitedPlayerCardElement;
-        private List<ReportInvitedPlayerCard> listreportInvitedPlayerCards;
+        private List<ReportInvitedPlayerCard> listreportInvitedPlayerCards = new List<ReportInvitedPlayerCard>();
 
 
-        public void InitializeMyTeams(MYNETWORK myNetwork)
+
+        public void InitializeMyTeams(MyNetworkData myNetwork)
         {
-            listreportInvitedPlayerCards = new List<ReportInvitedPlayerCard>();
+            if (listreportInvitedPlayerCards.Count > 0)
+                ClearCardTeamCreated();
             TimeRemaining.text = myNetwork.award.timeRemaining;
             AwardGem.text = (myNetwork.award.awardGem).ToString();
             AwardCoin.text = (myNetwork.award.awardCoin).ToString();
@@ -77,7 +79,7 @@ namespace Diaco.UI.Reports
         
     }
     [Serializable]
-    public struct MYNETWORK
+    public struct MyNetworkData
     {
         public AwardMyNetwork award;
         public List<PlayerInvited> PlayerInviteds;

@@ -11,11 +11,12 @@ namespace Diaco.Profile
     {
         public   ServerUI Server;
         public Diaco.ImageContainerTool.ImageContainer AchivmentImage;
+
         public Image Avatar;
         public Text Username;
         public Text Cup;
         public Image RankLevel;
-        public Text Description;
+        public InputField EditDescription_Inputfield;
         /// <summary>
         /// /soocer state
         /// </summary>
@@ -40,6 +41,15 @@ namespace Diaco.Profile
 
         private void OnEnable()
         {
+            EditDescription_Inputfield.onEndEdit.AddListener((des) => {
+
+                if (des.Length > 0 && des != Server.BODY.profile.description)
+                {
+                    var context = PersianFix.Persian.Fix(des, 255);
+                    EditDescription_Inputfield.text = context;
+                    Server.RequestEditDescription(context);
+                }
+            });
             InitializeProfile();
         }
         public void InitializeProfile()
@@ -49,7 +59,7 @@ namespace Diaco.Profile
             Username.text = Server.BODY.userName;
             Cup.text = (Server.BODY.profile.soccer_cup).ToString();
            // RankLevel.sprite = Server.AvatarContainer.LoadImage(Server.BODY.profile.avatar);
-            Description.text = Server.BODY.profile.description;
+            EditDescription_Inputfield.text = Server.BODY.profile.description;
 
             S_WinCount.text = (Server.BODY.profile.soccer.win).ToString() + "/" + (Server.BODY.profile.soccer.total).ToString();
             try
@@ -87,26 +97,26 @@ namespace Diaco.Profile
             B_BlueCardCount.text = (Server.BODY.profile.billiard.blue).ToString();
             B_GreenCardCount.text = (Server.BODY.profile.billiard.green).ToString();
             B_YellowCardCount.text = (Server.BODY.profile.billiard.yellow).ToString();
-
+            Achivment_Init();
 
         }
         private void Achivment_Init()
         {
-            foreach(Diaco.HTTPBody.Achievement ach in Server.BODY.profile.achievements)
+            for (int i = 0; i < Server.BODY.profile.achievements.Count; i++)
             {
 
-                int i = 0;
-                if(ach.Active)
+
+                if (Server.BODY.profile.achievements[i].active)
                 {
                     Achivments[i].color = new Color(1f, 1f, 1f, 1f);
-                    Achivments[i].sprite = AchivmentImage.LoadImage(ach.name);
+                    Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
                 }
                 else
                 {
                     Achivments[i].color = new Color(1f, 1f, 1f, 0.4f);
-                    Achivments[i].sprite = AchivmentImage.LoadImage(ach.name);
+                    Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
                 }
-                i++;
+
             }
         }
     }
