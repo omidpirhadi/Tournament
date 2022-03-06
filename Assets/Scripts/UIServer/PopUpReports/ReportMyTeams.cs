@@ -37,7 +37,7 @@ namespace Diaco.UI.Reports
                 var card = Instantiate(CreatedTeamsCardElement, Content);
 
                 card.InitializReportCreatedTeamsCard(
-                    server.ImageGameType.LoadImage(myTeams.createdTeams[i].profile),
+                    server.ImageGameType.LoadImage(myTeams.createdTeams[i].avatar),
                      myTeams.createdTeams[i].teamName,
                      myTeams.createdTeams[i].capacityTeam,
                      myTeams.createdTeams[i].cost,
@@ -68,7 +68,7 @@ namespace Diaco.UI.Reports
     [Serializable]
     public struct CreatedTeam
     {
-        public string profile;
+        public string avatar;
         public string teamName;
         public string capacityTeam;
         public short cost;

@@ -40,7 +40,7 @@ namespace Diaco.UI.Reports
               var card = Instantiate(InvitedPlayerCardElement, Content);
 
                 card.InvitedPlayerCard(
-                    server.ImageGameType.LoadImage(myNetwork.PlayerInviteds[i].profile),
+                    server.ImageGameType.LoadImage(myNetwork.PlayerInviteds[i].avatar),
                     myNetwork.PlayerInviteds[i].name,
                     myNetwork.PlayerInviteds[i].cup,
                     
@@ -73,7 +73,7 @@ namespace Diaco.UI.Reports
     [Serializable]
     public struct PlayerInvited
     {
-        public string profile;
+        public string avatar;
         public string name;
         public string cup;
         
