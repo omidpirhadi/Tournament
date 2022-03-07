@@ -20,13 +20,13 @@ namespace Diaco.UI.Reports
         public RectTransform Content;
         public ReportCreatedTeamsCard CreatedTeamsCardElement;
 
-        private List<ReportCreatedTeamsCard> listCreateTeams;
+        private List<ReportCreatedTeamsCard> listCreateTeams = new List<ReportCreatedTeamsCard>();
 
 
 
         public void InitializeMyTeams(MyTeamsData myTeams )
         {
-            listCreateTeams = new List<ReportCreatedTeamsCard>();
+            server = FindObjectOfType<ServerUI>();
             TimeRemaining.text = myTeams.award.timeRemaining;
             AwardGem.text = (myTeams.award.awardGem).ToString();
             AwardCoin.text = (myTeams.award.awardCoin).ToString();

@@ -9,6 +9,7 @@ namespace Diaco.UI.Reports
         public Image Profile;
         public Text TeamName;
         public Text CapacityTeam;
+        
         public Image Cost;
 
   

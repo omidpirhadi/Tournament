@@ -646,7 +646,27 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
 
         });
+        socket.On("reports", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
 
+            }
+            else
+            {
+                var data = JsonUtility.FromJson<Diaco.UI.Reports.ReportsData>(m[1].ToString());
+
+                var popup_reports = FindObjectOfType<Diaco.UI.Reports.ReportManager>();
+                popup_reports.reports = new Diaco.UI.Reports.ReportsData();
+                popup_reports.reports = data;
+                popup_reports.SetMyteams();
+                navigationUi.StopLoadingPage();
+                Debug.Log("ReportsLoaded" + m[1].ToString());
+            }
+            navigationUi.StopLoadingPage();
+
+        });
         socket.On("disconnect", (s, p, m) =>
         {
             Debug.Log("disConnection");
@@ -867,6 +887,13 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Request Edit Description ");
     }
+    public void RequestWithdraw(Diaco.UI.WithDrawGem.WithdrawData data)
+    {
+        var d = JsonUtility.ToJson(data);
+        socket.Emit("withdraw", d);
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Request withdraw ");
+    }
     #region Emits_Shop
 
     public void Emit_Shop(string id)
@@ -986,7 +1013,13 @@ public class ServerUI : MonoBehaviour
         socket.Emit("join-record", (int)navigationUi.GameLobby);
         Debug.Log("JoinRecord");
     }
+    public void RequestReports()
+    {
+        socket.Emit("reports");
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("RequestReports");
 
+    }
     #endregion
     #region Function
     public void SetElementInHeaderAndFooter()

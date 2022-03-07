@@ -8,44 +8,35 @@ namespace Diaco.UI.WithDrawGem
 {
     public class TabWithdraw : MonoBehaviour
     {
-
-        public Text AmountGemCash;
-        public Text ShabaNumber;
-        public Text OwnerAccountName;
-        public Text MaxCash;
+        public Text DiamondAmount;
+       
+        public InputField ShabaNumber;
+        public InputField OwnerAccountName;
+        public InputField Amount;
         public Button Withdraw;
 
-        public void initWithdraw(WITHDRAWGEM withdrawgem)
+ 
+        public void Wihtdrawinit()
         {
+            var server = FindObjectOfType<ServerUI>();
+            DiamondAmount.text = server.BODY.withdraw;
             Withdraw.onClick.AddListener(WithdrawClick);
-            AmountGemCash.text = withdrawgem.AmountGemCash;
-            ShabaNumber.text = withdrawgem.ShabaNumber;
-
-            OwnerAccountName.text = withdrawgem.OwnerAccountName;
-            MaxCash.text = withdrawgem.MaxCash;
         }
-
         public void WithdrawClick()
         {
-
+            var server = FindObjectOfType<ServerUI>();
+            WithdrawData data = new WithdrawData() { shabanumber = ShabaNumber.text, accountname = OwnerAccountName.text, amount = Amount.text };
+            server.RequestWithdraw(data);
         }
 
-        private void clearTab()
-        {
-            AmountGemCash.text = "";
-            ShabaNumber.text = "";
-
-
-            OwnerAccountName.text = "";
-            MaxCash.text = "";
-        }
+   
     }
     [Serializable]
-    public struct WITHDRAWGEM
+    public struct WithdrawData
     {
-        public string AmountGemCash;
-        public string ShabaNumber;
-        public string OwnerAccountName;
-        public string MaxCash;
+        
+        public string shabanumber;
+        public string accountname;
+        public string amount;
     }
 }

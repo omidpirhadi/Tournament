@@ -27,6 +27,7 @@ namespace Diaco.UI.Reports
 
         public void InitializeMyTeams(MyNetworkData myNetwork)
         {
+            server = FindObjectOfType<ServerUI>();
             if (listreportInvitedPlayerCards.Count > 0)
                 ClearCardTeamCreated();
             TimeRemaining.text = myNetwork.award.timeRemaining;
@@ -40,7 +41,7 @@ namespace Diaco.UI.Reports
               var card = Instantiate(InvitedPlayerCardElement, Content);
 
                 card.InvitedPlayerCard(
-                    server.ImageGameType.LoadImage(myNetwork.PlayerInviteds[i].avatar),
+                    server.AvatarContainer.LoadImage(myNetwork.PlayerInviteds[i].avatar),
                     myNetwork.PlayerInviteds[i].name,
                     myNetwork.PlayerInviteds[i].cup,
                     

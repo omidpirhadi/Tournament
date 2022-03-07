@@ -230,12 +230,13 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct BODY
     {
-       // public string email;
+        // public string email;
         //public bool isDeleted;
-      //  public string tokenCode;
+        //  public string tokenCode;
         //public string socketId;
         // public string id;
         //public string invitationCode;
+        public string withdraw;
         public string userName;
         public string phone;
         public InGame inGame;
