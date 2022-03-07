@@ -11,17 +11,17 @@ namespace Diaco.UI.Reports
         public ReportWithdraw ReportWithdraw;
 
        
-        public void SetMynework()
+        public void SetMynework(MyNetworkData data)
         {
-           /// MyNetwork.InitializeMyTeams()
+            MyNetwork.InitializeMyTeams(data);
         }
-        public void SetMyteams()
+        public void SetMyteams(MyTeamsData  data)
         {
-
+            MyTeams.InitializeMyTeams( data); 
         }
-        public void SetReportWithdarw()
+        public void SetReportWithdarw(WithdrawData data)
         {
-
+            ReportWithdraw.InitializReportWithdraw(data);
         }
     }
 }
