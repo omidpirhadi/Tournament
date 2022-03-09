@@ -20,6 +20,10 @@ namespace Diaco.UI.WithDrawGem
         {
             var server = FindObjectOfType<ServerUI>();
             DiamondAmount.text = server.BODY.withdraw;
+            
+            ShabaNumber.text = "";
+            OwnerAccountName.text = "";
+            Amount.text = "";
             Withdraw.onClick.AddListener(WithdrawClick);
         }
         public void WithdrawClick()
@@ -28,7 +32,7 @@ namespace Diaco.UI.WithDrawGem
             WithdrawData data = new WithdrawData() { shabanumber = ShabaNumber.text, accountname = OwnerAccountName.text, amount = Amount.text };
             server.RequestWithdraw(data);
         }
-
+       
    
     }
     [Serializable]

@@ -248,7 +248,7 @@ namespace Diaco.HTTPBody
     public struct Inventory
     {
         public List<string> avatars;
-       public  List<Badge> badges;
+       public  List<LeagueFlage> leagueFlags;
         public int tickets;
     }
     [Serializable]
@@ -271,10 +271,10 @@ namespace Diaco.HTTPBody
 
     }
     [Serializable]
-    public struct Badge
+    public struct LeagueFlage
     {
         public string id;
-        public string image;
+        public string name;
     }
     [Serializable]
     public struct Achievement

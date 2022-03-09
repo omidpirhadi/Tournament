@@ -15,7 +15,7 @@ public class ServerUI : MonoBehaviour
     /// </summary>
     public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
 
-    public Diaco.ImageContainerTool.ImageContainer AvatarContainer, BadgesContainer, ImageGameType, ImageTypeCosts;
+    public Diaco.ImageContainerTool.ImageContainer AvatarContainer, LeagueFlagsContainer, ImageGameType, ImageTypeCosts;
     public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError;
     [SerializeField]
     public BODY BODY;
@@ -53,6 +53,8 @@ public class ServerUI : MonoBehaviour
 
             Debug.Log($"<color=blue><b>Connection And ReadToken</b></color>");
         });
+        socket.On("reconnect",(s,p,m)=>{ Debug.Log("reconnect"); });
+        socket.On("reconnecting", (s, p, m) => { Debug.Log("reconnecting"); });
         socket.On("wrong-token", (s, p, m) =>
         {
             Login.SetActive(true);
@@ -667,6 +669,52 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
 
         });
+        socket.On("withdraw", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
+
+            }
+            else
+            {
+
+                BODY.withdraw = m[1].ToString();
+                var tabWithdraw = FindObjectOfType<Diaco.UI.WithDrawGem.TabWithdraw>();
+                tabWithdraw.Wihtdrawinit();
+
+                Debug.Log("withdrawSecc" + m[1].ToString());
+            }
+            navigationUi.StopLoadingPage();
+
+        });
+
+        socket.On("edit-username", (s, p, m) =>
+        {
+            
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
+                Handler_OnChangeUsername(m[1].ToString());
+              
+            }
+            else
+            {
+
+
+
+
+                BODY.userName = m[1].ToString();
+                FindObjectOfType<Diaco.Profile.ProfilePopup>().InitializeProfile();
+                UIInFooterAndHeader.UserName_inPageSelectGame.text = m[1].ToString();
+                navigationUi.StopLoadingPage();
+                navigationUi.ClosePopUp("changeusername");
+                Debug.Log("ReportsLoaded" + m[1].ToString());
+            }
+
+        });
         socket.On("disconnect", (s, p, m) =>
         {
             Debug.Log("disConnection");
@@ -811,16 +859,8 @@ public class ServerUI : MonoBehaviour
     //USingInSearchButtonIn UI Friend
     public void SearchFriendRequest(InputField input)
     {
+        socket.Emit("search-friend", input.text);
 
-        if (SearchCheckCharacter.Check(input.text))
-        {
-            socket.Emit("search-friend", input.text);
-            Debug.Log(input.text);
-        }
-        else
-        {
-            Debug.Log("CharacterValidate");
-        }
         navigationUi.StartLoadingPageShow();
     }
     /// <summary>
@@ -893,6 +933,12 @@ public class ServerUI : MonoBehaviour
         socket.Emit("withdraw", d);
         navigationUi.StartLoadingPageShow();
         Debug.Log("Request withdraw ");
+    }
+    public void RequestEditUserName(string username)
+    {
+        socket.Emit("edit-username", username);
+      //  navigationUi.StartLoadingPageShow();
+        Debug.Log("CheckUserName " + username); 
     }
     #region Emits_Shop
 
@@ -1401,6 +1447,26 @@ public class ServerUI : MonoBehaviour
         }
     }
 
+    private Action <string> onchangeusername;
+    public event Action<string> OnchangeUsername
+    {
+        add
+        {
+            onchangeusername += value;
+
+        }
+        remove
+        {
+            onchangeusername-= value;
+        }
+    }
+    protected void Handler_OnChangeUsername(string user)
+    {
+        if (onchangeusername!= null)
+        {
+            onchangeusername(user);
+        }
+    }
     #endregion
 
 }

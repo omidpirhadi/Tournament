@@ -56,7 +56,7 @@ namespace Diaco.Social
             for (int i = 0; i < Teams.teams.Count; i++)
             {
                 var card = Instantiate(CardInviteToTeam, Content);
-                var image = Server.BadgesContainer.LoadImage(Teams.teams[i].avatar);
+                var image = Server.LeagueFlagsContainer.LoadImage(Teams.teams[i].avatar);
                 card.SetCard(
                     (Diaco.Social.MessageCards.MessagesTabCardInviteToTeam.TypeGame)Teams.teams[i].game,
                     image,

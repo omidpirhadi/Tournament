@@ -18,7 +18,8 @@ namespace Diaco.Social
         public RectTransform Content;
         public List<CardFriendTypeOne> Cardone;
         public List<CardFriendTypeTwo> Cardtwo;
-        public void Awake()
+
+        public void OnEnable()
         {
             Server.OnComingFriends += Server_OnComingFriends;
             Server.OnResualtSearchFriend += Server_OnResualtSearchFriend;
@@ -27,15 +28,11 @@ namespace Diaco.Social
                 InputSearch.text = "";
             });
         }
-        public void OnEnable()
-        {
-           
-        }
         public void OnDisable()
         {
-           // Server.OnComingFriends -= Server_OnComingFriends;
-           // Server.OnResualtSearchFriend -= Server_OnResualtSearchFriend;
-           // SearchButton.onClick.RemoveAllListeners();
+           Server.OnComingFriends -= Server_OnComingFriends;
+           Server.OnResualtSearchFriend -= Server_OnResualtSearchFriend;
+           SearchButton.onClick.RemoveAllListeners();
             ClearListCard();
         }
         private void Server_OnResualtSearchFriend(SearchUser friend)

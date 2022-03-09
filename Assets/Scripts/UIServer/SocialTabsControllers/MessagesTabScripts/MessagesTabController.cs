@@ -130,7 +130,7 @@ namespace Diaco.Social
                 else if (list_req[i].type == "team")
                 {
                     var card = Instantiate(IndicatorInviteToTeamPrefab, Content);
-                    var image = Server.BadgesContainer.LoadImage(list_req[i].avatar);
+                    var image = Server.LeagueFlagsContainer.LoadImage(list_req[i].avatar);
                     card.SetCard(
                         (Diaco.Social.MessageCards.MessagesTabCardInviteToTeam.TypeGame)list_req[i].game,
                         image,

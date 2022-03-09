@@ -32,19 +32,19 @@ namespace Diaco.Social
         private void OnEnable()
         {
             temp_badgelist = new List<Diaco.Social.BadgesElement.BadgeElement>();
-            InitializBadgeList(Server.BODY.inventory.badges);
+            InitializBadgeList(Server.BODY.inventory.leagueFlags);
         }
         private void OnDisable()
         {
             ClearBadges();
         }
-        public void InitializBadgeList(List<Badge> badgeslist)
+        public void InitializBadgeList(List<LeagueFlage> badgeslist)
         {
            
             for (int i = 0; i < badgeslist.Count; i++)
             {
                 var badge = Instantiate(BadgeElement, content);
-                badge.SetBadge(Server.BadgesContainer.LoadImage(badgeslist[i].image), badgeslist[i].id, this);
+                badge.SetBadge(Server.LeagueFlagsContainer.LoadImage(badgeslist[i].name), badgeslist[i].id, this);
                 temp_badgelist.Add(badge);
             }
 

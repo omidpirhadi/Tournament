@@ -6,36 +6,58 @@ namespace Diaco.UI.PopupEditUsername
 {
     public class PopupEditUsername : MonoBehaviour
     {
+        private ServerUI server;
         public InputField Username_Text;
         public Text Dialog_text;
-        public bool AllowUsername = false;
+        // public bool AllowUsername = false;
 
         public Button Confirm_Button;
         void Start()
         {
 
-            Username_Text.onEndEdit.AddListener((u) =>
+
+        }
+        private void OnEnable()
+        {
+            server = FindObjectOfType<ServerUI>();
+            server.OnchangeUsername += PopupEditUsername_OnchangeUsername;
+
+            Username_Text.onValueChanged.AddListener((x) =>
             {
-               var user =  PersianFix.Persian.Fix(Username_Text.text, 255);
-                Username_Text.text = user;
-                CheckUsername(user);
+                Dialog_text.text = "";
+
             });
 
+            Confirm_Button.onClick.AddListener(() =>
+            {
+
+                if (Username_Text.text.Length > 0)
+                    CheckUsername(Username_Text.text);
+            });
         }
 
 
+        private void OnDisable()
+        {
+            server.OnchangeUsername -= PopupEditUsername_OnchangeUsername;
+            Username_Text.onValueChanged.RemoveAllListeners();
+            Confirm_Button.onClick.RemoveAllListeners();
+        }
+        private void PopupEditUsername_OnchangeUsername(string user)
+        {
+            CheckAnswerRequest(user);
+        }
+
+        public void CheckAnswerRequest(string context)
+        {
+
+            Dialog_text.color = Color.red;
+            Dialog_text.text = PersianFix.Persian.Fix(context, 255);
+
+        }
         void CheckUsername(string user)
         {
-            if(AllowUsername)
-            {
-                Dialog_text.color = Color.green;
-                Dialog_text.text = PersianFix.Persian.Fix( "نام کاربری تایید شد.", 255); 
-            }
-            else
-            {
-                Dialog_text.color = Color.red;
-                Dialog_text.text = PersianFix.Persian.Fix("نام کاربری قبلا استفاده شده.", 255);
-            }
+            server.RequestEditUserName(user);
         }
     }
 }

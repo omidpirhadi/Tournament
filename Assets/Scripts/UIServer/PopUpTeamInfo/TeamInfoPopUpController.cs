@@ -196,7 +196,7 @@ namespace Diaco.TeamInfo
         }
         private void SetElementInfoTeam(Diaco.HTTPBody.TeamInfo teamInfos)
         {
-            TeamImage.sprite = Server.BadgesContainer.LoadImage(teamInfos.avatar);
+            TeamImage.sprite = Server.LeagueFlagsContainer.LoadImage(teamInfos.avatar);
             TeamName.text = teamInfos.name;
 
             Description.text = teamInfos.description;

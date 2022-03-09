@@ -57,7 +57,7 @@ namespace Diaco.Chat
         public void initializPage()
         {
             TeamName.text = Server.BODY.social.team.name;
-            TeamInfoButton.GetComponent<Image>().sprite = Server.BadgesContainer.LoadImage(Server.BODY.social.team.avatar);
+            TeamInfoButton.GetComponent<Image>().sprite = Server.LeagueFlagsContainer.LoadImage(Server.BODY.social.team.avatar);
             if (Server.BODY.social.team.game == 0)
             {
                 TeamImage.sprite = AssetBiliard;
