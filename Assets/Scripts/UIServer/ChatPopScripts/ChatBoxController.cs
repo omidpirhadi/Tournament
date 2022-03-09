@@ -8,6 +8,7 @@ namespace Diaco.Chat
     public class ChatBoxController : MonoBehaviour
     {
         public ServerUI Server;
+        public string IDReciver = "";
         public Image AvatarReciver;
         public Text UserNameReciver;
         public Text Cup;
@@ -16,7 +17,7 @@ namespace Diaco.Chat
         public FramChat FrameYouChat;
         public InputField InputMessage;
         public Button SendButton;
-        public string ooo = "";
+        
         private List<FramChat> ChatRecivedList = new List<FramChat>();
         private void Awake()
         {
@@ -81,10 +82,11 @@ namespace Diaco.Chat
                 }
             }
         }
-        public void SetElementPage(Sprite avatar, string username , string cup)
+        public void SetElementPage(Sprite avatar, string username, string id  , string cup)
         {
             AvatarReciver.sprite = avatar;
             UserNameReciver.text = username;
+            IDReciver = id;
             Cup.text = cup;
         }
         private void  clearChatList()

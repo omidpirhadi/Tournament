@@ -93,13 +93,14 @@ namespace Diaco.Social
                 if (list_req[i].type == "chat")
                 {
                     var card = Instantiate(IndicatorMassagePrefab, Content);
+                    card.ID = list_req[i].id;
                     var image = Server.AvatarContainer.LoadImage(list_req[i].avatar);
                    card.cup = list_req[i].cup.ToString();
                     ///Debug.Log("card.cup::::::::::::::"+ list_req[i].cup.ToString());
                     card.SetCard(list_req[i].isOnline, image, list_req[i].from, list_req[i].messageCount,
                         () => {
-                            Server.SendCurrentPage("chat", card.UserNameIndicator.text);
-                            ChatBox.SetElementPage(image, card.UserNameIndicator.text, card.cup);
+                            Server.SendCurrentPage("chat", card.ID);
+                            ChatBox.SetElementPage(image, card.UserNameIndicator.text,card.ID, card.cup);
                             navigationui.ShowPopUp("chat");
                         },
                         () => {
@@ -115,9 +116,10 @@ namespace Diaco.Social
                 else if (list_req[i].type == "friend")
                 {
                     var card = Instantiate(IndicatorRequestFriend, Content);
+                    card.ID = list_req[i].id;
                     var image = Server.AvatarContainer.LoadImage(list_req[i].avatar);
                     card.SetCard(image, list_req[i].from, list_req[i].cup.ToString(), list_req[i].isOnline,
-                        () => { Server.AcceptRequest("friend", card.UserNameIndicator.text); }, 
+                        () => { Server.AcceptRequest("friend", card.ID); }, 
                         () => {
                            // Server.RejectRequest("friend", card.UserNameIndicator.text);
                             DialogDelete.EmitUserOrTeamName = card.UserNameIndicator.text;

@@ -11,7 +11,7 @@ public class CardFriendTypeOne : MonoBehaviour
 
     public bool IsOnline = false;
     public Image img_IsOnline;
-    
+    public string ID = "";
     public Image Avatar;
     public Text UserName;
     public Text Cup;

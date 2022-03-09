@@ -53,6 +53,7 @@ namespace Diaco.Social
             if (friends.friend == 0)///addfriend
             {
                 var card = Instantiate(CardwithReqFriend, Content);
+                card.ID = friends.id;
                 card.UserName.text = friends.userName;
                 card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.avatar);
                 card.Cup.text = friends.cup.ToString();
@@ -61,12 +62,13 @@ namespace Diaco.Social
                 else
                     card.img_IsOnline.enabled = false;
                 card.btn_Add.interactable = true;
-                card.btn_Add.onClick.AddListener(() => { Server.RequsetAddFriend(friends.userName); card.btn_Add.interactable = false; });
+                card.btn_Add.onClick.AddListener(() => { Server.RequsetAddFriend(friends.id); card.btn_Add.interactable = false; });
                 Cardtwo.Add(card);
             }
             else if (friends.friend == 1)//SendedReq
             {
                 var card = Instantiate(CardwithReqFriend, Content);
+                card.ID = friends.id;
                 card.UserName.text = friends.userName;
                 card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.avatar);
                 card.Cup.text = friends.cup.ToString();
@@ -80,6 +82,7 @@ namespace Diaco.Social
             else if (friends.friend == 2)///Is friend
             {
                 var card = Instantiate(CardwithMessage, Content);
+                card.ID = friends.id;
                 card.UserName.text = friends.userName;
                 card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.avatar);
                 card.Cup.text = friends.cup.ToString();
@@ -98,9 +101,9 @@ namespace Diaco.Social
                 {
 
 
-             
-                    chat_box.SetElementPage(card.Avatar.sprite, card.UserName.text, card.Cup.text);
-                    Server.SendCurrentPage("chat", card.UserName.text);
+
+                    chat_box.SetElementPage(card.Avatar.sprite, card.UserName.text, card.ID, card.Cup.text);
+                    Server.SendCurrentPage("chat", card.ID);
                     navigationUi.ShowPopUp("chat");
 
                 });
@@ -115,6 +118,7 @@ namespace Diaco.Social
             for (int i = 0; i < friends.friends.Count; i++)
             {
                 var card = Instantiate(CardwithMessage, Content);
+                card.ID = friends.friends[i].id;
                 card.UserName.text = friends.friends[i].userName;
                 card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.friends[i].avatar);
                 card.Cup.text = friends.friends[i].cup.ToString();
@@ -134,6 +138,7 @@ namespace Diaco.Social
 
                     chat_box.AvatarReciver.sprite = card.Avatar.sprite;
                     chat_box.UserNameReciver.text = card.UserName.text;
+                    chat_box.IDReciver = card.ID;
                     chat_box.Cup.text = card.Cup.text;
                     navigationUi.ShowPopUp("chat");
                 });

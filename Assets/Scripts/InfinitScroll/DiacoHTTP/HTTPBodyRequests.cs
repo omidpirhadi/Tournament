@@ -95,6 +95,7 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct InRequset
     {
+        public string id;
         public string from;
         public string type; //chat , team, friend
         public int game;//0 biliard , 1 soccer
@@ -205,6 +206,7 @@ namespace Diaco.HTTPBody
     public struct FriendBody
     {
         public string userName;
+        public string id;
         public int cup;
         public bool isOnline;
         public bool isBlock;
@@ -218,10 +220,11 @@ namespace Diaco.HTTPBody
     }
     [Serializable]
     public struct SearchUser
-    {
+    {  public string id;
         public int friend; ///state:" 0 = nonfriend, 1 = req sended, 2 = Isfriend"; 
         public bool isOnline;    
         public string userName;
+       
         public int level;
         public int cup;
         [Multiline]

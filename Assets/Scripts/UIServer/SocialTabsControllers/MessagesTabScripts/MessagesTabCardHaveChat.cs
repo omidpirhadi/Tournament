@@ -12,7 +12,7 @@ namespace Diaco.Social.MessageCards
         public ServerUI Server;
         public NavigationUI NavigationUi;
         public Button OpenProfilePopupButton;
-
+        public string ID;
         public Image OnlineIndicator;
         public Image ProfileImageIndicator;
         public Text UserNameIndicator;

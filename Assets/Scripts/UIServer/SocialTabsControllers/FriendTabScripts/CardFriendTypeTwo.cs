@@ -13,6 +13,7 @@ public class CardFriendTypeTwo : MonoBehaviour
     public Button OpenProfilePopupButton;
     public Image Avatar;
     public Text UserName;
+    public string ID ;
     public Text Cup;
     public Button btn_Add;
     private void OnEnable()

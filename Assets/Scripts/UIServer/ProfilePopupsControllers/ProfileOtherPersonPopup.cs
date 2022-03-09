@@ -201,7 +201,7 @@ namespace Diaco.Profile
         private void SetChatBox()
         {
             Server.SendCurrentPage("chat", Username.text);
-            ChatBoxFromProfile.SetElementPage(Avatar.sprite, Username.text, Cup.text);
+           // ChatBoxFromProfile.SetElementPage(Avatar.sprite, Username.text, Cup.text);
         }
     }
 }
