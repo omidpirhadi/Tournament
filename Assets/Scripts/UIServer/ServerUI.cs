@@ -158,6 +158,7 @@ public class ServerUI : MonoBehaviour
 
             Debug.Log("main-menu called");
         });
+
         socket.On("search-friend", (s, p, m) =>
         {
 
@@ -203,6 +204,7 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
+
         socket.On("join-lobby", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -745,11 +747,11 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("changePhone", phonenumber, confrimcode);
     }
-    public void SendRequestGetFriends()
+  /*  public void SendRequestGetFriends()
     {
         socket.Emit("get-friends");
         navigationUi.StartLoadingPageShow();
-    }
+    }*/
 
     public void SendRequestChatWithUser(string userName)
     {

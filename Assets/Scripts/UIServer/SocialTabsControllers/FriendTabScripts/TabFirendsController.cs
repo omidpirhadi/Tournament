@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Diaco.HTTPBody;
-namespace Diaco.Social
+namespace Diaco.UI.SocialTabs
 {
     public class TabFirendsController : MonoBehaviour
     {
@@ -12,12 +12,11 @@ namespace Diaco.Social
         public NavigationUI navigationUi;
         public InputField InputSearch;
         public Button SearchButton;
-        public Diaco.Chat.ChatBoxController chat_box;
-        public CardFriendTypeOne CardwithMessage;
-        public CardFriendTypeTwo CardwithReqFriend;
+        public FriendTabCard FriendTabCard_Prefab;
+
         public RectTransform Content;
-        public List<CardFriendTypeOne> Cardone;
-        public List<CardFriendTypeTwo> Cardtwo;
+        private List<GameObject> listfriendcard = new List<GameObject>();
+        
 
         public void OnEnable()
         {
@@ -37,7 +36,7 @@ namespace Diaco.Social
         }
         private void Server_OnResualtSearchFriend(SearchUser friend)
         {
-            SpawnCardsAddFriend(friend);
+            SpawnCardsNotFriend(friend);
         }
 
         private void Server_OnComingFriends(Friends friends)
@@ -45,123 +44,37 @@ namespace Diaco.Social
             SpawnCardsFriend(friends);
         }
 
-        private void SpawnCardsAddFriend(SearchUser friends)
+        private void SpawnCardsNotFriend(SearchUser data)
         {
             ClearListCard();
+            var card = Instantiate(FriendTabCard_Prefab, Content);
+            card.SetForNoFriend(data);
+            listfriendcard.Add(card.gameObject);
 
-
-            if (friends.friend == 0)///addfriend
-            {
-                var card = Instantiate(CardwithReqFriend, Content);
-                card.ID = friends.id;
-                card.UserName.text = friends.userName;
-                card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.avatar);
-                card.Cup.text = friends.cup.ToString();
-                if (friends.isOnline)
-                    card.img_IsOnline.enabled = true;
-                else
-                    card.img_IsOnline.enabled = false;
-                card.btn_Add.interactable = true;
-                card.btn_Add.onClick.AddListener(() => { Server.RequsetAddFriend(friends.id); card.btn_Add.interactable = false; });
-                Cardtwo.Add(card);
-            }
-            else if (friends.friend == 1)//SendedReq
-            {
-                var card = Instantiate(CardwithReqFriend, Content);
-                card.ID = friends.id;
-                card.UserName.text = friends.userName;
-                card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.avatar);
-                card.Cup.text = friends.cup.ToString();
-                if (friends.isOnline)
-                    card.img_IsOnline.enabled = true;
-                else
-                    card.img_IsOnline.enabled = false;
-                card.btn_Add.interactable = false;
-                Cardtwo.Add(card);
-            }
-            else if (friends.friend == 2)///Is friend
-            {
-                var card = Instantiate(CardwithMessage, Content);
-                card.ID = friends.id;
-                card.UserName.text = friends.userName;
-                card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.avatar);
-                card.Cup.text = friends.cup.ToString();
-                if (friends.isOnline)
-                {
-                    card.img_IsOnline.enabled = true;
-                    //  Debug.Log("FriendOnline");
-                }
-                else
-                {
-                    card.img_IsOnline.enabled = false;
-                    ///   Debug.Log("Friendoffline");
-                }
-                card.btn_chat.interactable = true;
-                card.btn_chat.onClick.AddListener(() =>
-                {
-
-
-
-                    chat_box.SetElementPage(card.Avatar.sprite, card.UserName.text, card.ID, card.Cup.text);
-                    Server.SendCurrentPage("chat", card.ID);
-                    navigationUi.ShowPopUp("chat");
-
-                });
-                Cardone.Add(card);
-
-            }
         }
-        private void SpawnCardsFriend(Friends friends)
+        private void SpawnCardsFriend(Friends data)
         {
             ClearListCard();
             //var friendslist = friends.friends;
-            for (int i = 0; i < friends.friends.Count; i++)
+            for (int i = 0; i < data.friends.Count; i++)
             {
-                var card = Instantiate(CardwithMessage, Content);
-                card.ID = friends.friends[i].id;
-                card.UserName.text = friends.friends[i].userName;
-                card.Avatar.sprite = Server.AvatarContainer.LoadImage(friends.friends[i].avatar);
-                card.Cup.text = friends.friends[i].cup.ToString();
-                if (friends.friends[i].isOnline)
-                {
-                    card.img_IsOnline.enabled = true;
-                    //    Debug.Log("FriendOnline2");
-                }
-                else
-                {
-                    card.img_IsOnline.enabled = false;
-                    //     Debug.Log("Friendoffline");
-                }
-                card.btn_chat.interactable = true;
-                card.btn_chat.onClick.AddListener(() =>
-                {
+               var card = Instantiate(FriendTabCard_Prefab, Content);
 
-                    chat_box.AvatarReciver.sprite = card.Avatar.sprite;
-                    chat_box.UserNameReciver.text = card.UserName.text;
-                    chat_box.IDReciver = card.ID;
-                    chat_box.Cup.text = card.Cup.text;
-                    navigationUi.ShowPopUp("chat");
-                });
-                Cardone.Add(card);
+                card.SetForFriend(data.friends[i]);
+                listfriendcard.Add(card.gameObject);
             }
         }
         private void ClearListCard()
         {
 
-            for (int i = 0; i < Cardone.Count; i++)
+            for (int i = 0; i < listfriendcard.Count; i++)
             {
-                Destroy(Cardone[i].gameObject);
+                Destroy(listfriendcard[i]);
 
                 Debug.Log("ClearFriendTab");
             }
-            for (int i = 0; i < Cardtwo.Count; i++)
-            {
-
-                Destroy(Cardtwo[i].gameObject);
-                Debug.Log("ClearFriendTab");
-            }
-            Cardone.Clear();
-            Cardtwo.Clear();
+            listfriendcard.Clear();
+        
 
         }
     }
