@@ -36,7 +36,10 @@ namespace Diaco.UI.SocialTabs
         }
         private void Server_OnResualtSearchFriend(SearchUser friend)
         {
-            SpawnCardsNotFriend(friend);
+            
+                SpawnCardsNotFriend(friend);
+          
+                
         }
 
         private void Server_OnComingFriends(Friends friends)
@@ -48,7 +51,7 @@ namespace Diaco.UI.SocialTabs
         {
             ClearListCard();
             var card = Instantiate(FriendTabCard_Prefab, Content);
-            card.SetForNoFriend(data);
+            card.SetForSearchedFriend(data);
             listfriendcard.Add(card.gameObject);
 
         }

@@ -35,7 +35,7 @@ namespace Diaco.UI.SocialTabs
         {
             OpenProfilePopupButton.onClick.RemoveAllListeners();
         }
-        public void SetForNoFriend(SearchUser data)
+        public void SetForSearchedFriend(SearchUser data)
         {
             ID = data.id;
             UserName.text = data.userName;
@@ -61,6 +61,14 @@ namespace Diaco.UI.SocialTabs
                 btn_Add.interactable = false;
             }
           
+            else if(data.friend == 2)
+            {
+                btn_Add.gameObject.SetActive(false);
+                btn_sendmessage.gameObject.SetActive(true);
+
+                btn_sendmessage.interactable = true;
+                btn_sendmessage.onClick.AddListener(onclick_btn_sendmessage);
+            }
 
         }
         public void SetForFriend(FriendBody data)
