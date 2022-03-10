@@ -13,7 +13,7 @@ public class DialogDeleteMessage : MonoBehaviour
     public enum DeleteMessagesType {none, Chat, RequestFriend, TeamInvite};
     public DeleteMessagesType messagesType;
     public string EmitUserOrTeamName = "";
-    public void Awake()
+    public void OnEnable()
     {
         Server = FindObjectOfType<ServerUI>();
         YESButton.onClick.AddListener(() => { DeleteData(); });
@@ -25,8 +25,8 @@ public class DialogDeleteMessage : MonoBehaviour
 
     public void OnDisable()
     {
-        // YESButton.onClick.RemoveAllListeners();
-        // NoButton.onClick.RemoveAllListeners();
+       YESButton.onClick.RemoveAllListeners();
+        NoButton.onClick.RemoveAllListeners();
     }
     private void DeleteData()
     {

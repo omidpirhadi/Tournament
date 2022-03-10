@@ -10,7 +10,7 @@ namespace Diaco.Profile
         public ServerUI Server;
         public NavigationUI navigationUi;
 
-        public Diaco.Chat.ChatBoxController ChatBoxFromProfile;
+        public Diaco.UI.Chatbox.ChatBoxController ChatBoxFromProfile;
 
         public Button AddFriendButton;
         public Button BlockPersonButton;

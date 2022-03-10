@@ -64,9 +64,15 @@ namespace Diaco.Profile
             S_WinCount.text = (Server.BODY.profile.soccer.win).ToString() + "/" + (Server.BODY.profile.soccer.total).ToString();
             try
             {
-                S_WinRate.text = ((Server.BODY.profile.soccer.win / Server.BODY.profile.soccer.total) * 100.00f).ToString()+"%";
+                if (Server.BODY.profile.soccer.win == 0)
+
+                    S_WinRate.text = "0%";
+
+                else
+                    S_WinRate.text = ((Server.BODY.profile.soccer.win / Server.BODY.profile.soccer.total) * 100.00f).ToString() + "%";
+
             }
-            catch(DivideByZeroException e)
+            catch (DivideByZeroException e)
             {
                 Debug.Log(e.Data.ToString());
                 S_WinRate.text = "0%";
@@ -83,7 +89,13 @@ namespace Diaco.Profile
 
             try
             {
-                B_WinRate.text = ((Server.BODY.profile.billiard.win / Server.BODY.profile.billiard.total) * 100.00f).ToString()+"%";
+                if (Server.BODY.profile.billiard.win == 0)
+
+                    B_WinRate.text = "0%";
+
+                else
+                    B_WinRate.text = ((Server.BODY.profile.billiard.win / Server.BODY.profile.billiard.total) * 100.00f).ToString() + "%";
+                
             }
             catch (DivideByZeroException e)
             {

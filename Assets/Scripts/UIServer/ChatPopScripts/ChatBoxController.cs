@@ -1,9 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Diaco.Chat
+namespace Diaco.UI.Chatbox
 {
     public class ChatBoxController : MonoBehaviour
     {
@@ -19,21 +20,11 @@ namespace Diaco.Chat
         public Button SendButton;
         
         private List<FramChat> ChatRecivedList = new List<FramChat>();
-        private void Awake()
-        {
-            Server.OnChatsRecive += Server_OnChatsRecive;
 
-            SendButton.onClick.AddListener(() =>
-            {
-                SendChat();
-            });
-        }
         private void OnEnable()
         {
 
-            Debug.Log(UserNameReciver.text);
-            Server.SendRequestChatWithUser(UserNameReciver.text);
-
+           
           
         }
         private void OnDisable()
@@ -42,11 +33,21 @@ namespace Diaco.Chat
 
             UserNameReciver.text = "";
             Cup.text = "";
-            Server.SendCurrentPage("", "");
+          
             clearChatList();
-           // Server.OnChatsRecive -= Server_OnChatsRecive;
-         //   SendButton.onClick.RemoveAllListeners();
+
     }
+        public void init_chatbox()
+        {
+            Server.OnChatsRecive += Server_OnChatsRecive;
+
+            SendButton.onClick.AddListener(() =>
+            {
+                SendChat();
+            });
+            Server.SendRequestGetAllChat(IDReciver);
+            Debug.Log("ChatWithID:" + IDReciver);
+        }
         private void Server_OnChatsRecive(Diaco.HTTPBody.Chats chats)
         {
             ChatRecive(chats);
@@ -58,36 +59,39 @@ namespace Diaco.Chat
             {
               var chat =  PersianFix.Persian.Fix(InputMessage.text, 0);
             
-                Server.SendChatToUser(UserNameReciver.text, chat);
+                Server.SendChatToUser(IDReciver, chat);
                 InputMessage.text = "";
             }
         }
         public void ChatRecive(Diaco.HTTPBody.Chats chats)
         {
-              clearChatList();
-           
-            for (int i = 0; i < chats.chats.Count; i++)
+            clearChatList();
+            if (IDReciver == chats.chatId)
             {
-                if(chats.chats[i].type == 0)//FrameMyChat
+                for (int i = 0; i < chats.chats.Count; i++)
                 {
-                    var frame = Instantiate(FrameMyChat, ContentChats);
-                    frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
-                    ChatRecivedList.Add(frame);
+                    if (chats.chats[i].type == 0)//FrameMyChat
+                    {
+                        var frame = Instantiate(FrameMyChat, ContentChats);
+                        frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
+                        ChatRecivedList.Add(frame);
+                    }
+                    else//FrameYouChat
+                    {
+                        var frame = Instantiate(FrameYouChat, ContentChats);
+                        frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
+                        ChatRecivedList.Add(frame);
+                    }
                 }
-                else//FrameYouChat
-                {
-                    var frame = Instantiate(FrameYouChat, ContentChats);
-                    frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time ,chats.chats[i].date, chats.chats[i].read);
-                    ChatRecivedList.Add(frame);
-                }
+                Server.SendReadChat(IDReciver);
             }
         }
-        public void SetElementPage(Sprite avatar, string username, string id  , string cup)
+        public void SetElementPage(ChatBoxData data)
         {
-            AvatarReciver.sprite = avatar;
-            UserNameReciver.text = username;
-            IDReciver = id;
-            Cup.text = cup;
+            AvatarReciver.sprite = Server.AvatarContainer.LoadImage(data.avatar);
+            UserNameReciver.text = data.username;
+            IDReciver = data.id;
+            Cup.text = data.cup;
         }
         private void  clearChatList()
         {
@@ -100,5 +104,13 @@ namespace Diaco.Chat
                 ChatRecivedList.Clear();
             }
         }
+    }
+    [Serializable]
+    public struct ChatBoxData
+    {
+        public string avatar;
+        public string username;
+        public string id;
+        public string cup;
     }
 }

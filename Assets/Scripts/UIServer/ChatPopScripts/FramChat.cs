@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace Diaco.Chat
+namespace Diaco.UI.Chatbox
 {
     public class FramChat : MonoBehaviour
     {

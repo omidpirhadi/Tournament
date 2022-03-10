@@ -21,9 +21,9 @@ namespace Diaco.Chat
         public Sprite AssetsSoccer;
         public Sprite AssetBiliard;
 
-        public FramChat FrameMyChat;
-        public FramChat FrameYouChat;
-        private List<FramChat> ChatRecivedList = new List<FramChat>();
+        public Diaco.UI.Chatbox.FramChat FrameMyChat;
+        public Diaco.UI.Chatbox.FramChat FrameYouChat;
+        private List<Diaco.UI.Chatbox.FramChat> ChatRecivedList = new List<Diaco.UI.Chatbox.FramChat>();
         private void Awake()
         {
             Server.OnUpdateChatTeam += Server_OnUpdateChatTeam;

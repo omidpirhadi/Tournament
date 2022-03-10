@@ -164,6 +164,7 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct Chats
     {
+        public string chatId;
         public List<ChatBody> chats;
     }
     [Serializable]

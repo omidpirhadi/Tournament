@@ -13,7 +13,7 @@ namespace Diaco.Social
         public NavigationUI navigationui;
         public DialogDeleteMessage DialogDelete;
         private enum TypeCardMessage { ChatRequest , FriendRequest, TeamInvitRequset}
-        public Chat.ChatBoxController ChatBox;
+        public Diaco.UI.Chatbox.ChatBoxController ChatBox;
         [FoldoutGroup("MessageTabElements")]
         public Text TotalMessageIndicator;
         [FoldoutGroup("MessageTabElements")]
@@ -99,13 +99,14 @@ namespace Diaco.Social
                     ///Debug.Log("card.cup::::::::::::::"+ list_req[i].cup.ToString());
                     card.SetCard(list_req[i].isOnline, image, list_req[i].from, list_req[i].messageCount,
                         () => {
-                            Server.SendCurrentPage("chat", card.ID);
-                            ChatBox.SetElementPage(image, card.UserNameIndicator.text,card.ID, card.cup);
-                            navigationui.ShowPopUp("chat");
+                            //Server.SendCurrentPage("chat", card.ID);
+                            //  ChatBox.SetElementPage(image, card.UserNameIndicator.text,card.ID, card.cup);
+                            //  navigationui.ShowPopUp("chat");
+                            Server.SendRequestOpenChatBox(card.ID);
                         },
                         () => {
                             //Server.RejectRequest("chat", card.UserNameIndicator.text);
-                            DialogDelete.EmitUserOrTeamName = card.UserNameIndicator.text;
+                            DialogDelete.EmitUserOrTeamName = card.ID;
                             DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.Chat;
                             DialogDelete.ShowDialog();
                         }
@@ -122,7 +123,7 @@ namespace Diaco.Social
                         () => { Server.AcceptRequest("friend", card.ID); }, 
                         () => {
                            // Server.RejectRequest("friend", card.UserNameIndicator.text);
-                            DialogDelete.EmitUserOrTeamName = card.UserNameIndicator.text;
+                            DialogDelete.EmitUserOrTeamName = card.ID;
                             DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.RequestFriend;
                             DialogDelete.ShowDialog();
                         });

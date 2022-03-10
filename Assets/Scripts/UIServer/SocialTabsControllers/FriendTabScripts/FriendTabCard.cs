@@ -101,11 +101,10 @@ namespace Diaco.UI.SocialTabs
             Server.RequsetAddFriend(ID);
             btn_Add.interactable = false;
         }
-         private void onclick_btn_sendmessage()
+        private void onclick_btn_sendmessage()
         {
-            //chat_box.SetElementPage(card.Avatar.sprite, card.UserName.text, card.ID, card.Cup.text);
-           // Server.SendCurrentPage("chat", card.ID);
-           /// navigationUi.ShowPopUp("chat");
+            Server.SendRequestOpenChatBox(ID);
+
         }
     }
 }

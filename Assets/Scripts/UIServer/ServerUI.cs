@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections;
 using System.IO;
 
 using UnityEngine;
@@ -323,6 +323,30 @@ public class ServerUI : MonoBehaviour
                 Handler_OnGetAward(awrad);
 
                 Debug.Log("ReciveTeamAwardAndLoadedInPopUp.");
+            }
+            navigationUi.StopLoadingPage();
+        });
+        socket.On("open-chatbox", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("ChatBoxOpenedError:" + m[1].ToString());
+
+            }
+            else
+            {
+                navigationUi.ShowPopUp("chat");
+                var data = JsonUtility.FromJson<Diaco.UI.Chatbox.ChatBoxData>(m[1].ToString());
+                
+                
+                
+
+                var chatbox_popup = FindObjectOfType<Diaco.UI.Chatbox.ChatBoxController>();
+
+                chatbox_popup.SetElementPage(data);
+                chatbox_popup.init_chatbox();
+                Debug.Log("ChatBoxOpened");
             }
             navigationUi.StopLoadingPage();
         });
@@ -747,13 +771,14 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("changePhone", phonenumber, confrimcode);
     }
-  /*  public void SendRequestGetFriends()
+    
+    public void SendRequestGetFriends()
     {
         socket.Emit("get-friends");
         navigationUi.StartLoadingPageShow();
-    }*/
+    }
 
-    public void SendRequestChatWithUser(string userName)
+    public void SendRequestGetAllChat(string userName)
     {
 
         socket.Emit("chat", userName);
@@ -766,12 +791,24 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("SendChat...");
     }
+    public void SendReadChat(string userid)
+    {
+        socket.Emit("read-chat", userid);
+        Debug.Log("Im a reading chat");
+    }
     public void SendChatToTeam(string message)
     {
         socket.Emit("team-chat", message);
         navigationUi.StartLoadingPageShow();
         Debug.Log("ChatSendToTeam");
     }
+    public void SendRequestOpenChatBox(string userid)
+    {
+        socket.Emit("open-chatbox", userid);
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("SendOpenChatBox:" + userid);
+    }
+    [Obsolete]
     public void SendCurrentPage(string Page, string Targetuser)
     {
         var info = new InfoPage();
@@ -1070,6 +1107,7 @@ public class ServerUI : MonoBehaviour
     }
     #endregion
     #region Function
+
     public void SetElementInHeaderAndFooter()
     {
         // ui.ImageUser_inPageSelectGame.sprite = ConvertImageToSprite(BODY.profile.avatar);
