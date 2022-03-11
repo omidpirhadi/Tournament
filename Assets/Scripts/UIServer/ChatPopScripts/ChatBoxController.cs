@@ -29,6 +29,8 @@ namespace Diaco.UI.Chatbox
         }
         private void OnDisable()
         {
+            Server.OnChatsRecive -= Server_OnChatsRecive;
+            SendButton.onClick.RemoveAllListeners();
             AvatarReciver.sprite = null;
 
             UserNameReciver.text = "";
@@ -46,7 +48,7 @@ namespace Diaco.UI.Chatbox
                 SendChat();
             });
             Server.SendRequestGetAllChat(IDReciver);
-            Debug.Log("ChatWithID:" + IDReciver);
+            //Debug.Log("ChatWithID:" + IDReciver);
         }
         private void Server_OnChatsRecive(Diaco.HTTPBody.Chats chats)
         {
@@ -75,6 +77,7 @@ namespace Diaco.UI.Chatbox
                         var frame = Instantiate(FrameMyChat, ContentChats);
                         frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
                         ChatRecivedList.Add(frame);
+                        Debug.Log(chats.chats[i].read);
                     }
                     else//FrameYouChat
                     {
@@ -82,6 +85,7 @@ namespace Diaco.UI.Chatbox
                         frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
                         ChatRecivedList.Add(frame);
                     }
+                    
                 }
                 Server.SendReadChat(IDReciver);
             }

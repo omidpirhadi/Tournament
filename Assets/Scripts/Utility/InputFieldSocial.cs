@@ -24,8 +24,8 @@ namespace Diaco.Social.TeamsInputField
         private void OnEnable()
         {
             FieldOfViwe.text = PrimeryData;
-            btn_Next.onClick.AddListener(() => { Debug.Log("DigitPlus"); Next(); });
-            btn_Previous.onClick.AddListener(() => { Debug.Log("DigitMines"); Previous(); });
+            btn_Next.onClick.AddListener(() => {  Next(); });
+            btn_Previous.onClick.AddListener(() => {  Previous(); });
         }
         public void Next()
         {
@@ -59,6 +59,13 @@ namespace Diaco.Social.TeamsInputField
                 CurrentElementContext = Mathf.Clamp(temp, 0, ElementContexts.Count-1);
                 var e = ElementContexts[CurrentElementContext];
                 FieldOfViwe.text = e;
+            }
+        }
+        public  void FillElementContexts(List<string> contexts)
+        {
+            for(int i = 0; i<contexts.Count;i++)
+            {
+               // ElementContexts[i] = contexts[i]
             }
         }
     }

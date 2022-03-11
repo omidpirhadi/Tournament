@@ -9,9 +9,10 @@ namespace Diaco.Social.PopSelectFriendCard
 {
     public class CardFriend_selectPop : MonoBehaviour
     {
-
+        
         public Image Profile;
         public Text Username;
+        public string UserId;
         public Text Cup;
         public Toggle Checkbox;
         public Diaco.Social.SelectFriendsPopup SelectFriendPopController;
@@ -24,21 +25,22 @@ namespace Diaco.Social.PopSelectFriendCard
 
                     num++;
                     SelectFriendPopController.SelectedFriendIndicator.text = Mathf.Clamp(num, 0, 99).ToString();
-                    SelectFriendPopController.FriendsSelectedList.Add(Username.text);
+                    SelectFriendPopController.FriendsSelectedList.Add(UserId);
                 }
                 else
                 {
                     var num = Convert.ToInt16(SelectFriendPopController.SelectedFriendIndicator.text);
                     num--;
                     SelectFriendPopController.SelectedFriendIndicator.text= Mathf.Clamp(num, 0, 99).ToString();
-                    SelectFriendPopController.FriendsSelectedList.Remove(Username.text);
+                    SelectFriendPopController.FriendsSelectedList.Remove(UserId);
 
                 }
             });
         }
-        public void SetCard(Sprite profile, string username, string cup)
+        public void SetCard(Sprite profile, string username,string userid, string cup)
         {
             Profile.sprite = profile;
+            UserId = userid;
             Username.text = username;
             Cup.text = cup;
         }

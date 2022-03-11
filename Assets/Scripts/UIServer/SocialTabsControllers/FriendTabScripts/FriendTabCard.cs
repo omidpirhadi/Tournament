@@ -16,7 +16,7 @@ namespace Diaco.UI.SocialTabs
         
         public Image Avatar;
         public Text UserName;
-        public string ID;
+        public string UserId;
         public Text Cup;
         public Button OpenProfilePopupButton;
         public Button btn_Add;
@@ -25,19 +25,15 @@ namespace Diaco.UI.SocialTabs
         {
             NavigationUi = FindObjectOfType<NavigationUI>();
             Server = FindObjectOfType<ServerUI>();
-            OpenProfilePopupButton.onClick.AddListener(() =>
-            {
-                NavigationUi.ShowPopUp("profilefromteam");
-                Server.GetProfilePerson(UserName.text);
-            });
+            
         }
         private void OnDisable()
         {
             OpenProfilePopupButton.onClick.RemoveAllListeners();
         }
-        public void SetForSearchedFriend(SearchUser data)
+        public void SetForSearchedPerson(SearchUser data)
         {
-            ID = data.id;
+            UserId = data.id;
             UserName.text = data.userName;
             Avatar.sprite = Server.AvatarContainer.LoadImage(data.avatar);
             Cup.text = data.cup.ToString();
@@ -69,7 +65,7 @@ namespace Diaco.UI.SocialTabs
                 btn_sendmessage.interactable = true;
                 btn_sendmessage.onClick.AddListener(onclick_btn_sendmessage);
             }
-
+            OpenProfilePopupButton.onClick.AddListener(onclick_profile);
         }
         public void SetForFriend(FriendBody data)
         {
@@ -80,7 +76,7 @@ namespace Diaco.UI.SocialTabs
             btn_sendmessage.interactable = true;
             btn_sendmessage.onClick.AddListener(onclick_btn_sendmessage);
 
-            ID = data.id;
+            UserId = data.id;
             UserName.text = data.userName;
             Avatar.sprite = Server.AvatarContainer.LoadImage(data.avatar);
             Cup.text = data.cup.ToString();
@@ -94,17 +90,22 @@ namespace Diaco.UI.SocialTabs
                 img_IsOnline.enabled = false;
                 //     Debug.Log("Friendoffline");
             }
-
+            OpenProfilePopupButton.onClick.AddListener(onclick_profile);
         }
         private void onclick_btn_Add()
         {
-            Server.RequsetAddFriend(ID);
+            Server.RequsetAddFriend(UserId);
             btn_Add.interactable = false;
         }
         private void onclick_btn_sendmessage()
         {
-            Server.SendRequestOpenChatBox(ID);
+            Server.SendRequestOpenChatBox(UserId);
 
+        }
+        private void onclick_profile()
+        {
+           
+            Server.GetProfilePerson(UserId);
         }
     }
 }

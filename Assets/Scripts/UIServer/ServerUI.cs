@@ -201,10 +201,23 @@ public class ServerUI : MonoBehaviour
             else
             {
                 Debug.Log("ADDED" + m[1].ToString());
+                navigationUi.StopLoadingPage();
+            }
+            navigationUi.StopLoadingPage();
+        }); //
+        socket.On("accept-request", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Debug.Log("Error:" + m[1].ToString());
+            }
+            else
+            {
+                Debug.Log("AcceptRequest" + m[1].ToString());
+                navigationUi.StopLoadingPage();
             }
             navigationUi.StopLoadingPage();
         });
-
         socket.On("join-lobby", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -401,12 +414,13 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
-        socket.On("create-team", (s, p, m) =>
+
+        socket.On("create-league", (s, p, m) =>
         {
 
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
-                OnErrorCreateTeam(m[1].ToString());
+                Handler_ErrorCreateTeam(m[1].ToString());
                 Debug.Log("Error:" + m[1].ToString());
 
             }
@@ -424,6 +438,26 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
+        socket.On("league-rules", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Handler_ErrorCreateTeam(m[1].ToString());
+                Debug.Log("Error:" + m[1].ToString());
+
+            }
+            else
+            {
+
+                var data = JsonUtility.FromJson<Diaco.Social.RulesData>(m[1].ToString());
+                var tab = FindObjectOfType<Diaco.Social.CreateTeamTabController>();
+                tab.Rules(data);
+                navigationUi.StopLoadingPage();
+            }
+            navigationUi.StopLoadingPage();
+        });
+
         socket.On("information", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -441,13 +475,16 @@ public class ServerUI : MonoBehaviour
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
-                Debug.Log("Error: Get Profile " + m[1].ToString());
+                Debug.Log("Error: Get Profile Person " + m[1].ToString());
 
             }
             else
             {
                 var profile = JsonUtility.FromJson<ProfileOtherPerson>(m[1].ToString());
-                Handler_OnGetProfileOtherPerson(profile);
+                navigationUi.ShowPopUp("profilefromteam");
+                var popup = FindObjectOfType<Diaco.UI.Profile.ProfileOtherPersonPopup>();
+                popup.InitializeProfile(profile);
+                navigationUi.StopLoadingPage();
                 Debug.Log("Get Profile Person");
             }
             navigationUi.StopLoadingPage();
@@ -649,7 +686,7 @@ public class ServerUI : MonoBehaviour
                 BODY.profile.avatar = m[1].ToString();
                 UIInFooterAndHeader.ImageUser_inPageSelectGame.sprite = AvatarContainer.LoadImage(m[1].ToString());
                 FindObjectOfType<Diaco.PopupAvatar.PopUpAvatarChange>().initPopupAvatar(BODY.inventory.avatars);
-                FindObjectOfType<Diaco.Profile.ProfilePopup>().InitializeProfile();
+                FindObjectOfType<Diaco.UI.Profile.ProfilePopup>().InitializeProfile();
                 navigationUi.StopLoadingPage();
                 Debug.Log("EditedAvatar");
             }
@@ -667,7 +704,7 @@ public class ServerUI : MonoBehaviour
             {
                 BODY.profile.description = m[1].ToString();
              
-                FindObjectOfType<Diaco.Profile.ProfilePopup>().InitializeProfile();
+                FindObjectOfType<Diaco.UI.Profile.ProfilePopup>().InitializeProfile();
                 navigationUi.StopLoadingPage();
                 Debug.Log("EditedDescription");
             }
@@ -733,7 +770,7 @@ public class ServerUI : MonoBehaviour
 
 
                 BODY.userName = m[1].ToString();
-                FindObjectOfType<Diaco.Profile.ProfilePopup>().InitializeProfile();
+                FindObjectOfType<Diaco.UI.Profile.ProfilePopup>().InitializeProfile();
                 UIInFooterAndHeader.UserName_inPageSelectGame.text = m[1].ToString();
                 navigationUi.StopLoadingPage();
                 navigationUi.ClosePopUp("changeusername");
@@ -853,11 +890,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Change Profile");
     }
-    public void GetProfilePerson(string PersonUserName)
+    public void GetProfilePerson(string userid)
     {
-        socket.Emit("get-profile", PersonUserName);
+        socket.Emit("get-profile", userid);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("GetProfile");
+        Debug.Log("SendRequestShow Profile:" + userid);
 
     }
     public void GetTopPlayers(string sortBy)
@@ -944,9 +981,15 @@ public class ServerUI : MonoBehaviour
     public void RequestCreateTeam(Diaco.HTTPBody.CreateTeam team)
     {
         var json = JsonUtility.ToJson(team);
-        socket.Emit("create-team", json);
+        socket.Emit("create-league", json);
         navigationUi.StartLoadingPageShow();
         Debug.Log("TeamCreated");
+    }
+    public void RequestLeagueRules()
+    {
+        socket.Emit("league-rules");
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("LeagueRulesRequested");
     }
     public void RequestItemShop()
     {
@@ -1159,21 +1202,31 @@ public class ServerUI : MonoBehaviour
     }
     #endregion
     #region Events
-    public event Action OnCreateTeamCompeleted;
+    private Action createteam;
+    public event Action OnCreateTeamCompeleted
+    {
+        add { createteam+=value; }
+        remove { createteam -= value; }
+    }
     protected void Handler_OnCreateTeamCompeleted()
     {
-        if (OnCreateTeamCompeleted != null)
+        if (createteam != null)
         {
-            OnCreateTeamCompeleted();
+            createteam();
         }
     }
 
-    public event Action<string> OnErrorCreateTeam;
+    private Action<string> errorcreateteam;
+    public event Action<string> OnErrorCreateTeam
+    {
+        add { errorcreateteam += value; }
+        remove { errorcreateteam -= value; }
+    }
     protected void Handler_ErrorCreateTeam(string error)
     {
-        if (OnErrorCreateTeam != null)
+        if (errorcreateteam != null)
         {
-            OnErrorCreateTeam(error);
+            errorcreateteam(error);
         }
     }
     public event Action<Friends> OnComingFriends;
@@ -1193,22 +1246,30 @@ public class ServerUI : MonoBehaviour
             OnResualtSearchFriend(friends);
         }
     }
-
-    public event Action<Diaco.HTTPBody.Chats> OnChatsRecive;
+    private Action<Diaco.HTTPBody.Chats> chatsrecive;
+    public event Action<Diaco.HTTPBody.Chats> OnChatsRecive
+    {
+        add { chatsrecive += value; }
+        remove { chatsrecive -= value; }
+    }
     protected void Handler_onchatreciver(Chats chats)
     {
-        if (OnChatsRecive != null)
+        if (chatsrecive != null)
         {
-            OnChatsRecive(chats);
+            chatsrecive(chats);
         }
     }
-
-    public event Action<InRequsets> OnGetMessages;
+    private Action<InRequsets> getmessage;
+    public event Action<InRequsets> OnGetMessages
+    {
+        add { getmessage += value; }
+        remove { getmessage -= value; }
+    }
     protected void Handler_OnGetMessages(InRequsets inRequsets)
     {
-        if (OnGetMessages != null)
+        if (getmessage != null)
         {
-            OnGetMessages(inRequsets);
+            getmessage(inRequsets);
         }
     }
 
@@ -1257,15 +1318,19 @@ public class ServerUI : MonoBehaviour
             OnGetTimeTeam(time);
         }
     }
-
-    public event Action<ProfileOtherPerson> OnGetProfileOtherPerson;
+   /* private Action<ProfileOtherPerson> getprofileperson;
+    public event Action<ProfileOtherPerson> OnGetProfileOtherPerson
+    {
+        add { getprofileperson += value; }
+        remove { getprofileperson -= value; }
+    }
     protected void Handler_OnGetProfileOtherPerson(ProfileOtherPerson profile)
     {
-        if (OnGetProfileOtherPerson != null)
+        if (getprofileperson != null)
         {
-            OnGetProfileOtherPerson(profile);
+            getprofileperson(profile);
         }
-    }
+    }*/
 
     public event Action<TopPlayers> OnGetTopPlayers;
     protected void Handler_OnGetTopPlayers(TopPlayers players)

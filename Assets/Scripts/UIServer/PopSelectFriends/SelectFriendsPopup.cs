@@ -20,6 +20,14 @@ namespace Diaco.Social
         private List<PopSelectFriendCard.CardFriend_selectPop> CardFriendList;
         private void Awake()
         {
+           
+        }
+        private void OnEnable()
+        {
+            FriendsSelectedList = new List<string>();
+            CardFriendList = new List<PopSelectFriendCard.CardFriend_selectPop>();
+            var list = Server.BODY.social.friends;
+            InitializeFriendsList(list);
             Send.onClick.AddListener(() => {
                 handler_OnSelectFriend(FriendsSelectedList);
                 ClearCardFriend();
@@ -28,19 +36,12 @@ namespace Diaco.Social
                 navigationUi.ClosePopUp("selectfriend");
             });
         }
-        private void OnEnable()
-        {
-            FriendsSelectedList = new List<string>();
-            CardFriendList = new List<PopSelectFriendCard.CardFriend_selectPop>();
-            var list = Server.BODY.social.friends;
-            InitializeFriendsList(list);
-
-        }
         private void OnDisable()
         {
+            Send.onClick.RemoveAllListeners();
             ClearCardFriend();
             FriendsSelectedList.Clear();
-          //  Send.onClick.RemoveAllListeners();
+           
         }
 
         public void InitializeFriendsList(List<FriendBody> friends)
@@ -49,11 +50,12 @@ namespace Diaco.Social
             {
                 var card = Instantiate(CardFriend, Content);
                 var image = Server.AvatarContainer.LoadImage(friends[i].avatar);
-                card.SetCard(image, friends[i].userName, friends[i].cup.ToString());
+                card.SetCard(image, friends[i].userName, friends[i].id, friends[i].cup.ToString());
                 card.SelectFriendPopController = this;
                 CardFriendList.Add(card);
-                Debug.Log(friends[i].userName);
+               // Debug.Log(friends[i].userName);
             }
+            Debug.Log("FriendsListLoaded");
         }
         public void ClearCardFriend()
         {
@@ -63,13 +65,19 @@ namespace Diaco.Social
             }
             CardFriendList.Clear();
         }
-        public event Action<List<string>> OnSelectFriendInPopup;
+
+        private Action<List<string>> onselectfriend;
+        public event Action<List<string>> OnSelectFriendInPopup
+        {
+            add { onselectfriend += value; }
+            remove { onselectfriend -= value; }
+        }
 
         protected void handler_OnSelectFriend(List<string> list)
         {
-            if(OnSelectFriendInPopup != null)
+            if(onselectfriend != null)
             {
-                OnSelectFriendInPopup(list);
+                onselectfriend(list);
             }
         }
     }

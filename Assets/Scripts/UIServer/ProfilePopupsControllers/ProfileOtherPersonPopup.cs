@@ -3,14 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace Diaco.Profile
+namespace Diaco.UI.Profile
 {
+
     public class ProfileOtherPersonPopup : MonoBehaviour
     {
+
+        public Diaco.ImageContainerTool.ImageContainer AchivmentImage;
         public ServerUI Server;
         public NavigationUI navigationUi;
 
-        public Diaco.UI.Chatbox.ChatBoxController ChatBoxFromProfile;
+      //  public Diaco.UI.Chatbox.ChatBoxController ChatBoxFromProfile;
 
         public Button AddFriendButton;
         public Button BlockPersonButton;
@@ -19,6 +22,7 @@ namespace Diaco.Profile
 
         public Image Avatar;
         public Text Username;
+        public string UserID;
         public Text Cup;
         public Image RankLevel;
         public Text Description;
@@ -44,100 +48,94 @@ namespace Diaco.Profile
         public List<Image> Achivments;
 
         
-        private void Awake()
+
+        private void OnEnable()
         {
-            Server.OnGetProfileOtherPerson += Server_OnGetProfileOtherPerson;
+
+          
              AddFriendButton.onClick.AddListener(() => {
-                  Server.RequsetAddFriend(Username.text);
+                  Server.RequsetAddFriend(UserID);
                   AddFriendButton.gameObject.SetActive(false);
               });
             BlockPersonButton.onClick.AddListener(() =>
                    {
-                       Server.RequestBlockUser(Username.text);
+                       Server.RequestBlockUser(UserID);
                    });
               MessageButton.onClick.AddListener(() =>
                  {
-                     navigationUi.LastProfileChecked = Username.text;
-                     navigationUi.ShowPopUp("teamprofilechat");
+                     Server.SendRequestOpenChatBox(UserID);
 
                  });
-        }
-        private void OnEnable()
-        {
 
-           
-
-            // InitializeProfile();
+        
         }
         private void OnDisable()
         {
-          //  Server.OnGetProfileOtherPerson -= Server_OnGetProfileOtherPerson;
-         //   MessageButton.onClick.RemoveAllListeners();
-         //   BlockPersonButton.onClick.RemoveAllListeners();
-         //   AddFriendButton.onClick.RemoveAllListeners();
-        }
-        private void Server_OnGetProfileOtherPerson(HTTPBody.ProfileOtherPerson profile)
-        {
-            AddFriendButton.onClick.RemoveAllListeners();
-            MessageButton.onClick.RemoveAllListeners();
+         
+           MessageButton.onClick.RemoveAllListeners();
             BlockPersonButton.onClick.RemoveAllListeners();
-            InitializeProfile(profile);
+          AddFriendButton.onClick.RemoveAllListeners();
         }
 
-        private void InitializeProfile(HTTPBody.ProfileOtherPerson profile)
+
+        public void InitializeProfile(HTTPBody.ProfileOtherPerson data)
         {
 
 
-            Avatar.sprite = Server.AvatarContainer.LoadImage(profile.profile.avatar);
+            Avatar.sprite = Server.AvatarContainer.LoadImage(data.profile.avatar);
+            UserID = data.id;
+            Username.text = data.userName;
+            Cup.text = (data.profile.soccer_cup) + (data.profile.billiard_cup).ToString();
+            RankLevel.sprite = Server.AvatarContainer.LoadImage(data.profile.avatar);
+            Description.text = data.profile.description;
 
-            Username.text = profile.userName;
-            Cup.text = (profile.profile.soccer_cup).ToString();
-            RankLevel.sprite = Server.AvatarContainer.LoadImage(profile.profile.avatar);
-            Description.text = profile.profile.description;
-
-            S_WinCount.text = (profile.profile.soccer.win).ToString() + "/" + (profile.profile.soccer.total).ToString();
+            S_WinCount.text = (data.profile.soccer.win).ToString() + "/" + (data.profile.soccer.total).ToString();
             try
             {
-                S_WinRate.text = ((profile.profile.soccer.win / profile.profile.soccer.total) * 100.00f).ToString();
+                if(data.profile.soccer.win ==0.0f)
+                    S_WinRate.text = "0%";
+                else
+                S_WinRate.text = ((data.profile.soccer.win / data.profile.soccer.total) * 100.00f).ToString();
             }
             catch (DivideByZeroException e)
-            {
-                Debug.Log(e.Data.ToString());
-            }
-            finally
             {
                 S_WinRate.text = "0%";
+                Debug.Log(e.Data.ToString());
             }
+    
 
 
-            S_PurpleCardCount.text = (profile.profile.soccer.purple).ToString();
-            S_BlueCardCount.text = (profile.profile.soccer.blue).ToString();
-            S_GreenCardCount.text = (profile.profile.soccer.green).ToString();
-            S_YellowCardCount.text = (profile.profile.soccer.yellow).ToString();
+            S_PurpleCardCount.text = (data.profile.soccer.purple).ToString();
+            S_BlueCardCount.text = (data.profile.soccer.blue).ToString();
+            S_GreenCardCount.text = (data.profile.soccer.green).ToString();
+            S_YellowCardCount.text = (data.profile.soccer.yellow).ToString();
 
-            B_WinCount.text = (profile.profile.billiard.win).ToString() + "/" + (profile.profile.billiard.total).ToString();
+            B_WinCount.text = (data.profile.billiard.win).ToString() + "/" + (data.profile.billiard.total).ToString();
 
             try
             {
-                B_WinRate.text = ((profile.profile.billiard.win / profile.profile.billiard.total) * 100.00f).ToString();
+                if (data.profile.billiard.win == 0.0f)
+                    B_WinRate.text = "0%";
+                else
+                    B_WinRate.text = ((data.profile.billiard.win / data.profile.billiard.total) * 100.00f).ToString();
             }
             catch (DivideByZeroException e)
             {
-               /// Debug.Log(e.Data.ToString());
-            }
-            finally
-            {
+                 Debug.Log(e.Data.ToString());
+
                 B_WinRate.text = "0%";
             }
 
 
-            B_PurpleCardCount.text = (profile.profile.billiard.purple).ToString();
-            B_BlueCardCount.text = (profile.profile.billiard.blue).ToString();
-            B_GreenCardCount.text = (profile.profile.billiard.green).ToString();
-            B_YellowCardCount.text = (profile.profile.billiard.yellow).ToString();
+
+            B_PurpleCardCount.text = (data.profile.billiard.purple).ToString();
+            B_BlueCardCount.text = (data.profile.billiard.blue).ToString();
+            B_GreenCardCount.text = (data.profile.billiard.green).ToString();
+            B_YellowCardCount.text = (data.profile.billiard.yellow).ToString();
 
 
-            SettingButtons(profile);
+            SettingButtons(data);
+            Achivment_Init();
         }
         private void SettingButtons(HTTPBody.ProfileOtherPerson profile)
         {
@@ -149,7 +147,7 @@ namespace Diaco.Profile
                     MessageButton.gameObject.SetActive(true);
                     ///// Chat Box Ready for Chat this User
 
-                    SetChatBox();
+                   // SetChatBox();
                   /*  MessageButton.onClick.AddListener(() =>
                     {
                         navigationUi.LastProfileChecked = Username.text;
@@ -169,10 +167,10 @@ namespace Diaco.Profile
                 else
                 {
                     BlockPersonButton.gameObject.SetActive(true);
-                    BlockPersonButton.onClick.AddListener(() =>
+                  /*  BlockPersonButton.onClick.AddListener(() =>
                     {
-                        Server.RequestBlockUser(Username.text);
-                    });
+                        Server.RequestBlockUser(UserID);
+                    });*/
 
                     MessageButton.gameObject.SetActive(false);
                     MessageButton.onClick.RemoveAllListeners();
@@ -186,8 +184,8 @@ namespace Diaco.Profile
             else
             {
                 AddFriendButton.gameObject.SetActive(true);
-              /*  AddFriendButton.onClick.AddListener(() => {
-                    Server.RequsetAddFriend(Username.text);
+                /*AddFriendButton.onClick.AddListener(() => {
+                    Server.RequsetAddFriend(UserID);
                     AddFriendButton.gameObject.SetActive(false);
                 });*/
 
@@ -198,9 +196,28 @@ namespace Diaco.Profile
                 MessageButton.onClick.RemoveAllListeners();
             }
         }
+        private void Achivment_Init()
+        {
+            for (int i = 0; i < Server.BODY.profile.achievements.Count; i++)
+            {
+
+
+                if (Server.BODY.profile.achievements[i].active)
+                {
+                    Achivments[i].color = new Color(1f, 1f, 1f, 1f);
+                    Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
+                }
+                else
+                {
+                    Achivments[i].color = new Color(1f, 1f, 1f, 0.4f);
+                    Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
+                }
+
+            }
+        }
         private void SetChatBox()
         {
-            Server.SendCurrentPage("chat", Username.text);
+            //Server.SendCurrentPage("chat", Username.text);
            // ChatBoxFromProfile.SetElementPage(Avatar.sprite, Username.text, Cup.text);
         }
     }

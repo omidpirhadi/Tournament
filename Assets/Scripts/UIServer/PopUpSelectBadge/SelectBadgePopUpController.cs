@@ -62,13 +62,18 @@ namespace Diaco.Social
 
 
 
+        private Action<string> onchangebadge;
 
-        public event Action<string> OnChangeBadgeId;
+        public event Action<string> OnChangeBadgeId
+        {
+            add { onchangebadge += value; }
+            remove { onchangebadge -= value; }
+        }
         protected void Handler_onchangebadgeid(string id)
         {
-            if(OnChangeBadgeId != null)
+            if(onchangebadge != null)
             {
-                OnChangeBadgeId(id);
+                onchangebadge(id);
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,8 +22,13 @@ namespace Diaco.Social
         public DialogOk Dialog_Error_Gem;
         public DialogOk Dialog_Error_Coin;
 
+        public Text soccerLeaguePrecent_text;
+        public Text billiardLeaguePrecent_text;
+        public Text ReminingTimeToCreateLeague_text;
+
         public InputField TeamName;
         public InputField Description;
+
         public InputFieldSocial Game;
         public InputFieldSocial Mode;
         public InputFieldSocial TypeCost;
@@ -30,8 +36,10 @@ namespace Diaco.Social
         public InputFieldSocial Capacity;
         public InputFieldSocial Hour;
         public InputFieldSocial Min;
+
         public Button CreateButton;
         public Button InviteFriendButton;
+        public Button TabButton;
         public int Tickets = 0;
         public List<Toggle> TicketsIndicator;
         public List<string> FriendsAdded;
@@ -39,42 +47,48 @@ namespace Diaco.Social
 
         public void Awake()
         {
+           
+        }
+
+
+
+        public void OnEnable()
+        {
+
             SelectFriendPopup.OnSelectFriendInPopup += SelectFriendPopup_OnSelectFriendInPopup;
             SelectBadgesController.OnChangeBadgeId += SelectBadgesController_OnChangeBadgeId;
+            Server.OnCreateTeamCompeleted += Server_OnCreateTeamCompeleted;
+
+            Server.OnErrorCreateTeam += Server_OnErrorCreateTeam;
+            Dialog_CreateTeam.OnClickYes += Dialog_CreateTeam_OnClickYes;
+
             CreateButton.onClick.AddListener(() =>
             {
                 if (checkField())
                 {
-                     
+
                     Dialog_CreateTeam.ShowDialog(); ;
                 }
             });
             InviteFriendButton.onClick.AddListener(() => { FriendsAdded.Clear(); });
-            Server.OnCreateTeamCompeleted += Server_OnCreateTeamCompeleted;
-            Server.OnErrorCreateTeam += Server_OnErrorCreateTeam;
-            Dialog_CreateTeam.OnClickYes += Dialog_CreateTeam_OnClickYes;
-        }
-
-       
-
-        public void OnEnable()
-        {
-           
-           
-            Tickets = Server.BODY.inventory.tickets;
-            ShowTickets();
+            TabButton.onClick.AddListener(() => { Server.RequestLeagueRules(); });
+            Server.RequestLeagueRules();
+            // Tickets = Server.BODY.inventory.tickets;
+            // ShowTickets();
         }
 
 
 
         public void OnDisable()
         {
-           // SelectFriendPopup.OnSelectFriendInPopup -= SelectFriendPopup_OnSelectFriendInPopup;
-         //   SelectBadgesController.OnChangeBadgeId -= SelectBadgesController_OnChangeBadgeId;
-         //   Server.OnCreateTeamCompeleted -= Server_OnCreateTeamCompeleted;
-         //   CreateButton.onClick.RemoveAllListeners();
-
-         //   InviteFriendButton.onClick.RemoveAllListeners();
+             SelectFriendPopup.OnSelectFriendInPopup -= SelectFriendPopup_OnSelectFriendInPopup;
+            SelectBadgesController.OnChangeBadgeId -= SelectBadgesController_OnChangeBadgeId;
+            Server.OnCreateTeamCompeleted -= Server_OnCreateTeamCompeleted;
+            Server.OnErrorCreateTeam -= Server_OnErrorCreateTeam;
+            Dialog_CreateTeam.OnClickYes -= Dialog_CreateTeam_OnClickYes;
+            CreateButton.onClick.RemoveAllListeners();
+            TabButton.onClick.RemoveAllListeners();
+            InviteFriendButton.onClick.RemoveAllListeners();
             FriendsAdded.Clear();
             BadgeID = "";
         }
@@ -84,8 +98,8 @@ namespace Diaco.Social
         }
         private void Server_OnCreateTeamCompeleted()
         {
-            Tickets = Server.BODY.inventory.tickets;
-            ShowTickets();
+           // Tickets = Server.BODY.inventory.tickets;
+            //ShowTickets();
         }
         private void Server_OnErrorCreateTeam(string error)
         {
@@ -135,10 +149,17 @@ namespace Diaco.Social
             Team.hour = Hour.CurrentValueDigit;
             Team.min = Min.CurrentValueDigit;
             Team.invitation = FriendsAdded;
-            Team.badgeId = BadgeID;
+            Team.leagueFlag = BadgeID;
 
             return Team;
         }
+        public void Rules(RulesData data)
+        {
+            soccerLeaguePrecent_text.text = data.soccerAward;
+            billiardLeaguePrecent_text.text = data.billiardAward;
+            ReminingTimeToCreateLeague_text.text = data.remainingTime;
+        }
+        [Obsolete]
         public void ShowTickets()
         {
             if (Tickets == 0)
@@ -212,5 +233,14 @@ namespace Diaco.Social
             }*/
             return Fill;
         }
+    }
+    [Serializable]
+    public  struct RulesData
+
+    {
+        public string soccerAward;
+        public string billiardAward;
+        public string remainingTime;
+
     }
 }

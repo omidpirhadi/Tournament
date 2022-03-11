@@ -13,7 +13,7 @@ namespace Diaco.Social
         public NavigationUI navigationui;
         public DialogDeleteMessage DialogDelete;
         private enum TypeCardMessage { ChatRequest , FriendRequest, TeamInvitRequset}
-        public Diaco.UI.Chatbox.ChatBoxController ChatBox;
+       // public Diaco.UI.Chatbox.ChatBoxController ChatBox;
         [FoldoutGroup("MessageTabElements")]
         public Text TotalMessageIndicator;
         [FoldoutGroup("MessageTabElements")]
@@ -40,13 +40,7 @@ namespace Diaco.Social
         [FoldoutGroup("CardAssetsForFillList")]
         public MessagesTabCardReqFriend IndicatorRequestFriend;
        [SerializeField] private List<MessagesTabCardReqFriend> temp_friendcard_list;
-        public void Awake()
-        {
-            Server.OnGetMessages += Server_OnGetMessages;
-            FilterByChat.onClick.AddListener(() => { FilterByType(TypeCardMessage.ChatRequest); });
-            FilterByFriendRequest.onClick.AddListener(() => { FilterByType(TypeCardMessage.FriendRequest); });
-            FilterByTeamRequest.onClick.AddListener(() => { FilterByType(TypeCardMessage.TeamInvitRequset); });
-        }
+
         private void OnEnable()
         {
             temp_friendcard_list = new List<MessagesTabCardReqFriend>();
@@ -56,16 +50,20 @@ namespace Diaco.Social
             SetIndicatorCountChat(0);
             SetIndicatorCountFriendRequset(0);
             SetIndicatorCountInviteTeamRequest(0);
-          
+            Server.OnGetMessages += Server_OnGetMessages;
+            FilterByChat.onClick.AddListener(() => { FilterByType(TypeCardMessage.ChatRequest);  });
+            FilterByFriendRequest.onClick.AddListener(() => { FilterByType(TypeCardMessage.FriendRequest); });
+            FilterByTeamRequest.onClick.AddListener(() => { FilterByType(TypeCardMessage.TeamInvitRequset); });
         }
         private void OnDisable()
         {
-           // Server.OnGetMessages -= Server_OnGetMessages;
-           
-          ///  FilterByChat.onClick.RemoveAllListeners();
-         //   FilterByFriendRequest.onClick.RemoveAllListeners();
-         //   FilterByTeamRequest.onClick.RemoveAllListeners();
             ClearMessageTab();
+           Server.OnGetMessages -= Server_OnGetMessages;
+           
+           FilterByChat.onClick.RemoveAllListeners();
+           FilterByFriendRequest.onClick.RemoveAllListeners();
+           FilterByTeamRequest.onClick.RemoveAllListeners();
+            
         }
         private void Server_OnGetMessages(HTTPBody.InRequsets reqs)
         {
@@ -93,7 +91,7 @@ namespace Diaco.Social
                 if (list_req[i].type == "chat")
                 {
                     var card = Instantiate(IndicatorMassagePrefab, Content);
-                    card.ID = list_req[i].id;
+                    card.UserID = list_req[i].id;
                     var image = Server.AvatarContainer.LoadImage(list_req[i].avatar);
                    card.cup = list_req[i].cup.ToString();
                     ///Debug.Log("card.cup::::::::::::::"+ list_req[i].cup.ToString());
@@ -102,11 +100,11 @@ namespace Diaco.Social
                             //Server.SendCurrentPage("chat", card.ID);
                             //  ChatBox.SetElementPage(image, card.UserNameIndicator.text,card.ID, card.cup);
                             //  navigationui.ShowPopUp("chat");
-                            Server.SendRequestOpenChatBox(card.ID);
+                            Server.SendRequestOpenChatBox(card.UserID);
                         },
                         () => {
                             //Server.RejectRequest("chat", card.UserNameIndicator.text);
-                            DialogDelete.EmitUserOrTeamName = card.ID;
+                            DialogDelete.EmitUserOrTeamName = card.UserID;
                             DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.Chat;
                             DialogDelete.ShowDialog();
                         }
@@ -117,13 +115,13 @@ namespace Diaco.Social
                 else if (list_req[i].type == "friend")
                 {
                     var card = Instantiate(IndicatorRequestFriend, Content);
-                    card.ID = list_req[i].id;
+                    card.UserID = list_req[i].id;
                     var image = Server.AvatarContainer.LoadImage(list_req[i].avatar);
                     card.SetCard(image, list_req[i].from, list_req[i].cup.ToString(), list_req[i].isOnline,
-                        () => { Server.AcceptRequest("friend", card.ID); }, 
+                        () => { Server.AcceptRequest("friend", card.UserID); }, 
                         () => {
                            // Server.RejectRequest("friend", card.UserNameIndicator.text);
-                            DialogDelete.EmitUserOrTeamName = card.ID;
+                            DialogDelete.EmitUserOrTeamName = card.UserID;
                             DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.RequestFriend;
                             DialogDelete.ShowDialog();
                         });

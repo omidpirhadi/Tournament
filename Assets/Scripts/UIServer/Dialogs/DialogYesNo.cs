@@ -33,12 +33,17 @@ public class DialogYesNo : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
-    public event Action OnClickYes;
+    private Action clickyesno;
+    public event Action OnClickYes
+    {
+        add { clickyesno += value; }
+        remove { clickyesno -= value; }
+    }
     protected void Handler_OnClickYes()
     {
-        if(OnClickYes != null)
+        if(clickyesno != null)
         {
-            OnClickYes();
+            clickyesno();
         }
     }
     public event Action OnClickNo;

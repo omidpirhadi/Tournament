@@ -12,7 +12,7 @@ namespace Diaco.Social.MessageCards
         public ServerUI Server;
         public NavigationUI NavigationUi;
         public Button OpenProfilePopupButton;
-        public string ID;
+        public string UserID;
         public Image OnlineIndicator;
         public Image ProfileImageIndicator;
         public Text UserNameIndicator;
@@ -28,8 +28,8 @@ namespace Diaco.Social.MessageCards
 
 
 
-                NavigationUi.ShowPopUp("profilefromteam");
-                Server.GetProfilePerson(UserNameIndicator.text);
+                
+                Server.GetProfilePerson(UserID);
             });
         }
         private void OnDisable()

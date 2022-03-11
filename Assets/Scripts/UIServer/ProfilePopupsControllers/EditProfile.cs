@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Diaco.HTTPBody;
-namespace Diaco.Profile
+namespace Diaco.UI.Profile
 {
+    [Obsolete]
     public class EditProfile : MonoBehaviour
     {
         public ServerUI Server;

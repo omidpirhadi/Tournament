@@ -51,7 +51,7 @@ namespace Diaco.UI.SocialTabs
         {
             ClearListCard();
             var card = Instantiate(FriendTabCard_Prefab, Content);
-            card.SetForSearchedFriend(data);
+            card.SetForSearchedPerson(data);
             listfriendcard.Add(card.gameObject);
 
         }

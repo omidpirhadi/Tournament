@@ -78,10 +78,12 @@ namespace Diaco.HTTPBody
     [Serializable]
     public struct ProfileOtherPerson
     {
+        public string id;
         public string userName;
-        public PROFILE profile;
         public bool isBlock;
         public bool isFriend;
+        public PROFILE profile;
+
     }
     [Serializable]
     public struct SOCIAL
@@ -90,6 +92,7 @@ namespace Diaco.HTTPBody
         public List<OutRequset> outRequest;
         public List<FriendBody> friends;
         public MyTeam team;
+       // public string team
   
     }
     [Serializable]
@@ -185,20 +188,20 @@ namespace Diaco.HTTPBody
     public struct MyTeam
     {
         public List<ChatBodyTeam> chats;
-        public List<FriendBody> members;
+        //public List<FriendBody> members;
 
         public string teamId;
         public string name;
-        public string description;
+       // public string description;
         public int game; //0 biliard 1 socor
-        public int mode; //0 privte 1 public
-        public int costType;//0 cup 1 coin 2gem
-        public int cost;
-        public string avatar;
-        public int capacity;
-        public string from;
-        public string status;
-        public string remainingTime;
+      //  public int mode; //0 privte 1 public
+      //  public int costType;//0 cup 1 coin 2gem
+      //  public int cost;
+        public string avatar;//1
+      //  public int capacity;
+       // public string from;
+      //  public string status;
+       // public string remainingTime;
         
     }
     
@@ -455,7 +458,7 @@ namespace Diaco.HTTPBody
         public int hour;
         public int min;
         public List<string> invitation;
-        public string badgeId;
+        public string leagueFlag;
     }
     [Serializable]
     public struct Opponent
