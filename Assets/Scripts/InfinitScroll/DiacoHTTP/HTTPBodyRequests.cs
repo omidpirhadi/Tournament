@@ -140,7 +140,7 @@ namespace Diaco.HTTPBody
         public List<FriendBody> members;
        // public List<AwardName> awardsname;
         public int remainingTime;
-    
+        public int join;//  0 ready to join, 1 ready to leave;  2 only watch
     }
     [Serializable]
     public struct OutRequset

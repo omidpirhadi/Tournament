@@ -87,8 +87,8 @@ namespace Diaco.UI.TeamInfo
             });
             AwardButton.onClick.AddListener(() =>
             {
-
-                navigationui.ShowPopUp("teamaward");
+                Server.GetAwardsLeague(TeamTag.text);
+                
             });
             JoinButton.onClick.AddListener(() =>
             {
@@ -160,12 +160,12 @@ namespace Diaco.UI.TeamInfo
             
            
             SendTagTeamToPopupAward();
-            if(CheckMember(teamInfos) == 0)
+            if(teamInfos.join == 0)
             {
                 JoinButton.gameObject.SetActive(true);
                 LeaveTeamButton.gameObject.SetActive(false);
             }
-            else if(CheckMember(teamInfos) == 1)
+            else if(teamInfos.join == 1)
             {
                 JoinButton.gameObject.SetActive(false);
                 LeaveTeamButton.gameObject.SetActive(true);
@@ -274,7 +274,7 @@ namespace Diaco.UI.TeamInfo
          
             }
         }
-        private int CheckMember(Diaco.HTTPBody.TeamInfo teamInfos)
+       /* private int CheckMember(Diaco.HTTPBody.TeamInfo teamInfos)
         {
             if (Server.BODY.social.team.teamId == "")
             {
@@ -290,7 +290,7 @@ namespace Diaco.UI.TeamInfo
                 return -1;
             }
 
-        }
+        }*/
         private void SendTagTeamToPopupAward()
         {
 

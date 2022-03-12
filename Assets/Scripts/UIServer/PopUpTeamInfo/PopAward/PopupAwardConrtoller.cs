@@ -25,11 +25,11 @@ namespace Diaco.UI.TeamInfo
 
         private void OnEnable()
         {
-            Server.GetAwardsTeam(TeamTag);
-            Server.OnGetAward += Server_OnGetAward;
+           // Server.GetAwardsTeam(TeamTag);
+           /// Server.OnGetAward += Server_OnGetAward;
         }
 
-        private void Server_OnGetAward(HTTPBody.AwardsName AwardName)
+        public void initAward(HTTPBody.AwardsName AwardName)
         {
             ElementOfSlideNumberTurnOn(AwardName);
             PutAwardsInIndicator(AwardName);

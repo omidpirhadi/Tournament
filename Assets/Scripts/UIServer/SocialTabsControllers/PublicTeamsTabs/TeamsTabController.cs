@@ -21,25 +21,25 @@ namespace Diaco.Social
 
         public Button FilterByGameButton;
         public Button AdvanceSearchButton;
-
+        public Button TabLeague_Button;
         private List<Diaco.Social.MessageCards.MessagesTabCardInviteToTeam> TemplistCard;
-        private void Awake()
-        {
-            Server.OnGetTeams += Server_OnGetTeams;
-            SearchButton.onClick.AddListener(() => {
-                Server.SearchTeam(SearchInput.text);
 
-            });
-        }
         public void OnEnable()
         {
             TemplistCard = new List<MessageCards.MessagesTabCardInviteToTeam>();
+            Server.OnGetTeams += Server_OnGetTeams;
+            SearchButton.onClick.AddListener(() =>
+            {
+                Server.SearchTeam(SearchInput.text);
 
+            });
+            TabLeague_Button.onClick.AddListener(() => { Server.GetLeague(); });
         }
         private void OnDisable()
         {
-           // Server.OnGetTeams -= Server_OnGetTeams;
-            //SearchButton.onClick.RemoveAllListeners();
+            Server.OnGetTeams -= Server_OnGetTeams;
+            SearchButton.onClick.RemoveAllListeners();
+            TabLeague_Button.onClick.RemoveAllListeners();
             ClearListCard();
         }
         private void Server_OnGetTeams(Diaco.HTTPBody.Teams listTeams)
@@ -68,7 +68,7 @@ namespace Diaco.Social
                     Teams.teams[i].teamId,
                     () => 
                     {
-                        navigationUI.ShowPopUp("teaminfo");
+                       // navigationUI.ShowPopUp("teaminfo");
                         Server.GetLeagueInfo(card.TeamID);
 
                     }

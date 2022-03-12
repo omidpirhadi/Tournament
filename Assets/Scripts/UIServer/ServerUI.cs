@@ -89,7 +89,7 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-            Debug.Log("VVVVVVVVVV");
+           // Debug.Log("VVVVVVVVVV");
             BODY = new BODY();
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
@@ -268,13 +268,56 @@ public class ServerUI : MonoBehaviour
                 Debug.Log(playwithfriend.friend + "r/n/" + playwithfriend.game + "/r/n" + playwithfriend.subgame);
             }
         });
+
+        socket.On("create-league", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Handler_ErrorCreateTeam(m[1].ToString());
+                Debug.Log("Error:" + m[1].ToString());
+
+            }
+            else
+            {
+                var byte_data = p.Attachments[0];
+                var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
+
+                BODY = JsonUtility.FromJson<BODY>(json);
+                SetElementInHeaderAndFooter();
+                Handler_OnCreateTeamCompeleted();
+
+
+
+            }
+            navigationUi.StopLoadingPage();
+        });
+        socket.On("league-rules", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+                Handler_ErrorCreateTeam(m[1].ToString());
+                Debug.Log("Error:" + m[1].ToString());
+
+            }
+            else
+            {
+
+                var data = JsonUtility.FromJson<Diaco.Social.RulesData>(m[1].ToString());
+                var tab = FindObjectOfType<Diaco.Social.CreateTeamTabController>();
+                tab.Rules(data);
+                navigationUi.StopLoadingPage();
+            }
+            navigationUi.StopLoadingPage();
+        });
         socket.On("get-team-time", (s, p, m) =>
         {
             Handler_OnGetTimeTeam(Convert.ToSingle(m[1]));
             navigationUi.StopLoadingPage();
             Debug.Log("GetTime" + Convert.ToSingle(m[1]));
         });
-        socket.On("get-teams", (s, p, m) =>
+        socket.On("get-league", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
@@ -286,7 +329,7 @@ public class ServerUI : MonoBehaviour
                 Debug.Log(m[1].ToString());
                 var teams = JsonUtility.FromJson<Teams>(m[1].ToString());
                 Handler_OnGetTeams(teams);
-                Debug.Log("TeamsLoaded");
+                Debug.Log("LeagueLoaded");
             }
             navigationUi.StopLoadingPage();
         });
@@ -335,12 +378,18 @@ public class ServerUI : MonoBehaviour
             {
                 var awrad = JsonUtility.FromJson<AwardsName>(m[1].ToString());
 
-                Handler_OnGetAward(awrad);
+                navigationUi.ShowPopUp("teamaward");
+                var popup = FindObjectOfType<Diaco.UI.TeamInfo.PopupAwardConrtoller>();
+                popup.initAward(awrad);
 
-                Debug.Log("ReciveTeamAwardAndLoadedInPopUp.");
+
+                Debug.Log("Recive League Award");
+                navigationUi.StopLoadingPage();
             }
-            navigationUi.StopLoadingPage();
+            
         });
+
+
         socket.On("open-chatbox", (s, p, m) =>
         {
 
@@ -417,48 +466,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
         });
 
-        socket.On("create-league", (s, p, m) =>
-        {
-
-            if (Convert.ToBoolean(m[0]) == true)///Error
-            {
-                Handler_ErrorCreateTeam(m[1].ToString());
-                Debug.Log("Error:" + m[1].ToString());
-
-            }
-            else
-            {
-                var byte_data = p.Attachments[0];
-                var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
-
-                BODY = JsonUtility.FromJson<BODY>(json);
-                SetElementInHeaderAndFooter();
-                Handler_OnCreateTeamCompeleted();
-
-
-
-            }
-            navigationUi.StopLoadingPage();
-        });
-        socket.On("league-rules", (s, p, m) =>
-        {
-
-            if (Convert.ToBoolean(m[0]) == true)///Error
-            {
-                Handler_ErrorCreateTeam(m[1].ToString());
-                Debug.Log("Error:" + m[1].ToString());
-
-            }
-            else
-            {
-
-                var data = JsonUtility.FromJson<Diaco.Social.RulesData>(m[1].ToString());
-                var tab = FindObjectOfType<Diaco.Social.CreateTeamTabController>();
-                tab.Rules(data);
-                navigationUi.StopLoadingPage();
-            }
-            navigationUi.StopLoadingPage();
-        });
+        
 
         socket.On("information", (s, p, m) =>
         {
@@ -659,6 +667,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
 
         });
+
         socket.On("get-record", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -802,6 +811,7 @@ public class ServerUI : MonoBehaviour
 
     #endregion
     #region EmitServer
+
     public void SendRequestForEditPhone(string phonenumber)
     {
         socket.Emit("changePhone", phonenumber);
@@ -858,11 +868,11 @@ public class ServerUI : MonoBehaviour
         ///  navigationUi.StartLoadingPageShow();
         Debug.Log("SendedCurrentPage");
     }
-    public void GetTeams()
+    public void GetLeague()
     {
-        socket.Emit("get-teams");
+        socket.Emit("get-league");
         navigationUi.StartLoadingPageShow();
-        Debug.Log("SendGetTeamRequest");
+        Debug.Log("Send Get league Request");
     }
     public void SearchTeam(string tagId)
     {
@@ -918,9 +928,9 @@ public class ServerUI : MonoBehaviour
     }
     public void JoinToTeam(string teamid)
     {
-        socket.Emit("join-team", teamid);
+        socket.Emit("join-league", teamid);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("JoinToTeam");
+        Debug.Log("Join To League"  + teamid);
     }
     public void LeaveTheTeam()
     {
@@ -928,11 +938,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("leaveTheTeam");
     }
-    public void GetAwardsTeam(string teamid)
+    public void GetAwardsLeague(string teamid)
     {
         socket.Emit("awards", teamid);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("GET AWARD");
+        Debug.Log("GET AWARD League");
     }
     //USingInSearchButtonIn UI Friend
     public void SearchFriendRequest(InputField input)
@@ -1274,13 +1284,17 @@ public class ServerUI : MonoBehaviour
             getmessage(inRequsets);
         }
     }
-
-    public event Action<Teams> OnGetTeams;
+    private Action<Teams> getteam;
+    public event Action<Teams> OnGetTeams
+    {
+        add { getteam += value; }
+        remove { getteam -= value; }
+    }
     protected void Handler_OnGetTeams(Teams teams)
     {
-        if (OnGetTeams != null)
+        if (getteam != null)
         {
-            OnGetTeams(teams);
+            getteam(teams);
         }
     }
     private Action<TeamInfo> getteaminfo;
@@ -1311,14 +1325,14 @@ public class ServerUI : MonoBehaviour
         }
     }
 
-    public event Action<AwardsName> OnGetAward;
+   /* public event Action<AwardsName> OnGetAward;
     protected void Handler_OnGetAward(AwardsName awards)
     {
         if (OnGetAward != null)
         {
             OnGetAward(awards);
         }
-    }
+    }*/
 
     public event Action<float> OnGetTimeTeam;
     protected void Handler_OnGetTimeTeam(float time)
