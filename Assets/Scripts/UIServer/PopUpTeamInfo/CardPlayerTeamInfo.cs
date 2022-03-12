@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-namespace Diaco.TeamInfo.PlayerCard
+namespace Diaco.UI.TeamInfo
 {
     public class CardPlayerTeamInfo : MonoBehaviour
     {
@@ -14,6 +14,7 @@ namespace Diaco.TeamInfo.PlayerCard
         public Image AdminIndicator;
         public Image ProfileImage;
         public Text UserName;
+        public string userid;
         public Text Cup;
 
         public void OnEnable()
@@ -25,9 +26,9 @@ namespace Diaco.TeamInfo.PlayerCard
 
                 NavigationUi.LastTeamInfoChecked = TeamID;
 
-                NavigationUi.ShowPopUp("profilefromteam");
-                Server.GetProfilePerson(UserName.text);
-                NavigationUi.ClosePopUp("teaminfo");
+                
+                Server.GetProfilePerson(userid);
+                
               //  Debug.Log("OK");
             });
         }
@@ -37,7 +38,7 @@ namespace Diaco.TeamInfo.PlayerCard
             OpenProfileButton.onClick.RemoveAllListeners();
           
         }
-        public void SetCard(bool Admin , Sprite profileimage, string username, string cup ,string Team)
+        public void SetCard(bool Admin , Sprite profileimage, string username, string userid, string cup ,string Team)
         {
             if(Admin)
             {
@@ -49,6 +50,7 @@ namespace Diaco.TeamInfo.PlayerCard
             }
             ProfileImage.sprite = profileimage;
             UserName.text = username;
+            this.userid = userid;
             Cup.text = cup;
             TeamID = Team;
         }

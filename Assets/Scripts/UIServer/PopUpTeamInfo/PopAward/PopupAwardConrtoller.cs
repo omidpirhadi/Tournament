@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Diaco.TeamInfo.AwardPopup
+namespace Diaco.UI.TeamInfo
 {
     public class PopupAwardConrtoller : MonoBehaviour
     {

@@ -20,19 +20,20 @@ namespace Diaco.Chat
 
         public Sprite AssetsSoccer;
         public Sprite AssetBiliard;
-
+        public Button TabTeamChat_button;
         public Diaco.UI.Chatbox.FramChat FrameMyChat;
         public Diaco.UI.Chatbox.FramChat FrameYouChat;
         private List<Diaco.UI.Chatbox.FramChat> ChatRecivedList = new List<Diaco.UI.Chatbox.FramChat>();
         private void Awake()
         {
-            Server.OnUpdateChatTeam += Server_OnUpdateChatTeam;
-            SendMessageButton.onClick.AddListener(() => { SendChat(); });
-            TeamInfoButton.onClick.AddListener(() => { navigationui.ShowPopUp("teaminfo"); Server.GetTeamInfo(Server.BODY.social.team.teamId); });
+            
         }
         public void OnEnable()
         {
-           
+            Server.OnUpdateChatTeam += Server_OnUpdateChatTeam;
+            SendMessageButton.onClick.AddListener(() => { SendChat(); });
+            TeamInfoButton.onClick.AddListener(() => { Server.GetLeagueInfo(Server.BODY.social.team.teamId); });
+            TabTeamChat_button.onClick.AddListener(() => { Server.SendChatToTeam(""); });
             initializPage();
             UpadteChats(Server.BODY.social.team.chats);
         }
@@ -41,10 +42,10 @@ namespace Diaco.Chat
         {
             TeamName.text = "";
             TeamImage.sprite = null;
-            //Server.OnUpdateChatTeam -= Server_OnUpdateChatTeam;
-
-           // SendMessageButton.onClick.RemoveAllListeners();
-            //TeamInfoButton.onClick.RemoveAllListeners();
+            Server.OnUpdateChatTeam -= Server_OnUpdateChatTeam;
+            SendMessageButton.onClick.RemoveAllListeners();
+            TeamInfoButton.onClick.RemoveAllListeners();
+            TabTeamChat_button.onClick.RemoveAllListeners();
             clearChatList();
         }
 

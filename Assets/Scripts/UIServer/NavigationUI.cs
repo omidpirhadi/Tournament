@@ -263,7 +263,7 @@ public class NavigationUI : MonoBehaviour
     }
     public void loadTeaminfoWithLastTeamID()
     {
-        Server.GetTeamInfo(LastTeamInfoChecked);
+        Server.GetLeagueInfo(LastTeamInfoChecked);
 
     }
     public void LoadProfileWithLastProfile()

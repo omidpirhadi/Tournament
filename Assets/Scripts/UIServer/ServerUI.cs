@@ -89,7 +89,7 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-
+            Debug.Log("VVVVVVVVVV");
             BODY = new BODY();
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
@@ -290,7 +290,7 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
-        socket.On("team-info", (s, p, m) =>
+        socket.On("league-info", (s, p, m) =>
         {
 
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -302,9 +302,11 @@ public class ServerUI : MonoBehaviour
             {
 
                 var teams_info = JsonUtility.FromJson<TeamInfo>(m[1].ToString());
-
-                Handler_OnGetTeamInfo(teams_info);
-
+                navigationUi.ShowPopUp("teaminfo");
+                var popup = FindObjectOfType<Diaco.UI.TeamInfo.TeamInfoPopUpController>();
+                popup.InitializeTeamInfo(teams_info);
+                //// Handler_OnGetTeamInfo(teams_info);
+                navigationUi.StopLoadingPage();
                 Debug.Log("ReciveTeamInfoAndLoadedInPopUp." + teams_info.game);
             }
             navigationUi.StopLoadingPage();
@@ -868,11 +870,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("SearchTeam :" + tagId);
     }
-    public void GetTeamInfo(string idteam)
+    public void GetLeagueInfo(string idteam)
     {
-        socket.Emit("team-info", idteam);
+        socket.Emit("league-info", idteam);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("Get Team Info...");
+        Debug.Log("Get League Info...");
     }
     /// <summary>
     /// 
@@ -1281,22 +1283,31 @@ public class ServerUI : MonoBehaviour
             OnGetTeams(teams);
         }
     }
-
-    public event Action<TeamInfo> OnGetTeamInfo;
+    private Action<TeamInfo> getteaminfo;
+    public event Action<TeamInfo> OnGetTeamInfo
+    {
+        add { getteaminfo += value; }
+        remove { getteaminfo -= value; }
+    }
     protected void Handler_OnGetTeamInfo(TeamInfo teamInfos)
     {
-        if (OnGetTeamInfo != null)
+        if (getteaminfo  != null)
         {
-            OnGetTeamInfo(teamInfos);
+            getteaminfo(teamInfos);
         }
     }
+    private Action chatteamupdate;
+    public event Action OnUpdateChatTeam
+    {
+        add { chatteamupdate += value; }
+        remove { chatteamupdate -= value; }
+    }
 
-    public event Action OnUpdateChatTeam;
     protected void handler_OnUpdateChatTeam()
     {
-        if (OnUpdateChatTeam != null)
+        if (chatteamupdate != null)
         {
-            OnUpdateChatTeam();
+            chatteamupdate();
         }
     }
 

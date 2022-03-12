@@ -143,7 +143,7 @@ namespace Diaco.Social
                         list_req[i].teamId,
                         () => {
 
-                            navigationui.ShowPopUp("teaminfo"); Server.GetTeamInfo(card.TeamID);
+                            Server.GetLeagueInfo(card.TeamID);
                         }
                         );
                    

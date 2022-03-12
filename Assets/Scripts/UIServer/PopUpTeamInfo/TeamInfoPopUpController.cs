@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Diaco.TeamInfo
+namespace Diaco.UI.TeamInfo
 {
     public class TeamInfoPopUpController : MonoBehaviour
     {
         public ServerUI Server;
         public NavigationUI navigationui;
-        public AwardPopup.PopupAwardConrtoller PopupAwardConrtoller;
-        public Diaco.TeamInfo.PlayerCard.CardPlayerTeamInfo PlayerCard;
+        public PopupAwardConrtoller PopupAwardConrtoller;
+        public CardPlayerTeamInfo PlayerCard;
         public RectTransform Content;
 
         public DialogYesNo Dialog_Change_Privacy;
@@ -52,13 +52,18 @@ namespace Diaco.TeamInfo
         private float H;
         private float M;
         private float S;
-        private List<Diaco.TeamInfo.PlayerCard.CardPlayerTeamInfo> templist_player_card;
+        private List<CardPlayerTeamInfo> templist_player_card = new List<CardPlayerTeamInfo>();
 
         //private bool teamIsPublic = false;
        // private bool teamIsPrivate = false;
    
-        public void Awake()
+
+
+        public void OnEnable()
         {
+
+
+
 
             Dialog_Change_Privacy.OnClickYes += Dialog_Change_Privacy_OnClickYes;
             Dialog_JoinTeam.OnClickYes += Dialog_JoinTeam_OnClickYes;
@@ -94,8 +99,31 @@ namespace Diaco.TeamInfo
                 Dialog_LeaveTeam.ShowDialog();
             });
 
+
+
+
+
+        }
+
+
+        public void OnDisable()
+        {
+            Server.OnGetTeamInfo -= Server_OnGetTeamInfo;
+
+            Dialog_Change_Privacy.OnClickYes -= Dialog_Change_Privacy_OnClickYes;
+            Dialog_JoinTeam.OnClickYes -= Dialog_JoinTeam_OnClickYes;
+            Dialog_LeaveTeam.OnClickYes -= Dialog_LeaveTeam_OnClickYes;
+
+            Private_button.onClick.RemoveAllListeners();
+            Public_button.onClick.RemoveAllListeners();
+            AwardButton.onClick.RemoveAllListeners();
+            JoinButton.onClick.RemoveAllListeners();
+            LeaveTeamButton.onClick.RemoveAllListeners();
+
+            ClearTeamInfo();
             
         }
+
 
         private void Dialog_LeaveTeam_OnClickYes()
         {
@@ -116,40 +144,14 @@ namespace Diaco.TeamInfo
             PrivacyToggleControll();
         }
 
-        public void OnEnable()
-        {
-           
-           // JoinButton.onClick.RemoveAllListeners();
-          //  LeaveTeamButton.onClick.RemoveAllListeners();
 
-  
-
-            templist_player_card = new List<PlayerCard.CardPlayerTeamInfo>();
-         
-      
-        }
-
-
-        public void OnDisable()
-        {
-           // Server.OnGetTeamInfo -= (m){ };
-          //  AwardButton.onClick.RemoveAllListeners();
-          //  JoinButton.onClick.RemoveAllListeners();
-
-         //   LeaveTeamButton.onClick.RemoveAllListeners();
-
-          //  Public_toggle.onValueChanged.RemoveAllListeners();
-         //   Private_toggle.onValueChanged.RemoveAllListeners();
-            ClearTeamInfo();
-            
-        }
         private void Server_OnGetTeamInfo(Diaco.HTTPBody.TeamInfo teamInfos)
         {
             InitializeTeamInfo(teamInfos);
         }
 
 
-        private void InitializeTeamInfo(Diaco.HTTPBody.TeamInfo teamInfos)
+        public void InitializeTeamInfo(Diaco.HTTPBody.TeamInfo teamInfos)
         {
             ClearTeamInfo();
             SetElementInfoTeam(teamInfos);
@@ -190,7 +192,7 @@ namespace Diaco.TeamInfo
                 {
                     admin = false;
                 }
-                card.SetCard(admin, image, teamInfos.members[i].userName, teamInfos.members[i].cup.ToString(),teamInfos.teamId);
+                card.SetCard(admin, image, teamInfos.members[i].userName, teamInfos.members[i].id, teamInfos.members[i].cup.ToString(),teamInfos.teamId);
                 templist_player_card.Add(card);
             }
         }
@@ -378,7 +380,7 @@ namespace Diaco.TeamInfo
         }
         public void GetInfoInBackToPopup()
         {
-            Server.GetTeamInfo(TeamTag.text);
+            Server.GetLeagueInfo(TeamTag.text);
         }
 
     }

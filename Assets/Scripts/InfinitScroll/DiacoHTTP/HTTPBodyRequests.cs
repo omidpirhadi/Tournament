@@ -128,6 +128,7 @@ namespace Diaco.HTTPBody
     {
         public string teamId;
         public string name;
+        
         public string description;
         public int game; //0 biliard 1 socor
         public int mode; //0 privte 1 public

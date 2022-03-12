@@ -69,7 +69,7 @@ namespace Diaco.Social
                     () => 
                     {
                         navigationUI.ShowPopUp("teaminfo");
-                        Server.GetTeamInfo(card.TeamID);
+                        Server.GetLeagueInfo(card.TeamID);
 
                     }
                     );
