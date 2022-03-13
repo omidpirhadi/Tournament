@@ -268,7 +268,7 @@ public class ServerUI : MonoBehaviour
                 Debug.Log(playwithfriend.friend + "r/n/" + playwithfriend.game + "/r/n" + playwithfriend.subgame);
             }
         });
-
+        socket.On("league-update", (s, p, m) => { });///****///
         socket.On("create-league", (s, p, m) =>
         {
 
@@ -311,7 +311,7 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
-        socket.On("get-team-time", (s, p, m) =>
+        socket.On("get-league-time", (s, p, m) =>
         {
             Handler_OnGetTimeTeam(Convert.ToSingle(m[1]));
             navigationUi.StopLoadingPage();
@@ -923,7 +923,7 @@ public class ServerUI : MonoBehaviour
     }
     public void SendRequestMatchTimeRemaining()
     {
-        socket.Emit("get-team-time");
+        socket.Emit("get-league-time");
         navigationUi.StartLoadingPageShow();
     }
     public void JoinToTeam(string teamid)
@@ -934,9 +934,9 @@ public class ServerUI : MonoBehaviour
     }
     public void LeaveTheTeam()
     {
-        socket.Emit("leave-team");
+        socket.Emit("leave-league");
         navigationUi.StartLoadingPageShow();
-        Debug.Log("leaveTheTeam");
+        Debug.Log("leaveTheleague");
     }
     public void GetAwardsLeague(string teamid)
     {

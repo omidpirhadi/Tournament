@@ -11,6 +11,7 @@ namespace Diaco.UI.TeamInfo
     {
         public ServerUI Server;
         public string TeamTag = "";
+        public Diaco.ImageContainerTool.ImageContainer ImageCards;
        // public Diaco.HTTPBody.AwardsName awardsname;
        // public int Capacity = 0;
 
@@ -41,19 +42,22 @@ namespace Diaco.UI.TeamInfo
             Award1st.Gem.text = Convert.ToString(awardsname.awards1.gem);
             Award1st.Coin.text = Convert.ToString(awardsname.awards1.coin);
             Award1st.Card.text = Convert.ToString(awardsname.awards1.card);
-            Award1st.Ticket.text = Convert.ToString(awardsname.awards1.ticket);
+            Award1st.ImageCard.sprite = ImageCards.LoadImage(awardsname.awards1.cardName);
+            Award1st.Cup.text = Convert.ToString(awardsname.awards1.cpu);
             Award1st.Xp.text = Convert.ToString(awardsname.awards1.xp);
             /////AWARD PERSON TWO
             Award2nd.Gem.text = Convert.ToString(awardsname.awards2.gem);
             Award2nd.Coin.text = Convert.ToString(awardsname.awards2.coin);
             Award2nd.Card.text = Convert.ToString(awardsname.awards2.card);
-            Award2nd.Ticket.text = Convert.ToString(awardsname.awards2.ticket);
+            Award2nd.ImageCard.sprite = ImageCards.LoadImage(awardsname.awards2.cardName);
+            Award2nd.Cup.text = Convert.ToString(awardsname.awards2.cpu);
             Award2nd.Xp.text = Convert.ToString(awardsname.awards2.xp);
             /////AWARD PERSON THREE
             Award3rd.Gem.text = Convert.ToString(awardsname.awards3.gem);
             Award3rd.Coin.text = Convert.ToString(awardsname.awards3.coin);
             Award3rd.Card.text = Convert.ToString(awardsname.awards3.card);
-            Award3rd.Ticket.text = Convert.ToString(awardsname.awards3.ticket);
+            Award3rd.ImageCard.sprite = ImageCards.LoadImage(awardsname.awards3.cardName);
+            Award3rd.Cup.text = Convert.ToString(awardsname.awards3.cpu);
             Award3rd.Xp.text = Convert.ToString(awardsname.awards3.xp);
         }
 
@@ -96,7 +100,8 @@ namespace Diaco.UI.TeamInfo
         public Text Gem;
         public Text Coin;
         public Text Card;
-        public Text Ticket;
+        public Image ImageCard;
+        public Text Cup;
         public Text Xp;
 
     }

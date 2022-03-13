@@ -14,6 +14,7 @@ namespace Diaco.UI.Profile
 
         public Image Avatar;
         public Text Username;
+        public Text PersonalCode_text;
         public Text Cup;
         public Image RankLevel;
         public InputField EditDescription_Inputfield;
@@ -55,7 +56,7 @@ namespace Diaco.UI.Profile
         public void InitializeProfile()
         {
             Avatar.sprite = Server.AvatarContainer.LoadImage(Server.BODY.profile.avatar);
-
+            PersonalCode_text.text = Server.BODY.invitationCode;
             Username.text = Server.BODY.userName;
             Cup.text = (Server.BODY.profile.soccer_cup).ToString();
            // RankLevel.sprite = Server.AvatarContainer.LoadImage(Server.BODY.profile.avatar);

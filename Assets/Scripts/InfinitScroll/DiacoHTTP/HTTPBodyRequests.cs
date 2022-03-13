@@ -243,7 +243,7 @@ namespace Diaco.HTTPBody
         //  public string tokenCode;
         //public string socketId;
         // public string id;
-        //public string invitationCode;
+        public string invitationCode;
         public string withdraw;
         public string userName;
         public string phone;
@@ -265,8 +265,10 @@ namespace Diaco.HTTPBody
         public int gem;
         public int coin;
         public int card;
+        public string cardName;
         public int ticket;
         public int xp;
+        public int cpu;
     }
     public struct AwardsName
     {
