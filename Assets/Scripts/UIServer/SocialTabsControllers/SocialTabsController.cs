@@ -27,7 +27,7 @@ namespace Diaco.UI.SocialTabs
                     TeamsTab.SetActive(true);
                     ChatsTeamTab.SetActive(false);
                     StartGameTimerTab.SetActive(false);
-                    SocialTabs.ShowTabsDefalt = 1;
+                    SocialTabs.ShowTabsDefalt =0;
                     Debug.Log("HAVE NOT A TEAM" + Server.BODY.social.team.teamId.Length);
                 }
                 else
