@@ -78,6 +78,7 @@ namespace Diaco.Store.Soccer
                 }
                 
             }
+            Debug.Log("ShopTeam Show");
         }
 
         private void ClearShop()

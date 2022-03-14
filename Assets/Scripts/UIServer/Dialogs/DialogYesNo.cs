@@ -8,16 +8,16 @@ public class DialogYesNo : MonoBehaviour
     public Text Context;
     public Button YESButton;
     public Button NoButton;
-    public void Awake()
+ 
+    private void OnEnable()
     {
         YESButton.onClick.AddListener(() => { Handler_OnClickYes(); CloseDialog(); });
         NoButton.onClick.AddListener(() => { Handler_OnClickNo(); CloseDialog(); });
     }
-
     public void OnDisable()
     {
-       // YESButton.onClick.RemoveAllListeners();
-       // NoButton.onClick.RemoveAllListeners();
+        YESButton.onClick.RemoveAllListeners();
+       NoButton.onClick.RemoveAllListeners();
     }
     public void ShowDialog(string Message)
     {
@@ -39,6 +39,7 @@ public class DialogYesNo : MonoBehaviour
         add { clickyesno += value; }
         remove { clickyesno -= value; }
     }
+
     protected void Handler_OnClickYes()
     {
         if(clickyesno != null)
@@ -46,12 +47,18 @@ public class DialogYesNo : MonoBehaviour
             clickyesno();
         }
     }
-    public event Action OnClickNo;
+    private Action clickno;
+    public event Action OnClickNo
+    {
+        add { clickno += value; }
+        remove { clickno -= value; }
+    }
+
     protected void Handler_OnClickNo()
     {
-        if (OnClickNo != null)
+        if (clickno != null)
         {
-            OnClickNo();
+            clickno();
         }
     }
 

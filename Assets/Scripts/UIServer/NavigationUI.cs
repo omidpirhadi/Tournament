@@ -156,7 +156,8 @@ public class NavigationUI : MonoBehaviour
                 if (pop.PopUpObject)
                 {
                     pop.PopUpObject.SetActive(true);
-                    OrderPopup = pop.PopUpObject.GetComponent<Canvas>().sortingOrder;
+                    if (pop.PopUpObject.GetComponent<Canvas>())
+                        OrderPopup = pop.PopUpObject.GetComponent<Canvas>().sortingOrder;
                     CurrentPage = pop.Name;
                     if (soundEffectControll)
                     {
@@ -181,7 +182,8 @@ public class NavigationUI : MonoBehaviour
                 if (pop.PopUpObject)
                 {
                     pop.PopUpObject.SetActive(true);
-                    pop.PopUpObject.GetComponent<Canvas>().sortingOrder = OrderPopup + 3;
+                    if (pop.PopUpObject.GetComponent<Canvas>())
+                        pop.PopUpObject.GetComponent<Canvas>().sortingOrder = OrderPopup + 3;
 
                     CurrentPage = pop.Name;
                     if (soundEffectControll)

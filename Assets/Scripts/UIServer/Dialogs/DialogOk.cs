@@ -8,7 +8,8 @@ public class DialogOk : MonoBehaviour
     public Text Context;
     public Button OkButton;
 
-    public void Awake()
+
+    public void OnEnable()
     {
         OkButton.onClick.AddListener(() =>
         {
@@ -16,10 +17,9 @@ public class DialogOk : MonoBehaviour
             CloseDialog();
         });
     }
-
     public void OnDisable()
     {
-       /// OkButton.onClick.RemoveAllListeners();
+        OkButton.onClick.RemoveAllListeners();
     }
     public void ShowDialog(string Message)
     {
@@ -35,12 +35,17 @@ public class DialogOk : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
-    public event Action OnClickOk;
+    private Action clickok;
+    public event Action OnClickOk
+    {
+        add { clickok += value; }
+        remove { clickok += value; }
+    }
     protected void Handler_OnClickOk()
     {
-        if (OnClickOk != null)
+        if (clickok != null)
         {
-            OnClickOk();
+            clickok();
         }
     }
 

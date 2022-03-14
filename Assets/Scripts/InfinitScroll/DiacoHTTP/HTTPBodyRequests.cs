@@ -47,9 +47,11 @@ namespace Diaco.HTTPBody
     {
         public int soccer_cup;
         public int billiard_cup;
+        public int soccer_level;
+        public int billiard_level;
         public int coin;
         public int gem;
-        public int level;
+
         [Multiline]
         public string avatar;
         public string description;
@@ -247,10 +249,19 @@ namespace Diaco.HTTPBody
         public string withdraw;
         public string userName;
         public string phone;
+        public GameLock soccerGameLock;
+        public GameLock billiardGameLock;
         public InGame inGame;
         public PROFILE profile;
         public SOCIAL social;
         public Inventory inventory;
+    }
+    [Serializable]
+    public struct GameLock
+    {
+        public bool classic;
+        public bool quick;
+        public bool big;
     }
     [Serializable]
     public struct Inventory

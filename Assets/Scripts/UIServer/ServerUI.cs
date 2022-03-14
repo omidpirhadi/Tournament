@@ -155,7 +155,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
 
 
-
+            Handler_OnGameBodyUpdate();
             Debug.Log("main-menu called");
         });
 
@@ -532,7 +532,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
         });
 
-        socket.On("soccershopFormation", (s, p, m) =>
+        socket.On("shop-soccer-plan", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
@@ -549,7 +549,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
         });
 
-        socket.On("soccershopTeam", (s, p, m) =>
+        socket.On("shop-soccer-marble", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
@@ -800,13 +800,17 @@ public class ServerUI : MonoBehaviour
         if (pagename == "modesoccer")
         {
 
-            UIInFooterAndHeader.Xp_inPageSelectGame.text = "111";
+            UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.soccer_level.ToString() ;
         }
-        if (pagename == "modepool")
+        else if (pagename == "modepool")
         {
-            UIInFooterAndHeader.Xp_inPageSelectGame.text = "222";
+            UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.billiard_level.ToString();
         }
-
+     
+        else
+        {
+            UIInFooterAndHeader.Xp_inPageSelectGame.text = "";
+        }
     }
 
     #endregion
@@ -1044,7 +1048,7 @@ public class ServerUI : MonoBehaviour
     }
     public void Emit_SoccerShopTeam()
     {
-        socket.Emit("soccershopTeam");
+        socket.Emit("shop-soccer-marble");
         navigationUi.StartLoadingPageShow();
         Debug.Log("Emit_ShopTeam");
     }
@@ -1062,7 +1066,7 @@ public class ServerUI : MonoBehaviour
 
     public void Emit_SoccerShopformation()
     {
-        socket.Emit("soccershopFormation");
+        socket.Emit("shop-soccer-plan");
         navigationUi.StartLoadingPageShow();
         Debug.Log("Emit_Shopformation");
     }
@@ -1227,7 +1231,19 @@ public class ServerUI : MonoBehaviour
             createteam();
         }
     }
-
+    private Action gamebody;
+    public event Action OnGameBodyUpdate
+    {
+        add { gamebody += value; }
+        remove { gamebody-= value; }
+    }
+    protected void Handler_OnGameBodyUpdate()
+    {
+        if (gamebody != null)
+        {
+            gamebody();
+        }
+    }
     private Action<string> errorcreateteam;
     public event Action<string> OnErrorCreateTeam
     {
