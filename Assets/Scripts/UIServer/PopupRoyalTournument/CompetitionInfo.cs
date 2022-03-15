@@ -61,10 +61,11 @@ namespace Diaco.UI.RoyalTournument
         private void InitRoyal(CompetitionInfoData data)
         {
             ClearPlayer();
+            
             tournumentId = data.id;
             if(data.game == 0)
             {
-                GameType.text = PersianFix.Persian.Fix("ساکر", 255);
+                GameType.text = PersianFix.Persian.Fix("فوتبال", 255);
             }
             else
             {
