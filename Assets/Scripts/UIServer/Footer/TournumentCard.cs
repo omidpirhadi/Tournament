@@ -45,6 +45,10 @@ namespace Diaco.UI.TournumentCard
                 
             });
         }
+        public void OnEnable()
+        {
+           // Set("id:test0", "Classic", 100, "ff"); for test
+        }
         public void OnDisable()
         {
             btn_tournament.onClick.RemoveAllListeners();
@@ -100,6 +104,10 @@ namespace Diaco.UI.TournumentCard
 
 
             Timer.text = H + ":" + M + ":" + S;
+            if (H == 0 && M == 00)
+            {
+                GetComponent<SoundEffectControll>().PlaySound(0);
+            }
             if (S == 0 && M == 0 && H == 0)
             {
                 CancelInvoke("RunTimer");

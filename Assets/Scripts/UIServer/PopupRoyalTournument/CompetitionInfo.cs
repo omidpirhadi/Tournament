@@ -16,7 +16,8 @@ namespace Diaco.UI.RoyalTournument
         private List<GameObject> ListPlayer;
         [Header("PropertyPopups")]
         public string  tournumentId;
-        public Text GameType;
+        public Text Game_txt;
+        public Text GameType_txt;
         public Image CostType;
         public Text Currency;
         public Text Capacity;
@@ -65,13 +66,28 @@ namespace Diaco.UI.RoyalTournument
             tournumentId = data.id;
             if(data.game == 0)
             {
-                GameType.text = PersianFix.Persian.Fix("فوتبال", 255);
+                Game_txt.text = PersianFix.Persian.Fix("فوتبال", 255);
             }
             else
             {
-                GameType.text = PersianFix.Persian.Fix("بیلیارد", 255);
+                Game_txt.text = PersianFix.Persian.Fix("بیلیارد", 255);
             }
-            if(data.member)
+
+
+            if (data.gameType == 0)
+            {
+                GameType_txt.text = PersianFix.Persian.Fix("قهرمانی", 255);
+            }
+            else if(data.gameType == 1)
+            {
+                GameType_txt.text = PersianFix.Persian.Fix("حماسی", 255);
+            }
+            else
+            {
+                GameType_txt.text = PersianFix.Persian.Fix("رویال", 255);
+            }
+
+            if (data.member)
             {
                 btn_Leave.gameObject.SetActive(true);
                 btn_Join.gameObject.SetActive(false);
@@ -181,6 +197,7 @@ namespace Diaco.UI.RoyalTournument
         public string id;
         public bool member;
         public int game; //00 socor 1 biliard 
+        public int gameType;  // 0 ghahremani 1  hamasi 2 royal 
         public int costType;//0 coin 1 gem
         public int cost;
         

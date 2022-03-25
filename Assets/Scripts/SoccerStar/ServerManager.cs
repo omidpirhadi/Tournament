@@ -1347,6 +1347,8 @@ namespace Diaco.SoccerStar.Server
         }
         private void Emit_EndTurnInRecordMode()
         {
+            if (SiblArea.Area != -1)
+                soundeffectcontrollLayer2.PlaySoundSoccer(0);///sib sound
             socket.Emit("EndTurn", SiblArea.Area);
             CancelInvoke("CheckMOVE");
             Debug.Log($"<color=blue><b>EndTurn</b>{SiblArea.Area}</color>");

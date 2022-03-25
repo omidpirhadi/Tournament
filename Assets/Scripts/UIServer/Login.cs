@@ -15,9 +15,14 @@ public class Login : MonoBehaviour
     public InputField phoneNumber;
     public InputField code;
     public Button EnterButton;
-
+    public GameObject Timer_parent;
+    public Text Timer_text;
     private bool needcode = true;
-  ///  public Button Forgetpassword;
+
+    private float H = 0;
+    private float M = 0;
+    private float S = 0;
+    ///  public Button Forgetpassword;
     private void Awake()
     {
         
@@ -28,7 +33,10 @@ public class Login : MonoBehaviour
             needcode = true;
             code.interactable = false;
             code.text = "";
-            if(context.Length == 11 && (context.StartsWith("09") || context.StartsWith("۰۹"))
+            Timer_parent.SetActive(false);
+
+            
+            if (context.Length == 11 && (context.StartsWith("09") || context.StartsWith("۰۹"))
             )
             {
                 EnterButton.interactable = true;
@@ -53,11 +61,14 @@ public class Login : MonoBehaviour
                     EnterButton.GetComponentInChildren<Text>().text = PersianFix.Persian.Fix("ورود", 255);
                     needcode = false;
                     code.interactable = true;
-
+                    Timer_parent.SetActive(true);
+                    CalculateTime(130);
                 }
                 else
                 {
                     LoginData();
+                    Timer_parent.SetActive(false);
+                    CancelInvoke("RunTimer");
                 }
                 
 
@@ -101,7 +112,60 @@ public class Login : MonoBehaviour
     }
 
 
+    private void CalculateTime(int time)
+    {
+        H = 0;
+        M = 0;
+        S = 0;
+        CancelInvoke("RunTimer");
 
+
+        H = (float)Mathf.Floor(time / 3600);
+        M = (float)Mathf.Floor(time / 60 % 60);
+        S = (float)Mathf.Floor(time % 60);
+        InvokeRepeating("RunTimer", 0, 1.0f);
+    }
+    /// <summary>
+    /// INVOKE IN Calculate
+    /// </summary>
+    private void RunTimer()
+    {
+        S--;
+        if (S < 0)
+        {
+            if (M > 0 || H > 0)
+            {
+                S = 59;
+                M--;
+                if (M < 0)
+                {
+                    if (H > 0)
+                    {
+                        M = 59;
+                        H--;
+                    }
+                    else
+                    {
+                        M = 0;
+                    }
+                }
+
+            }
+            else
+            {
+                S = 0;
+            }
+        }
+
+
+        Timer_text.text = (M + ":" + S);
+        if (S == 0 && M == 0 && H == 0)
+        {
+            CancelInvoke("RunTimer");
+
+
+        }
+    }
     private void SendInfo_OnResponse(string Response)
     {
   

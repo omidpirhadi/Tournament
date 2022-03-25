@@ -1144,6 +1144,7 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("gotoranking");
         navigationUi.StartLoadingPageShow();
+        Debug.Log("Timer Zero Ranking Table Requested");
     }
 
     public void RequestGetRecordMode()

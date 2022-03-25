@@ -1549,14 +1549,17 @@ namespace Diaco.EightBall.Server
             do
             {
                 /// Debug.Log("MoveInRecordMode");
-                yield return new WaitForSeconds(0.1f);
+                yield return new WaitForSeconds(0.2f);
             }
             while (CheckBallsMove());
+            
             Emit_EndTurnInRecordMode();
             yield return null;
         }
         private void Emit_EndTurnInRecordMode()
         {
+            if (Sibl.Area != -1)
+                soundeffectcontroll.PlaySound(5);///sib sound
             socket.Emit("EndTurn", Sibl.Area);
             Debug.Log($"<color=blue><b>EndTurn</b>{Sibl.Area}</color>");
         }

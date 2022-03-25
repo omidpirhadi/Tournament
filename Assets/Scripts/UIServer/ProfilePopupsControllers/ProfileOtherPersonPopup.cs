@@ -23,7 +23,8 @@ namespace Diaco.UI.Profile
         public Image Avatar;
         public Text Username;
         public string UserID;
-        public Text Cup;
+        public Text CupSoccer;
+        public Text CupBilliard;
         public Image RankLevel;
         public Text Description;
         /// <summary>
@@ -85,7 +86,8 @@ namespace Diaco.UI.Profile
             Avatar.sprite = Server.AvatarContainer.LoadImage(data.profile.avatar);
             UserID = data.id;
             Username.text = data.userName;
-            Cup.text = (data.profile.soccer_cup) + (data.profile.billiard_cup).ToString();
+            CupSoccer.text = (data.profile.soccer_cup).ToString();
+            CupBilliard.text = (data.profile.billiard_cup).ToString();
             RankLevel.sprite = Server.AvatarContainer.LoadImage(data.profile.avatar);
             Description.text = data.profile.description;
 

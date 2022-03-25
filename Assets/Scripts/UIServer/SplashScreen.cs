@@ -11,10 +11,11 @@ public class SplashScreen : MonoBehaviour
     public GameObject loginPage;
     public Image Prograssbar;
     public Text CounterPrograssbar;
-
+    private SoundEffectControll soundEffect;
     private IEnumerator Start()
     {
-
+        soundEffect = GetComponent<SoundEffectControll>();
+        soundEffect.PlaySound(0);
         // CheckInternetConnection();
         if (Server.ExistTokenFile("token"))
         {

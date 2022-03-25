@@ -15,7 +15,8 @@ namespace Diaco.UI.Profile
         public Image Avatar;
         public Text Username;
         public Text PersonalCode_text;
-        public Text Cup;
+        public Text CupSoccer;
+        public Text CupBilliard;
         public Image RankLevel;
         public InputField EditDescription_Inputfield;
         /// <summary>
@@ -58,8 +59,9 @@ namespace Diaco.UI.Profile
             Avatar.sprite = Server.AvatarContainer.LoadImage(Server.BODY.profile.avatar);
             PersonalCode_text.text = Server.BODY.invitationCode;
             Username.text = Server.BODY.userName;
-            Cup.text = (Server.BODY.profile.soccer_cup).ToString();
-           // RankLevel.sprite = Server.AvatarContainer.LoadImage(Server.BODY.profile.avatar);
+            CupSoccer.text = (Server.BODY.profile.soccer_cup).ToString();
+            CupBilliard.text = (Server.BODY.profile.billiard_cup).ToString();
+            // RankLevel.sprite = Server.AvatarContainer.LoadImage(Server.BODY.profile.avatar);
             EditDescription_Inputfield.text = Server.BODY.profile.description;
 
             S_WinCount.text = (Server.BODY.profile.soccer.win).ToString() + "/" + (Server.BODY.profile.soccer.total).ToString();

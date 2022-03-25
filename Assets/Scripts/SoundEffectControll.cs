@@ -16,7 +16,7 @@ public class SoundEffectControll : MonoBehaviour
        // audios = new List<AudioClip>();
         audioSource = GetComponent<AudioSource>();
     }
-
+    
    /* void OnCollisionEnter(Collision obj)
     {
         if (obj.gameObject.tag == "marble" && Mute)

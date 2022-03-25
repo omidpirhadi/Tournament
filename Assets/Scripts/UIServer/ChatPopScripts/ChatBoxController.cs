@@ -20,11 +20,11 @@ namespace Diaco.UI.Chatbox
         public Button SendButton;
         
         private List<FramChat> ChatRecivedList = new List<FramChat>();
-
+        private SoundEffectControll soundEffect;
         private void OnEnable()
         {
 
-           
+            soundEffect = GetComponent<SoundEffectControll>();
           
         }
         private void OnDisable()
@@ -46,6 +46,7 @@ namespace Diaco.UI.Chatbox
             SendButton.onClick.AddListener(() =>
             {
                 SendChat();
+
             });
             Server.SendRequestGetAllChat(IDReciver);
             //Debug.Log("ChatWithID:" + IDReciver);
@@ -53,6 +54,7 @@ namespace Diaco.UI.Chatbox
         private void Server_OnChatsRecive(Diaco.HTTPBody.Chats chats)
         {
             ChatRecive(chats);
+            soundEffect.PlaySound(0);
         }
 
         public void SendChat()
