@@ -338,7 +338,7 @@ namespace Diaco.SoccerStar.Server
                    /// Debug.Log("kjkjkjkjkjkjjjkjkjkjk");
                     var data = JsonUtility.FromJson<Diaco.Store.Soccer.SoccerShopDatas>(m[0].ToString());
                     Handler_InitShop(data);
-                    Debug.Log("formationShopInGameRecive");
+                    Debug.Log("formationShopInGameRecive"+ m[0].ToString());
                 });
                 socket.On("getSticker", (s, p, m) => {
                    

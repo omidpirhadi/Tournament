@@ -15,7 +15,7 @@ namespace Diaco.UI.MatchRecord
         [Header("RecordGame")]
         public GameObject PanelRecordMode;
         public Text Point;
-        public Text Time;
+        public Text Rank;
         public Toggle[] TryToggle;
         public Button btn_Start;
         [Header("PracticeGame")]
@@ -72,7 +72,7 @@ namespace Diaco.UI.MatchRecord
                 
                 ChangePanel(data.start);
                 Point.text = data.point.ToString();
-                Time.text = data.time;
+                Rank.text = data.rank;
                 SetFailTry(data.tryToggle);
             }
             else
@@ -80,7 +80,7 @@ namespace Diaco.UI.MatchRecord
             {
                 ChangePanel(false);
                 P_Point.text = data.point.ToString();
-                P_Time.text = data.time;
+                P_Time.text = data.rank;
             }
             Leaderbord(data.leaderboardPlayers);
             
@@ -209,7 +209,7 @@ namespace Diaco.UI.MatchRecord
         public int remainingTime;
 
         public int point;
-        public string time;
+        public string rank;
         public int tryToggle;
 
 

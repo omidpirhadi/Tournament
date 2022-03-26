@@ -15,7 +15,7 @@ namespace Diaco.Store.Soccer
         public SoccerShopRentElement RentTeamElement;
         public RectTransform Grid;
 
-        private List<GameObject> ListElementsShop;
+       [SerializeField] private List<GameObject> ListElementsShop;
 
         public void OnEnable()
         {
@@ -50,6 +50,7 @@ namespace Diaco.Store.Soccer
             var data = teamsData.soccershopteamsData;
             for (int i = 0; i < data.Count; i++)
             {
+               // Debug.Log("ShopTeam 1");
                 var image = ContainerImages.LoadImage(data[i].teamImage);
                 var id = data[i].id;
                 var force = data[i].force;
@@ -61,20 +62,23 @@ namespace Diaco.Store.Soccer
                     {
 
                         InUseTeamElement.SetForTeamElement(id, image, force, aim, data[i].time);
+                     //   Debug.Log("ShopTeam 2");
                     }
                     else
                     {
                         var ownerElement = Instantiate(OwnerTeamElement, Grid);
                         ownerElement.SetForTeamElement(id, image, force, aim, data[i].time);
                         ListElementsShop.Add(ownerElement.gameObject);
+                     //   Debug.Log("ShopTeam 3");
                     }
+                   // Debug.Log("ShopTeam 4");
                 }
                 else
                 {
                     var rentElement = Instantiate(RentTeamElement, Grid);
                     rentElement.SetForTeamElement(id, image, force, aim,data[i].rentData);
                     ListElementsShop.Add(rentElement.gameObject);
-
+                //    Debug.Log("ShopTeam 5");
                 }
                 
             }
