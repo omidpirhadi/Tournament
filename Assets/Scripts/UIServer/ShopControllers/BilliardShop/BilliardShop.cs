@@ -18,7 +18,7 @@ namespace Diaco.Store.Billiard
         public BilliardRentElement RentTeamElement;
         public RectTransform Grid;
 
-        private List<GameObject> ListElementsShop;
+     [SerializeField]   private List<GameObject> ListElementsShop;
 
         public void OnEnable()
         {
@@ -50,6 +50,19 @@ namespace Diaco.Store.Billiard
                 ClearShop();
             }
         }
+        public void OnDestroy()
+        {
+            if (InGame)
+            {
+                FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().InitShop -= BilliardShop_InitShop;
+                ClearShop();
+            }
+            else if (!InGame)
+            {
+                FindObjectOfType<ServerUI>().InitshopBilliard -= BilliardShop_InitShop;
+                ClearShop();
+            }
+        }
         private void BilliardShop_InitShop(BilliardShopDatas data)
         {
             initShop(data);
@@ -58,7 +71,7 @@ namespace Diaco.Store.Billiard
 
         public void initShop(BilliardShopDatas shopData)
         {
-            if (ListElementsShop.Count > 0)
+            ///if (ListElementsShop.Count > 0)
                 ClearShop();
             
             
@@ -103,6 +116,7 @@ namespace Diaco.Store.Billiard
             {
                 Destroy(ListElementsShop[i]);
             }
+            ListElementsShop.Clear();
             Debug.Log("ClearShopBiliard");
         }
     }

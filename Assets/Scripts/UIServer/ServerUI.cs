@@ -566,7 +566,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
         });
 
-        socket.On("billiardShop", (s, p, m) =>
+        socket.On("shop-billiard", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
@@ -578,6 +578,7 @@ public class ServerUI : MonoBehaviour
 
                 var data = JsonUtility.FromJson<Diaco.Store.Billiard.BilliardShopDatas>(m[1].ToString());
                 Handler_InitshopBilliard(data);
+                navigationUi.StopLoadingPage();
                 Debug.Log("ShopBilliard Loaded");
             }
             navigationUi.StopLoadingPage();
@@ -786,6 +787,31 @@ public class ServerUI : MonoBehaviour
                 navigationUi.StopLoadingPage();
                 navigationUi.ClosePopUp("changeusername");
                 Debug.Log("ReportsLoaded" + m[1].ToString());
+            }
+
+        });
+        socket.On("webview", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Webviwe cant Loaded: </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+
+
+                navigationUi.ShowPopUpOnPopup("webviwe");
+                var webview = FindObjectOfType<UniWebView>();
+                webview.urlOnStart = m[1].ToString();
+                webview.Load(m[1].ToString());
+                webview.Show();
+                webview.UpdateFrame();
+                Debug.Log("WebViweLoaded" + m[1].ToString());
             }
 
         });
@@ -1084,7 +1110,8 @@ public class ServerUI : MonoBehaviour
 
     public void Emit_BilliardShop()
     {
-        socket.Emit("billiardShop");
+        socket.Emit("shop-billiard");
+        navigationUi.StartLoadingPageShow();
         Debug.Log("billiardShop");
     }
     public void Emit_UseCue(string id)

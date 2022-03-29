@@ -203,7 +203,7 @@ public class UniWebView: MonoBehaviour {
     [SerializeField]
 
     #pragma warning disable 0649 
-    private string urlOnStart;
+    public string urlOnStart;
     [SerializeField]
     private bool showOnStart = false;
 
@@ -349,8 +349,8 @@ public class UniWebView: MonoBehaviour {
     }
 
     void Start() {
-        if (showOnStart) {
-            Show();
+      /*  if (showOnStart) {
+           // Show();
         }
         if (!string.IsNullOrEmpty(urlOnStart)) {
             Load(urlOnStart);
@@ -358,7 +358,7 @@ public class UniWebView: MonoBehaviour {
         started = true;
         if (referenceRectTransform != null) {
             UpdateFrame();
-        }
+        }*/
     }
 
     void Update() {
@@ -387,12 +387,22 @@ public class UniWebView: MonoBehaviour {
         if (started) {
             Show();
         }
+        if (!string.IsNullOrEmpty(urlOnStart))
+        {
+            Load(urlOnStart);
+        }
+        started = true;
+        if (referenceRectTransform != null)
+        {
+            UpdateFrame();
+        }
     }
 
     void OnDisable() {
         if (started) {
             Hide();
         }
+        started = false;
     }
 
     /// <summary>

@@ -49,6 +49,19 @@ namespace Diaco.Store.Soccer
                 ClearShop();
             }
         }
+        public void OnDestroy()
+        {
+            if (InGame)
+            {
+                FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().InitShop -= Shopformation_InitShop;
+                ClearShop();
+            }
+            else
+            {
+                FindObjectOfType<ServerUI>().InitSoccerFormationShop -= Shopformation_InitShop;
+                ClearShop();
+            }
+        }
         private void Shopformation_InitShop(SoccerShopDatas data)
         {
             initFormationShop(data);
@@ -56,7 +69,7 @@ namespace Diaco.Store.Soccer
         }
         public void initFormationShop(SoccerShopDatas Data)
         {
-            if (ListElementsShop.Count > 0)
+           // if (ListElementsShop.Count > 0)
                 ClearShop();
             ListElementsShop = new List<GameObject>();
             var data = Data.soccershopteamsData;
@@ -99,6 +112,7 @@ namespace Diaco.Store.Soccer
             {
                 Destroy(ListElementsShop[i]);
             }
+            ListElementsShop.Clear();
             Debug.Log("ClearShopBiliard");
         }
     }

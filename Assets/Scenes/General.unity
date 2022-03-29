@@ -4517,6 +4517,7 @@ GameObject:
   - component: {fileID: 1355699925}
   - component: {fileID: 1355699924}
   - component: {fileID: 1355699928}
+  - component: {fileID: 1355699929}
   m_Layer: 5
   m_Name: AllNotificationAndDialouge
   m_TagString: Untagged
@@ -4622,6 +4623,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5646ed20a892e334d8824db8482fe754, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1355699929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1355699923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 640522f140e90e2419947a0bdb4f38ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChannelID: royal
+  ChannelName: noyan
+  ChannelDescription: noyan_notification
 --- !u!1 &1369495685
 GameObject:
   m_ObjectHideFlags: 0

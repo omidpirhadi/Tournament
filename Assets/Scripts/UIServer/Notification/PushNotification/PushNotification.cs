@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Notifications.Android;
+using UnityEngine;
 
 namespace Diaco.Notification
 {
@@ -9,18 +10,26 @@ namespace Diaco.Notification
 
     public class PushNotification : MonoBehaviour
     {
+        public  string ChannelID;
+        public string ChannelName;
+        public string ChannelDescription;
         public int NumberNotification
         {
             get;set;
         }
         private AndroidNotificationChannel channel;
         private AndroidNotification notification;
+
+        public void Awake()
+        {
+            CreateNotificationChannel();
+        }
         public void CreateNotificationChannel()
         {
             channel = new AndroidNotificationChannel();
-            channel.Id = "diacostudio";
-            channel.Name = "royallball";
-            channel.Description = "localnotifications";
+            channel.Id = ChannelID;
+            channel.Name = ChannelName;
+            channel.Description = ChannelDescription;
             channel.Importance = Importance.High;
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
 
@@ -28,21 +37,37 @@ namespace Diaco.Notification
 
             
         }
-        public void SendNotification(string title, string context , double addminutes)
+        public void SendNotifications(PushNotifcationsData data)
         {
-            notification.Number = NumberNotification;
-            notification.Color = Color.green;
-            notification.SmallIcon = "small_ic";
-            notification.LargeIcon = "large_ic";
-            notification.Title = title;
-            notification.Text = context;
-            notification.FireTime = System.DateTime.Now.AddMinutes(addminutes);
-            AndroidNotificationCenter.SendNotification(notification, "diacostudio");
-            NumberNotification++;
+            for (int i = 0; i < data.notifications.Count; i++)
+            {
+
+
+                notification.Number = NumberNotification;
+                notification.Color = Color.green;
+                notification.SmallIcon = "small_ic";
+                notification.LargeIcon = "large_ic";
+                notification.Title = data.notifications[i].title;
+                notification.Text = data.notifications[i].context;
+                notification.FireTime = System.DateTime.Now.AddMinutes(data.notifications[i].addMinutes);
+                AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "diacostudio", data.notifications[i].id);
+            }
         }
-        public void CancleNotification()
+        public void CancleNotification(int id)
         {
-           // AndroidNotificationCenter.ca
+            AndroidNotificationCenter.CancelNotification(id);
         }
+                
+    }
+    public struct PushNotificationBody
+    {
+        public int id;
+        public string title;
+        public string context;
+        public double addMinutes;
+    }
+    public struct PushNotifcationsData
+    {
+        public List<PushNotificationBody> notifications;
     }
 }

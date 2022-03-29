@@ -16,7 +16,7 @@ namespace Diaco.UI.RoyalTournument
         public List<Toggle> Element_SlideNumber_8;
         public GameObject SlideNumber_16;
         public List<Toggle> Element_SlideNumber_16;
-
+        public Diaco.ImageContainerTool.ImageContainer ImageCards;
         public ElementsAward Award1st;
         public ElementsAward Award2nd;
         public ElementsAward Award3rd;
@@ -26,14 +26,14 @@ namespace Diaco.UI.RoyalTournument
         {
             server = FindObjectOfType<ServerUI>();
             server.OnCompetitionAward += Server_OnCompetitionAward;
-            Debug.Log("X1");
+         //   Debug.Log("X1");
         }
 
         private void Server_OnCompetitionAward(AwardsData data)
         {
             PutAwardsInIndicator(data);
             ElementOfSlideNumberTurnOn(data);
-            Debug.Log("X2");
+           // Debug.Log("X2");
         }
 
         private void OnDisable()
@@ -45,20 +45,30 @@ namespace Diaco.UI.RoyalTournument
             /////AWARD PERSON ONE
             Award1st.Gem.text = (data.awards1.gem).ToString();
             Award1st.Coin.text = (data.awards1.coin).ToString();
+
             Award1st.Card.text = (data.awards1.card).ToString();
-            Award1st.Ticket.text = (data.awards1.ticket).ToString();
+            Award1st.ImageCard.sprite = ImageCards.LoadImage(data.awards1.cardName);
+
+            Award1st.Cup.text = (data.awards1.cup).ToString();
             Award1st.Xp.text = (data.awards1.xp).ToString();
             /////AWARD PERSON TWO
             Award2nd.Gem.text = (data.awards2.gem).ToString();
             Award2nd.Coin.text = (data.awards2.coin).ToString();
+
             Award2nd.Card.text = (data.awards2.card).ToString();
-            Award2nd.Ticket.text = (data.awards2.ticket).ToString();
+            Award2nd.ImageCard.sprite = ImageCards.LoadImage(data.awards2.cardName);
+
+            Award2nd.Cup.text = (data.awards2.cup).ToString();
             Award2nd.Xp.text = (data.awards2.xp).ToString();
             /////AWARD PERSON THREE
             Award3rd.Gem.text = (data.awards3.gem).ToString();
+
             Award3rd.Coin.text = (data.awards3.coin).ToString();
+
             Award3rd.Card.text = (data.awards3.card).ToString();
-            Award3rd.Ticket.text = (data.awards3.ticket).ToString();
+            Award3rd.ImageCard.sprite = ImageCards.LoadImage(data.awards3.cardName);
+
+            Award3rd.Cup.text = (data.awards3.cup).ToString();
             Award3rd.Xp.text = (data.awards3.xp).ToString();
           
         }
@@ -102,7 +112,8 @@ namespace Diaco.UI.RoyalTournument
         public Text Gem;
         public Text Coin;
         public Text Card;
-        public Text Ticket;
+        public Image ImageCard;
+        public Text Cup;
         public Text Xp;
 
     }
@@ -111,8 +122,9 @@ namespace Diaco.UI.RoyalTournument
     {
         public int gem;
         public int coin;
+        public string cardName;
         public int card;
-        public int ticket;
+        public int cup;
         public int xp;
     }
     [Serializable]
