@@ -74,19 +74,19 @@ namespace Diaco.UI.RoyalTournument
             }
 
 
-            if (data.gameType == 0)
+            if ( data.gameType == 4)
             {
                 GameType_txt.text = PersianFix.Persian.Fix("قهرمانی", 255);
             }
-            else if(data.gameType == 1)
+            else if (data.gameType == 8)
             {
                 GameType_txt.text = PersianFix.Persian.Fix("حماسی", 255);
             }
-            else
+            else if (data.gameType == 16)
             {
                 GameType_txt.text = PersianFix.Persian.Fix("رویال", 255);
             }
-
+ 
             if (data.member)
             {
                 btn_Leave.gameObject.SetActive(true);

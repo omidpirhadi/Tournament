@@ -15,15 +15,15 @@ namespace Diaco.Social
         public float S = 0;
         private void Awake()
         {
-            Server.OnGetTimeTeam += Server_OnGetTimeTeam;
+           // Server.OnGetTimeTeam += Server_OnGetTimeTeam;
         }
         private void OnEnable()
         {
-            //Server.OnGetTimeTeam += Server_OnGetTimeTeam;
+            Server.OnGetTimeTeam += Server_OnGetTimeTeam;
         }
         private void OnDisable()
         {
-           // Server.OnGetTimeTeam -= Server_OnGetTimeTeam;
+            Server.OnGetTimeTeam -= Server_OnGetTimeTeam;
             H = 0;
             M = 0;
             S = 0;

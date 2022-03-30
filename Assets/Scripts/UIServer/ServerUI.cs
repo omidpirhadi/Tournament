@@ -807,7 +807,9 @@ public class ServerUI : MonoBehaviour
 
                 navigationUi.ShowPopUpOnPopup("webviwe");
                 var webview = FindObjectOfType<UniWebView>();
+                webview.CleanCache();
                 webview.urlOnStart = m[1].ToString();
+                
                 webview.Load(m[1].ToString());
                 webview.Show();
                 webview.UpdateFrame();
@@ -1369,22 +1371,26 @@ public class ServerUI : MonoBehaviour
         }
     }
 
-   /* public event Action<AwardsName> OnGetAward;
-    protected void Handler_OnGetAward(AwardsName awards)
+    /* public event Action<AwardsName> OnGetAward;
+     protected void Handler_OnGetAward(AwardsName awards)
+     {
+         if (OnGetAward != null)
+         {
+             OnGetAward(awards);
+         }
+     }*/
+    private Action<float> ongetime;
+    public event Action<float> OnGetTimeTeam
     {
-        if (OnGetAward != null)
-        {
-            OnGetAward(awards);
-        }
-    }*/
-
-    public event Action<float> OnGetTimeTeam;
+        add { ongetime += value; }
+        remove { ongetime -= value; }
+    }
     protected void Handler_OnGetTimeTeam(float time)
     {
-        if (OnGetTimeTeam != null)
+        if (ongetime != null)
         {
 
-            OnGetTimeTeam(time);
+            ongetime(time);
         }
     }
    /* private Action<ProfileOtherPerson> getprofileperson;

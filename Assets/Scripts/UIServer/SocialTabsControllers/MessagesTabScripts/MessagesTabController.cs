@@ -128,7 +128,7 @@ namespace Diaco.Social
                     temp_friendcard_list.Add(card);
                     SetIndicatorCountFriendRequset(1);
                 }
-                else if (list_req[i].type == "team")
+                else if (list_req[i].type == "league")
                 {
                     var card = Instantiate(IndicatorInviteToTeamPrefab, Content);
                     var image = Server.LeagueFlagsContainer.LoadImage(list_req[i].avatar);
