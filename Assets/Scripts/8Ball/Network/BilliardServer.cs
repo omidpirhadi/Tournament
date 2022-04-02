@@ -1558,7 +1558,7 @@ namespace Diaco.EightBall.Server
         }
         private void Emit_EndTurnInRecordMode()
         {
-            if (Sibl.Area != -1)
+            if (Sibl.Area != 4)
                 soundeffectcontroll.PlaySound(5);///sib sound
             socket.Emit("EndTurn", Sibl.Area);
             Debug.Log($"<color=blue><b>EndTurn</b>{Sibl.Area}</color>");

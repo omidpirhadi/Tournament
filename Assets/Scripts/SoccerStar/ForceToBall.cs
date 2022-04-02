@@ -102,15 +102,17 @@ namespace Diaco.SoccerStar.Marble
             GetVlocity = (this.transform.position - LastPosition) / Time.deltaTime;
             ///LastVelocity = GetVlocity; 
             GetSpeed = GetVlocity.magnitude;
+            CheckMoveWithDistanceFromLastPosition();
             if (IsRotatingMarble)
                 RotateMarble();
             if (IsRotateBall)
                 RotateBall();
-            FixOverflowMovment();
+           // FixOverflowMovment();
 
-            WallHit();
+            
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
+            WallHit();
         }
 
 
@@ -569,7 +571,42 @@ namespace Diaco.SoccerStar.Marble
 
             return move;
         }
+        public float SensivityCheckMovment = 0.001f;
+        public bool CheckMoveWithDistanceFromLastPosition()
+        {
 
+
+            var dis = Vector3.Distance(transform.position, LastPosition);
+            if (dis <= SensivityCheckMovment)
+            {
+                StopMovment();
+                //Debug.Log("Stoped" );
+                return false;
+            }
+            else
+            {
+                InMove = true;
+                // Debug.Log("Moving");
+                return true;
+            }
+
+        }
+        public void StopMovment()
+        {
+            if (InMove)
+            {
+                InMove = false;
+                IsRotatingMarble = false;
+                IsRotateBall = false;
+                rigidbody.velocity = Vector3.zero;
+                rigidbody.angularVelocity = Vector3.zero;
+
+                GetVlocity = Vector3.zero;
+                GetSpeed = 0;
+
+
+            }
+        }
         private void PhysicFreeze(bool enable)
         {
             if (enable)

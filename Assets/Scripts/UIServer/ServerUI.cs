@@ -36,6 +36,10 @@ public class ServerUI : MonoBehaviour
     public void ConnectToUIServer()
     {
         Luncher = FindObjectOfType<GameLuncher>();
+        var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
+        Notification_Dialog.server = this;
+        Notification_Dialog.init_Notification();
+        
         navigationUi = FindObjectOfType<NavigationUI>();
         navigationUi.OnChangePage += ServerUI_OnChangePage;
 
@@ -817,6 +821,27 @@ public class ServerUI : MonoBehaviour
             }
 
         });
+
+        socket.On("notifications", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Notif cant Loaded: </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+                var notif = JsonUtility.FromJson<Diaco.Notification.Notification_Dialog_Body>(m[1].ToString());
+                Debug.Log("Notifi" + m[1].ToString());
+                Handler_OnNotification(notif);
+                
+            }
+
+        });
         socket.On("disconnect", (s, p, m) =>
         {
             Debug.Log("disConnection");
@@ -844,6 +869,10 @@ public class ServerUI : MonoBehaviour
     #endregion
     #region EmitServer
 
+    public void  Emit_DialogAndNotification(string eventName ="shop")
+    {
+        socket.Emit(eventName);
+    }
     public void SendRequestForEditPhone(string phonenumber)
     {
         socket.Emit("changePhone", phonenumber);
@@ -1645,6 +1674,26 @@ public class ServerUI : MonoBehaviour
         if (onchangeusername!= null)
         {
             onchangeusername(user);
+        }
+    }
+    private Action<Diaco.Notification.Notification_Dialog_Body> onnotification;
+    public event Action<Diaco.Notification.Notification_Dialog_Body> OnNotification
+    {
+        add
+        {
+            onnotification += value;
+
+        }
+        remove
+        {
+            onnotification -= value;
+        }
+    }
+    protected void Handler_OnNotification(Diaco.Notification.Notification_Dialog_Body body)
+    {
+        if (onnotification != null)
+        {
+            onnotification(body);
         }
     }
     #endregion

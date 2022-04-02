@@ -22,7 +22,7 @@ namespace Diaco.SoccerStar.Server
         public SoundEffectControll soundeffectcontrollLayer1;
         public SoundEffectControll soundeffectcontrollLayer2;
         public Transform ParentForSpawn;
-      
+        public bool MarblesInMove = false;
         public bool InRecordMode = false;
         public float TimeStep = 0.0f;
         public bool FreePlay = false;
@@ -782,13 +782,52 @@ namespace Diaco.SoccerStar.Server
            
 
         }
+        public void Invoke_CheckMovemenInSecond()
+        {
+            InvokeRepeating("CheckMovment", 1, 1);
+            Debug.Log("CheckMovmentFromServer");
+        }
+
+        /// <summary>
+        /// use in Invoke_CheckMovemenInSecond()
+        /// </summary>
+
+        private void CheckMovment()
+        {
+            /// var move = false;
+            int count_stoped = 0;
+            for (int i = 0; i < Marbles.Count; i++)
+            {
+                if (Marbles[i])
+                {
+
+
+                    if (!Marbles[i].CheckMoveWithDistanceFromLastPosition())
+                    {
+                        count_stoped++;
+
+                    }
+
+                    if (count_stoped == Marbles.Count)
+                    {
+
+                        CancelInvoke("CheckMovment");
+                        MarblesInMove = false;
+                        Debug.Log("All Marbles Stoped");
+                    }
+                }
+            }
+
+        }
         public IEnumerator SendDataMarblesMovement()
         {
-          //  Debug.Log("ForceT2222T");
+            //  Debug.Log("ForceT2222T");
+            MarblesInMove = true;
             Turn = false;
             List<MarbleMovementData> marbleMovments;
             MarbleMovementPackets movementPackets = new MarbleMovementPackets();
             string json_packet;
+            Invoke_CheckMovemenInSecond();
             do
             {
                 marbleMovments = new List<MarbleMovementData>();
@@ -831,7 +870,7 @@ namespace Diaco.SoccerStar.Server
                 yield return new WaitForSecondsRealtime(smooth);
                    //Debug.Log("SendPositions");
             }
-            while (CheckMarbleMove());
+            while (MarblesInMove);
 
 
             movementPackets.IsLastPacket = true;
@@ -1347,7 +1386,7 @@ namespace Diaco.SoccerStar.Server
         }
         private void Emit_EndTurnInRecordMode()
         {
-            if (SiblArea.Area != -1)
+            if (SiblArea.Area != 4)
                 soundeffectcontrollLayer2.PlaySoundSoccer(0);///sib sound
             socket.Emit("EndTurn", SiblArea.Area);
             CancelInvoke("CheckMOVE");
