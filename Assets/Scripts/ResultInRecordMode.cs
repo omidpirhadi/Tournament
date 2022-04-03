@@ -11,7 +11,7 @@ public class ResultInRecordMode : MonoBehaviour
     public Text UserName;
     public Text Rank;
     public Text BestRecord;
-    public Text Time;
+    public  RTLTMPro.RTLTextMeshPro Context;
     public Button Btn_Accept;
     public void Set(ResualtInRecordModeData data)
     {
@@ -20,7 +20,7 @@ public class ResultInRecordMode : MonoBehaviour
         UserName.text = data.userName;
         Rank.text = data.rank.ToString();
         BestRecord.text = data.bestPoint.ToString();
-        Time.text = data.time;
+        Context.text = data.context;
         Btn_Accept.onClick.AddListener(AcceptClick);
     }
     private void AcceptClick()
@@ -36,5 +36,5 @@ public struct ResualtInRecordModeData
     public string userName;
     public int rank;
     public int bestPoint;
-    public string time;
+    public string context;
 }

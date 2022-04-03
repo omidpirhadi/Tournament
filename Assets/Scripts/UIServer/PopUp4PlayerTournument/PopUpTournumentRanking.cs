@@ -25,7 +25,7 @@ namespace Diaco.UI.PopupTournumentRanking
             server = FindObjectOfType<ServerUI>();
             server.OnStartTournument += Server_OnStartTournument;
             btn_Leave.onClick.AddListener(() => {
-                server.RequestCompetitionCommand(ID, 3);
+                server.RequestLeaveCompetition();
             });
         }
 

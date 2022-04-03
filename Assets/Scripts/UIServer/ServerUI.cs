@@ -39,7 +39,11 @@ public class ServerUI : MonoBehaviour
         var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
         Notification_Dialog.server = this;
         Notification_Dialog.init_Notification();
-        
+
+        var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
+        PushNotification.server = this;
+        PushNotification.InstantiateEvent();
+
         navigationUi = FindObjectOfType<NavigationUI>();
         navigationUi.OnChangePage += ServerUI_OnChangePage;
 
@@ -57,7 +61,7 @@ public class ServerUI : MonoBehaviour
 
             Debug.Log($"<color=blue><b>Connection And ReadToken</b></color>");
         });
-        socket.On("reconnect",(s,p,m)=>{ Debug.Log("reconnect"); });
+        socket.On("reconnect", (s, p, m) => { Debug.Log("reconnect"); });
         socket.On("reconnecting", (s, p, m) => { Debug.Log("reconnecting"); });
         socket.On("wrong-token", (s, p, m) =>
         {
@@ -66,7 +70,8 @@ public class ServerUI : MonoBehaviour
             SplashScreen.SetActive(false);
             Debug.Log($"<color=red><b>Wrong Token</b></color>");
         });
-        socket.On("loginError", (S, p, m) => {
+        socket.On("loginError", (S, p, m) =>
+        {
 
             LoginError.SetActive(true);
 
@@ -93,13 +98,13 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-           // Debug.Log("VVVVVVVVVV");
+            // Debug.Log("VVVVVVVVVV");
             BODY = new BODY();
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
 
-            if (BODY.inGame.id!= "" && intergation == 0)
+            if (BODY.inGame.id != "" && intergation == 0)
             {
                 Debug.Log("InGame");
                 if (BODY.inGame.gameType == "soccer")
@@ -390,7 +395,7 @@ public class ServerUI : MonoBehaviour
                 Debug.Log("Recive League Award");
                 navigationUi.StopLoadingPage();
             }
-            
+
         });
 
 
@@ -406,9 +411,9 @@ public class ServerUI : MonoBehaviour
             {
                 navigationUi.ShowPopUp("chat");
                 var data = JsonUtility.FromJson<Diaco.UI.Chatbox.ChatBoxData>(m[1].ToString());
-                
-                
-                
+
+
+
 
                 var chatbox_popup = FindObjectOfType<Diaco.UI.Chatbox.ChatBoxController>();
 
@@ -470,7 +475,7 @@ public class ServerUI : MonoBehaviour
             navigationUi.StopLoadingPage();
         });
 
-        
+
 
         socket.On("information", (s, p, m) =>
         {
@@ -719,7 +724,7 @@ public class ServerUI : MonoBehaviour
             else
             {
                 BODY.profile.description = m[1].ToString();
-             
+
                 FindObjectOfType<Diaco.UI.Profile.ProfilePopup>().InitializeProfile();
                 navigationUi.StopLoadingPage();
                 Debug.Log("EditedDescription");
@@ -770,14 +775,14 @@ public class ServerUI : MonoBehaviour
 
         socket.On("edit-username", (s, p, m) =>
         {
-            
+
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
 
                 // popup.AllowUsername = false;
                 Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
                 Handler_OnChangeUsername(m[1].ToString());
-              
+
             }
             else
             {
@@ -813,7 +818,7 @@ public class ServerUI : MonoBehaviour
                 var webview = FindObjectOfType<UniWebView>();
                 webview.CleanCache();
                 webview.urlOnStart = m[1].ToString();
-                
+
                 webview.Load(m[1].ToString());
                 webview.Show();
                 webview.UpdateFrame();
@@ -838,13 +843,94 @@ public class ServerUI : MonoBehaviour
                 var notif = JsonUtility.FromJson<Diaco.Notification.Notification_Dialog_Body>(m[1].ToString());
                 Debug.Log("Notifi" + m[1].ToString());
                 Handler_OnNotification(notif);
-                
+
             }
 
         });
+        socket.On("push-notifications", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Notif cant Loaded: </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+                //FindObjectOfType<Diaco.Notification.PushNotification>().InstantiateEvent();
+                var data = JsonUtility.FromJson<Diaco.Notification.PushNotifcationsData>(m[1].ToString());
+                
+                Handler_OnPushNotification(data);
+                Debug.Log("Notifi" + m[1].ToString());
+            }
+
+        });
+        socket.On("push-notification-cancel", (s, p, m) =>
+        {
+
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Notif cant Loaded: </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+               
+
+                Handler_OnPushNotificationCancel((int)m[1]);
+                Debug.Log("CancelNotification" + m[1].ToString());
+            }
+
+        });
+        socket.On("recordmode_result", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Cant Load RecordModePopup </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+                navigationUi.ShowPopUp("awardrecordmode");
+                var data = JsonUtility.FromJson<Diaco.UI.PopupRecordModeResult.ResualtRecordModeData>(m[1].ToString());
+                var popup = FindObjectOfType<Diaco.UI.PopupRecordModeResult.PopupAwardRecordMode>();
+                popup.Set(data);
+                Debug.Log("<color=green Load RecordModePopup : </color>");
+
+            }
+        });
+        socket.On("league_result", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Cant Load Award League Popup </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+                navigationUi.ShowPopUp("awardleague");
+                var data = JsonUtility.FromJson<Diaco.UI.PopupAwardLeague.AwardData>(m[1].ToString());
+                var popup = FindObjectOfType<Diaco.UI.PopupAwardLeague.PopUpAwardLeague>();
+                popup.Set(data);
+                Debug.Log("<color=green Load Award League Popup : </color>");
+
+            }
+        });
         socket.On("disconnect", (s, p, m) =>
         {
-            Debug.Log("disConnection");
+        Debug.Log("disConnection");
         });
 
     }
@@ -1197,6 +1283,12 @@ public class ServerUI : MonoBehaviour
         socket.Emit("competition-command", id, commandindex);
         navigationUi.StartLoadingPageShow();
         Debug.Log("CompetitionCommand::" + commandindex);
+    }
+    public void RequestLeaveCompetition()//
+    {
+        socket.Emit("competition-leave");
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Request Competition Leave" );
     }
     public void RequestGoToTableRanking()
     {
@@ -1694,6 +1786,48 @@ public class ServerUI : MonoBehaviour
         if (onnotification != null)
         {
             onnotification(body);
+        }
+    }
+
+    private Action<Diaco.Notification.PushNotifcationsData> onpushnotification;
+    public event Action<Diaco.Notification.PushNotifcationsData> OnPushNotification
+    {
+        add
+        {
+            onpushnotification += value;
+
+        }
+        remove
+        {
+            onpushnotification -= value;
+        }
+    }
+    protected void Handler_OnPushNotification(Diaco.Notification.PushNotifcationsData body)
+    {
+        if (onpushnotification != null)
+        {
+            onpushnotification(body);
+        }
+    }
+
+    private Action<int> onpushnotificationcancle;
+    public event Action<int> OnPushNotificationCancle
+    {
+        add
+        {
+            onpushnotificationcancle += value;
+
+        }
+        remove
+        {
+            onpushnotificationcancle -= value;
+        }
+    }
+    protected void Handler_OnPushNotificationCancel(int id)
+    {
+        if (onpushnotificationcancle != null)
+        {
+            onpushnotificationcancle(id);
         }
     }
     #endregion

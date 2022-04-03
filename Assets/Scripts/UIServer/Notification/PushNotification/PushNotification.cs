@@ -10,6 +10,7 @@ namespace Diaco.Notification
 
     public class PushNotification : MonoBehaviour
     {
+        public ServerUI server;
         public  string ChannelID;
         public string ChannelName;
         public string ChannelDescription;
@@ -20,10 +21,23 @@ namespace Diaco.Notification
         private AndroidNotificationChannel channel;
         private AndroidNotification notification;
 
-        public void Awake()
+        public void InstantiateEvent()
         {
-            CreateNotificationChannel();
+          CreateNotificationChannel();
+            server.OnPushNotification += Server_OnPushNotification;
+            server.OnPushNotificationCancle += Server_OnPushNotificationCancle;
         }
+
+        private void Server_OnPushNotificationCancle(int id)
+        {
+            CancleNotification(id);
+        }
+
+        private void Server_OnPushNotification(PushNotifcationsData data)
+        {
+            SendNotifications(data);
+        }
+
         public void CreateNotificationChannel()
         {
             channel = new AndroidNotificationChannel();
@@ -59,6 +73,7 @@ namespace Diaco.Notification
         }
                 
     }
+    [Serializable]
     public struct PushNotificationBody
     {
         public int id;
@@ -66,6 +81,7 @@ namespace Diaco.Notification
         public string context;
         public double addMinutes;
     }
+    [Serializable]
     public struct PushNotifcationsData
     {
         public List<PushNotificationBody> notifications;
