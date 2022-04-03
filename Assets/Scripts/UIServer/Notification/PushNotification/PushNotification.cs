@@ -70,6 +70,7 @@ namespace Diaco.Notification
         public void CancleNotification(int id)
         {
             AndroidNotificationCenter.CancelNotification(id);
+            Debug.Log("push cancel:" + id);
         }
                 
     }

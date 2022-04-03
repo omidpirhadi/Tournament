@@ -881,9 +881,9 @@ public class ServerUI : MonoBehaviour
             }
             else
             {
-               
 
-                Handler_OnPushNotificationCancel((int)m[1]);
+
+                Handler_OnPushNotificationCancel(Convert.ToInt32(m[1]));
                 Debug.Log("CancelNotification" + m[1].ToString());
             }
 
