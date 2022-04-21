@@ -27,8 +27,19 @@ public class TempPlayerControll : MonoBehaviour
     [SerializeField] private Vector3 firstouch, secondtouch;
     [SerializeField] private bool Touch2Clicked = false;
     [SerializeField] private bool rotateType2;
+   [SerializeField] private NavigationUI ui;
+   [SerializeField] private bool UIActive = false;
 
+    void Start()
+    {
+        ui = FindObjectOfType<NavigationUI>();
+        ui.OnUIActive += Ui_OnUIActive;
+    }
 
+    private void Ui_OnUIActive(bool active)
+    {
+        UIActive = active;
+    }
 
     void Update()
     {
@@ -39,7 +50,7 @@ public class TempPlayerControll : MonoBehaviour
    
     public void TouchControll()
     {
-        if (Input.touchCount == 1)
+        if (Input.touchCount > 0 && !UIActive)
         {
 
             if (Input.GetTouch(0).phase == TouchPhase.Began)

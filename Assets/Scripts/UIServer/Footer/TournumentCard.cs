@@ -37,9 +37,13 @@ namespace Diaco.UI.TournumentCard
                 }
                 else
                 {
-                    if (Type == "competition")
+                    if (Type == "competition" )
                     {
-                        server.RequestCompetitionInfo(id);
+                        server.RequestCompetitionInfo(Id);
+                    }
+                    else if(Type==  "league")
+                    {
+                        server.GetLeagueInfo(Id);
                     }
                 }
                 
@@ -106,7 +110,9 @@ namespace Diaco.UI.TournumentCard
             Timer.text = H + ":" + M + ":" + S;
             if (H == 0 && M == 00)
             {
-                GetComponent<SoundEffectControll>().PlaySound(0);
+
+                if (GetComponent<SoundEffectControll>())
+                    GetComponent<SoundEffectControll>().PlaySound(0);
             }
             if (S == 0 && M == 0 && H == 0)
             {

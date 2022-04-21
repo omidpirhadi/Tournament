@@ -19,11 +19,13 @@ public class ResultGameSoccer : MonoBehaviour
     public Image PlayerRightCostType;
 
     public Text PlayerOneUserName;
+    public Text GoalLeft;
     public Text PlayerOneCup;
     public Text PlayerOneCoin;
     public Text PlayerOneXp;
 
     public Text PlayerTwoUserName;
+    public Text GoalRight;
     public Text PlayerTwoCup;
     public Text PlayerTwoCoin;
     public Text PlayerTwoXp;
@@ -94,10 +96,13 @@ public class ResultGameSoccer : MonoBehaviour
                 Server.imageContainer.LoadImage(result.loser.avatar),
 
                 result.winner.userName,
+                result.winner.goalcount,
                 result.winner.cup,
                 result.winner.coin,
                 result.winner.xp,
                 result.loser.userName,
+                result.loser.goalcount,
+            
                 result.loser.cup,
                 result.loser.coin,
                 result.loser.xp,
@@ -116,10 +121,12 @@ public class ResultGameSoccer : MonoBehaviour
                Server.imageContainer.LoadImage(result.loser.avatar),
                Server.imageContainer.LoadImage(result.winner.avatar),
                 result.loser.userName,
+                result.loser.goalcount,
                 result.loser.cup,
                 result.loser.coin,
                 result.loser.xp,
                 result.winner.userName,
+            result.winner.goalcount,
                 result.winner.cup,
                 result.winner.coin,
                 result.winner.xp,
@@ -164,7 +171,7 @@ public class ResultGameSoccer : MonoBehaviour
             PlayerRightCostType.sprite = Gem;
         }
     }
-    public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername, string leftCup,string leftcoin, string leftXP, string rightusername, string rightCup, string rightcoin, string rightXP, string rank)
+    public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername,int leftgoal, string leftCup,string leftcoin, string leftXP, string rightusername,int rightgoal, string rightCup, string rightcoin, string rightXP, string rank)
     {
         if (Winner)
         {
@@ -177,10 +184,13 @@ public class ResultGameSoccer : MonoBehaviour
             WinnerBackground.enabled = false;
             LoserBackground.enabled = true;
         }
+        GoalLeft.text = leftgoal.ToString();
+        GoalRight.text = rightgoal.ToString();
         PlayerOne.sprite = leftavatar;
         PlayerTwo.sprite = rightavatar;
 
         PlayerOneUserName.text = leftusername;
+       
         PlayerOneCup.text = leftCup;
         PlayerOneCoin.text = leftcoin;
         PlayerOneXp.text = leftXP;

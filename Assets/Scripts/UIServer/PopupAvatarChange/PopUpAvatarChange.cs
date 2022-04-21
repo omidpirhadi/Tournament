@@ -39,10 +39,10 @@ namespace Diaco.PopupAvatar
             for (int i = 0; i < avatars.Count; i++)
             {
                 var element = Instantiate(avatarElement, Grid);
-                if (server.BODY.profile.avatar == Avatars.imageContainers[i].name)
-                    element.Set(Avatars.LoadImage(Avatars.imageContainers[i].name), true, true, Avatars.imageContainers[i].name);
+                if (server.BODY.profile.avatar == avatars[i])
+                    element.Set(Avatars.LoadImage(avatars[i]), true, true, avatars[i]);
                 else
-                    element.Set(Avatars.LoadImage(Avatars.imageContainers[i].name), true, false, Avatars.imageContainers[i].name);
+                    element.Set(Avatars.LoadImage(avatars[i]), true, false, avatars[i]);
 
                 ListElements.Add(element.gameObject);
             }

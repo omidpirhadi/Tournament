@@ -25,7 +25,7 @@ public class ServerUI : MonoBehaviour
     public Socket socket;
     public SocketManager socketmanager;
     public GameLuncher Luncher;
-    public Diaco.Notification.NotificationPopUp NotificationPopUp;
+  //  public Diaco.Notification.NotificationPopUp NotificationPopUp;
     public NavigationUI navigationUi;
     public UIRegisterOnServer UIInFooterAndHeader;
 
@@ -38,7 +38,7 @@ public class ServerUI : MonoBehaviour
         Luncher = FindObjectOfType<GameLuncher>();
         var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
         Notification_Dialog.server = this;
-        Notification_Dialog.init_Notification();
+        Notification_Dialog.init_Notification_menu();
 
         var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
         PushNotification.server = this;
@@ -98,19 +98,19 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-            // Debug.Log("VVVVVVVVVV");
-            BODY = new BODY();
+           // BODY = new BODY();
+            Debug.Log("VVVVVVVVVV");
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
-
+           
             if (BODY.inGame.id != "" && intergation == 0)
             {
                 Debug.Log("InGame");
                 if (BODY.inGame.gameType == "soccer")
                 {
                     //navigationUi.GetComponent<SceneManagers>().loadlevel("SoccerGame");
-
+                    Debug.Log("InGame22222");
                     if (BODY.inGame.namespaceServer == "_record")
                     {
                         Luncher.SetNameSpaceServer(2, BODY.inGame.namespaceServer);
@@ -121,13 +121,14 @@ public class ServerUI : MonoBehaviour
                     {
                         Luncher.SetNameSpaceServer(0, BODY.inGame.namespaceServer);
                         Luncher.SwitchScene(0);
+
                     }
 
                 }
                 else if (BODY.inGame.gameType == "billiard")
                 {
                     // navigationUi.GetComponent<SceneManagers>().loadlevel("8ballgame");
-
+                    Debug.Log("InGame5555");
                     if (BODY.inGame.namespaceServer == "_record")
                     {
                         Luncher.SetNameSpaceServer(3, BODY.inGame.namespaceServer);
@@ -146,9 +147,7 @@ public class ServerUI : MonoBehaviour
             }
 
 
-            UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
-            SetElementInHeaderAndFooter();
-            Handler_OnCreateTeamCompeleted();
+
 
             if (loadedpage == false)
             {
@@ -161,11 +160,15 @@ public class ServerUI : MonoBehaviour
                 Header.SetActive(true);
                 loadedpage = true;
             }
-            navigationUi.StopLoadingPage();
+            Debug.Log("main-menu called"+json);
 
+            UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
+            SetElementInHeaderAndFooter();
+            Handler_OnCreateTeamCompeleted();
 
             Handler_OnGameBodyUpdate();
-            Debug.Log("main-menu called");
+            navigationUi.StopLoadingPage();
+            
         });
 
         socket.On("search-friend", (s, p, m) =>
@@ -227,6 +230,15 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
+
+        socket.On("open-lobby", (s, p, m) =>
+        {
+            BODY.guidContext = m[0].ToString();
+            navigationUi.CloseAllPopUp();
+            navigationUi.SwitchUI("findplayer");
+            Debug.Log("Open Lobby Game");
+
+        });
         socket.On("join-lobby", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -258,26 +270,8 @@ public class ServerUI : MonoBehaviour
                 Debug.Log("JoinGame");
             }
         });
-        socket.On("playWithFriend", (s, p, m) =>
-        {
-            if (Convert.ToBoolean(m[0]) == true)///Error
-            {
-                Debug.Log("Error:" + m[1].ToString());
-            }
-            else
-            {
-                var playwithfriend = JsonUtility.FromJson<PlayWithFriend>(m[1].ToString());
-
-                NotificationPopUp.NotificationInviteMatchShow(
-               (_GameLobby)playwithfriend.game,
-               (_SubGame)playwithfriend.subgame,
-               PersianFix.Persian.Fix("شمارا دعوت کرده" + (_SubGame)playwithfriend.game, 255),
-               playwithfriend.friend);
-
-                Debug.Log(playwithfriend.friend + "r/n/" + playwithfriend.game + "/r/n" + playwithfriend.subgame);
-            }
-        });
-        socket.On("league-update", (s, p, m) => { });///****///
+       
+        
         socket.On("create-league", (s, p, m) =>
         {
 
@@ -470,11 +464,16 @@ public class ServerUI : MonoBehaviour
                 var reqs = JsonUtility.FromJson<InRequsets>(m[1].ToString());
                 BODY.social.inRequests = reqs.inRequests.Count;
                 Handler_OnGetMessages(reqs);
-                Debug.Log("GetMessages");
+                Debug.Log("Update Messages On Social Tab");
             }
             navigationUi.StopLoadingPage();
         });
-
+        ////////
+        //// ربطی  ب من ننداره فرشاد زده
+       socket.On("update-event", (s, p, m) =>
+        {
+            socket.Emit(m[0].ToString());
+        });
 
 
         socket.On("information", (s, p, m) =>
@@ -1021,11 +1020,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("Send Get league Request");
     }
-    public void SearchTeam(string tagId)
+    public void SearchLeague(string tagId)
     {
-        socket.Emit("get-teams", tagId);
+        socket.Emit("get-league", tagId);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("SearchTeam :" + tagId);
+        Debug.Log("SearchLeague :" + tagId);
     }
     public void GetLeagueInfo(string idteam)
     {
@@ -1314,6 +1313,20 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("RequestReports");
 
+    }
+    public void RequestShowTutorialInWebview()
+    {
+
+        socket.Emit("tutorial");
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Send Request For Show Tutorial");
+    }
+    public void RequestAds()
+    {
+
+        socket.Emit("ads");
+        navigationUi.StartLoadingPageShow();
+        Debug.Log("Send Request For Show ads");
     }
     #endregion
     #region Function
@@ -1789,6 +1802,8 @@ public class ServerUI : MonoBehaviour
         }
     }
 
+
+
     private Action<Diaco.Notification.PushNotifcationsData> onpushnotification;
     public event Action<Diaco.Notification.PushNotifcationsData> OnPushNotification
     {
@@ -1809,6 +1824,10 @@ public class ServerUI : MonoBehaviour
             onpushnotification(body);
         }
     }
+
+
+
+
 
     private Action<int> onpushnotificationcancle;
     public event Action<int> OnPushNotificationCancle

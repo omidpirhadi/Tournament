@@ -166,7 +166,8 @@ namespace Diaco.EightBall.Structs
         public string userName;
         public string avatar;
         public List<string> friends;
-       
+        public int goalcount;
+        
         public string rank;
         public string coin;
         public string cup;

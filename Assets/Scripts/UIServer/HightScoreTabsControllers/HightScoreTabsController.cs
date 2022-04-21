@@ -75,7 +75,7 @@ namespace Diaco.HightScoreTab
             {
                 var card = Instantiate(CardWithElementCUP, Content_CUPTab);
                 var image = Server.AvatarContainer.LoadImage(players.players[i].avatar);     
-                card.SetCardCUP(image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].cup.ToString());
+                card.SetCardCUP((i+1) ,image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].cup.ToString());
                 temp_CardWithCup.Add(card);
             }
         }
@@ -86,7 +86,7 @@ namespace Diaco.HightScoreTab
             {
                 var card = Instantiate(CardWithElementGEM, Content_CUPGEM);
                 var image = Server.AvatarContainer.LoadImage(players.players[i].avatar);
-                card.SetCardGEM(image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].gem.ToString());
+                card.SetCardGEM((i + 1),image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].gem.ToString());
                 temp_CardWithGem.Add(card);
             }
         }

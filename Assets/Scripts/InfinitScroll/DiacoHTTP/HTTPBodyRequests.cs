@@ -31,7 +31,7 @@ namespace Diaco.HTTPBody
     {
         public string id;
         public string name;
-        public string type; // competition , League
+        public string type; // competition , league
         public int time;
        
     }
@@ -249,6 +249,7 @@ namespace Diaco.HTTPBody
         public string withdraw;
         public string userName;
         public string phone;
+        public string guidContext;
         public GameLock soccerGameLock;
         public GameLock billiardGameLock;
         public InGame inGame;

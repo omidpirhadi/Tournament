@@ -21,7 +21,7 @@ namespace Diaco.Lobby
         public Text OpponentName;
 
         public Button CancelLobbyButton;
-        public Text Note;
+        public RTLTMPro.RTLTextMeshPro GuidContext;
         private Coroutine lobbyCoroutine;
         private AsyncOperation operationLoadScene;
         [SerializeField] private Diaco.HTTPBody.Opponent opponentData;
@@ -43,7 +43,7 @@ namespace Diaco.Lobby
         {
             Luncher = FindObjectOfType<GameLuncher>();
             Server.OnOpponentFind += Server_OnOpponentFind;
-
+            GuidContext.text = Server.BODY.guidContext;
             soundeffectcontroll = GetComponent<SoundEffectControll>();
             CancelLobbyButton.onClick.AddListener(() => { CancelLobby(); });
             ///GameLobby = NavigationUi.GameLobbyType;
@@ -75,14 +75,14 @@ namespace Diaco.Lobby
             GetComponent<AudioSource>().loop = true;
             soundeffectcontroll.PlaySoundMenu(0);
             SetDataPlayer();
-            if (NavigationUi.GameLobby == _GameLobby.Soccer)
+           /* if (NavigationUi.GameLobby == _GameLobby.Soccer)
             {
                 Server.RequestFindOpponent(0, (short)NavigationUi.SubGame);
             }
             else
             {
                 Server.RequestFindOpponent(1, (short)NavigationUi.SubGame);
-            }
+            }*/
             var animation_Coroutine = StartCoroutine(AnimationProfileOpponent());
             yield return new WaitForSecondsRealtime(3.00f);
             ///   GameLobby = NavigationUi.GameLobbyType;

@@ -11,7 +11,7 @@ namespace Diaco.Social
     {
         public ServerUI Server;
         public NavigationUI navigationui;
-        public DialogDeleteMessage DialogDelete;
+       // public DialogDeleteMessage DialogDelete;
         private enum TypeCardMessage { ChatRequest , FriendRequest, TeamInvitRequset}
        // public Diaco.UI.Chatbox.ChatBoxController ChatBox;
         [FoldoutGroup("MessageTabElements")]
@@ -104,9 +104,10 @@ namespace Diaco.Social
                         },
                         () => {
                             //Server.RejectRequest("chat", card.UserNameIndicator.text);
-                            DialogDelete.EmitUserOrTeamName = card.UserID;
-                            DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.Chat;
-                            DialogDelete.ShowDialog();
+                            ///  DialogDelete.EmitUserOrTeamName = card.UserID;
+                            ///  DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.Chat;
+                            ///   DialogDelete.ShowDialog();
+                            Server.RejectRequest("chat", card.UserID);
                         }
                         );
                     temp_chatcard_list.Add(card);
@@ -120,10 +121,10 @@ namespace Diaco.Social
                     card.SetCard(image, list_req[i].from, list_req[i].cup.ToString(), list_req[i].isOnline,
                         () => { Server.AcceptRequest("friend", card.UserID); }, 
                         () => {
-                           // Server.RejectRequest("friend", card.UserNameIndicator.text);
-                            DialogDelete.EmitUserOrTeamName = card.UserID;
-                            DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.RequestFriend;
-                            DialogDelete.ShowDialog();
+                           Server.RejectRequest("friend", card.UserID);
+                         ///   DialogDelete.EmitUserOrTeamName = card.UserID;
+                         ///   DialogDelete.messagesType = DialogDeleteMessage.DeleteMessagesType.RequestFriend;
+                         ///  DialogDelete.ShowDialog();
                         });
                     temp_friendcard_list.Add(card);
                     SetIndicatorCountFriendRequset(1);

@@ -8,17 +8,33 @@ namespace Diaco.Notification
 
     public class Notification_Dialog_Manager : MonoBehaviour
     {
+        
         public ServerUI server;
+        public Diaco.SoccerStar.Server.ServerManager server_soccer;
+        public Diaco.EightBall.Server.BilliardServer server_billiard;
+
         public NotificationPallet notificationPallet;
         public DialogPallet dialogPallet;
         public TextPallet textPallet;
-        public void init_Notification()
+        public void init_Notification_menu()
         {
 
-
+            ClearEvent();
             server.OnNotification += Server_OnNotification;
         }
-   
+
+        public void init_Notification_soccer()
+        {
+
+            ClearEvent();
+            server_soccer.OnNotification += Server_OnNotification;
+        }
+        public void init_Notification_billiard()
+        {
+
+            ClearEvent();
+            server_billiard.OnNotification += Server_OnNotification;
+        }
 
         private void Server_OnNotification(Notification_Dialog_Body body)
         {
@@ -36,13 +52,20 @@ namespace Diaco.Notification
                 textPallet.SetTextPallet(body);
             }
         }
+
+        private void ClearEvent()
+        {
+            if (server)
+                server.OnNotification -= Server_OnNotification;
+            if (server_soccer)
+                server_soccer.OnNotification -= Server_OnNotification;
+            if (server_billiard)
+                server_billiard.OnNotification -= Server_OnNotification;
+        }
     }
 
 
 
-    public enum AlartType { Notification = 0, Dialog = 1 ,RedText = 2}
-    public enum NotificationType { TwoButton = 0 , HaveImage = 1}
-    public enum DialogType { Alart_Ok = 0, Alart_YesNo = 1, Alart_Edit = 2 }
 
     
     public struct Notification_Dialog_Body

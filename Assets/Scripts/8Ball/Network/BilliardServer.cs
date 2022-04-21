@@ -277,6 +277,11 @@ namespace Diaco.EightBall.Server
         #region Server_On
         public void OnInitializeServer()
         {
+            var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
+            Notification_Dialog.server_billiard = this;
+            Notification_Dialog.init_Notification_billiard();
+
+
             SocketOptions options = new SocketOptions();
             options.AutoConnect = true;
 
@@ -291,6 +296,26 @@ namespace Diaco.EightBall.Server
                 BadConnectionShow(false);
                 Time.timeScale = 2;
                 Debug.Log("Connection");
+            });
+            socket.On("notifications", (s, p, m) =>
+            {
+
+                if (Convert.ToBoolean(m[0]) == true)///Error
+                {
+
+                    // popup.AllowUsername = false;
+                    Debug.Log("<color=red>Error: Notif cant Loaded: </color>" + m[1].ToString());
+                    ///Handler_OnChangeUsername(m[1].ToString());
+
+                }
+                else
+                {
+                    var notif = JsonUtility.FromJson<Diaco.Notification.Notification_Dialog_Body>(m[1].ToString());
+                    Debug.Log("Notifi" + m[1].ToString());
+                    Handler_OnNotification(notif);
+
+                }
+
             });
             if (InRecordMode == false)
             {
@@ -2244,6 +2269,28 @@ namespace Diaco.EightBall.Server
                 enableboarderpocket(show, id);
             }
 
+        }
+
+
+        private Action<Diaco.Notification.Notification_Dialog_Body> onnotification;
+        public event Action<Diaco.Notification.Notification_Dialog_Body> OnNotification
+        {
+            add
+            {
+                onnotification += value;
+
+            }
+            remove
+            {
+                onnotification -= value;
+            }
+        }
+        protected void Handler_OnNotification(Diaco.Notification.Notification_Dialog_Body body)
+        {
+            if (onnotification != null)
+            {
+                onnotification(body);
+            }
         }
         #endregion
     }

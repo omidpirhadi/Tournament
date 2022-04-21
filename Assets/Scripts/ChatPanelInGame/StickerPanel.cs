@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class StickerPanel : MonoBehaviour
 {
+    public _GameLobby Game;
     public List<Sticker> Stickers;
     public ElementSticker Elementsticker;
     public Transform Grid;
 
-    private List<GameObject> liststicker;
+    private List<GameObject> liststicker = new List<GameObject>();
+
 
     private Texture2D texture;
 
@@ -20,14 +22,14 @@ public class StickerPanel : MonoBehaviour
     }          
     private void OnEnable()
     {
-        liststicker = new List<GameObject>();
-        if (FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>())
+      //  liststicker = new List<GameObject>();
+        if (Game ==  _GameLobby.Soccer)
         {
 
             FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_GetSticker();
             FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().GetStickers += ChatInGame_GetStickers;
         }
-        else if (FindObjectOfType<Diaco.EightBall.Server.BilliardServer>())
+        else if (Game == _GameLobby.Billiard)
         {
             FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_GetSticker();
             FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().GetStickers += ChatInGame_GetStickers;
@@ -40,11 +42,11 @@ public class StickerPanel : MonoBehaviour
 
     private void OnDisable()
     {
-        if (FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>())
+        if (Game == _GameLobby.Soccer)
         {
             FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().GetStickers -= ChatInGame_GetStickers;
         }
-        else if (FindObjectOfType<Diaco.EightBall.Server.BilliardServer>())
+        else if (Game == _GameLobby.Billiard)
         {
            
             FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().GetStickers -= ChatInGame_GetStickers;
@@ -58,9 +60,9 @@ public class StickerPanel : MonoBehaviour
     }
     public void InitChatInGame(StickerData data)
     {
-        if (liststicker.Count > 0)
+        
             Clear();
-        liststicker = new List<GameObject>();
+        
 
         for (int i = 0; i < data.stickers.Length; i++)
         {
@@ -79,6 +81,7 @@ public class StickerPanel : MonoBehaviour
         {
             Destroy(liststicker[i]);
         }
+        liststicker.Clear();
         Debug.Log("Clear");
     }
 }

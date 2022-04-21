@@ -14,9 +14,9 @@ namespace Diaco.UI.TeamInfo
         public CardPlayerTeamInfo PlayerCard;
         public RectTransform Content;
 
-        public DialogYesNo Dialog_Change_Privacy;
-        public DialogYesNo Dialog_LeaveTeam;
-        public DialogYesNo Dialog_JoinTeam;
+        //public DialogYesNo Dialog_Change_Privacy;
+     //   public DialogYesNo Dialog_LeaveTeam;
+      ///  public DialogYesNo Dialog_JoinTeam;
 
 
 
@@ -65,14 +65,14 @@ namespace Diaco.UI.TeamInfo
 
 
 
-            Dialog_Change_Privacy.OnClickYes += Dialog_Change_Privacy_OnClickYes;
-            Dialog_JoinTeam.OnClickYes += Dialog_JoinTeam_OnClickYes;
-            Dialog_LeaveTeam.OnClickYes += Dialog_LeaveTeam_OnClickYes;
+            //Dialog_Change_Privacy.OnClickYes += Dialog_Change_Privacy_OnClickYes;
+           /// Dialog_JoinTeam.OnClickYes += Dialog_JoinTeam_OnClickYes;
+          //  Dialog_LeaveTeam.OnClickYes += Dialog_LeaveTeam_OnClickYes;
 
 
             Server.OnGetTeamInfo += Server_OnGetTeamInfo;
 
-            Private_button.onClick.AddListener(() =>
+           /* Private_button.onClick.AddListener(() =>
             {
                 if (StatePrivacyPublic == true)
                     Dialog_Change_Privacy.ShowDialog(PersianFix.Persian.Fix("تیم خصوصی شود؟", 255));
@@ -84,7 +84,8 @@ namespace Diaco.UI.TeamInfo
                 if (StatePrivacyPublic == false)
                     Dialog_Change_Privacy.ShowDialog(PersianFix.Persian.Fix("تیم عمومی شود؟", 255));
 
-            });
+            });*/
+
             AwardButton.onClick.AddListener(() =>
             {
                 Server.GetAwardsLeague(TeamTag.text);
@@ -92,11 +93,17 @@ namespace Diaco.UI.TeamInfo
             });
             JoinButton.onClick.AddListener(() =>
             {
-                Dialog_JoinTeam.ShowDialog();
+                // Dialog_JoinTeam.ShowDialog();
+                Server.JoinToTeam(TeamTag.text);
+
+                JoinButton.gameObject.SetActive(false);
+                navigationui.ClosePopUp("teaminfo");
 
             });
             LeaveTeamButton.onClick.AddListener(() => {
-                Dialog_LeaveTeam.ShowDialog();
+                // Dialog_LeaveTeam.ShowDialog();
+                Server.LeaveTheTeam();
+                navigationui.ClosePopUp("teaminfo");
             });
 
 
@@ -110,9 +117,9 @@ namespace Diaco.UI.TeamInfo
         {
             Server.OnGetTeamInfo -= Server_OnGetTeamInfo;
 
-            Dialog_Change_Privacy.OnClickYes -= Dialog_Change_Privacy_OnClickYes;
-            Dialog_JoinTeam.OnClickYes -= Dialog_JoinTeam_OnClickYes;
-            Dialog_LeaveTeam.OnClickYes -= Dialog_LeaveTeam_OnClickYes;
+           // Dialog_Change_Privacy.OnClickYes -= Dialog_Change_Privacy_OnClickYes;
+           // Dialog_JoinTeam.OnClickYes -= Dialog_JoinTeam_OnClickYes;
+           //// Dialog_LeaveTeam.OnClickYes -= Dialog_LeaveTeam_OnClickYes;
 
             Private_button.onClick.RemoveAllListeners();
             Public_button.onClick.RemoveAllListeners();
@@ -125,24 +132,24 @@ namespace Diaco.UI.TeamInfo
         }
 
 
-        private void Dialog_LeaveTeam_OnClickYes()
+      /*  private void Dialog_LeaveTeam_OnClickYes()
         {
             Server.LeaveTheTeam();
             navigationui.ClosePopUp("teaminfo");
-        }
+        }*/
 
-        private void Dialog_JoinTeam_OnClickYes()
+      /*  private void Dialog_JoinTeam_OnClickYes()
         {
             Server.JoinToTeam(TeamTag.text);
 
             JoinButton.gameObject.SetActive(false);
             navigationui.ClosePopUp("teaminfo");
-        }
+        }*/
 
-        private void Dialog_Change_Privacy_OnClickYes()
+      /*private void Dialog_Change_Privacy_OnClickYes()
         {
             PrivacyToggleControll();
-        }
+        }*/
 
 
         private void Server_OnGetTeamInfo(Diaco.HTTPBody.TeamInfo teamInfos)
@@ -297,7 +304,7 @@ namespace Diaco.UI.TeamInfo
             PopupAwardConrtoller.TeamTag = TeamTag.text;
  
         }
-        private  void PrivacyToggleControll()
+       /* private  void PrivacyToggleControll()
         {
             if(StatePrivacyPublic  == false)
             {
@@ -314,7 +321,7 @@ namespace Diaco.UI.TeamInfo
                 Server.RequestChangeTeamMode(0);
             }
 
-        }
+        }*/
         private void  ClearTeamInfo()
         {
             for (int i = 0; i < templist_player_card.Count; i++)

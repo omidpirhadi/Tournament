@@ -50,6 +50,7 @@ namespace Diaco.UI.GameMode
                     LockViwer[2].SetActive(true);
                 else
                     LockViwer[2].SetActive(false);
+                Debug.Log("lock mode soccer");
             }
             else
             {
@@ -65,6 +66,7 @@ namespace Diaco.UI.GameMode
                     LockViwer[2].SetActive(true);
                 else
                     LockViwer[2].SetActive(false);
+                Debug.Log("lock mode billiard");
             }
         }
 

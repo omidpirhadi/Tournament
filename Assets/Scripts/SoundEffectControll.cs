@@ -28,13 +28,19 @@ public class SoundEffectControll : MonoBehaviour
 
     public void PlaySound(int index)
     {
-         audioSource.clip = audios[index];
-         audioSource.Play();
+        if (audioSource)
+        {
+            audioSource.clip = audios[index];
+            audioSource.Play();
+        }
     }
     public void PlaySoundSoccer(int index)
     {
-        audioSource.clip = audios[index];
-        audioSource.Play();
+        if (audioSource)
+        {
+            audioSource.clip = audios[index];
+            audioSource.Play();
+        }
     }
     public void PlaySoundMenu(int index)
     {

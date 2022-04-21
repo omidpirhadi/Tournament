@@ -30,10 +30,15 @@ namespace Diaco.Social
             Server.OnGetTeams += Server_OnGetTeams;
             SearchButton.onClick.AddListener(() =>
             {
-                Server.SearchTeam(SearchInput.text);
+                Server.SearchLeague(SearchInput.text);
 
             });
-            TabLeague_Button.onClick.AddListener(() => { Server.GetLeague(); });
+            TabLeague_Button.onClick.AddListener(() => {
+
+                SearchInput.text = "";
+                Server.GetLeague();
+
+            });
         }
         private void OnDisable()
         {

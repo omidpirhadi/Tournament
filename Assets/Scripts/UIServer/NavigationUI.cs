@@ -53,7 +53,7 @@ public class NavigationUI : MonoBehaviour
 
     public GameObject Footer;
     public GameObject BackButton;
-
+    public GameObject infoAndtutrialWebViweButton;
     public float TimeTooltipShow = 5.0f;
     public float TimeFadeInTooltip = 1.0f;
     public float TimeFadeOutTooltip = 1.0f;
@@ -105,10 +105,12 @@ public class NavigationUI : MonoBehaviour
                         if (ui.ShowBackButtonInFooter)
                         {
                             BackButton.SetActive(true);
+                            infoAndtutrialWebViweButton.SetActive(false);
                         }
                         else
                         {
                             BackButton.SetActive(false);
+                            infoAndtutrialWebViweButton.SetActive(true);
                         }
                     }
                 }

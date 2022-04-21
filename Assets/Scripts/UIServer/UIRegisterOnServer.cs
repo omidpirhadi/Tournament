@@ -28,11 +28,14 @@ public class UIRegisterOnServer : MonoBehaviour
     public void initTournmentCard(List<Diaco.HTTPBody.TOURNOMENTS> data)
     {
         SetIdleTounumentCard();
-        for (int i = 0; i < data.Count; i++)
+        if (data.Count > 0)
         {
-            TournumentCards[i].gameObject.SetActive(true);
-            TournumentCards[i].Set(data[i].id, data[i].name, data[i].time, data[i].type);
+            for (int i = 0; i < data.Count; i++)
+            {
+                TournumentCards[i].gameObject.SetActive(true);
+                TournumentCards[i].Set(data[i].id, data[i].name, data[i].time, data[i].type);
 
+            }
         }
     }
     private void SetIdleTounumentCard()

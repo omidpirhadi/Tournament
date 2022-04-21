@@ -16,11 +16,11 @@ namespace Diaco.Social
         public SelectFriendsPopup SelectFriendPopup;
         public SelectBadgePopUpController SelectBadgesController;
 
-        public DialogYesNo Dialog_CreateTeam;
+      /*  public DialogYesNo Dialog_CreateTeam;
         public DialogOk Dialog_Error_Ticket;
         public DialogOk Dialog_Error_Cup;
         public DialogOk Dialog_Error_Gem;
-        public DialogOk Dialog_Error_Coin;
+        public DialogOk Dialog_Error_Coin;*/
 
         public Text soccerLeaguePrecent_text;
         public Text billiardLeaguePrecent_text;
@@ -59,19 +59,22 @@ namespace Diaco.Social
             SelectBadgesController.OnChangeBadgeId += SelectBadgesController_OnChangeBadgeId;
             Server.OnCreateTeamCompeleted += Server_OnCreateTeamCompeleted;
 
-            Server.OnErrorCreateTeam += Server_OnErrorCreateTeam;
-            Dialog_CreateTeam.OnClickYes += Dialog_CreateTeam_OnClickYes;
+           // Server.OnErrorCreateTeam += Server_OnErrorCreateTeam;
+           /// Dialog_CreateTeam.OnClickYes += Dialog_CreateTeam_OnClickYes;
 
             CreateButton.onClick.AddListener(() =>
             {
                 if (checkField())
                 {
+                    Server.RequestCreateTeam(CreateTeam());
 
-                    Dialog_CreateTeam.ShowDialog(); ;
                 }
             });
             InviteFriendButton.onClick.AddListener(() => { FriendsAdded.Clear(); });
-            TabButton.onClick.AddListener(() => { Server.RequestLeagueRules(); });
+            TabButton.onClick.AddListener(() => {
+                
+                Server.RequestLeagueRules();
+            });
             Server.RequestLeagueRules();
             // Tickets = Server.BODY.inventory.tickets;
             // ShowTickets();
@@ -84,8 +87,8 @@ namespace Diaco.Social
              SelectFriendPopup.OnSelectFriendInPopup -= SelectFriendPopup_OnSelectFriendInPopup;
             SelectBadgesController.OnChangeBadgeId -= SelectBadgesController_OnChangeBadgeId;
             Server.OnCreateTeamCompeleted -= Server_OnCreateTeamCompeleted;
-            Server.OnErrorCreateTeam -= Server_OnErrorCreateTeam;
-            Dialog_CreateTeam.OnClickYes -= Dialog_CreateTeam_OnClickYes;
+          //  Server.OnErrorCreateTeam -= Server_OnErrorCreateTeam;
+           // Dialog_CreateTeam.OnClickYes -= Dialog_CreateTeam_OnClickYes;
             CreateButton.onClick.RemoveAllListeners();
             TabButton.onClick.RemoveAllListeners();
             InviteFriendButton.onClick.RemoveAllListeners();
@@ -94,14 +97,14 @@ namespace Diaco.Social
         }
         private void Dialog_CreateTeam_OnClickYes()
         {
-            Server.RequestCreateTeam(CreateTeam());
+           
         }
         private void Server_OnCreateTeamCompeleted()
         {
            // Tickets = Server.BODY.inventory.tickets;
             //ShowTickets();
         }
-        private void Server_OnErrorCreateTeam(string error)
+      /*  private void Server_OnErrorCreateTeam(string error)
         {
             if(error == "1")
             {
@@ -120,7 +123,7 @@ namespace Diaco.Social
                 Dialog_Error_Gem.ShowDialog();
             }
 
-        }
+        }*/
 
         private void SelectBadgesController_OnChangeBadgeId(string badge)
         {

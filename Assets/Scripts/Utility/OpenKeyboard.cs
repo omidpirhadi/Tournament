@@ -4,13 +4,46 @@ using UnityEngine;
 
 public class OpenKeyboard : MonoBehaviour
 {
+    public _GameLobby Game;
+    private bool Isopen = false;
     TouchScreenKeyboard keyboard;
 
-    
-    public void Open()
+
+
+    public void Update()
     {
-         keyboard = TouchScreenKeyboard.Open("hI", TouchScreenKeyboardType.ASCIICapable, true, true, false, false, "sss", 255);
-       
+
+        if (Isopen)
+        {
+            if (keyboard.status == TouchScreenKeyboard.Status.Done)
+            {
+                Ondone();
+            }
+        }
+
+    }
+    public void ShowKeyboard()
+    {
+        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, true, false, false, false, "", 255);
+        Isopen = true;
+    }
+    void Ondone()
+    {
+        var context = "";
+        context = keyboard.text;
+        if (Game == _GameLobby.Soccer)
+        {
+
+            FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_Message(context);
+
+        }
+        else if (Game == _GameLobby.Billiard)
+        {
+            FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_Message(context);
+        }
         
+        keyboard.text = "";
+        Isopen = false;
+        Debug.Log("SendMessage:" + keyboard.text);
     }
 }
