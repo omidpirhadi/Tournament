@@ -589,7 +589,7 @@ namespace Diaco.SoccerStar.Server
 
                     if (gameData.playerOne.skin == gameData.playerTwo.skin)
                     {
-                        RunSpawnMarble_New(gameData, 1, gameData.playerOne.skin, "D2");
+                        RunSpawnMarble_New(gameData, 1,"D2" , "D1");
                     }
                     else
                     {
@@ -627,7 +627,7 @@ namespace Diaco.SoccerStar.Server
 
                     if (gameData.playerOne.skin == gameData.playerTwo.skin)
                     {
-                        RunSpawnMarble_New(gameData, -1, "D2", gameData.playerTwo.skin);
+                        RunSpawnMarble_New(gameData, -1, "D2", "D1");
                     }
                     else
                     {
