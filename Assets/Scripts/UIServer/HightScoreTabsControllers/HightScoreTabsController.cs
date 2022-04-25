@@ -108,6 +108,10 @@ namespace Diaco.HightScoreTab
                 }
             }
         }
+        public void ResetToggel()
+        {
+            FilterByAllContactsToggle.interactable = true;
+        }
         private void FilterByFriends()
         {
             if (SortByCUP)
