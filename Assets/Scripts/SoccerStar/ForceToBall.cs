@@ -16,7 +16,7 @@ namespace Diaco.SoccerStar.Marble
     public class ForceToBall : MonoBehaviour
     {
 
-        ///public SoccerTestSettings TestSetting ;
+        public SoccerTestSettings TestSetting ;
         public int ID;
         public enum Marble_Type { Marble, Ball };
         public Marble_Type MarbleType;
@@ -73,8 +73,8 @@ namespace Diaco.SoccerStar.Marble
             server = FindObjectOfType<ServerManager>();
  
             rigidbody = GetComponent<Rigidbody>();
-
-
+            TestSetting = GetComponent<SoccerTestSettings>();
+            TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
             if (MarbleType == Marble_Type.Marble)
             {
@@ -177,7 +177,7 @@ namespace Diaco.SoccerStar.Marble
                 server.OnChangeTurn -= Server_OnChangeTurn;
             }
             server.OnPhysicFreeze -= Server_OnPhysicFreeze;
-            // TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
+            TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
         }
 
         public void OnDrawGizmos()
@@ -197,7 +197,7 @@ namespace Diaco.SoccerStar.Marble
         {
             SelectEffectEnable(obj);
         }
-        /* private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float AccelerationMarbleAfterhit, float MassBall, float DragBall, float AngularDragBall, float speedtheshold)
+         private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble,  float MassBall, float DragBall, float AngularDragBall, float speedtheshold)
          {
              if (MarbleType == Marble_Type.Marble)
              {
@@ -205,7 +205,7 @@ namespace Diaco.SoccerStar.Marble
                  this.PowerForce = ForceMarble;
                  this.rigidbody.drag = DragMarble;
                  this.rigidbody.angularDrag = AngularDragMarble;
-                 this.AccelerationBallAfterHit = AccelerationMarbleAfterhit;
+               //  this.AccelerationBallAfterHit = AccelerationMarbleAfterhit;
                  // Debug.Log("AAAAAAAAA1");
              }
              else
@@ -217,7 +217,7 @@ namespace Diaco.SoccerStar.Marble
              }
              this.ThresholdSleep = speedtheshold;
              //// Debug.Log("AAAAAAAAA3");
-         }*/
+         }
 
         private void Server_OnPhysicFreeze(bool obj)
         {
