@@ -50,20 +50,20 @@ public class SoccerTestSettings : MonoBehaviour
         var bouncewall = Convert.ToSingle(BounceWallPhysic.text);
         var sensiviti = Convert.ToSingle(SensivityRotateFinger2.text);
     
-        Handler_OnChangeSetting(mass_marble, force_marble, drag_marble,angular_marble, mass_ball, drag_ball, angulardrag_ball,speedthershold);
+        Handler_OnChangeSetting(mass_marble, force_marble, drag_marble,angular_marble, mass_ball, drag_ball, angulardrag_ball,speedthershold,bouncewall);
 
-        physicwall.bounciness = bouncewall;
+       /// physicwall.bounciness = bouncewall;
         PlayerControll.Sensiviti = sensiviti;
         aimDot.DotPower = aim_power;
         Debug.Log("Change Setting");
     }
-    public event Action<float, float, float, float, float, float,float,float> OnChangeSetting;
+    public event Action<float, float, float, float, float, float,float,float,float> OnChangeSetting;
 
-    public void Handler_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float MassBall,float DragBall,float AngularDragBall,float Speedthershold)
+    public void Handler_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble, float MassBall,float DragBall,float AngularDragBall,float Speedthershold,float BounceWall)
     {
         if (OnChangeSetting != null)
         {
-            OnChangeSetting(MassMarble, ForceMarble, DragMarble, AngularDragMarble, MassBall, DragBall, AngularDragBall, Speedthershold);
+            OnChangeSetting(MassMarble, ForceMarble, DragMarble, AngularDragMarble, MassBall, DragBall, AngularDragBall, Speedthershold,BounceWall);
         }
     }
 }

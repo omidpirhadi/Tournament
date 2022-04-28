@@ -11,7 +11,8 @@ public class BillardTestSetting : MonoBehaviour
     public InputField AnglurDrag;
     public InputField MaxAngularDrag;
     public InputField SpeedThershold;
-    public InputField SensivityRotate;
+    public InputField SensivityRotate;///
+    public InputField Powerspin;
     public InputField Powerbounce;
     public Button Set_Btn;
     void Start()
@@ -76,17 +77,17 @@ public class BillardTestSetting : MonoBehaviour
         var speedthershold = Convert.ToSingle(SpeedThershold.text);
         var sencivityrotate = Convert.ToSingle(SensivityRotate.text);
         var powerbounce = Convert.ToSingle(Powerbounce.text);
-
-        Handler_OnChangeSetting(powercue, dragball, angulardrag, maxangular, speedthershold, sencivityrotate, powerbounce);
+        var spin = Convert.ToSingle(Powerspin.text);
+        Handler_OnChangeSetting(powercue, dragball, angulardrag, maxangular, speedthershold, sencivityrotate, powerbounce,spin);
         Debug.Log("Change Setting");
     }
-    public event Action<float, float, float,float, float,float, float> OnChangeSetting;
+    public event Action<float, float, float,float, float,float, float,float> OnChangeSetting;
 
-    public void Handler_OnChangeSetting(float CuePower,float Drag, float AngularDrag,float MaxAngular, float SpeedThershold, float sensivityrotate,float powbounce)
+    public void Handler_OnChangeSetting(float CuePower,float Drag, float AngularDrag,float MaxAngular, float SpeedThershold, float sensivityrotate,float powbounce,float spin)
     {
         if (OnChangeSetting != null)
         {
-            OnChangeSetting(CuePower, Drag, AngularDrag, MaxAngular, SpeedThershold, sensivityrotate,powbounce);
+            OnChangeSetting(CuePower, Drag, AngularDrag, MaxAngular, SpeedThershold, sensivityrotate,powbounce,spin);
         }
     }
 

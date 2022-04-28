@@ -67,13 +67,14 @@ namespace Diaco.SoccerStar.Marble
         public float MaxDisFromWall = 5.00f;
        [SerializeField] private Vector3 hitpointballtomarbl;
         [SerializeField] private Vector3 hitpointballtowall;
+        public float bouncepower = 1;
         #region MonoBehaviour Function
         public void Start()
         {
             server = FindObjectOfType<ServerManager>();
  
             rigidbody = GetComponent<Rigidbody>();
-            TestSetting = GetComponent<SoccerTestSettings>();
+            TestSetting = FindObjectOfType<SoccerTestSettings>();
             TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
             if (MarbleType == Marble_Type.Marble)
@@ -197,7 +198,7 @@ namespace Diaco.SoccerStar.Marble
         {
             SelectEffectEnable(obj);
         }
-         private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble,  float MassBall, float DragBall, float AngularDragBall, float speedtheshold)
+         private void TestSetting_OnChangeSetting(float MassMarble, float ForceMarble, float DragMarble, float AngularDragMarble,  float MassBall, float DragBall, float AngularDragBall, float speedtheshold,  float bouncewwall)
          {
              if (MarbleType == Marble_Type.Marble)
              {
@@ -216,6 +217,7 @@ namespace Diaco.SoccerStar.Marble
                  // Debug.Log("AAAAAAAAA2");
              }
              this.ThresholdSleep = speedtheshold;
+            this.bouncepower = bouncewwall;
              //// Debug.Log("AAAAAAAAA3");
          }
 
@@ -475,7 +477,7 @@ namespace Diaco.SoccerStar.Marble
             
             var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
 
-            rigidbody.velocity = reflect2 * LastVelocity.magnitude;
+            rigidbody.velocity = (reflect2 * LastVelocity.magnitude)*bouncepower;
             Debug.Log("BounceMarble");
             /*  if (GetSpeed > ThresholdSleep)
               {

@@ -86,6 +86,8 @@ namespace Diaco.EightBall.CueControllers
         #region MonoBehaviourFunctions
         void Start()
         {
+            testSetting = FindObjectOfType<BillardTestSetting>();
+            testSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
             AimLine = GetComponent<CustomLineRenderer2>();
             rigidbody = GetComponent<Rigidbody>();
@@ -110,7 +112,11 @@ namespace Diaco.EightBall.CueControllers
             LastRotation = this.transform.eulerAngles;
         }
 
-
+        private void TestSetting_OnChangeSetting(float arg1, float arg2, float arg3, float arg4, float arg5, float arg6, float arg7,float arg8)
+        {
+            SetSetting(arg1, arg2, arg3, arg4, arg5, arg6, arg7,arg8);
+            Debug.Log("ChengeAccept");
+        }
 
         void LateUpdate()
         {
@@ -332,12 +338,7 @@ namespace Diaco.EightBall.CueControllers
             CUEWood.transform.Rotate(0f, value, 0f);
             Server.Emit_AimCueBall(new Diaco.EightBall.Structs.AimData { X_position = CUEWood.transform.position.x, Z_position = CUEWood.transform.position.z, YY_rotation = CUEWood.transform.eulerAngles.y, PosCueBall = this.transform.position });
         }
-        private void HitBallController_OnChangeSetting(float arg1, float arg2, float arg3, float arg, float arg4, float arg6, float arg7)
-        {
-            SetSetting(arg1, arg2, arg3, arg, arg4, arg6, arg7);
-            Debug.Log("ChengeAccept");
-        }
-
+    
         private void TouchOrderControll()
         {
             if (Input.touchCount > 0 && Server.Turn && TouchWorkInUI == false)
@@ -1207,7 +1208,7 @@ namespace Diaco.EightBall.CueControllers
         }
 
 
-        private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate ,  float powbounce)
+        private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate ,  float powbounce, float spin)
         {
             this.maxanguler = MaxAngularDrag;
             this.PowerCUE = pow;
@@ -1216,6 +1217,7 @@ namespace Diaco.EightBall.CueControllers
             this.ThresholdSleep = SpeedThershold;
             this.SensitivityRotate = sensivityrotate;
             this.PowerBounceOnWall = powbounce;
+            this.PowerSpin = spin;
         }
         #region Events
 
