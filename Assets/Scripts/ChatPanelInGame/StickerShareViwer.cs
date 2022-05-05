@@ -11,7 +11,7 @@ public class StickerShareViwer : MonoBehaviour
     public int StickerSelected = 0;
     private void OnEnable()
     {
-        StartCoroutine(PlayAnimation(StickerSelected));
+        StartCoroutine(PlayAnimation());
     }
 
 
@@ -20,9 +20,11 @@ public class StickerShareViwer : MonoBehaviour
     {
 
     }
-    public IEnumerator PlayAnimation(int index)
+    private IEnumerator PlayAnimation()
     {
-
+       
+       int index = StickerSelected;
+        Debug.Log("StickerPlayed");
         if (RepeatAnimation)
         {
             var repeated = 0;
@@ -48,5 +50,17 @@ public class StickerShareViwer : MonoBehaviour
         }
 
         gameObject.SetActive(false);
+    }
+    public void SelectSticker(string  name)
+    {
+       
+        for (int i = 0; i < Stickers.Count;i++)
+        {
+            if(Stickers[i].stickerName == name)
+            {
+                StickerSelected = i;
+            }
+        }
+        
     }
 }

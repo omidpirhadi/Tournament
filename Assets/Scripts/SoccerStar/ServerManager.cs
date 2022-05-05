@@ -786,17 +786,19 @@ namespace Diaco.SoccerStar.Server
         }
         public void StickerViwer(object namesticker, object side)
         {
-            int name = Convert.ToInt32(namesticker);
+            string name = Convert.ToString(namesticker);
             int sideshow = Convert.ToInt32(side);///0 left, 1 right
             if (sideshow == 0)
             {
-                StickerViwerLeft.StickerSelected = name - 1;
+                StickerViwerLeft.SelectSticker(name);
                 StickerViwerLeft.gameObject.SetActive(true);
+                Debug.Log("StickerEnable Left");
             }
             else
             {
-                StickerViwerRight.StickerSelected = name - 1;
+                StickerViwerRight.SelectSticker(name);
                 StickerViwerRight.gameObject.SetActive(true);
+                Debug.Log("StickerEnable Right");
             }
         }
         public void BadConnectionShow(bool show)
@@ -1302,9 +1304,9 @@ namespace Diaco.SoccerStar.Server
             socket.Emit("getSticker");
             Debug.Log("Emit_getSticker");
         }
-        public void  Emit_ShareSticker(int name)
+        public void  Emit_ShareSticker(string name)
         {
-            socket.Emit("shareSticker" , name + 1);
+            socket.Emit("shareSticker" , name);
             Debug.Log("Emit_shareSticker");
         }
         public void  Emit_Message(string message)

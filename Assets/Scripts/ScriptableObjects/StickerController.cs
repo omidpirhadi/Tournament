@@ -10,18 +10,9 @@ public class StickerController : MonoBehaviour
     public Sticker sticker;
     public Image Renderer;
     public bool RepeatAnimation;
-    void Start()
-    {
-        StartCoroutine(PlayAnimation());
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    public IEnumerator PlayAnimation()
+    public IEnumerator PlaySticker()
     {
        
         if (RepeatAnimation)

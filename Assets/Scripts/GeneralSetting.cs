@@ -1,0 +1,115 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
+
+using UnityEngine.UI;
+namespace Diaco.Setting
+{
+
+
+    public class GeneralSetting : MonoBehaviour
+    {
+
+        [SerializeField]public  GameSettingData Setting;
+        private void Awake()
+        {
+
+            if (ExistSettingFile("setting"))
+            {
+             //   GameSetting = new GameSettingData();
+                Setting = LoadSetting("setting");
+            }
+            else
+            {
+                Setting = new GameSettingData
+                {
+                    Sound = true,
+                    vibration = true,
+                    status = true,
+                    reciveFriendRequest = true,
+                    reciveLeagueRequest = true,
+                    reciveMatchFriendRequest = true,
+                    soccerSetting = new SoccerSetting { aimForward = false },
+                    billiardSetting = new BilliardSetting
+                    {
+                        accuracyAimShow = true,
+                        //powerWoodCuePosition = PositionElemenInUi.Left,
+                        //powerWoodCueShow = PositionElemenInUi.Right,
+                        speedRotateAimCue = SpeedElemenInUi.Normal
+                    }
+
+
+                };
+                SaveSetting();
+            }
+        }
+
+
+        public bool ExistSettingFile(string FileName)
+        {
+            bool find = false;
+            if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
+            {
+                find = true;
+            }
+            return find;
+        }
+        public GameSettingData LoadSetting(string FileName)
+        {
+            GameSettingData settingData = new GameSettingData();
+            if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
+            {
+                var j_set = File.ReadAllText(Application.persistentDataPath + "//" + FileName + ".json");
+                settingData = JsonUtility.FromJson<GameSettingData>(j_set);
+
+            }
+            Debug.Log("Setting Loaded!");
+
+            return settingData;
+        }
+
+        public void SaveSetting()
+        {
+            var FileName = "setting";
+           
+            var set_json = JsonUtility.ToJson(Setting);
+            if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
+            {
+                File.Delete(Application.persistentDataPath + "//" + FileName + ".json");
+            }
+            File.WriteAllText(Application.persistentDataPath + "//" + FileName + ".json", set_json);
+            Debug.Log("Setting Saved!");
+        }
+    }
+    [Flags]
+    public enum PositionElemenInUi:short { Left = 0, Right = 1, Up = 3, Bottom = 4 };
+    [Flags]
+    public enum SpeedElemenInUi:short { Slow = 0, Normal = 1, Fast = 2 };
+    [Serializable]
+    public struct GameSettingData
+    {
+        public bool Sound;
+        public bool vibration;
+        public bool status;
+        public bool reciveFriendRequest;
+        public bool reciveMatchFriendRequest;
+        public bool reciveLeagueRequest;
+        public BilliardSetting billiardSetting;
+        public SoccerSetting soccerSetting;
+    }
+    [Serializable]
+    public struct BilliardSetting
+    {
+        public bool accuracyAimShow;
+       // public PositionElemenInUi powerWoodCueShow;
+        //public PositionElemenInUi powerWoodCuePosition;
+        public SpeedElemenInUi speedRotateAimCue;
+    }
+    [Serializable]
+    public struct SoccerSetting
+    {
+        public bool aimForward;
+    }
+}

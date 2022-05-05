@@ -23,14 +23,21 @@ public class ElementSticker : MonoBehaviour
         if (FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>())
         {
 
-            FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_ShareSticker(Convert.ToInt32(ID));
-           
+            FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_ShareSticker(ID);
+            Debug.Log("SendSticker In Game:" + (Convert.ToInt32(ID) + 1));
         }
         else if (FindObjectOfType<Diaco.EightBall.Server.BilliardServer>())
         {
+            FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_ShareSticker(ID);
+            Debug.Log("SendSticker In Game:" + (Convert.ToInt32(ID) + 1));
 
         }
-        Debug.Log("SendSticker:" + ID);
+        else if (FindObjectOfType<ServerUI>())
+        {
+            FindObjectOfType<Diaco.UI.Chatbox.ChatBoxController>().SendSticekr("##"+ ID);
+            Debug.Log("SendSticker  In Chat:" + (Convert.ToInt32(ID) + 1));
+        }
+        
     }
 
 

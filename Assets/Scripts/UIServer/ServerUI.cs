@@ -927,6 +927,12 @@ public class ServerUI : MonoBehaviour
 
             }
         });
+        socket.On("getSticker", (s, p, m) => {
+
+            var data = JsonUtility.FromJson<StickerData>(m[0].ToString());
+            Handler_GetStickers(data);
+            Debug.Log("StickerRecived");
+        });
         socket.On("disconnect", (s, p, m) =>
         {
         Debug.Log("disConnection");
@@ -1327,6 +1333,11 @@ public class ServerUI : MonoBehaviour
         socket.Emit("ads");
         navigationUi.StartLoadingPageShow();
         Debug.Log("Send Request For Show ads");
+    }
+    public void Emit_GetSticker()
+    {
+        socket.Emit("getSticker");
+        Debug.Log("Emit_getSticker");
     }
     #endregion
     #region Function
@@ -1848,6 +1859,27 @@ public class ServerUI : MonoBehaviour
         {
             onpushnotificationcancle(id);
         }
+    }
+
+    private Action<StickerData> getsticker;
+    public event Action<StickerData> GetStickers
+    {
+        add
+        {
+            getsticker += value;
+        }
+        remove
+        {
+            getsticker -= value;
+        }
+    }
+    protected void Handler_GetStickers(StickerData data)
+    {
+        if (getsticker != null)
+        {
+            getsticker(data);
+        }
+
     }
     #endregion
 

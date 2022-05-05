@@ -14,16 +14,18 @@ public class StickerPanel : MonoBehaviour
 
 
     private Texture2D texture;
-
+    private Sprite sprite;
 
     private void Start()
     {
-        texture = new Texture2D(512, 512);
-    }          
+        
+    }
     private void OnEnable()
     {
-      //  liststicker = new List<GameObject>();
-        if (Game ==  _GameLobby.Soccer)
+        texture = new Texture2D(512, 512);
+        sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        //  liststicker = new List<GameObject>();
+        if (Game == _GameLobby.Soccer)
         {
 
             FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>().Emit_GetSticker();
@@ -34,11 +36,16 @@ public class StickerPanel : MonoBehaviour
             FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().Emit_GetSticker();
             FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().GetStickers += ChatInGame_GetStickers;
         }
-
-
+        else if (Game == _GameLobby.MainMenu)
+        {
+            //  FindObjectOfType<ServerUI>().Emit_GetSticker();
+            // FindObjectOfType<ServerUI>().GetStickers += ChatInGame_GetStickers; 
+            InitChatInGame(new StickerData { stickers = new int[] { 1, 2, 3, 5, 8, 9, 10 } });
+        }
+       
     }
 
-    
+
 
     private void OnDisable()
     {
@@ -48,9 +55,17 @@ public class StickerPanel : MonoBehaviour
         }
         else if (Game == _GameLobby.Billiard)
         {
-           
+
             FindObjectOfType<Diaco.EightBall.Server.BilliardServer>().GetStickers -= ChatInGame_GetStickers;
         }
+        else if (Game == _GameLobby.MainMenu)
+        {
+            FindObjectOfType<ServerUI>().GetStickers -= ChatInGame_GetStickers;
+        }
+        texture = null;
+
+        sprite = null;
+        Clear();
 
     }
 
@@ -66,14 +81,28 @@ public class StickerPanel : MonoBehaviour
 
         for (int i = 0; i < data.stickers.Length; i++)
         {
-            var element = Instantiate(Elementsticker, Grid);
-            element.Set((data.stickers[i] - 1).ToString(), LoadImage(Stickers[data.stickers[i] - 1].Titel), "");
-            liststicker.Add(element.gameObject);
+
+            for (int j = 0; j < Stickers.Count; j++)
+            {
+                if(data.stickers[i].ToString() == Stickers[j].stickerName)
+                {
+                    var element = Instantiate(Elementsticker, Grid);
+
+                    var image = LoadImage(Stickers[j].Titel);
+                    element.Set(Stickers[j].stickerName, image, "");
+                    liststicker.Add(element.gameObject);
+                }
+            }
+               
+            
         }
     }
     private Sprite LoadImage(Texture2D image)
     {
-        return Sprite.Create(image, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+
+       
+        sprite = Sprite.Create(image, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        return sprite;
     }
     private void Clear()
     {

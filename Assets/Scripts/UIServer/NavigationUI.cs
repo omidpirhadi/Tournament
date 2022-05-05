@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-public enum _GameLobby { Soccer = 0, Billiard = 1 }
+public enum _GameLobby { Soccer = 0, Billiard = 1 , MainMenu = 2 }
 public enum _SubGame { Classic = 0, Quick = 1, Challenge = 2 }
 public class NavigationUI : MonoBehaviour
 {

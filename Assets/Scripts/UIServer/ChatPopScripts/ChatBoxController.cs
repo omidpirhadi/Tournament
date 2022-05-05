@@ -9,6 +9,8 @@ namespace Diaco.UI.Chatbox
     public class ChatBoxController : MonoBehaviour
     {
         public ServerUI Server;
+        public List<Sticker> stickers;
+        private Sticker tempsticker;
         public string IDReciver = "";
         public Image AvatarReciver;
         public Text UserNameReciver;
@@ -16,19 +18,32 @@ namespace Diaco.UI.Chatbox
         public RectTransform ContentChats;
         public FramChat FrameMyChat;
         public FramChat FrameYouChat;
-        public InputField InputMessage;
+        public FramChat FrameMyChatWithSticker;
+        public FramChat FrameYouChatWithSticker;
+        public TMPro.TMP_InputField InputMessage;
+        public GameObject StickerPanel;
+        public Button stickerButton;
         public Button SendButton;
         
         private List<FramChat> ChatRecivedList = new List<FramChat>();
         private SoundEffectControll soundEffect;
         private void OnEnable()
         {
+           
+            tempsticker = new Sticker();
 
             soundEffect = GetComponent<SoundEffectControll>();
-          
+            if (stickerButton)
+                stickerButton.onClick.AddListener(() => {
+                    if (StickerPanel.activeSelf)
+                        StickerPanel.SetActive(false);
+                    else
+                        StickerPanel.SetActive(true);
+                });
         }
         private void OnDisable()
         {
+            tempsticker = null;
             Server.OnChatsRecive -= Server_OnChatsRecive;
             SendButton.onClick.RemoveAllListeners();
             AvatarReciver.sprite = null;
@@ -61,11 +76,16 @@ namespace Diaco.UI.Chatbox
         {
             if (InputMessage.text != "")
             {
-              var chat =  PersianFix.Persian.Fix(InputMessage.text, 0);
+              //var chat =  PersianFix.Persian.Fix(InputMessage.text, 255);
             
-                Server.SendChatToUser(IDReciver, chat);
+                Server.SendChatToUser(IDReciver, InputMessage.text);
                 InputMessage.text = "";
             }
+        }
+        public void SendSticekr(string namesticker)
+        {
+            Server.SendChatToUser(IDReciver, namesticker);
+            
         }
         public void ChatRecive(Diaco.HTTPBody.Chats chats)
         {
@@ -76,16 +96,42 @@ namespace Diaco.UI.Chatbox
                 {
                     if (chats.chats[i].type == 0)//FrameMyChat
                     {
-                        var frame = Instantiate(FrameMyChat, ContentChats);
-                        frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
-                        ChatRecivedList.Add(frame);
-                        Debug.Log(chats.chats[i].read);
+                       
+                        if (!chats.chats[i].text.Contains("##"))///with out sticker
+                        {
+                            var frame = Instantiate(FrameMyChat, ContentChats);
+                            frame.FillFrameChatWithOutAvatar(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
+                            ChatRecivedList.Add(frame);
+                          //  Debug.Log("C"+chats.chats[i].text);
+                        }
+                        else///with  sticker
+                        {
+                            var frame = Instantiate(FrameMyChatWithSticker, ContentChats);
+                            var sticker = SelectSticker(chats.chats[i].text);
+                            frame.FillFrameChatWithStickerAndWithOutAvatar(sticker, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
+                            ChatRecivedList.Add(frame);
+                          //  Debug.Log("S"+sticker);
+                        }
+                      //  Debug.Log(chats.chats[i].read);
                     }
                     else//FrameYouChat
                     {
-                        var frame = Instantiate(FrameYouChat, ContentChats);
-                        frame.FillFrameChat(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
-                        ChatRecivedList.Add(frame);
+                        
+                        if (!chats.chats[i].text.Contains("##"))///with out sticker
+                        {
+                            var frame = Instantiate(FrameYouChat, ContentChats);
+                            frame.FillFrameChatWithOutAvatar(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
+                            ChatRecivedList.Add(frame);
+                          //  Debug.Log("C" + chats.chats[i].text);
+                        }
+                        else///with  sticker
+                        {
+                            var frame = Instantiate(FrameYouChatWithSticker, ContentChats);
+                            var sticker = SelectSticker(chats.chats[i].text);
+                            frame.FillFrameChatWithStickerAndWithOutAvatar(sticker, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
+                            ChatRecivedList.Add(frame);
+                         //   Debug.Log("S" + sticker);
+                        }
                     }
                     
                 }
@@ -98,6 +144,22 @@ namespace Diaco.UI.Chatbox
             UserNameReciver.text = data.username;
             IDReciver = data.id;
             Cup.text = data.cup;
+        }
+        private Sticker SelectSticker(string stickername)
+        {
+            var name = stickername.Remove(0,2);
+           
+         //  Debug.Log("TRIiM##"+name);
+            for (int i = 0; i < stickers.Count; i++)
+            {
+                
+                if (stickers[i].stickerName == name)
+                {
+                    tempsticker = stickers[i];
+                    //Debug.Log("SSSSSSSSS");
+                }
+            }
+            return tempsticker;
         }
         private void  clearChatList()
         {
