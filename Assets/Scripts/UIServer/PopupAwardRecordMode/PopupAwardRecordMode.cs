@@ -14,7 +14,7 @@ namespace Diaco.UI.PopupRecordModeResult
         public Diaco.ImageContainerTool.ImageContainer AvatarsImage;
         private GameLuncher Luncher;
         public Image Avatar;
-        public Text UserName;
+        public RTLTMPro.RTLTextMeshPro UserName;
         public Text Rank;
         public Text BestRecord;
         public RTLTMPro.RTLTextMeshPro AwardCount;

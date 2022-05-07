@@ -38,9 +38,9 @@ public class StickerPanel : MonoBehaviour
         }
         else if (Game == _GameLobby.MainMenu)
         {
-            //  FindObjectOfType<ServerUI>().Emit_GetSticker();
-            // FindObjectOfType<ServerUI>().GetStickers += ChatInGame_GetStickers; 
-            InitChatInGame(new StickerData { stickers = new int[] { 1, 2, 3, 5, 8, 9, 10 } });
+             FindObjectOfType<ServerUI>().Emit_GetSticker();
+             FindObjectOfType<ServerUI>().GetStickers += ChatInGame_GetStickers; 
+          //  InitChatInGame(new StickerData { stickers = new int[] { 1, 2, 3, 5, 8, 9, 10 } });
         }
        
     }

@@ -6,13 +6,14 @@ public class AimDot : MonoBehaviour
 {
     [SerializeField] private AimCircle aimCircle;
     [SerializeField] private Transform StarPos,EndPos;
-    public float DotPower = 4.0f;
+    public float DotPower = 1.0f;
     [SerializeField] private float StepMove = -0.67f;
 
 
     LineRenderer line;
     void Start()
     {
+
         line = GetComponent<LineRenderer>();
         line.useWorldSpace = false;
     }

@@ -10,35 +10,45 @@ namespace Diaco.UI.Chatbox
     {
         public ServerUI Server;
         public List<Sticker> stickers;
-        private Sticker tempsticker;
+       
         public string IDReciver = "";
         public Image AvatarReciver;
         public Text UserNameReciver;
         public Text Cup;
+        public Scrollbar ChatScroll;
         public RectTransform ContentChats;
         public FramChat FrameMyChat;
         public FramChat FrameYouChat;
         public FramChat FrameMyChatWithSticker;
         public FramChat FrameYouChatWithSticker;
         public TMPro.TMP_InputField InputMessage;
-        public GameObject StickerPanel;
-        public Button stickerButton;
+        public GameObject StickerPanel_gameobject;
+        public Button ShowStickerPanel_Button;
         public Button SendButton;
         
         private List<FramChat> ChatRecivedList = new List<FramChat>();
         private SoundEffectControll soundEffect;
+        private Sticker tempsticker;
+
+        [SerializeField] private bool ondrag;
+        public bool OnDrag
+        {
+            set { ondrag = value; }
+            get { return ondrag; }
+        }
+        private bool init = false;
         private void OnEnable()
         {
            
             tempsticker = new Sticker();
 
             soundEffect = GetComponent<SoundEffectControll>();
-            if (stickerButton)
-                stickerButton.onClick.AddListener(() => {
-                    if (StickerPanel.activeSelf)
-                        StickerPanel.SetActive(false);
+            if (ShowStickerPanel_Button)
+                ShowStickerPanel_Button.onClick.AddListener(() => {
+                    if (StickerPanel_gameobject.activeSelf)
+                        StickerPanel_gameobject.SetActive(false);
                     else
-                        StickerPanel.SetActive(true);
+                        StickerPanel_gameobject.SetActive(true);
                 });
         }
         private void OnDisable()
@@ -46,6 +56,7 @@ namespace Diaco.UI.Chatbox
             tempsticker = null;
             Server.OnChatsRecive -= Server_OnChatsRecive;
             SendButton.onClick.RemoveAllListeners();
+            ShowStickerPanel_Button.onClick.RemoveAllListeners();
             AvatarReciver.sprite = null;
 
             UserNameReciver.text = "";
@@ -137,6 +148,7 @@ namespace Diaco.UI.Chatbox
                 }
                 Server.SendReadChat(IDReciver);
             }
+            SetScrollDown();
         }
         public void SetElementPage(ChatBoxData data)
         {
@@ -160,6 +172,11 @@ namespace Diaco.UI.Chatbox
                 }
             }
             return tempsticker;
+        }
+        private void SetScrollDown()
+        {
+            if (!OnDrag)
+                ChatScroll.value =0 ;
         }
         private void  clearChatList()
         {

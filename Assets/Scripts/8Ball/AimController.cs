@@ -10,8 +10,12 @@ public class AimController : MonoBehaviour
     private InfiniteScroll infiniteScroll;
     private ScrollRect scrollRect;
     private bool allowUse = false;
+    private Diaco.Setting.GeneralSetting generalSetting;
     private void Start()
     {
+
+        generalSetting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        
         Rect = GetComponent<RectTransform>();
         infiniteScroll = GetComponent<InfiniteScroll>();
         scrollRect = GetComponent<ScrollRect>();
@@ -36,11 +40,13 @@ public class AimController : MonoBehaviour
         allowUse = false;
         if (show == false)
         {
-            Rect.DOAnchorPos(new Vector2(90, 0), DurationShowOrHideEnergyBar).OnComplete(() => { allowUse = true; });
+            //if (generalSetting.Setting.billiardsettingdata.accuracyAimShow)
+                Rect.DOAnchorPos(new Vector2(90, 0), DurationShowOrHideEnergyBar).OnComplete(() => { allowUse = true; });
         }
         else
         {
-            Rect.DOAnchorPos(new Vector2(0, 0), DurationShowOrHideEnergyBar).OnComplete(() => { allowUse = true; });
+            if (generalSetting.Setting.billiardsettingdata.accuracyAimShow)
+                Rect.DOAnchorPos(new Vector2(0, 0), DurationShowOrHideEnergyBar).OnComplete(() => { allowUse = true; });
         }
     }
 

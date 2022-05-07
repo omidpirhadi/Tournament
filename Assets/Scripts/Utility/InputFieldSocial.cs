@@ -12,7 +12,7 @@ namespace Diaco.Social.TeamsInputField
         public bool Context;
         public string PrimeryData;
         public List<string> ElementContexts;
-        public int digiMultiply = 2;
+        public int digiplus = 2;
         public int MinNum;
         public int MaxNum;
 
@@ -32,7 +32,7 @@ namespace Diaco.Social.TeamsInputField
         {
             if(Digit)
             {
-                var temp = CurrentValueDigit + 1;
+                var temp = CurrentValueDigit + digiplus;
                CurrentValueDigit =  Mathf.Clamp(temp, MinNum, MaxNum);
                 FieldOfViwe.text = CurrentValueDigit.ToString();
                 //Debug.Log("DigitPlus");
@@ -49,7 +49,7 @@ namespace Diaco.Social.TeamsInputField
         {
             if (Digit)
             {
-                var temp = CurrentValueDigit - 1;
+                var temp = CurrentValueDigit - digiplus;
                 CurrentValueDigit = Mathf.Clamp(temp, MinNum, MaxNum);
                 FieldOfViwe.text = CurrentValueDigit.ToString();
                

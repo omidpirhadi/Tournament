@@ -7,9 +7,15 @@ using DG.Tweening;
 [ExecuteInEditMode]
 public class Test_UI : MonoBehaviour
 {
+    public ScrollRect scrollRect;
 
     private void Start()
     {
-        GetComponent<Button>().onClick.AddListener(() => { Debug.Log ("Click"); });
+        scrollRect = GetComponent<ScrollRect>();
+        scrollRect.onValueChanged.AddListener(x => {
+
+            Debug.Log($"min H {scrollRect.minHeight} , min W{scrollRect.minWidth}, Perf w{ scrollRect.preferredWidth}, Perf H{ scrollRect.preferredHeight}");
+        });
+
     }
 }

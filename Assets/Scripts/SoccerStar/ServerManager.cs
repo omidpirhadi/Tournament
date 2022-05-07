@@ -134,13 +134,16 @@ namespace Diaco.SoccerStar.Server
         private float M;
         private float S;
 
-
+        [FoldoutGroup("NetworkedUI")]
+        public Button BlockChat_Button;
         [FoldoutGroup("NetworkedUI")]
         public List<Image> ImagePlayerIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
         public List<Text> GoalIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
         public List<Text> NameIndicatorOnBiliboard;
+        [FoldoutGroup("NetworkedUI")]
+        public Image CostTypeIndicator;
         [FoldoutGroup("NetworkedUI")]
         public Text CoinOrTimeIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
@@ -149,6 +152,14 @@ namespace Diaco.SoccerStar.Server
         public StickerShareViwer StickerViwerLeft;
         [FoldoutGroup("NetworkedUI")]
         public StickerShareViwer StickerViwerRight;
+
+        [FoldoutGroup("NetworkedUI")]
+        public Sprite Cup_sprite;
+        [FoldoutGroup("NetworkedUI")]
+        public Sprite Gem_sprite;
+        [FoldoutGroup("NetworkedUI")]
+        public Sprite Coin_sprite;
+
         [FoldoutGroup("NetworkedUI")]
         public GameObject im_BadConnection;
         //public Slider slider;
@@ -185,6 +196,7 @@ namespace Diaco.SoccerStar.Server
             OnChangeTurn += ServerManager_OnChangeTurn;
             if (InRecordMode)
                 MarblesInRecorodMode = new List<ForceToBall>();
+            BlockChat_Button.onClick.AddListener(() => { Emit_BlockChat(); });
             /// Interpolate.onClick.AddListener(startMovxxx);
 
 
@@ -222,6 +234,7 @@ namespace Diaco.SoccerStar.Server
         }
         private void OnDestroy()
         {
+            BlockChat_Button.onClick.RemoveAllListeners();
             CloseSocket();
         }
         #endregion
@@ -229,6 +242,8 @@ namespace Diaco.SoccerStar.Server
 
         public void ConnectToServer(string URL)
         {
+           
+
             var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
             Notification_Dialog.server_soccer = this;
             Notification_Dialog.init_Notification_soccer();
@@ -292,19 +307,20 @@ namespace Diaco.SoccerStar.Server
                     {
                         FreePlay = false;
                     }
+                    var aim_dot = FindObjectOfType<AimDot>();
                     if (gameData.playerOne.userName == Info.userName)
                     {
                         Side = 1;
                         //SetPlayerOne(gameData);
-
+                        aim_dot.DotPower = Mathf.Clamp(gameData.playerOne.aim, 0, 1);
                     }
                     else
                     {
                         Side = 2;
                         //SetPlayerTwo(gameData);
-
+                        aim_dot.DotPower = Mathf.Clamp(gameData.playerTwo.aim, 0, 1);
                     }
-
+           
                     if (!SpwanedMarbels)
                         SelectArena(gameData.ground);
 
@@ -314,7 +330,8 @@ namespace Diaco.SoccerStar.Server
                     if (NamespaceServer != "_classic")
                         CalculateGameTime(gameData.gameTime / 1000.0f);
                     else
-                        SetUICoin(gameData.cost.ToString());
+                        SetTypeCost(gameData.costType);
+                        SetUICountCost(gameData.cost.ToString());
 
                     Handler_GameReady();
                    // Debug.Log("gameData");
@@ -1038,11 +1055,32 @@ namespace Diaco.SoccerStar.Server
             NameIndicatorOnBiliboard[1].text = right;
             //    Debug.Log("UIChanged");
         }
-        public void SetUICoin(string Count)
+        public void SetUICountCost(string Count)
         {
             CoinOrTimeIndicatorOnBiliboard.text = Count;
 
             //    Debug.Log("UIChanged");
+        }
+        private void SetTypeCost(int cost)
+        {
+            if (cost == 0)///cup
+            {
+                CostTypeIndicator.sprite = Cup_sprite;
+                ///  Debug.Log("Cup");
+            }
+            else if (cost == 1)//coin
+            {
+
+                CostTypeIndicator.sprite = Coin_sprite;
+                //  Debug.Log("Coin");
+            }
+
+            else if (cost == 2)//gem
+            {
+                CostTypeIndicator.sprite = Gem_sprite;
+                //Debug.Log("Gem");
+            }
+
         }
         public void SetUITimer(string Count)
         {
@@ -1314,6 +1352,11 @@ namespace Diaco.SoccerStar.Server
             socket.Emit("message", message);
             Debug.Log("Emit_Message");
 
+        }
+        public  void Emit_BlockChat()
+        {
+            socket.Emit("blockChat");
+            Debug.Log("ChatBloked!");
         }
         /// <summary>
         /// 

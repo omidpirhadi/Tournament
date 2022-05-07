@@ -16,7 +16,7 @@ namespace Diaco.SoccerStar.Marble
     public class ForceToBall : MonoBehaviour
     {
 
-        public SoccerTestSettings TestSetting ;
+       // public SoccerTestSettings TestSetting ;
         public int ID;
         public enum Marble_Type { Marble, Ball };
         public Marble_Type MarbleType;
@@ -74,8 +74,12 @@ namespace Diaco.SoccerStar.Marble
             server = FindObjectOfType<ServerManager>();
  
             rigidbody = GetComponent<Rigidbody>();
-            TestSetting = FindObjectOfType<SoccerTestSettings>();
-            TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
+            if (server.Info.userName == server.gameData.playerOne.userName)
+                PowerForce = Mathf.Clamp(server.gameData.playerOne.force, 140, 220);
+            else
+                PowerForce = Mathf.Clamp(server.gameData.playerTwo.force, 140, 220);
+            ///TestSetting = FindObjectOfType<SoccerTestSettings>();
+            ///  TestSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
             if (MarbleType == Marble_Type.Marble)
             {
@@ -178,7 +182,7 @@ namespace Diaco.SoccerStar.Marble
                 server.OnChangeTurn -= Server_OnChangeTurn;
             }
             server.OnPhysicFreeze -= Server_OnPhysicFreeze;
-            TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
+           /// TestSetting.OnChangeSetting -= TestSetting_OnChangeSetting;
         }
 
         public void OnDrawGizmos()

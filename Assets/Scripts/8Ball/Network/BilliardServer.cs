@@ -223,7 +223,8 @@ namespace Diaco.EightBall.Server
         public StickerShareViwer StickerViwerRight;
         [FoldoutGroup("BillboardUI")]
         public GameObject im_BadConnection;
-
+        [FoldoutGroup("BillboardUI")]
+        public Button BlockChat_Button;
         #endregion
 
         #region UnityFunctions
@@ -258,7 +259,7 @@ namespace Diaco.EightBall.Server
 
                 SelectTable(tableName.Substring(1));
             }
-
+            BlockChat_Button.onClick.AddListener(() => { Emit_BlockChat(); });
         }
         public void OnEnable()
         {
@@ -267,6 +268,7 @@ namespace Diaco.EightBall.Server
         public void OnDisable()
         {
             CloseConnection();
+            BlockChat_Button.onClick.RemoveAllListeners();
         }
         public  void Destroy()
         {
@@ -337,16 +339,21 @@ namespace Diaco.EightBall.Server
                     Turn = false;
                     gameData = new Structs.GameData();
                     gameData = JsonUtility.FromJson<Diaco.EightBall.Structs.GameData>(m[0].ToString());
-                    
+
                     /*if (!SpwnedBall)
                         SelectTable(gameData.table);*/
+                    var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
                     if (gameData.playerOne.userName == UserName.userName)
                     {
-                      StartCoroutine(  SetPlayerOne(gameData));
+                        StartCoroutine(SetPlayerOne(gameData));
+                        cueball.PowerCUE = Mathf.Clamp(gameData.playerOne.force, 1.34f, 1.74f);
+                        cueball.PowerSpin = Mathf.Clamp(gameData.playerOne.spin, 3, 4);
                     }
                     else
                     {
                         StartCoroutine(SetPlayerTwo(gameData));
+                        cueball.PowerCUE = Mathf.Clamp(gameData.playerTwo.force, 1.34f, 1.74f);
+                        cueball.PowerSpin = Mathf.Clamp(gameData.playerTwo.spin, 3, 4);
                     }
                    
                    
@@ -598,6 +605,11 @@ namespace Diaco.EightBall.Server
             Debug.Log("Emit_Message");
 
         }
+        public void Emit_BlockChat()
+        {
+            socket.Emit("blockChat");
+            Debug.Log("ChatBloked!");
+        }
         public void Emit_CallPocket(int  id)
         {
             socket.Emit("selectPocket", id);
@@ -633,7 +645,7 @@ namespace Diaco.EightBall.Server
             SetTypeCost(Convert.ToInt16(data.costType));
             SetCountCostBillboard(data.cost.ToString());
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.01f);
 
             ///   SetPositionsBalls(data.positions);
             yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));

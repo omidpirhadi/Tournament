@@ -10,7 +10,8 @@ namespace Diaco.EightBall.CueControllers
 {
     public class HitBallController : MonoBehaviour
     {
-        public BillardTestSetting testSetting;
+        private Diaco.Setting.GeneralSetting generalSetting;
+        // public BillardTestSetting testSetting;
         public Diaco.EightBall.Server.BilliardServer Server;
         public SoundEffectControll soundeffectControll;
         public CueSpinController CueSpin;
@@ -82,12 +83,15 @@ namespace Diaco.EightBall.CueControllers
         private float powscalefactor;
         private bool SyncAimWithServeTurn = false;
        [SerializeField] private bool CueBallMoveInPitoke = false;
-
+     
         #region MonoBehaviourFunctions
         void Start()
         {
-            testSetting = FindObjectOfType<BillardTestSetting>();
-            testSetting.OnChangeSetting += TestSetting_OnChangeSetting;
+            generalSetting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+            generalSetting.OnChangeSetting += TempPlayerControll_OnChangeSetting;
+            // testSetting = FindObjectOfType<BillardTestSetting>();
+
+            // testSetting.OnChangeSetting += TestSetting_OnChangeSetting;
 
             AimLine = GetComponent<CustomLineRenderer2>();
             rigidbody = GetComponent<Rigidbody>();
@@ -106,18 +110,18 @@ namespace Diaco.EightBall.CueControllers
             UI.OnUIActive += UI_OnUIActive;
 
             SetYPositionRefrence();
-
+            SetSensivityRotate();
 
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
         }
 
-        private void TestSetting_OnChangeSetting(float arg1, float arg2, float arg3, float arg4, float arg5, float arg6, float arg7,float arg8)
+       /* private void TestSetting_OnChangeSetting(float arg1, float arg2, float arg3, float arg4, float arg5, float arg6, float arg7,float arg8)
         {
             SetSetting(arg1, arg2, arg3, arg4, arg5, arg6, arg7,arg8);
             Debug.Log("ChengeAccept");
         }
-
+        */
         void LateUpdate()
         {
             RadiusGhostBall = (GetComponent<SphereCollider>().radius * transform.localScale.x) * RadiusGhostBallScaleFactor;
@@ -184,6 +188,26 @@ namespace Diaco.EightBall.CueControllers
 
         }
         #endregion
+        private  void SetSensivityRotate()
+        {
+            if (generalSetting.Setting.billiardsettingdata.speedRotateAimCue == Setting.SpeedElemenInUi.Slow)
+            {
+                SensitivityRotate = 00.5f;
+
+            }
+            else if (generalSetting.Setting.billiardsettingdata.speedRotateAimCue == Setting.SpeedElemenInUi.Normal)
+            {
+                SensitivityRotate = 1.0f;
+            }
+            else if (generalSetting.Setting.billiardsettingdata.speedRotateAimCue == Setting.SpeedElemenInUi.Fast)
+            {
+                SensitivityRotate = 1.5f;
+            }
+        }
+        private void TempPlayerControll_OnChangeSetting()
+        {
+            SetSensivityRotate();
+        }
         private void UI_OnUIActive(bool obj)
         {
             if (obj == true)
@@ -1208,7 +1232,7 @@ namespace Diaco.EightBall.CueControllers
         }
 
 
-        private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate ,  float powbounce, float spin)
+       /* private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate ,  float powbounce, float spin)
         {
             this.maxanguler = MaxAngularDrag;
             this.PowerCUE = pow;
@@ -1218,7 +1242,7 @@ namespace Diaco.EightBall.CueControllers
             this.SensitivityRotate = sensivityrotate;
             this.PowerBounceOnWall = powbounce;
             this.PowerSpin = spin;
-        }
+        }*/
         #region Events
 
         public event Action<int , Vector3> OnHitBall;

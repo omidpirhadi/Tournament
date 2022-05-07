@@ -16,7 +16,7 @@ namespace Diaco.Social
       
 
         public RectTransform Content;
-        public InputField SearchInput;
+        public TMPro.TMP_InputField SearchInput;
         public Button SearchButton;
 
         public Button FilterByGameButton;

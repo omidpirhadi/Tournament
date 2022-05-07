@@ -68,6 +68,7 @@ namespace Diaco.HTTPBody
     {
         public string userName;
         public string avatar;
+        public int rank;
         public int cup;
         public int gem;
         public int star;

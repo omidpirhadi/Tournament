@@ -68,7 +68,7 @@ namespace Diaco.UI.Chatbox
         /// <param name="context"></param>
         /// <param name="time"></param>
         /// <param name="date"></param>
-        public void FillFrameChat(string username, Sprite avatar, string context, string time, string date)
+        public void FillFrameChatWithAvatar(string username, Sprite avatar, string context, string time, string date)
         {
             this.Context.text = context;
             this.Time.text = time;
@@ -77,7 +77,7 @@ namespace Diaco.UI.Chatbox
             this.Avatar.sprite = avatar;
 
         }
-        public void FillFrameChatWithSticker(string username, Sprite avatar, Sticker sticker, string time, string date)
+        public void FillFrameChatWithStickerAndWithAvatar(string username, Sprite avatar, Sticker sticker, string time, string date)
         {
             this.StickerViwer.sticker = sticker;
             this.Time.text = time;

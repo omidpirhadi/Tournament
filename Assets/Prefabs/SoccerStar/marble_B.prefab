@@ -207,8 +207,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4867411009215751049}
   serializedVersion: 2
-  m_Mass: 1.34
-  m_Drag: 0.85
+  m_Mass: 1.42
+  m_Drag: 0.78
   m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -326,7 +326,7 @@ MonoBehaviour:
   ID: 0
   MarbleType: 0
   forceMode: 1
-  PowerForce: 145
+  PowerForce: 140
   SelectEffect: {fileID: 4550148689675560095}
   Flagrenderer: {fileID: 4867411009215750378}
   Flag: {fileID: 4867411009215750248}
@@ -344,6 +344,8 @@ MonoBehaviour:
   MaxDisFromWall: 5
   hitpointballtomarbl: {x: 0, y: 0, z: 0}
   hitpointballtowall: {x: 0, y: 0, z: 0}
+  bouncepower: 0.71
+  SensivityCheckMovment: 0.01
 --- !u!114 &4867411009215750599
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -12,7 +12,10 @@ namespace Diaco.SoccerStar.CustomTypes
         public string avatar;
         public string skin;
         public int score;
-     ///   public List<DataPostionsMarbles> plan;
+        public float force;
+        public float aim;
+
+        ///   public List<DataPostionsMarbles> plan;
     }
     [Serializable]
     public struct GameData
@@ -37,6 +40,7 @@ namespace Diaco.SoccerStar.CustomTypes
         public int cost;
         public int costType;
         public int award;
+
     }
     [Serializable]
     public struct UserInfo

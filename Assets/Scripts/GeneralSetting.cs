@@ -31,8 +31,8 @@ namespace Diaco.Setting
                     reciveFriendRequest = true,
                     reciveLeagueRequest = true,
                     reciveMatchFriendRequest = true,
-                    soccerSetting = new SoccerSetting { aimForward = false },
-                    billiardSetting = new BilliardSetting
+                    soccersettingdata = new SoccerSettingData { aimForward = false },
+                    billiardsettingdata = new BilliardSettingData
                     {
                         accuracyAimShow = true,
                         //powerWoodCuePosition = PositionElemenInUi.Left,
@@ -80,7 +80,24 @@ namespace Diaco.Setting
                 File.Delete(Application.persistentDataPath + "//" + FileName + ".json");
             }
             File.WriteAllText(Application.persistentDataPath + "//" + FileName + ".json", set_json);
+            Handler_OnChangeSetting();
             Debug.Log("Setting Saved!");
+        }
+
+
+        private Action settingchange;
+        public event  Action OnChangeSetting
+        {
+            add { settingchange += value; }
+            remove { settingchange -= value; }
+        }
+        protected void Handler_OnChangeSetting()
+        {
+            if(settingchange !=null)
+            {
+                settingchange();
+
+            }
         }
     }
     [Flags]
@@ -96,11 +113,11 @@ namespace Diaco.Setting
         public bool reciveFriendRequest;
         public bool reciveMatchFriendRequest;
         public bool reciveLeagueRequest;
-        public BilliardSetting billiardSetting;
-        public SoccerSetting soccerSetting;
+        public BilliardSettingData billiardsettingdata;
+        public SoccerSettingData soccersettingdata;
     }
     [Serializable]
-    public struct BilliardSetting
+    public struct BilliardSettingData
     {
         public bool accuracyAimShow;
        // public PositionElemenInUi powerWoodCueShow;
@@ -108,7 +125,7 @@ namespace Diaco.Setting
         public SpeedElemenInUi speedRotateAimCue;
     }
     [Serializable]
-    public struct SoccerSetting
+    public struct SoccerSettingData
     {
         public bool aimForward;
     }

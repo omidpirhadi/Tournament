@@ -26,8 +26,8 @@ namespace Diaco.Social
         public Text billiardLeaguePrecent_text;
         public Text ReminingTimeToCreateLeague_text;
 
-        public InputField TeamName;
-        public InputField Description;
+        public TMPro.TMP_InputField TeamName;
+        public TMPro.TMP_InputField Description;
 
         public InputFieldSocial Game;
         public InputFieldSocial Mode;

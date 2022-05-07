@@ -32,7 +32,7 @@ namespace Diaco.HightScoreTab
                 if (isOn)
                 {
                     FilterByAllContacts();
-                    Debug.Log("Filter By All ContactIn HighScore");
+                    Debug.Log("Filter By All Contact In HighScore");
                 }
             });
             FilterByFriendsToggle.onValueChanged.AddListener((isOn) => {
@@ -70,23 +70,25 @@ namespace Diaco.HightScoreTab
 
         public void  initializeTopPlayerWithCUP(HTTPBody.TopPlayers players)
         {
+            ResetToggel();
             clearCardCup();
             for (int i = 0; i < players.players.Count; i++)
             {
                 var card = Instantiate(CardWithElementCUP, Content_CUPTab);
                 var image = Server.AvatarContainer.LoadImage(players.players[i].avatar);     
-                card.SetCardCUP((i+1) ,image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].cup.ToString());
+                card.SetCardCUP(players.players[i].rank, image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].cup.ToString());
                 temp_CardWithCup.Add(card);
             }
         }
         public void initializeTopPlayerWithGEM(HTTPBody.TopPlayers players)
         {
+            ResetToggel();
             clearCardGem();
             for (int i = 0; i < players.players.Count; i++)
             {
                 var card = Instantiate(CardWithElementGEM, Content_CUPGEM);
                 var image = Server.AvatarContainer.LoadImage(players.players[i].avatar);
-                card.SetCardGEM((i + 1),image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].gem.ToString());
+                card.SetCardGEM(players.players[i].rank, image, players.players[i].userName, players.players[i].star.ToString(), players.players[i].gem.ToString());
                 temp_CardWithGem.Add(card);
             }
         }
@@ -110,7 +112,7 @@ namespace Diaco.HightScoreTab
         }
         public void ResetToggel()
         {
-            FilterByAllContactsToggle.interactable = true;
+            FilterByAllContactsToggle.isOn = true;
         }
         private void FilterByFriends()
         {

@@ -18,39 +18,52 @@ public class TempPlayerControll : MonoBehaviour
    /// public GameObject CircleAim;
    // public GameObject indicator;
     public float Sensiviti = 0.1f;
-
+    public bool AimForward = false;
     public Vector3 LastPos;
     public Vector3 FirstPosFinger2;
-    private bool activeselection;
+   // private bool activeselection;
 
     private RaycastHit hit, hit2;
-    [SerializeField] private Vector3 firstouch, secondtouch;
+    [SerializeField] private Vector3 firstouch/*, secondtouch*/;
     [SerializeField] private bool Touch2Clicked = false;
     [SerializeField] private bool rotateType2;
-   [SerializeField] private NavigationUI ui;
-   [SerializeField] private bool UIActive = false;
+    //[SerializeField] private NavigationUI ui;
+    // [SerializeField] private bool UIActive = false;
 
+    private Diaco.Setting.GeneralSetting generalSetting;
     void Start()
     {
-        ui = FindObjectOfType<NavigationUI>();
-        ui.OnUIActive += Ui_OnUIActive;
+        // ui = FindObjectOfType<NavigationUI>();
+        //  ui.OnUIActive += Ui_OnUIActive;
+        generalSetting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        generalSetting.OnChangeSetting += TempPlayerControll_OnChangeSetting;
+        AimForward = generalSetting.Setting.soccersettingdata.aimForward;
     }
 
-    private void Ui_OnUIActive(bool active)
-    {
-        UIActive = active;
-    }
+
+    /* private void Ui_OnUIActive(bool active)
+     {
+         UIActive = active;
+     }*/
 
     void Update()
     {
         TouchControll();
         //MarbleRingEffect();
     }
+    void OnDestroy()
+    {
+        generalSetting.OnChangeSetting -= TempPlayerControll_OnChangeSetting;
+    }
+    private void TempPlayerControll_OnChangeSetting()
+    {
+        AimForward = generalSetting.Setting.soccersettingdata.aimForward;
+    }
 
    
     public void TouchControll()
     {
-        if (Input.touchCount > 0 && !UIActive)
+        if (Input.touchCount > 0)
         {
 
             if (Input.GetTouch(0).phase == TouchPhase.Began)
@@ -124,7 +137,10 @@ public class TempPlayerControll : MonoBehaviour
                         else
                         {
                             aimCricle.ScaleAim(ID,  dis_last);
-                            aimCricle.AimCircleAndIndicatorRotate(ID, hit.point);
+                            if (AimForward == false)
+                                aimCricle.AimCircleAndIndicatorRotate(ID, hit.point);
+                            else if (AimForward == true)
+                                aimCricle.AimCircleAndIndicatorRotate2(ID, hit.point);
                             //   aimCricle.SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData { ID = ID, CircleRotate_Y = CircleAim.transform.eulerAngles.y, CricleScale = CircleAim.transform.localScale.x, PositionIndicator = indicator.transform.localPosition, RotateIndicator_Y = indicator.transform.eulerAngles.y });
                         }
 
@@ -184,7 +200,7 @@ public class TempPlayerControll : MonoBehaviour
             }
 
         }
-        else if (Input.touchCount == 2)
+        else if (Input.touchCount == 2 && AimForward == false)
         {
             if (Input.GetTouch(1).phase == TouchPhase.Began)
             {
@@ -294,7 +310,7 @@ public class TempPlayerControll : MonoBehaviour
         ID = -1000;
 
         firstouch = Vector3.zero;
-        secondtouch = Vector3.zero;
+       // secondtouch = Vector3.zero;
         Touch2Clicked = false;
 
     }

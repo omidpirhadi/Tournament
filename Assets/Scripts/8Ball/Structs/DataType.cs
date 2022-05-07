@@ -153,6 +153,9 @@ namespace Diaco.EightBall.Structs
         public string avatar;
         public string shar;
         public int time;
+        public float force;
+        public float aim;
+        public float spin;
         public List<int> remaningBalls;
     }
     [Serializable]

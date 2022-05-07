@@ -107,8 +107,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8508796437853943257}
   serializedVersion: 2
-  m_Mass: 0.2
-  m_Drag: 0.8
+  m_Mass: 0.4
+  m_Drag: 0.9
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -148,6 +148,8 @@ MonoBehaviour:
   MaxDisFromWall: 100
   hitpointballtomarbl: {x: 0, y: 0, z: 0}
   hitpointballtowall: {x: 0, y: 0, z: 0}
+  bouncepower: 0.71
+  SensivityCheckMovment: 0.01
 --- !u!96 &8508796437853943252
 TrailRenderer:
   serializedVersion: 2

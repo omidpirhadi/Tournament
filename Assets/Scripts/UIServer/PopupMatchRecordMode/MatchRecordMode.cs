@@ -16,6 +16,7 @@ namespace Diaco.UI.MatchRecord
         public GameObject PanelRecordMode;
         public Text Point;
         public Text Rank;
+        public Text CostCoin_txt;
         public Toggle[] TryToggle;
         public Button btn_Start;
         [Header("PracticeGame")]
@@ -73,6 +74,7 @@ namespace Diaco.UI.MatchRecord
                 ChangePanel(data.start);
                 Point.text = data.point.ToString();
                 Rank.text = data.rank;
+                CostCoin_txt.text = (data.cost).ToString();
                 SetFailTry(data.tryToggle);
             }
             else
@@ -210,8 +212,9 @@ namespace Diaco.UI.MatchRecord
 
         public int point;
         public string rank;
+        public int cost;
         public int tryToggle;
-
+        
 
         public List<LeaderboardPlayer> leaderboardPlayers;
     }
