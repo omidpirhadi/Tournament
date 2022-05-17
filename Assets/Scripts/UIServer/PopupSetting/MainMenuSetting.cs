@@ -15,6 +15,7 @@ namespace Diaco.Setting
         public Toggle ShowOnlineStatus_Toggel;
         void OnEnable()
         {
+            ///setting emit to server;
             generalSetting = FindObjectOfType < GeneralSetting>();
 
             Set();

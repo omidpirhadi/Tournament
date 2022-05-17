@@ -87,7 +87,7 @@ public class SliderMenu : MonoBehaviour {
 	//Other Variables--------------------------------------------------------------------------------------------
 	private float n;
 	private float ScrollSteps;
-	//-----------------------------------------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------------------------------
 
 
 
@@ -98,7 +98,7 @@ public class SliderMenu : MonoBehaviour {
 
 
 
-	/*void Start () {
+    /*void Start () {
 
 		//Canvas Settings----------------------------------------------------------------------------
 		YourCanvas.GetComponent<CanvasScaler> ().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
@@ -153,9 +153,10 @@ public class SliderMenu : MonoBehaviour {
 
 
 
-
+    private bool once =false;
     public void InitializeStart()
     {
+       // Debug.Log("SSSSSSSsSsSsSSsSSSSS");
         //Canvas Settings----------------------------------------------------------------------------
         YourCanvas.GetComponent<CanvasScaler>().uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         YourCanvas.GetComponent<CanvasScaler>().referenceResolution = new Vector2((Element_Size.x + 2 * Mathf.Clamp(Element_Margin, 0, 1000)) * SlidesInView, YourCanvas.GetComponent<CanvasScaler>().referenceResolution.y);
@@ -170,37 +171,46 @@ public class SliderMenu : MonoBehaviour {
 
 
         //Next And Previous Button-------------------------------------------------------------------
+        var btn = GameObject.Find("Buttons");
         if (ShowButtons == true)
         {
-            GameObject.Find("Buttons").SetActive(true);
-            GameObject.Find("Buttons/Next").GetComponent<Image>().sprite = ButtonSprite;
-            GameObject.Find("Buttons/Previous").GetComponent<Image>().sprite = ButtonSprite;
+
+
+            if (btn)
+            {
+                btn.SetActive(true);
+
+
+                GameObject.Find("Buttons/Next").GetComponent<Image>().sprite = ButtonSprite;
+                GameObject.Find("Buttons/Previous").GetComponent<Image>().sprite = ButtonSprite;
+            }
         }
         else
         {
-
-            GameObject.Find("Buttons").SetActive(false);
+            if (btn)
+                GameObject.Find("Buttons").SetActive(false);
         }
         //-------------------------------------------------------------------------------------------
 
 
-
-        //Auto Find Slides And Auto Set Size And Position Of Slides
-        for (int b = 0; b < ScrollContent.childCount; b++)
+        if (once == false)
         {
-            LevelThumbnails.Add(GameObject.Find(ScrollContent.name + "/" + SlidesNamePrefix + b));
-            LevelThumbnails[b].GetComponent<RectTransform>().sizeDelta = new Vector2(Element_Size.x, Element_Size.y);
-            LevelThumbnails[b].GetComponent<RectTransform>().localPosition = new Vector3((2 * b + 3) * Element_Size.x / 2 + (2 * b + 3) * Mathf.Clamp(Element_Margin, 0, 1000), 200, 10);
+            //Auto Find Slides And Auto Set Size And Position Of Slides
+            for (int b = 0; b < ScrollContent.childCount; b++)
+            {
+                LevelThumbnails.Add(GameObject.Find(ScrollContent.name + "/" + SlidesNamePrefix + b));
+                LevelThumbnails[b].GetComponent<RectTransform>().sizeDelta = new Vector2(Element_Size.x, Element_Size.y);
+                LevelThumbnails[b].GetComponent<RectTransform>().localPosition = new Vector3((2 * b + 3) * Element_Size.x / 2 + (2 * b + 3) * Mathf.Clamp(Element_Margin, 0, 1000), 200, 10);
+            }
+            //-------------------------------------------------------------------------------------------
+
+
+       once = true;
         }
-        //-------------------------------------------------------------------------------------------
-
-
-
-        //Set Size Of ScrollContent (Auto Set)
-        ScrollContent.GetComponent<RectTransform>().sizeDelta = new Vector2((LevelThumbnails.Count + 2) * (Element_Size.x + 2 * Mathf.Clamp(Element_Margin, 0, 1000)), Element_Size.y);
-        //-------------------------------------------------------------------------------------------
-
-
+            //Set Size Of ScrollContent (Auto Set)
+            ScrollContent.GetComponent<RectTransform>().sizeDelta = new Vector2((LevelThumbnails.Count + 2) * (Element_Size.x + 2 * Mathf.Clamp(Element_Margin, 0, 1000)), Element_Size.y);
+            //-------------------------------------------------------------------------------------------
+     
 
         //Calculate ScrollSteps Value----------------------------------------------------------------
         n = LevelThumbnails.Count - 1;

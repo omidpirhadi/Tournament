@@ -55,8 +55,9 @@ namespace Diaco.HTTPRequests
             if (ClientHTTP.isNetworkError || ClientHTTP.isHttpError)
             {
                 // Debug.Log("Error:" + ClientHTTP.error);
+               var ponse = Encoding.UTF8.GetString(ClientHTTP.downloadHandler.data);
                 var Error = ClientHTTP.error;
-                Handler_OnRequsetFail(Error);
+                Handler_OnRequsetFail(ClientHTTP.error+":::"+ponse);
             }
             else
             {

@@ -81,6 +81,7 @@ public class Login : MonoBehaviour
     private void OnDisable()
     {
         EnterButton.onClick.RemoveListener(() => { });
+        phoneNumber.onValueChanged.RemoveAllListeners();
     }
     public void RequestConfrimCode()
     {
@@ -176,7 +177,7 @@ public class Login : MonoBehaviour
     }
     private void SendInfo_OnRequsetFail(string obj)
     {
-        Debug.Log("Login Error:" + "ERROR 404!");
+        Debug.Log(obj );
     }
 
 }

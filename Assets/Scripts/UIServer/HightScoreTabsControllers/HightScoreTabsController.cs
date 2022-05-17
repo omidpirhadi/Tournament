@@ -110,10 +110,7 @@ namespace Diaco.HightScoreTab
                 }
             }
         }
-        public void ResetToggel()
-        {
-            FilterByAllContactsToggle.isOn = true;
-        }
+      
         private void FilterByFriends()
         {
             if (SortByCUP)
@@ -148,6 +145,11 @@ namespace Diaco.HightScoreTab
                     }
                 }
             }
+        }
+
+        public void ResetToggel()
+        {
+            FilterByAllContactsToggle.isOn = true;
         }
         private void clearCardCup()
         {

@@ -61,6 +61,8 @@ public class ChangeNumberPopup : MonoBehaviour
     }
     private void OnDisable()
     {
-        AcceptButton.onClick.RemoveListener(() => { });
+        AcceptButton.onClick.RemoveAllListeners();
+        NewNumber.onValueChanged.RemoveAllListeners();
+
     }
 }

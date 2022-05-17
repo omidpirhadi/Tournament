@@ -16,7 +16,7 @@ public class ServerUI : MonoBehaviour
     public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
 
     public Diaco.ImageContainerTool.ImageContainer AvatarContainer, LeagueFlagsContainer, ImageGameType, ImageTypeCosts;
-    public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError;
+    public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError, ExitApp;
     [SerializeField]
     public BODY BODY;
     ///public Shop Shop;
@@ -27,11 +27,20 @@ public class ServerUI : MonoBehaviour
     public GameLuncher Luncher;
   //  public Diaco.Notification.NotificationPopUp NotificationPopUp;
     public NavigationUI navigationUi;
-    public UIRegisterOnServer UIInFooterAndHeader;
+    public  Diaco.UI.UIRegisterOnServer UIInFooterAndHeader;
 
     private bool loadedpage = false;
     private int intergation = 0;
 
+    public void Update()
+    {
+
+        if(Input.GetKey(KeyCode.Escape) &&  navigationUi.CurrentPage == "selectgame")
+        {
+            ExitApp.SetActive(true);
+        }
+
+    }
     #region Server_ON
     public void ConnectToUIServer()
     {
@@ -57,6 +66,7 @@ public class ServerUI : MonoBehaviour
 
             intergation = 0;
             socket.Emit("authToken", ReadToken("token"));
+            Emit_Setting();
             navigationUi.StopLoadingPage();
 
             Debug.Log($"<color=blue><b>Connection And ReadToken</b></color>");
@@ -68,6 +78,8 @@ public class ServerUI : MonoBehaviour
             Login.SetActive(true);
             LoginError.SetActive(false);
             SplashScreen.SetActive(false);
+            /*DeleteToken("token");
+            StartCoroutine(Luncher.RestartGame());*/
             Debug.Log($"<color=red><b>Wrong Token</b></color>");
         });
         socket.On("loginError", (S, p, m) =>
@@ -99,18 +111,18 @@ public class ServerUI : MonoBehaviour
         {
 
            // BODY = new BODY();
-            Debug.Log("VVVVVVVVVV");
+          //  Debug.Log("VVVVVVVVVV");
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
            
             if (BODY.inGame.id != "" && intergation == 0)
             {
-                Debug.Log("InGame");
+               /// Debug.Log("InGame");
                 if (BODY.inGame.gameType == "soccer")
                 {
                     //navigationUi.GetComponent<SceneManagers>().loadlevel("SoccerGame");
-                    Debug.Log("InGame22222");
+                    Debug.Log("Soccer In Game ");
                     if (BODY.inGame.namespaceServer == "_record")
                     {
                         Luncher.SetNameSpaceServer(2, BODY.inGame.namespaceServer);
@@ -128,18 +140,18 @@ public class ServerUI : MonoBehaviour
                 else if (BODY.inGame.gameType == "billiard")
                 {
                     // navigationUi.GetComponent<SceneManagers>().loadlevel("8ballgame");
-                    Debug.Log("InGame5555");
+                    Debug.Log("Billiard In Game");
                     if (BODY.inGame.namespaceServer == "_record")
                     {
                         Luncher.SetNameSpaceServer(3, BODY.inGame.namespaceServer);
                         Luncher.SwitchScene(3);
-                        Debug.Log("InGame!!!!!");
+                       // Debug.Log("InGame!!!!!");
                     }
                     else
                     {
                         Luncher.SetNameSpaceServer(1, BODY.inGame.namespaceServer);
                         Luncher.SwitchScene(1);
-                        Debug.Log("InGame@@@@@");
+                      //  Debug.Log("InGame@@@@@");
                     }
                 }
                 intergation = 1;
@@ -160,7 +172,7 @@ public class ServerUI : MonoBehaviour
                 Header.SetActive(true);
                 loadedpage = true;
             }
-            Debug.Log("main-menu called"+json);
+           // Debug.Log("main-menu called"+json);
 
             UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
             SetElementInHeaderAndFooter();
@@ -944,16 +956,22 @@ public class ServerUI : MonoBehaviour
         if (pagename == "modesoccer")
         {
 
-            UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.soccer_level.ToString() ;
+            //UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.soccer_level.ToString() ;
+            ///BODY.profile.soccer
+            ///soccer_level , soccer_currentxp  ,soccer_totalxp
+
+            UIInFooterAndHeader.SetXpPrograssBar(BODY.profile.soccer_level, BODY.profile.soccer_currentxp, BODY.profile.soccer_totalxp);
         }
         else if (pagename == "modepool")
         {
-            UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.billiard_level.ToString();
+            //  UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.billiard_level.ToString();
+            UIInFooterAndHeader.SetXpPrograssBar(BODY.profile.billiard_level, BODY.profile.billiard_currentxp, BODY.profile.billiard_totalxp);
         }
      
         else
         {
-            UIInFooterAndHeader.Xp_inPageSelectGame.text = "";
+            UIInFooterAndHeader.ResetXpPrograssbar();
+            // UIInFooterAndHeader.Xp_inPageSelectGame.text = "";
         }
     }
 
@@ -1246,7 +1264,24 @@ public class ServerUI : MonoBehaviour
         socket.Emit("rentCue", rentId);
         Debug.Log("Emit_ShopformationRent=" + "::" + rentId);
     }
+    public void Emit_Setting()
+    {
 
+        var obj_setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        Diaco.Setting.GameSettingDataServer data = new Diaco.Setting.GameSettingDataServer
+        {
+            status = obj_setting.Setting.status,
+            reciveFriendRequest = obj_setting.Setting.reciveFriendRequest,
+            reciveLeagueRequest = obj_setting.Setting.reciveLeagueRequest,
+            reciveMatchFriendRequest = obj_setting.Setting.reciveMatchFriendRequest
+
+        };
+        
+        var json_setting = JsonUtility.ToJson(data);
+        socket.Emit("setting", json_setting);
+        Debug.Log("Setting  Send To Server");
+
+    }
 
     #endregion
     /// <summary>
@@ -1382,6 +1417,15 @@ public class ServerUI : MonoBehaviour
 
         }
         return token.token;
+    }
+    public void  DeleteToken(string FileName)
+    {
+        
+        if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
+        {
+            File.Delete(Application.persistentDataPath + "//" + FileName + ".json");
+        }
+        
     }
     public Sprite ConvertImageToSprite(string image)
     {

@@ -17,6 +17,9 @@ namespace Diaco.UI.RoyalTournument
         public GameObject SlideNumber_16;
         public List<Toggle> Element_SlideNumber_16;
         public Diaco.ImageContainerTool.ImageContainer ImageCards;
+        public Diaco.ImageContainerTool.ImageContainer CostTypeImage_Container;
+        public Image Cost_Image;
+        public Text Cost_txt;
         public ElementsAward Award1st;
         public ElementsAward Award2nd;
         public ElementsAward Award3rd;
@@ -70,7 +73,9 @@ namespace Diaco.UI.RoyalTournument
 
             Award3rd.Cup.text = (data.awards3.cup).ToString();
             Award3rd.Xp.text = (data.awards3.xp).ToString();
-          
+
+            Cost_Image.sprite = CostTypeImage_Container.LoadImage(data.costType.ToString());
+            Cost_txt.text = data.cost.ToString();
         }
 
         private void ElementOfSlideNumberTurnOn(AwardsData data)
@@ -132,6 +137,8 @@ namespace Diaco.UI.RoyalTournument
     {
         public int capacity;
         public int active;
+        public int costType;
+        public int cost;
         public Award awards1;
         public Award awards2;
         public Award awards3;

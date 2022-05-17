@@ -11,7 +11,7 @@ public enum _SubGame { Classic = 0, Quick = 1, Challenge = 2 }
 public class NavigationUI : MonoBehaviour
 {
     public ServerUI Server;
-    private string currentpage;
+   [SerializeField] private string currentpage;
     public string CurrentPage
     {
         set
@@ -68,6 +68,7 @@ public class NavigationUI : MonoBehaviour
             soundEffectControll = GameObject.Find("SoundEffectlLayer2").GetComponent<SoundEffectControll>();
         }
     }
+    
     public void SwitchUI(string UIName)
     {
 
@@ -159,7 +160,7 @@ public class NavigationUI : MonoBehaviour
                 {
                     pop.PopUpObject.SetActive(true);
                     if (pop.PopUpObject.GetComponent<Canvas>())
-                        OrderPopup = pop.PopUpObject.GetComponent<Canvas>().sortingOrder;
+                     ///   OrderPopup = pop.PopUpObject.GetComponent<Canvas>().sortingOrder;
                    // CurrentPage = pop.Name;
                     if (soundEffectControll)
                     {
@@ -185,7 +186,7 @@ public class NavigationUI : MonoBehaviour
                 {
                     pop.PopUpObject.SetActive(true);
                     if (pop.PopUpObject.GetComponent<Canvas>())
-                        pop.PopUpObject.GetComponent<Canvas>().sortingOrder = OrderPopup + 3;
+                    //    pop.PopUpObject.GetComponent<Canvas>().sortingOrder = OrderPopup + 3;
 
                   //  CurrentPage = pop.Name;
                     if (soundEffectControll)

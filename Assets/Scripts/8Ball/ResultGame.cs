@@ -40,6 +40,16 @@ public class ResultGame : MonoBehaviour
     public Sprite Gem;
     private void Awake()
     {
+
+    }
+    void Start()
+    {
+       // Server.OnGameResult += Server_OnGameResult;
+        
+        
+    }
+    void OnEnable()
+    {
         DOVirtual.Float(0, 1, 2f, (x) => { }).OnComplete(() =>
         {
             RematchButton.interactable = true;
@@ -58,7 +68,7 @@ public class ResultGame : MonoBehaviour
         {
 
             Server.Emit_LeftGame();
-           // Server.CloseConnection();
+            // Server.CloseConnection();
             luncher.BackToMenu();
             CloseGameButton.interactable = false;
             this.gameObject.SetActive(false);
@@ -67,7 +77,7 @@ public class ResultGame : MonoBehaviour
             DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() =>
             {
                 Server.Emit_LeftGame();
-              //  Server.CloseConnection();
+                //  Server.CloseConnection();
                 luncher.BackToMenu();
                 CloseGameButton.interactable = false;
                 this.gameObject.SetActive(false);
@@ -75,13 +85,21 @@ public class ResultGame : MonoBehaviour
 
 
     }
-    void Start()
+    void  OnDisable()
     {
-        Server.OnGameResult += Server_OnGameResult;
-        
-        
-    }
+        Server.OnGameResult -= Server_OnGameResult;
+        RematchButton.onClick.RemoveAllListeners();
 
+        CloseGameButton.onClick.RemoveAllListeners();
+    }
+    void OnDestroy()
+    {
+
+        Server.OnGameResult -= Server_OnGameResult;
+        RematchButton.onClick.RemoveAllListeners();
+
+        CloseGameButton.onClick.RemoveAllListeners();
+    }
     private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result,bool playaginactive)
     {
 

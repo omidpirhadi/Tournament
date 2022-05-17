@@ -12,7 +12,7 @@ namespace Diaco.UI.PopupRecordModeResult
     public class PopupAwardRecordMode : MonoBehaviour
     {
         public Diaco.ImageContainerTool.ImageContainer AvatarsImage;
-        private GameLuncher Luncher;
+        ///private GameLuncher Luncher;
         public Image Avatar;
         public RTLTMPro.RTLTextMeshPro UserName;
         public Text Rank;
@@ -21,7 +21,7 @@ namespace Diaco.UI.PopupRecordModeResult
         public Button Btn_Accept;
         public void Set(ResualtRecordModeData data)
         {
-            Luncher = FindObjectOfType<GameLuncher>();
+          // Luncher = FindObjectOfType<GameLuncher>();
             Avatar.sprite = AvatarsImage.LoadImage(data.avatar);
             UserName.text = data.userName;
             Rank.text = data.rank.ToString();

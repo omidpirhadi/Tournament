@@ -12,8 +12,11 @@ namespace Diaco.UI.TeamInfo
         public ServerUI Server;
         public string TeamTag = "";
         public Diaco.ImageContainerTool.ImageContainer ImageCards;
-       // public Diaco.HTTPBody.AwardsName awardsname;
-       // public int Capacity = 0;
+        public Diaco.ImageContainerTool.ImageContainer CostTypeImage_Container;
+        public Image Cost_Image;
+        public Text Cost_txt;
+        // public Diaco.HTTPBody.AwardsName awardsname;
+        // public int Capacity = 0;
 
         public GameObject SlideNumber_8;
         public List<Toggle> Element_SlideNumber_8;
@@ -30,35 +33,38 @@ namespace Diaco.UI.TeamInfo
            /// Server.OnGetAward += Server_OnGetAward;
         }
 
-        public void initAward(HTTPBody.AwardsName AwardName)
+        public void initAward(HTTPBody.AwardsName data)
         {
-            ElementOfSlideNumberTurnOn(AwardName);
-            PutAwardsInIndicator(AwardName);
+            ElementOfSlideNumberTurnOn(data);
+            PutAwardsInIndicator(data);
         }
 
-        private void PutAwardsInIndicator(HTTPBody.AwardsName awardsname)
+        private void PutAwardsInIndicator(HTTPBody.AwardsName data)
         {
             /////AWARD PERSON ONE
-            Award1st.Gem.text = Convert.ToString(awardsname.awards1.gem);
-            Award1st.Coin.text = Convert.ToString(awardsname.awards1.coin);
-            Award1st.Card.text = Convert.ToString(awardsname.awards1.card);
-            Award1st.ImageCard.sprite = ImageCards.LoadImage(awardsname.awards1.cardName);
-            Award1st.Cup.text = Convert.ToString(awardsname.awards1.cpu);
-            Award1st.Xp.text = Convert.ToString(awardsname.awards1.xp);
+            Award1st.Gem.text = Convert.ToString(data.awards1.gem);
+            Award1st.Coin.text = Convert.ToString(data.awards1.coin);
+            Award1st.Card.text = Convert.ToString(data.awards1.card);
+            Award1st.ImageCard.sprite = ImageCards.LoadImage(data.awards1.cardName);
+            Award1st.Cup.text = Convert.ToString(data.awards1.cpu);
+            Award1st.Xp.text = Convert.ToString(data.awards1.xp);
             /////AWARD PERSON TWO
-            Award2nd.Gem.text = Convert.ToString(awardsname.awards2.gem);
-            Award2nd.Coin.text = Convert.ToString(awardsname.awards2.coin);
-            Award2nd.Card.text = Convert.ToString(awardsname.awards2.card);
-            Award2nd.ImageCard.sprite = ImageCards.LoadImage(awardsname.awards2.cardName);
-            Award2nd.Cup.text = Convert.ToString(awardsname.awards2.cpu);
-            Award2nd.Xp.text = Convert.ToString(awardsname.awards2.xp);
+            Award2nd.Gem.text = Convert.ToString(data.awards2.gem);
+            Award2nd.Coin.text = Convert.ToString(data.awards2.coin);
+            Award2nd.Card.text = Convert.ToString(data.awards2.card);
+            Award2nd.ImageCard.sprite = ImageCards.LoadImage(data.awards2.cardName);
+            Award2nd.Cup.text = Convert.ToString(data.awards2.cpu);
+            Award2nd.Xp.text = Convert.ToString(data.awards2.xp);
             /////AWARD PERSON THREE
-            Award3rd.Gem.text = Convert.ToString(awardsname.awards3.gem);
-            Award3rd.Coin.text = Convert.ToString(awardsname.awards3.coin);
-            Award3rd.Card.text = Convert.ToString(awardsname.awards3.card);
-            Award3rd.ImageCard.sprite = ImageCards.LoadImage(awardsname.awards3.cardName);
-            Award3rd.Cup.text = Convert.ToString(awardsname.awards3.cpu);
-            Award3rd.Xp.text = Convert.ToString(awardsname.awards3.xp);
+            Award3rd.Gem.text = Convert.ToString(data.awards3.gem);
+            Award3rd.Coin.text = Convert.ToString(data.awards3.coin);
+            Award3rd.Card.text = Convert.ToString(data.awards3.card);
+            Award3rd.ImageCard.sprite = ImageCards.LoadImage(data.awards3.cardName);
+            Award3rd.Cup.text = Convert.ToString(data.awards3.cpu);
+            Award3rd.Xp.text = Convert.ToString(data.awards3.xp);
+
+            Cost_Image.sprite = CostTypeImage_Container.LoadImage(data.costType.ToString());
+            Cost_txt.text = data.cost.ToString();
         }
 
         private void ElementOfSlideNumberTurnOn(HTTPBody.AwardsName awardsname)

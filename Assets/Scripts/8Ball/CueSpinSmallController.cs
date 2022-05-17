@@ -13,8 +13,7 @@ namespace Diaco.EightBall.CueControllers
         public void Start()
         {
             CueBall = FindObjectOfType<HitBallController>();
-            //btn = GetComponent<Button>();
-           /// btn.onClick.AddListener(() => { CueBall.TouchWorkInUI = true });
+        
             CueBall.ResetCueSpin += CueBall_ResetCueSpin;
         }
         private void CueBall_ResetCueSpin()

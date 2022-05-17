@@ -7,7 +7,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class ResultGameSoccer : MonoBehaviour
 {
-   // public Diaco.EightBall.Server.BilliardServer Server;
+    // public Diaco.EightBall.Server.BilliardServer Server;
     public Diaco.SoccerStar.Server.ServerManager Server;
     public GameLuncher luncher;
     public Image WinnerBackground;
@@ -40,50 +40,61 @@ public class ResultGameSoccer : MonoBehaviour
     public Sprite Coin;
     public Sprite Cup;
     public Sprite Gem;
-    private void Awake()
+
+    void OnEnable()
     {
         luncher = FindObjectOfType<GameLuncher>();
         Server.OnGameResult += Server_OnGameResult;
-        RematchButton.onClick.AddListener(() => {
+        RematchButton.onClick.AddListener(() =>
+        {
             Server.Emit_PlayAgain();
             RematchButton.interactable = false;
         });
-        CloseGameButton.onClick.AddListener(() => {
+        CloseGameButton.onClick.AddListener(() =>
+        {
 
             Server.Emit_LeftGame();
-           // Server.CloseSocket();
+            // Server.CloseSocket();
             luncher.BackToMenu();
             CloseGameButton.interactable = false;
             this.gameObject.SetActive(false);
 
         });
-       if (Server.NamespaceServer == "_competition")
-            DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() => {
+        if (Server.NamespaceServer == "_competition")
+            DOVirtual.Float(0, 1, 3f, (x) => { }).OnComplete(() =>
+            {
                 Server.Emit_LeftGame();
-              //  Server.CloseSocket();
+                //  Server.CloseSocket();
                 luncher.BackToMenu();
                 CloseGameButton.interactable = false;
                 this.gameObject.SetActive(false);
             });
-       
     }
-    void Start()
+    void OnDisable()
     {
-        Server.OnGameResult += Server_OnGameResult;
+        Server.OnGameResult -= Server_OnGameResult;
+        RematchButton.onClick.RemoveAllListeners();
 
-
+        CloseGameButton.onClick.RemoveAllListeners();
     }
-
-    private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result,  bool playaginactive)
+    void OnDestroy()
     {
-      
+
+        Server.OnGameResult -= Server_OnGameResult;
+        RematchButton.onClick.RemoveAllListeners();
+
+        CloseGameButton.onClick.RemoveAllListeners();
+    }
+    private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result, bool playaginactive)
+    {
+
         CloseGameButton.interactable = true;
         if (playaginactive)
             RematchButton.interactable = true;
         else
             RematchButton.interactable = false;
 
-       // SetCostType(result.costType);
+        // SetCostType(result.costType);
         if (Server.Info.userName == result.winner.userName)
         {
             WinnerBackground.enabled = true;
@@ -102,13 +113,13 @@ public class ResultGameSoccer : MonoBehaviour
                 result.winner.xp,
                 result.loser.userName,
                 result.loser.goalcount,
-            
+
                 result.loser.cup,
                 result.loser.coin,
                 result.loser.xp,
                 result.winner.rank
                 );
-            
+
         }
         else if (Server.Info.userName == result.loser.userName)
         {
@@ -133,13 +144,14 @@ public class ResultGameSoccer : MonoBehaviour
                result.loser.rank
                );
         }
-          ///StartCoroutine(Server.ResetData());
+        ///StartCoroutine(Server.ResetData());
     }
 
 
     public void EnableAddFriendButton(List<string> friends, string opponetUsername)
     {
-        friends.ForEach((E) => {
+        friends.ForEach((E) =>
+        {
 
             if (E == opponetUsername)
             {
@@ -171,7 +183,7 @@ public class ResultGameSoccer : MonoBehaviour
             PlayerRightCostType.sprite = Gem;
         }
     }
-    public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername,int leftgoal, string leftCup,string leftcoin, string leftXP, string rightusername,int rightgoal, string rightCup, string rightcoin, string rightXP, string rank)
+    public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername, int leftgoal, string leftCup, string leftcoin, string leftXP, string rightusername, int rightgoal, string rightCup, string rightcoin, string rightXP, string rank)
     {
         if (Winner)
         {
@@ -190,7 +202,7 @@ public class ResultGameSoccer : MonoBehaviour
         PlayerTwo.sprite = rightavatar;
 
         PlayerOneUserName.text = leftusername;
-       
+
         PlayerOneCup.text = leftCup;
         PlayerOneCoin.text = leftcoin;
         PlayerOneXp.text = leftXP;

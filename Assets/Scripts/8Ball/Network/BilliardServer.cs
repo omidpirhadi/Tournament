@@ -273,6 +273,7 @@ namespace Diaco.EightBall.Server
         public  void Destroy()
         {
             CloseConnection();
+            BlockChat_Button.onClick.RemoveAllListeners();
         }
         #endregion
 
@@ -342,18 +343,16 @@ namespace Diaco.EightBall.Server
 
                     /*if (!SpwnedBall)
                         SelectTable(gameData.table);*/
-                    var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
+                    
                     if (gameData.playerOne.userName == UserName.userName)
                     {
                         StartCoroutine(SetPlayerOne(gameData));
-                        cueball.PowerCUE = Mathf.Clamp(gameData.playerOne.force, 1.34f, 1.74f);
-                        cueball.PowerSpin = Mathf.Clamp(gameData.playerOne.spin, 3, 4);
+                       
                     }
                     else
                     {
                         StartCoroutine(SetPlayerTwo(gameData));
-                        cueball.PowerCUE = Mathf.Clamp(gameData.playerTwo.force, 1.34f, 1.74f);
-                        cueball.PowerSpin = Mathf.Clamp(gameData.playerTwo.spin, 3, 4);
+  
                     }
                    
                    
@@ -450,16 +449,7 @@ namespace Diaco.EightBall.Server
                     Debug.Log("ReciveMessage:" + message);
                 });
          
-                socket.On("BackToMenu", (s, p, m) => {
-
-
-                    //// CloseSocket();
-                    var Luncher = FindObjectOfType<GameLuncher>();
-                    Luncher.BackToMenu();
-                    Debug.Log("back To menu from Server");
-
-
-                });
+              
                 socket.On("gameTime", (s, p, m) => {
 
 
@@ -495,6 +485,16 @@ namespace Diaco.EightBall.Server
                     Debug.Log("ReadyRecordModeResualt");
                 });
             }
+            socket.On("BackToMenu", (s, p, m) => {
+
+
+                //// CloseSocket();
+                var Luncher = FindObjectOfType<GameLuncher>();
+                Luncher.BackToMenu();
+                Debug.Log("back To menu from Server");
+
+
+            });
             socket.On("disconnect", (s, p, m) =>
             {
                 if (FindObjectOfType<GameLuncher>().InBackToMenu == false)
@@ -845,7 +845,11 @@ namespace Diaco.EightBall.Server
         }
         public void SetWoodState(CueStateData state)
         {
+            var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
             WoodInhHud.sprite = WoodImages.LoadImage(state.name);
+          
+            cueball.PowerCUE = Mathf.Clamp(state.force, 1.34f, 1.74f);
+            cueball.PowerSpin = Mathf.Clamp(state.spin, 3, 4);
             Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
         }
         public void initializTurn(Diaco.EightBall.Structs.GameData data)

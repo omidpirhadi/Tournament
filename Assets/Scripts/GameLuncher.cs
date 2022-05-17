@@ -55,9 +55,17 @@ public class GameLuncher : MonoBehaviour
     private void Start()
     {
         mainCam.gameObject.SetActive(false);
+
     }
 
-    private float timer;
+    public IEnumerator RestartGame()
+    {
+        Time.timeScale = 1;
+        Destroy(MainMenu);
+        yield return new WaitForSecondsRealtime(0.01f);
+        MainMenu = Instantiate(MainMenuPrefab);
+        navigationUi = MainMenu.GetComponentInChildren<ServerUI>().navigationUi;
+    }
 
    
 
@@ -258,6 +266,7 @@ public class GameLuncher : MonoBehaviour
     private IEnumerator BackToMenuWithClearDataScene()
     {
 
+        
 
 
         FadeIn();
@@ -302,6 +311,7 @@ public class GameLuncher : MonoBehaviour
 
         if(MainMenu == null)
         {
+            Time.timeScale = 1.0f;
             MainMenu = Instantiate(MainMenuPrefab);
             navigationUi = MainMenu.GetComponentInChildren<ServerUI>().navigationUi;
         }

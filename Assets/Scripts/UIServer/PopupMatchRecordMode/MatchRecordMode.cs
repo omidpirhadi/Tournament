@@ -9,7 +9,7 @@ namespace Diaco.UI.MatchRecord
     public class MatchRecordMode : MonoBehaviour
     {
         public Diaco.ImageContainerTool.ImageContainer ImageProfileContainer;
-      
+
 
         public Text ReminingTime;
         [Header("RecordGame")]
@@ -25,9 +25,11 @@ namespace Diaco.UI.MatchRecord
         public Text P_Time;
         public Button btn_StartPractice;
 
+        public Button FilterByAllContent_btn;
+        public Button FilterByFriend_btn;
         public MatchRecordPlayerCard playerCard;
         public RectTransform Content;
-        private List<GameObject> listplayer;
+        private List<MatchRecordPlayerCard> listplayer;
 
         private ServerUI server;
 
@@ -40,12 +42,16 @@ namespace Diaco.UI.MatchRecord
             server = FindObjectOfType<ServerUI>();
             server.RequestGetRecordMode();
             server.OnMatchRecord += Server_OnMatchRecord;
-            btn_Start.onClick.AddListener(() => {
+            btn_Start.onClick.AddListener(() =>
+            {
                 server.RequestJoinRecordMode();
             });
-            btn_StartPractice.onClick.AddListener(() => {
+            btn_StartPractice.onClick.AddListener(() =>
+            {
                 server.RequestJoinRecordMode();
             });
+            FilterByAllContent_btn.onClick.AddListener(() => { LeaderboardFilterByAllContacts(); });
+            FilterByFriend_btn.onClick.AddListener(() => { LeaderboardFilterByFriends(); });
         }
 
 
@@ -55,6 +61,8 @@ namespace Diaco.UI.MatchRecord
             server.OnMatchRecord -= Server_OnMatchRecord;
             btn_Start.onClick.RemoveAllListeners();
             btn_StartPractice.onClick.RemoveAllListeners();
+            FilterByAllContent_btn.onClick.RemoveAllListeners();
+            FilterByFriend_btn.onClick.RemoveAllListeners();
             ClearListPlayer();
             CancelInvoke("RunTimer");
         }
@@ -64,13 +72,13 @@ namespace Diaco.UI.MatchRecord
         }
         private void initMatchRecord(MatchRecordModeData data)
         {
-            listplayer = new List<GameObject>();
-            
+            listplayer = new List<MatchRecordPlayerCard>();
 
-           CalculateTime(data.remainingTime);
-            if(data.start)
+
+            CalculateTime(data.remainingTime);
+            if (data.start)
             {
-                
+
                 ChangePanel(data.start);
                 Point.text = data.point.ToString();
                 Rank.text = data.rank;
@@ -85,11 +93,11 @@ namespace Diaco.UI.MatchRecord
                 P_Time.text = data.rank;
             }
             Leaderbord(data.leaderboardPlayers);
-            
+
         }
         private void ChangePanel(bool start)
         {
-            if(start)
+            if (start)
             {
                 PanelRecordMode.SetActive(true);
                 PanelPracticRecordMode.SetActive(false);
@@ -107,11 +115,44 @@ namespace Diaco.UI.MatchRecord
             {
                 var card = Instantiate(playerCard, Content);
                 var image = ImageProfileContainer.LoadImage(players[i].avatar);
-                card.Set(image,i+1, players[i].userName, players[i].point, players[i].time, players[i].tryToggle);
-                listplayer.Add(card.gameObject);
+                card.Set(image, i + 1, players[i].userName, players[i].point, players[i].time, players[i].tryToggle);
+                listplayer.Add(card);
 
             }
         }
+
+
+        private void LeaderboardFilterByAllContacts()
+        {
+            for (int i = 0; i < listplayer.Count; i++)
+            {
+                listplayer[i].gameObject.SetActive(true);
+            }
+
+
+        }
+
+        private void LeaderboardFilterByFriends()
+        {
+
+            for (int i = 0; i < listplayer.Count; i++)
+            {
+                listplayer[i].gameObject.SetActive(false);
+                for (int j = 0; j < server.BODY.social.friends.Count; j++)
+                {
+                    if (listplayer[i].Username.text == server.BODY.social.friends[j].userName)
+                    {
+                        listplayer[i].gameObject.SetActive(true);
+                    }
+
+
+                }
+            }
+
+        }
+    
+
+
         private void SetFailTry(int count)
         {
             TryToggle[0].isOn = false;

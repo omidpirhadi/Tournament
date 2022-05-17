@@ -48,7 +48,11 @@ namespace Diaco.HTTPBody
         public int soccer_cup;
         public int billiard_cup;
         public int soccer_level;
+        public int soccer_currentxp;
+        public int soccer_totalxp;
         public int billiard_level;
+        public int billiard_currentxp;
+        public int billiard_totalxp;
         public int coin;
         public int gem;
 
@@ -287,6 +291,8 @@ namespace Diaco.HTTPBody
     {
         public int capacity;
         public int active;
+        public int costType;
+        public int cost;
         public Award awards1;
         public Award awards2;
         public Award awards3;

@@ -23,6 +23,14 @@ public class ResultInRecordMode : MonoBehaviour
         Context.text = data.context;
         Btn_Accept.onClick.AddListener(AcceptClick);
     }
+    private void OnDisable()
+    {
+        Btn_Accept.onClick.RemoveAllListeners();
+    }
+    private void OnDestroy()
+    {
+        Btn_Accept.onClick.RemoveAllListeners();
+    }
     private void AcceptClick()
     {
         Luncher.BackToMenu();

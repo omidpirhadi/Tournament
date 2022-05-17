@@ -81,6 +81,7 @@ namespace Diaco.Setting
             }
             File.WriteAllText(Application.persistentDataPath + "//" + FileName + ".json", set_json);
             Handler_OnChangeSetting();
+            
             Debug.Log("Setting Saved!");
         }
 
@@ -115,6 +116,16 @@ namespace Diaco.Setting
         public bool reciveLeagueRequest;
         public BilliardSettingData billiardsettingdata;
         public SoccerSettingData soccersettingdata;
+    }
+    [Serializable]
+    public struct GameSettingDataServer
+    {
+ 
+        public bool status;
+        public bool reciveFriendRequest;
+        public bool reciveMatchFriendRequest;
+        public bool reciveLeagueRequest;
+
     }
     [Serializable]
     public struct BilliardSettingData
