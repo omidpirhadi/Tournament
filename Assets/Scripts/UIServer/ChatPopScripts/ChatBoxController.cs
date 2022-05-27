@@ -89,13 +89,13 @@ namespace Diaco.UI.Chatbox
             {
               //var chat =  PersianFix.Persian.Fix(InputMessage.text, 255);
             
-                Server.SendChatToUser(IDReciver, InputMessage.text);
+                Server.SendChatToUser(IDReciver, InputMessage.text,false);
                 InputMessage.text = "";
             }
         }
         public void SendSticekr(string namesticker)
         {
-            Server.SendChatToUser(IDReciver, namesticker);
+            Server.SendChatToUser(IDReciver, namesticker,true);
             
         }
         public void ChatRecive(Diaco.HTTPBody.Chats chats)
@@ -108,7 +108,7 @@ namespace Diaco.UI.Chatbox
                     if (chats.chats[i].type == 0)//FrameMyChat
                     {
                        
-                        if (!chats.chats[i].text.Contains("##"))///with out sticker
+                        if (!chats.chats[i].isSticker)///with out sticker
                         {
                             var frame = Instantiate(FrameMyChat, ContentChats);
                             frame.FillFrameChatWithOutAvatar(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
@@ -128,7 +128,7 @@ namespace Diaco.UI.Chatbox
                     else//FrameYouChat
                     {
                         
-                        if (!chats.chats[i].text.Contains("##"))///with out sticker
+                        if (!chats.chats[i].isSticker)///with out sticker
                         {
                             var frame = Instantiate(FrameYouChat, ContentChats);
                             frame.FillFrameChatWithOutAvatar(chats.chats[i].text, chats.chats[i].time, chats.chats[i].date, chats.chats[i].read);
@@ -159,7 +159,7 @@ namespace Diaco.UI.Chatbox
         }
         private Sticker SelectSticker(string stickername)
         {
-            var name = stickername.Remove(0,2);
+          //  var name = stickername.Remove(0,2);
            
          //  Debug.Log("TRIiM##"+name);
             for (int i = 0; i < stickers.Count; i++)

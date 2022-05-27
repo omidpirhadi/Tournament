@@ -25,11 +25,12 @@ namespace Diaco.UI.Reports
 
 
 
-        public void InitializeMyTeams(MyNetworkData myNetwork)
+        public void InitializeMyNetwork(MyNetworkData myNetwork)
         {
+            ClearCardTeamCreated();
             server = FindObjectOfType<ServerUI>();
-            if (listreportInvitedPlayerCards.Count > 0)
-                ClearCardTeamCreated();
+          
+                
             TimeRemaining.text = myNetwork.award.timeRemaining;
             AwardGem.text = (myNetwork.award.awardGem).ToString();
             AwardCoin.text = (myNetwork.award.awardCoin).ToString();
@@ -50,9 +51,11 @@ namespace Diaco.UI.Reports
                     );
                 listreportInvitedPlayerCards.Add(card);
             }
+            Withdraw.onClick.AddListener(() => server.Emit_WithdrawAwardNetwork());
         }
         public void ClearCardTeamCreated()
         {
+            Withdraw.onClick.RemoveAllListeners();
             for (int i = 0; i < listreportInvitedPlayerCards.Count; i++)
             {
                 Destroy(listreportInvitedPlayerCards[i].gameObject);

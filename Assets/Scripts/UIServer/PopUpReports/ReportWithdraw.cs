@@ -13,11 +13,12 @@ namespace Diaco.UI.Reports
 
         public ReportWithdrawCard ReportWithdrawCardElement;
         public RectTransform Content;
-        private List<ReportWithdrawCard> listReportWithdrawCard;
+        private List<ReportWithdrawCard> listReportWithdrawCard = new List<ReportWithdrawCard>();
 
         public void InitializReportWithdraw(WithdrawData mywithdraw)
         {
-            listReportWithdrawCard = new List<ReportWithdrawCard>();
+            // listReportWithdrawCard = new List<ReportWithdrawCard>();
+            ClearReportWithdrawCard();
             TotalWithdraw.text = mywithdraw.totalwithdraw;
             for (int i = 0; i < mywithdraw.withdraws.Count; i++)
             {

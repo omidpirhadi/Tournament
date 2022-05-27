@@ -117,7 +117,7 @@ namespace Diaco.Chat
 
                 if (chats[i].userName == Server.BODY.userName)//FrameMyChat
                 {
-                    if (!chats[i].text.Contains("##"))///with out sticker
+                    if (!chats[i].isSticker)///with out sticker
                     {
                         var frame = Instantiate(FrameMyChat, ContentChats);
                         var avatar = Server.AvatarContainer.LoadImage(chats[i].avatar);
@@ -128,9 +128,9 @@ namespace Diaco.Chat
                     {
                         var frame = Instantiate(FrameMyChatWithSticker, ContentChats);
                         var avatar = Server.AvatarContainer.LoadImage(chats[i].avatar);
-                        Debug.Log(chats[i].text);
+                       // Debug.Log(chats[i].text);
                         var sticker = SelectSticker(chats[i].text);
-                        Debug.Log(sticker);
+                       // Debug.Log(sticker);
 
                         frame.FillFrameChatWithStickerAndWithAvatar(chats[i].userName, avatar, sticker, chats[i].time, chats[i].date);
                         ChatRecivedList.Add(frame);
@@ -138,7 +138,7 @@ namespace Diaco.Chat
                 }
                 else//FrameYouChat
                 {
-                    if (!chats[i].text.Contains("##"))///with out sticker
+                    if (!chats[i].isSticker)///with out sticker
                     {
                         var frame = Instantiate(FrameYouChat, ContentChats);
                         var avatar = Server.AvatarContainer.LoadImage(chats[i].avatar);
@@ -179,7 +179,7 @@ namespace Diaco.Chat
         }
         private Sticker SelectSticker(string stickername)
         {
-            var name = stickername.Remove(0, 2);
+           // var name = stickername.Remove(0, 2);
 
             //  Debug.Log("TRIiM##"+name);
             for (int i = 0; i < stickers.Count; i++)

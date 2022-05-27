@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,11 +67,13 @@ namespace Diaco.Notification
 
 
 
-
+    [Serializable]
     
     public struct Notification_Dialog_Body
     {
+        
         public string eventName;
+        public string eventData;
         public int actionButton; //0 =open page in event name ,  1 = emit eventName
 
         public int alartType;//Notification = 0, Dialog = 1

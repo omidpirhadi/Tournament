@@ -73,6 +73,7 @@ namespace Diaco.Setting
         public void SaveSetting()
         {
             var FileName = "setting";
+        
            
             var set_json = JsonUtility.ToJson(Setting);
             if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
@@ -81,7 +82,8 @@ namespace Diaco.Setting
             }
             File.WriteAllText(Application.persistentDataPath + "//" + FileName + ".json", set_json);
             Handler_OnChangeSetting();
-            
+       
+
             Debug.Log("Setting Saved!");
         }
 

@@ -301,7 +301,22 @@ public class NavigationUI : MonoBehaviour
 
     }
 
+    public void SetSubGame(int SubGame)
+    {
+        if (SubGame == 0)
+        {
+            this.SubGame = _SubGame.Classic;
+        }
+        else if (SubGame == 1)
+        {
+            this.SubGame = _SubGame.Quick;
+        }
+        else if (SubGame == 2)
+        {
+            this.SubGame = _SubGame.Challenge;
+        }
 
+    }
 
     public event Action<bool> OnUIActive;
     protected void Handler_OnUIActive(bool active)

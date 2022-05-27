@@ -167,6 +167,7 @@ namespace Diaco.HTTPBody
     public struct ChatBody
     {
         public int type;
+        public bool isSticker;
         public string text;
         public string time;
         public string date;
@@ -187,6 +188,7 @@ namespace Diaco.HTTPBody
     public struct ChatBodyTeam
     {
         public string userName;
+        public bool isSticker;
         public string avatar;
         public string text;
         public string time;
@@ -232,7 +234,8 @@ namespace Diaco.HTTPBody
     }
     [Serializable]
     public struct SearchUser
-    {  public string id;
+    {
+        public string id;
         public int friend; ///state:" 0 = nonfriend, 1 = req sended, 2 = Isfriend"; 
         public bool isOnline;    
         public string userName;

@@ -778,7 +778,7 @@ public class ServerUI : MonoBehaviour
                 var tabWithdraw = FindObjectOfType<Diaco.UI.WithDrawGem.TabWithdraw>();
                 tabWithdraw.Wihtdrawinit();
 
-                Debug.Log("withdrawSecc" + m[1].ToString());
+                Debug.Log("withdraw updated" + m[1].ToString());
             }
             navigationUi.StopLoadingPage();
 
@@ -837,7 +837,27 @@ public class ServerUI : MonoBehaviour
             }
 
         });
+        socket.On("close-webview", (s, p, m) =>
+        {
 
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Webviwe cant Closed: </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+
+
+                navigationUi.ClosePopUp("webviwe");
+
+                Debug.Log("Web Viwe Closed" + m[1].ToString());
+            }
+
+        });
         socket.On("notifications", (s, p, m) =>
         {
 
@@ -982,6 +1002,11 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit(eventName);
     }
+    public void Emit_DialogAndNotification(string eventName , string data)
+    {
+        socket.Emit(eventName,data);
+    }
+
     public void SendRequestForEditPhone(string phonenumber)
     {
         socket.Emit("changePhone", phonenumber);
@@ -1004,9 +1029,9 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("GetChat..." + userName);
     }
-    public void SendChatToUser(string username, string Message)
+    public void SendChatToUser(string username, string Message,bool issticker)
     {
-        socket.Emit("chat", username, Message);
+        socket.Emit("chat", username, Message,issticker);
         navigationUi.StartLoadingPageShow();
         Debug.Log("SendChat...");
     }
@@ -1282,7 +1307,21 @@ public class ServerUI : MonoBehaviour
         Debug.Log("Setting  Send To Server");
 
     }
-
+    public  void Emit_WithdrawAwardLeague()
+    {
+        socket.Emit("league-withdraw");
+        Debug.Log("WithdrawAwardLeague");
+    }
+    public void Emit_WithdrawAwardNetwork()
+    {
+        socket.Emit("network-withdraw");
+        Debug.Log("WithdrawAwardNetwork");
+    }
+    public void Emit_AchivementDescription(string achivename)
+    {
+        socket.Emit("achievement-dialog",achivename);
+        Debug.Log("Achivment Description"+achivename);
+    }
     #endregion
     /// <summary>
     /// 

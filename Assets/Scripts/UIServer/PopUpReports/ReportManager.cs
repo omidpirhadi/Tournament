@@ -20,7 +20,7 @@ namespace Diaco.UI.Reports
         }
         public void SetMynework()
         {
-            MyNetwork.InitializeMyTeams(reports.reportNetwork);
+            MyNetwork.InitializeMyNetwork(reports.reportNetwork);
         }
 
         public void SetReportWithdarw()

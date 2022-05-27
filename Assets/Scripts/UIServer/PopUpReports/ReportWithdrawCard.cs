@@ -8,7 +8,7 @@ namespace Diaco.UI.Reports
     public class ReportWithdrawCard : MonoBehaviour
     {
 
-        public Text BankCardNumber;
+        public RTLTMPro.RTLTextMeshPro BankCardNumber;
         public Text Date;
         public Text Cash;
 

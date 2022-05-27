@@ -7,6 +7,7 @@ namespace Diaco.Setting
     public class MainMenuSetting : MonoBehaviour
     {
        [SerializeField] private GeneralSetting generalSetting;
+        private ServerUI server;
         public Toggle Sound_Toggel;
         public Toggle Vibration_Toggel;
         public Toggle ReciveFriendRequest_Toggel;
@@ -15,7 +16,7 @@ namespace Diaco.Setting
         public Toggle ShowOnlineStatus_Toggel;
         void OnEnable()
         {
-            ///setting emit to server;
+            server = FindObjectOfType<ServerUI>();
             generalSetting = FindObjectOfType < GeneralSetting>();
 
             Set();
@@ -25,6 +26,8 @@ namespace Diaco.Setting
         {
             RemoveEventToggels();
             generalSetting.SaveSetting();
+            if (server)
+                server.Emit_Setting();
         }
         private void Set()
         {

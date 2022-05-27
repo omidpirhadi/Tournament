@@ -36,12 +36,12 @@ public class ElementSticker : MonoBehaviour
         {
             if(FindObjectOfType<Diaco.UI.Chatbox.ChatBoxController>())
             {
-                FindObjectOfType<Diaco.UI.Chatbox.ChatBoxController>().SendSticekr("##" + ID);
+                FindObjectOfType<Diaco.UI.Chatbox.ChatBoxController>().SendSticekr(ID);
                 Debug.Log("SendSticker  In Chat:" + "##" + ID);
             }
             else if (FindObjectOfType<Diaco.Chat.TeamChatsController>())
             {
-                FindObjectOfType<Diaco.Chat.TeamChatsController>().SendSticekr("##" + ID);
+                FindObjectOfType<Diaco.Chat.TeamChatsController>().SendSticekr(ID);
                 Debug.Log("SendSticker  In Chat Team:" + "##" + ID);
             }
 

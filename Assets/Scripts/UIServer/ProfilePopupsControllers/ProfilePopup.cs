@@ -18,7 +18,7 @@ namespace Diaco.UI.Profile
         public Text CupSoccer;
         public Text CupBilliard;
         public Image RankLevel;
-        public InputField EditDescription_Inputfield;
+        public TMPro.TMP_InputField EditDescription_Inputfield;
         /// <summary>
         /// /soocer state
         /// </summary>
@@ -47,9 +47,9 @@ namespace Diaco.UI.Profile
 
                 if (des.Length > 0 && des != Server.BODY.profile.description)
                 {
-                    var context = PersianFix.Persian.Fix(des, 255);
-                    EditDescription_Inputfield.text = context;
-                    Server.RequestEditDescription(context);
+                  ///  var context = PersianFix.Persian.Fix(des, 255);
+                    EditDescription_Inputfield.text =des;
+                    Server.RequestEditDescription(des);
                 }
             });
             InitializeProfile();
@@ -125,11 +125,13 @@ namespace Diaco.UI.Profile
                 {
                     Achivments[i].color = new Color(1f, 1f, 1f, 1f);
                     Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
+                    Achivments[i].gameObject.name = Server.BODY.profile.achievements[i].name; 
                 }
                 else
                 {
                     Achivments[i].color = new Color(1f, 1f, 1f, 0.4f);
                     Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
+                    Achivments[i].gameObject.name = Server.BODY.profile.achievements[i].name;
                 }
 
             }

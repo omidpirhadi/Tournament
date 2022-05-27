@@ -11,6 +11,7 @@ namespace Diaco.Notification
     public class NotificationPallet : MonoBehaviour
     {
         [SerializeField] private string NotificationEvent = "";
+        [SerializeField] private string EventData = "";
         [SerializeField] private int TypeAction;
         public RTLTMPro.RTLTextMeshPro Context_text;
         public Image Notification_Image;
@@ -23,6 +24,8 @@ namespace Diaco.Notification
         {
             ClearPallet();
             NotificationEvent = body.eventName;
+            EventData = body.eventData;
+            TypeAction = body.actionButton;
             if (body.notificationType== 0)/// with two button without image
             {
                 NotificationButtons[0].gameObject.SetActive(true);
@@ -72,7 +75,7 @@ namespace Diaco.Notification
             else
             {
                 
-                server.Emit_DialogAndNotification(NotificationEvent);
+                server.Emit_DialogAndNotification(NotificationEvent,EventData);
             }
         }
         private void RejectButton()

@@ -8,11 +8,11 @@ namespace Diaco.SelectFriendForMatchs
 {
     public class SelectFriendForMatch : MonoBehaviour
     {
-        public enum Game { Soccer, Billiard};
-        public Game game;
+       
+        public _GameLobby game;
         public ServerUI Server;
         public RectTransform Content;
-        
+        public NavigationUI navigationUI;
         public SelectFriendCardForMatch CardFriend;
        // public List<string> FriendsSelectedList;
 
@@ -21,6 +21,7 @@ namespace Diaco.SelectFriendForMatchs
         private void OnEnable()
         {
             ///FriendsSelectedList = new List<string>();
+            navigationUI = FindObjectOfType<NavigationUI>();
             CardFriendList = new List<SelectFriendCardForMatch>();
             var list = Server.BODY.social.friends;
             InitializeFriendsList(list);
@@ -45,14 +46,14 @@ namespace Diaco.SelectFriendForMatchs
                     friends[i].userName,
                     friends[i].cup.ToString(), 
                     () => {
-                        if(game == Game.Soccer)
+                        if(game ==  _GameLobby.Soccer)
                         {
-                            Server.RequestPlayGameWithFriend(card.Username.text, 0, 0);
+                            Server.RequestPlayGameWithFriend(card.Username.text, 0, (short)navigationUI.SubGame);
                             DisableRequestButtonAfterRequest();
                         }
                         else
                         {
-                            Server.RequestPlayGameWithFriend(card.Username.text, 1, 0);
+                            Server.RequestPlayGameWithFriend(card.Username.text, 1, (short)navigationUI.SubGame);
                             DisableRequestButtonAfterRequest();
                         }
 

@@ -208,11 +208,13 @@ namespace Diaco.UI.Profile
                 {
                     Achivments[i].color = new Color(1f, 1f, 1f, 1f);
                     Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
+                    Achivments[i].gameObject.name = Server.BODY.profile.achievements[i].name;
                 }
                 else
                 {
                     Achivments[i].color = new Color(1f, 1f, 1f, 0.4f);
                     Achivments[i].sprite = AchivmentImage.LoadImage(Server.BODY.profile.achievements[i].name);
+                    Achivments[i].gameObject.name = Server.BODY.profile.achievements[i].name;
                 }
 
             }

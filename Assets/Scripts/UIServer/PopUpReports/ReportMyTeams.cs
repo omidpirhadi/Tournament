@@ -26,6 +26,7 @@ namespace Diaco.UI.Reports
 
         public void InitializeMyTeams(MyTeamsData myTeams )
         {
+            ClearCardTeamCreated();
             server = FindObjectOfType<ServerUI>();
             TimeRemaining.text = myTeams.award.timeRemaining;
             AwardGem.text = (myTeams.award.awardGem).ToString();
@@ -45,9 +46,11 @@ namespace Diaco.UI.Reports
                 listCreateTeams.Add(card);
                     
             }
+            ButtonWithdrawAward.onClick.AddListener(() => server.Emit_WithdrawAwardLeague());
         }
         public void ClearCardTeamCreated()
         {
+            ButtonWithdrawAward.onClick.RemoveAllListeners();
             for (int i = 0; i < listCreateTeams.Count; i++)
             {
                 Destroy(listCreateTeams[i].gameObject);
