@@ -146,7 +146,8 @@ namespace Diaco.Social
             Team.description = Description.text;
             Team.game = Game.CurrentElementContext;
             Team.mode = Mode.CurrentElementContext;
-            Team.typeCost = TypeCost.CurrentElementContext;
+           
+                Team.typeCost = TypeCost.CurrentElementContext;
             Team.cost = Cost.CurrentValueDigit;
             Team.capacity = System.Convert.ToInt32(Capacity.ElementContexts[Capacity.CurrentElementContext]);
             Team.hour = Hour.CurrentValueDigit;

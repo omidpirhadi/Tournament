@@ -81,6 +81,7 @@ namespace Diaco.HTTPBody
     public struct TopPlayers
     {
         public List<TopPlayer> players;
+        public string time;
     }
     [Serializable]
     public struct ProfileOtherPerson

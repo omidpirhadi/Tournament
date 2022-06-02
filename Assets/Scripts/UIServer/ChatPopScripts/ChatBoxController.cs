@@ -161,11 +161,11 @@ namespace Diaco.UI.Chatbox
         {
           //  var name = stickername.Remove(0,2);
            
-         //  Debug.Log("TRIiM##"+name);
+           Debug.Log(stickername);
             for (int i = 0; i < stickers.Count; i++)
             {
                 
-                if (stickers[i].stickerName == name)
+                if (stickers[i].stickerName == stickername)
                 {
                     tempsticker = stickers[i];
                     //Debug.Log("SSSSSSSSS");

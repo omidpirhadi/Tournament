@@ -162,7 +162,7 @@ public class NavigationUI : MonoBehaviour
                     if (pop.PopUpObject.GetComponent<Canvas>())
                      ///   OrderPopup = pop.PopUpObject.GetComponent<Canvas>().sortingOrder;
                    // CurrentPage = pop.Name;
-                    if (soundEffectControll)
+                    if (soundEffectControll && Popup != "4playermatch" && Popup != "8playermatch" && Popup != "16playermatch")
                     {
                         soundEffectControll.PlaySoundMenu(1);
                     }

@@ -15,7 +15,7 @@ namespace Diaco.Store.Billiard
         public Image PrograssBarForce;
         public Image PrograssBarAim;
         public Image PrograssBarspin;
-        public Text RemainderTime;
+        public RTLTMPro.RTLTextMeshPro RemainderTime;
         public Button Btn_Use;
 
         public void Set(string id, Sprite teamImage, float force, float aim,float spin, string time,bool ingame)

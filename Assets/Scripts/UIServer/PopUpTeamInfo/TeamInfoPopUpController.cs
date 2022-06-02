@@ -21,8 +21,8 @@ namespace Diaco.UI.TeamInfo
 
 
         public Image TeamImage;
-        public Text TeamName;
-        public Text Description;
+        public RTLTMPro.RTLTextMeshPro TeamName;
+        public RTLTMPro.RTLTextMeshPro Description;
         public Text Game; // biliard socor
         public Image CostType;// gem cup coin
         public Text Cost;
@@ -163,7 +163,7 @@ namespace Diaco.UI.TeamInfo
             ClearTeamInfo();
             SetElementInfoTeam(teamInfos);
             SpawnPlayerCard(teamInfos);
-            EnablePanelAdminInPage(Server.BODY.userName, teamInfos.from, teamInfos.mode);
+           // EnablePanelAdminInPage(Server.BODY.userName, teamInfos.from, teamInfos.mode);
             
            
             SendTagTeamToPopupAward();
@@ -176,6 +176,14 @@ namespace Diaco.UI.TeamInfo
             {
                 JoinButton.gameObject.SetActive(false);
                 LeaveTeamButton.gameObject.SetActive(true);
+                if (Server.BODY.userName == teamInfos.from)
+                {
+                    LeaveTeamButton.GetComponentInChildren<RTLTMPro.RTLTextMeshPro>().text = "حذف لیگ";
+                }
+                else
+                {
+                    LeaveTeamButton.GetComponentInChildren<RTLTMPro.RTLTextMeshPro>().text = "خروج";
+                }
             }
             else
             {

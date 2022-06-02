@@ -78,8 +78,9 @@ namespace Diaco.EightBall.Pockets
 
                 Ball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                 Ball.GetComponent<Rigidbody>().isKinematic = true;
+                Ball.GetComponent<Collider>().enabled = false;
                 Ball.transform.DOScale(0.0f, 0.0001f);
-
+             ///   Ball.transform.position = new Vector3(Ball.transform.position.x, Ball.transform.position.y, Ball.transform.position.z);
                 if (Server.InRecordMode == false)
                 {
 

@@ -11,6 +11,7 @@ namespace Diaco.Notification
     public class DialogPallet : MonoBehaviour
     {
         [SerializeField] private string DialogEvent = "";
+        [SerializeField] private string EventData = "";
         [SerializeField] private int TypeAction;
         public RTLTMPro.RTLTextMeshPro Title_text;
         public RTLTMPro.RTLTextMeshPro Context_text;
@@ -27,6 +28,7 @@ namespace Diaco.Notification
             ClearPallet();
             TypeAction = body.actionButton;
             DialogEvent = body.eventName;
+            EventData = body.eventData;
             SetTypeDialog(body.dialogType, body.greenButtonText,body.redButtonText);
             if (body.image.Length > 0)
             {
@@ -55,10 +57,10 @@ namespace Diaco.Notification
             }
             else if (type == 1)
             {
-                DialogButtons[0].gameObject.SetActive(true);
-                DialogButtons[0].GetComponentInChildren<RTLTMPro.RTLTextMeshPro>().text = greenbuttontext;
                 DialogButtons[1].gameObject.SetActive(true);
-                DialogButtons[1].GetComponentInChildren<RTLTMPro.RTLTextMeshPro>().text = redbuttontext;
+                DialogButtons[1].GetComponentInChildren<RTLTMPro.RTLTextMeshPro>().text = greenbuttontext;
+                DialogButtons[2].gameObject.SetActive(true);
+                DialogButtons[2].GetComponentInChildren<RTLTMPro.RTLTextMeshPro>().text = redbuttontext;
               //  Debug.Log("1");
             }
             else if (type == 2)
@@ -76,6 +78,7 @@ namespace Diaco.Notification
             Title_text.text = title;
             if(context_text.Length>0)
             {
+                
                 this.Context_text.text = context_text;
             //    Debug.Log("qq"+ context_text);
             }
@@ -104,7 +107,7 @@ namespace Diaco.Notification
                 }
                 else
                 {
-                    FindObjectOfType<ServerUI>().Emit_DialogAndNotification(DialogEvent);
+                    SetServerForEmitData();
                     ShowDialog(false);
                 }
 
@@ -124,7 +127,8 @@ namespace Diaco.Notification
                 }
                 else
                 {
-                    FindObjectOfType<ServerUI>().Emit_DialogAndNotification(DialogEvent);
+                    
+                    SetServerForEmitData();
                     ShowDialog(false);
                 }
 
@@ -142,6 +146,34 @@ namespace Diaco.Notification
             });
         }
 
+        private  void  SetServerForEmitData()
+        {
+            var server_ui = FindObjectOfType<ServerUI>();
+            var server_billiard = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
+            var server_soccer = FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>();
+            if (server_ui)
+            {
+                if (EditInput_Inputfield.text.Length > 1)
+                    server_ui.Emit_DialogAndNotification(DialogEvent, EditInput_Inputfield.text);
+                else
+                    server_ui.Emit_DialogAndNotification(DialogEvent, EventData);
+            }
+
+            else if (server_billiard)
+            {
+                if (EditInput_Inputfield.text.Length > 1)
+                    server_billiard.Emit_DialogAndNotification(DialogEvent, EditInput_Inputfield.text);
+                else
+                    server_billiard.Emit_DialogAndNotification(DialogEvent, EventData);
+            }
+            else if (server_soccer)
+            {
+                if (EditInput_Inputfield.text.Length > 1)
+                    server_soccer.Emit_DialogAndNotification(DialogEvent, EditInput_Inputfield.text);
+                else
+                    server_soccer.Emit_DialogAndNotification(DialogEvent, EventData);
+            }
+        }
         //[Button("ShowTest", ButtonSizes.Medium, ButtonStyle.Box)]
         private void ShowDialog(bool show)
         {

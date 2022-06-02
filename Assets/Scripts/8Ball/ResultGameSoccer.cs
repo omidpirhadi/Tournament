@@ -101,18 +101,18 @@ public class ResultGameSoccer : MonoBehaviour
             LoserBackground.enabled = false;
 
             EnableAddFriendButton(result.winner.friends, result.loser.userName);
-
+           // Debug.Log("####3######"+result.winner.goalCount);
             SetResultPageElements(true,
                 Server.imageContainer.LoadImage(result.winner.avatar),
                 Server.imageContainer.LoadImage(result.loser.avatar),
 
                 result.winner.userName,
-                result.winner.goalcount,
+                result.winner.goalCount,
                 result.winner.cup,
                 result.winner.coin,
                 result.winner.xp,
                 result.loser.userName,
-                result.loser.goalcount,
+                result.loser.goalCount,
 
                 result.loser.cup,
                 result.loser.coin,
@@ -127,17 +127,17 @@ public class ResultGameSoccer : MonoBehaviour
             LoserBackground.enabled = true;
 
             EnableAddFriendButton(result.loser.friends, result.winner.userName);
-
+          // Debug.Log("@@@2@@2" + result.winner.goalCount);
             SetResultPageElements(false,
                Server.imageContainer.LoadImage(result.loser.avatar),
                Server.imageContainer.LoadImage(result.winner.avatar),
                 result.loser.userName,
-                result.loser.goalcount,
+                result.loser.goalCount,
                 result.loser.cup,
                 result.loser.coin,
                 result.loser.xp,
                 result.winner.userName,
-            result.winner.goalcount,
+            result.winner.goalCount,
                 result.winner.cup,
                 result.winner.coin,
                 result.winner.xp,

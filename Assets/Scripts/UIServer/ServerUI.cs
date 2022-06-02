@@ -284,7 +284,7 @@ public class ServerUI : MonoBehaviour
         });
        
         
-        socket.On("create-league", (s, p, m) =>
+        socket.On("update-league", (s, p, m) =>
         {
 
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -1040,9 +1040,9 @@ public class ServerUI : MonoBehaviour
         socket.Emit("read-chat", userid);
         Debug.Log("Im a reading chat");
     }
-    public void SendChatToTeam(string message)
+    public void SendChatToTeam(string message,bool issticker)
     {
-        socket.Emit("team-chat", message);
+        socket.Emit("team-chat", message,issticker);
         navigationUi.StartLoadingPageShow();
         Debug.Log("ChatSendToTeam");
     }

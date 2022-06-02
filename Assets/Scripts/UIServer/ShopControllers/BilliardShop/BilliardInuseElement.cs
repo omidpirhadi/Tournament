@@ -12,7 +12,7 @@ namespace Diaco.Store.Billiard
         public Image PrograssBarForce;
         public Image PrograssBarAim;
         public Image PrograssBarSpin;
-        public Text RemainderTime;
+        public RTLTMPro.RTLTextMeshPro RemainderTime;
         public void Set(string id, Sprite teamImage, float force, float aim,float spin, string time)
         {
             ID = id;

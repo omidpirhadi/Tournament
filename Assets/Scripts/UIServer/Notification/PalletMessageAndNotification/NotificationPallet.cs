@@ -74,13 +74,14 @@ namespace Diaco.Notification
             }
             else
             {
-                
-                server.Emit_DialogAndNotification(NotificationEvent,EventData);
+
+                SetServerForEmitData();
             }
+            PalletRectTransform.DOAnchorPos(Up, SpeedAnimation*2);
         }
         private void RejectButton()
         {
-
+            PalletRectTransform.DOAnchorPos(Up, SpeedAnimation * 2);
         }
         private void ClearPallet()
         {
@@ -94,7 +95,18 @@ namespace Diaco.Notification
             NotificationButtons[0].onClick.RemoveListener(AcceptButton);
             NotificationButtons[1].onClick.RemoveListener(RejectButton);
         }
-
+        private void SetServerForEmitData()
+        {
+            var server_ui = FindObjectOfType<ServerUI>();
+            var server_billiard = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
+            var server_soccer = FindObjectOfType<Diaco.SoccerStar.Server.ServerManager>();
+            if (server_ui)
+                server_ui.Emit_DialogAndNotification(NotificationEvent, EventData);
+            else if (server_billiard)
+                server_billiard.Emit_DialogAndNotification(NotificationEvent, EventData);
+            else if (server_soccer)
+                server_soccer.Emit_DialogAndNotification(NotificationEvent, EventData);
+        }
         private Sprite ConvertImageToSprite(string image)
         {
 

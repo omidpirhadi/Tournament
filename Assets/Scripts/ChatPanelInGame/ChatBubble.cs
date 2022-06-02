@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using Sirenix.OdinInspector;
+
 public class ChatBubble : MonoBehaviour
 {
    
     public RectTransform background;
-    public Text context;
+    public RTLTMPro.RTLTextMeshPro context;
     public Vector2 Padding;
     
     public Tweener timer;
+   
     private void OnEnable()
     {
         
@@ -62,9 +65,10 @@ public class ChatBubble : MonoBehaviour
         SetBubble(mess,duration);
     }
 
-    
-    public void SetBubble(string mess,float duration)
+    [Button("Test",  ButtonSizes.Medium,  ButtonStyle.Box)]
+    public void SetBubble(string mess = "سلام حالت چظوره؟",float duration =  3.0f)
     {
+        timer.Kill(false);
         if (context)
             context.text = mess;
         if (background)

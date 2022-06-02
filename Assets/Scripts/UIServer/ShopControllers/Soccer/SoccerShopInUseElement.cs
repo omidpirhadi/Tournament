@@ -11,7 +11,7 @@ namespace Diaco.Store.Soccer
       public Image TeamImage;
       public Image PrograssBarForce;
       public Image PrograssBarAim;
-      public Text RemainderTime;
+      public RTLTMPro.RTLTextMeshPro RemainderTime;
         public void SetForTeamElement(string id, Sprite teamImage, float force, float aim, string time)
         {
             ID = id;

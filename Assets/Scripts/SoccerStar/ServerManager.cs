@@ -1358,6 +1358,10 @@ namespace Diaco.SoccerStar.Server
             socket.Emit("blockChat");
             Debug.Log("ChatBloked!");
         }
+        public void Emit_DialogAndNotification(string eventName, string data)
+        {
+            socket.Emit(eventName, data);
+        }
         /// <summary>
         /// 
         /// </summary>

@@ -14,7 +14,7 @@ namespace Diaco.Chat
         public NavigationUI navigationui;
         public List<Sticker> stickers;
 
-        public Text TeamName;
+        public RTLTMPro.RTLTextMeshPro TeamName;
         public Button TeamInfoButton;
         public Image TeamImage;
         public Button SendMessageButton;
@@ -52,7 +52,7 @@ namespace Diaco.Chat
             Server.OnUpdateChatTeam += Server_OnUpdateChatTeam;
             SendMessageButton.onClick.AddListener(() => { SendChat(); });
             TeamInfoButton.onClick.AddListener(() => { Server.GetLeagueInfo(Server.BODY.social.team.teamId); });
-            TabTeamChat_button.onClick.AddListener(() => { Server.SendChatToTeam(""); });
+            TabTeamChat_button.onClick.AddListener(() => { Server.SendChatToTeam("",false); });
 
 
 
@@ -163,7 +163,7 @@ namespace Diaco.Chat
             if (InputMessage.text != "")
             {
                 //var chat = PersianFix.Persian.Fix(InputMessage.text, 255);
-                Server.SendChatToTeam(InputMessage.text);
+                Server.SendChatToTeam(InputMessage.text,false);
                 InputMessage.text = "";
             }
         }
@@ -174,7 +174,7 @@ namespace Diaco.Chat
         }
         public void SendSticekr(string namesticker)
         {
-            Server.SendChatToTeam(namesticker);
+            Server.SendChatToTeam(namesticker,true);
 
         }
         private Sticker SelectSticker(string stickername)
@@ -185,7 +185,7 @@ namespace Diaco.Chat
             for (int i = 0; i < stickers.Count; i++)
             {
 
-                if (stickers[i].stickerName == name)
+                if (stickers[i].stickerName == stickername)
                 {
                     tempsticker = stickers[i];
                     //Debug.Log("SSSSSSSSS");

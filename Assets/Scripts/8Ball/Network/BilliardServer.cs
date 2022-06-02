@@ -615,6 +615,11 @@ namespace Diaco.EightBall.Server
             socket.Emit("selectPocket", id);
             Debug.Log("selectPocket:" + id);
         }
+
+        public void Emit_DialogAndNotification(string eventName, string data)
+        {
+            socket.Emit(eventName, data);
+        }
         #endregion
 
         #region BilliardGameFunction
@@ -1975,10 +1980,13 @@ namespace Diaco.EightBall.Server
             /// {
             Pitok = 1;
             var cueball = AddressBalls[0];
+
+            cueball.GetComponent<Collider>().enabled = true;
             //cueball.gameObject.SetActive(true); 
             var ooo = new Vector3(lastpos.x, lastpos.y, lastpos.z);
+
             cueball.transform.position = ooo;
-            //   cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CUEWoodSetPosition(Vector3.zero);
+
             cueball.transform.DOScale(0.33f, 0.1f);
             cueball.GetComponent<Rigidbody>().isKinematic = false;
             cueball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
@@ -1996,6 +2004,7 @@ namespace Diaco.EightBall.Server
 
             Pitok = 2;
             var cueball = AddressBalls[0];
+            cueball.GetComponent<Collider>().enabled = true;
             // cueball.gameObject.SetActive(true);
             var ooo = new Vector3(lastpos.x, lastpos.y, lastpos.z);
             cueball.transform.position = ooo;
