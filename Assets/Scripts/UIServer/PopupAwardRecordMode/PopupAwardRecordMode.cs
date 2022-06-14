@@ -14,6 +14,7 @@ namespace Diaco.UI.PopupRecordModeResult
         public Diaco.ImageContainerTool.ImageContainer AvatarsImage;
         ///private GameLuncher Luncher;
         public Image Avatar;
+        public RTLTMPro.RTLTextMeshPro TitleContext;
         public RTLTMPro.RTLTextMeshPro UserName;
         public Text Rank;
         public Text BestRecord;
@@ -24,6 +25,8 @@ namespace Diaco.UI.PopupRecordModeResult
           // Luncher = FindObjectOfType<GameLuncher>();
             Avatar.sprite = AvatarsImage.LoadImage(data.avatar);
             UserName.text = data.userName;
+
+            TitleContext.text = data.titleContext;
             Rank.text = data.rank.ToString();
             BestRecord.text = data.bestPoint.ToString();
             AwardCount.text = data.award;
@@ -42,6 +45,7 @@ namespace Diaco.UI.PopupRecordModeResult
     }
     public struct ResualtRecordModeData
     {
+        public string titleContext;
         public string avatar;
         public string userName;
         public int rank;

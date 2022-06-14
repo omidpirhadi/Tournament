@@ -25,22 +25,33 @@ namespace Diaco.Social.TeamsInputField
         private void OnEnable()
         {
             FieldOfViwe.text = PrimeryData;
-            btn_Next.onClick.AddListener(() => {  Next(); });
-            btn_Previous.onClick.AddListener(() => {  Previous(); });
+            btn_Next.onClick.AddListener(() => { Next(); });
+            btn_Previous.onClick.AddListener(() => { Previous(); });
+        }
+        public void OnDisable()
+        {
+            btn_Next.onClick.RemoveAllListeners();
+            btn_Previous.onClick.RemoveAllListeners();
+        }
+        public void Reset()
+        {
+            FieldOfViwe.text = PrimeryData;
+            CurrentElementContext = 0;
+            CurrentValueDigit = MinNum;
         }
         public void Next()
         {
-            if(Digit)
+            if (Digit)
             {
                 var temp = CurrentValueDigit + digiplus;
-               CurrentValueDigit =  Mathf.Clamp(temp, MinNum, MaxNum);
+                CurrentValueDigit = Mathf.Clamp(temp, MinNum, MaxNum);
                 FieldOfViwe.text = CurrentValueDigit.ToString();
                 //Debug.Log("DigitPlus");
             }
             else
             {
                 var temp = CurrentElementContext + 1;
-                CurrentElementContext = Mathf.Clamp(temp, 0, ElementContexts.Count-1);
+                CurrentElementContext = Mathf.Clamp(temp, 0, ElementContexts.Count - 1);
                 var e = ElementContexts[CurrentElementContext];
                 FieldOfViwe.text = e;
             }
@@ -52,21 +63,21 @@ namespace Diaco.Social.TeamsInputField
                 var temp = CurrentValueDigit - digiplus;
                 CurrentValueDigit = Mathf.Clamp(temp, MinNum, MaxNum);
                 FieldOfViwe.text = CurrentValueDigit.ToString();
-               
+
             }
             else
             {
                 var temp = CurrentElementContext - 1;
-                CurrentElementContext = Mathf.Clamp(temp, 0, ElementContexts.Count-1);
+                CurrentElementContext = Mathf.Clamp(temp, 0, ElementContexts.Count - 1);
                 var e = ElementContexts[CurrentElementContext];
                 FieldOfViwe.text = e;
             }
         }
-        public  void FillElementContexts(List<string> contexts)
+        public void FillElementContexts(List<string> contexts)
         {
-            for(int i = 0; i<contexts.Count;i++)
+            for (int i = 0; i < contexts.Count; i++)
             {
-               // ElementContexts[i] = contexts[i]
+                // ElementContexts[i] = contexts[i]
             }
         }
     }

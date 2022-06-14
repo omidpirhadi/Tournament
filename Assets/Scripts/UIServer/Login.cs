@@ -10,7 +10,7 @@ public class Login : MonoBehaviour
 
     public ServerUI Server;
 
-    //public GameObject registerpage;
+    public Diaco.Setting.GeneralSetting setting;
 
     public InputField phoneNumber;
     public InputField code;
@@ -25,7 +25,9 @@ public class Login : MonoBehaviour
     ///  public Button Forgetpassword;
     private void Awake()
     {
-        
+        setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        this.LoginAPI = setting.LoginAPI;
+        Debug.Log("Set API : " + setting.LoginAPI);
     }
     private void OnEnable()
     {

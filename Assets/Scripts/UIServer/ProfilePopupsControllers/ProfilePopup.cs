@@ -52,7 +52,10 @@ namespace Diaco.UI.Profile
                     Server.RequestEditDescription(des);
                 }
             });
-            InitializeProfile();
+             InitializeProfile();
+            //float value_rate = Mathf.Round((18.5f / 400f) * 100.00f);
+            //S_WinRate.text = value_rate.ToString() + "%";
+           /// Debug.Log(S_WinRate.text);
         }
         public void InitializeProfile()
         {
@@ -68,11 +71,16 @@ namespace Diaco.UI.Profile
             try
             {
                 if (Server.BODY.profile.soccer.win == 0)
-
+                {
                     S_WinRate.text = "0%";
-
+                }
                 else
-                    S_WinRate.text = ((Server.BODY.profile.soccer.win / Server.BODY.profile.soccer.total) * 100.00f).ToString() + "%";
+
+                {
+                    float  value_rate = Mathf.Round((Server.BODY.profile.soccer.win / Server.BODY.profile.soccer.total) * 100.00f);
+                    S_WinRate.text = value_rate.ToString() + "%";
+                }
+                   
 
             }
             catch (DivideByZeroException e)
@@ -93,12 +101,18 @@ namespace Diaco.UI.Profile
             try
             {
                 if (Server.BODY.profile.billiard.win == 0)
-
+                {
                     B_WinRate.text = "0%";
+                }
+                    
 
                 else
-                    B_WinRate.text = ((Server.BODY.profile.billiard.win / Server.BODY.profile.billiard.total) * 100.00f).ToString() + "%";
-                
+                {
+                    float value_rate = Mathf.Round((Server.BODY.profile.billiard.win / Server.BODY.profile.billiard.total) * 100.00f);
+                    B_WinRate.text = value_rate.ToString() + "%";
+
+                }
+
             }
             catch (DivideByZeroException e)
             {

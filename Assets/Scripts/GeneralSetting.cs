@@ -12,6 +12,8 @@ namespace Diaco.Setting
     public class GeneralSetting : MonoBehaviour
     {
 
+        [SerializeField] public string ServerAddress;
+        [SerializeField] public string LoginAPI;
         [SerializeField]public  GameSettingData Setting;
         private void Awake()
         {

@@ -15,7 +15,7 @@ namespace Diaco.SoccerStar.Marble
 
     public class ForceToBall : MonoBehaviour
     {
-
+        public float TEST_Force = 0.0f;
        // public SoccerTestSettings TestSetting ;
         public int ID;
         public enum Marble_Type { Marble, Ball };
@@ -372,7 +372,7 @@ namespace Diaco.SoccerStar.Marble
 
              });
         }*/
-        private void FixOverflowMovment()
+       /* private void FixOverflowMovment()
         {
             if (Y_Pos_Refrence > 0.0f)
             {
@@ -408,7 +408,7 @@ namespace Diaco.SoccerStar.Marble
 
             }
 
-        }
+        }*/
         /*private bool CheckBallMove()
         {
             var move = false;
@@ -441,7 +441,7 @@ namespace Diaco.SoccerStar.Marble
             Flagrenderer.sprite = skin;
         }
 
-        private void BounceBall(Collision collision)
+       /* private void BounceBall(Collision collision)
         {
 
 
@@ -469,20 +469,34 @@ namespace Diaco.SoccerStar.Marble
                 Debug.Log("normal");
             }
             // Debug.Log("Wall" + reflect2 * collision.relativeVelocity.magnitude);
-            //Debug.Log(distance + "wallvelocity:" + GetVlocity);*/
+            //Debug.Log(distance + "wallvelocity:" + GetVlocity);
 
-        }
+        }*/
         private void BounceMarble(Collision collision)
         {
 
             var normal = collision.contacts[0].normal;
-            
-            
-            
-            var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
 
-            rigidbody.velocity = (reflect2 * LastVelocity.magnitude)*bouncepower;
-            Debug.Log("BounceMarble");
+
+
+            //  var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
+
+            var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
+            rigidbody.velocity = (reflect2 * LastVelocity.magnitude) * bouncepower;
+          /*  if (LastVelocity.magnitude>TEST_Force)
+            {
+                var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
+                rigidbody.velocity = (reflect2 * LastVelocity.magnitude) * bouncepower;
+                Debug.Log("AAAAAA"+reflect2);
+            }
+            else if(LastVelocity.magnitude < TEST_Force)
+            {
+                var reflect2 = Vector3.Reflect(collision.impulse, normal).normalized;
+                rigidbody.AddForce(reflect2 * collision.impulse.magnitude,ForceMode.Impulse);
+                Debug.Log("bbbB"+reflect2);
+            }*/
+           // var E = rigidbody.velocity.sqrMagnitude * 0.5f;
+            Debug.Log(collision.impulse.magnitude+"  BounceMarble:  " +reflect2+ "Last :  "+LastVelocity.magnitude);
             /*  if (GetSpeed > ThresholdSleep)
               {
                   rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
@@ -537,7 +551,7 @@ namespace Diaco.SoccerStar.Marble
             IsRotateBall = Do;
         }
 
-        private bool EqeulPosition(Vector3 a, Vector3 b)
+       /* private bool EqeulPosition(Vector3 a, Vector3 b)
         {
             bool eqeul = false;
             var x = a.x - b.x;
@@ -576,7 +590,8 @@ namespace Diaco.SoccerStar.Marble
             }
 
             return move;
-        }
+        }*/
+
         public float SensivityCheckMovment = 0.001f;
         public bool CheckMoveWithDistanceFromLastPosition()
         {
@@ -586,6 +601,25 @@ namespace Diaco.SoccerStar.Marble
             if (dis <= SensivityCheckMovment)
             {
                 StopMovment();
+                //Debug.Log("Stoped" );
+                return false;
+            }
+            else
+            {
+                InMove = true;
+                // Debug.Log("Moving");
+                return true;
+            }
+
+        }
+        public bool OnlyCheckMove()
+        {
+
+
+            var dis = Vector3.Distance(transform.position, LastPosition);
+            if (dis <= SensivityCheckMovment)
+            {
+               // StopMovment();
                 //Debug.Log("Stoped" );
                 return false;
             }

@@ -63,7 +63,7 @@ public class TempPlayerControll : MonoBehaviour
    
     public void TouchControll()
     {
-        if (Input.touchCount > 0)
+        if (Input.touchCount == 1)
         {
 
             if (Input.GetTouch(0).phase == TouchPhase.Began)
@@ -253,7 +253,7 @@ public class TempPlayerControll : MonoBehaviour
                     Handler_EnableRingEffect(false);
                 }
             }
-            //Debug.Log("Two Finger");
+           /// Debug.Log("Two Finger");
         }
 
         if(Input.touchCount ==  0 && MarbleSelected != null  )

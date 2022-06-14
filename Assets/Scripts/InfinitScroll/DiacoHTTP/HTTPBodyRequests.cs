@@ -54,7 +54,7 @@ namespace Diaco.HTTPBody
         public int billiard_currentxp;
         public int billiard_totalxp;
         public int coin;
-        public int gem;
+        public string gem;
 
         [Multiline]
         public string avatar;

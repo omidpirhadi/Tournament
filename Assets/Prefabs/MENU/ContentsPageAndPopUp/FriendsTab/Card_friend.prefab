@@ -606,7 +606,7 @@ MonoBehaviour:
   Server: {fileID: 0}
   Avatar: {fileID: 471223529844024166}
   UserName: {fileID: 471223530668852792}
-  ID: 
+  UserId: 
   Cup: {fileID: 471223530253384602}
   OpenProfilePopupButton: {fileID: 5357259971266832662}
   btn_Add: {fileID: 1010422041134741900}
@@ -622,7 +622,6 @@ GameObject:
   - component: {fileID: 471223530668852795}
   - component: {fileID: 471223530668852793}
   - component: {fileID: 471223530668852792}
-  - component: {fileID: 471223530668852799}
   m_Layer: 5
   m_Name: txt_usernam
   m_TagString: Untagged
@@ -678,33 +677,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: dbf9aca020bfe2b40be1d33a61427a3a, type: 3}
-    m_FontSize: 33
+    m_FontSize: 36
     m_FontStyle: 0
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 3
-    m_MaxSize: 58
+    m_MaxSize: 36
     m_Alignment: 1
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1234567891
---- !u!114 &471223530668852799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 471223530668852794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.69411767}
-  m_EffectDistance: {x: 1, y: -4.6}
-  m_UseGraphicAlpha: 1
+  m_Text: 0
 --- !u!1 &8098282151536121933
 GameObject:
   m_ObjectHideFlags: 0

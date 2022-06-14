@@ -72,7 +72,7 @@ namespace Diaco.Social
             });
             InviteFriendButton.onClick.AddListener(() => { FriendsAdded.Clear(); });
             TabButton.onClick.AddListener(() => {
-                
+                Reset();
                 Server.RequestLeagueRules();
             });
             Server.RequestLeagueRules();
@@ -156,6 +156,18 @@ namespace Diaco.Social
             Team.leagueFlag = BadgeID;
 
             return Team;
+        }
+        private void Reset()
+        {
+            TeamName.text = "";
+            Description.text = "";
+            Game.Reset();
+            Mode.Reset();
+            TypeCost.Reset();
+            Cost.Reset();
+            Capacity.Reset();
+            Hour.Reset();
+            Min.Reset();
         }
         public void Rules(RulesData data)
         {

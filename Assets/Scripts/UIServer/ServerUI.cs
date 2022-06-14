@@ -13,7 +13,7 @@ public class ServerUI : MonoBehaviour
     /// SERVER IP LOCAL = "http://192.168.1.100:8420/socket.io/"
     /// SERVER IP GOLBAL = "http://37.152.185.15:8420/socket.io/"
     /// </summary>
-    public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
+   /// public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
 
     public Diaco.ImageContainerTool.ImageContainer AvatarContainer, LeagueFlagsContainer, ImageGameType, ImageTypeCosts;
     public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError, ExitApp;
@@ -45,20 +45,26 @@ public class ServerUI : MonoBehaviour
     public void ConnectToUIServer()
     {
         Luncher = FindObjectOfType<GameLuncher>();
+        var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
+        var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
+        navigationUi = FindObjectOfType<NavigationUI>();
+
+        string URL = setting.ServerAddress;
+
         Notification_Dialog.server = this;
         Notification_Dialog.init_Notification_menu();
 
-        var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
+        
         PushNotification.server = this;
         PushNotification.InstantiateEvent();
 
-        navigationUi = FindObjectOfType<NavigationUI>();
+       
         navigationUi.OnChangePage += ServerUI_OnChangePage;
 
         SocketOptions options = new SocketOptions();
         options.AutoConnect = true;
-        socketmanager = new SocketManager(new Uri(UIServerURL), options);
+        socketmanager = new SocketManager(new Uri(URL), options);
         socket = socketmanager.Socket;
 
         socket.On("connect", (s, p, m) =>
@@ -1133,6 +1139,10 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("leaveTheleague");
     }
+    public void Emit_DescriptionEdit()
+    {
+        socket.Emit("edit_description_league");
+    }
     public void GetAwardsLeague(string teamid)
     {
         socket.Emit("awards", teamid);
@@ -1424,7 +1434,7 @@ public class ServerUI : MonoBehaviour
         UIInFooterAndHeader.Coin_inPageSelectGame.text = BODY.profile.coin.ToString();
         UIInFooterAndHeader.Cupbilliard_inPageSelectGame.text = BODY.profile.billiard_cup.ToString();
         UIInFooterAndHeader.Cupsoccer_inPageSelectGame.text = BODY.profile.soccer_cup.ToString();
-        UIInFooterAndHeader.Gem_inPageSelectGame.text = BODY.profile.gem.ToString();
+        UIInFooterAndHeader.Gem_inPageSelectGame.text = BODY.profile.gem;
     }
 
     public void CloseConnectionUIToServer()

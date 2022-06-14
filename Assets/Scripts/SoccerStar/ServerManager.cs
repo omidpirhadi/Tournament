@@ -29,11 +29,11 @@ namespace Diaco.SoccerStar.Server
         #region DataMemberGlobal
         [FoldoutGroup("ServerSettings")]
         public GameObject ResultGamePage;
-        [FoldoutGroup("ServerSettings")]
+       /// [FoldoutGroup("ServerSettings")]
 
-        public string URLLocal;
-        [FoldoutGroup("ServerSettings")]
-        public string URLGlobal;
+       /// public string URLLocal;
+       // [FoldoutGroup("ServerSettings")]
+       // public string URLGlobal;
         [FoldoutGroup("ServerSettings")]
         public string NamespaceServer;
         [FoldoutGroup("ServerSettings")]
@@ -196,7 +196,8 @@ namespace Diaco.SoccerStar.Server
             OnChangeTurn += ServerManager_OnChangeTurn;
             if (InRecordMode)
                 MarblesInRecorodMode = new List<ForceToBall>();
-            BlockChat_Button.onClick.AddListener(() => { Emit_BlockChat(); });
+            if (BlockChat_Button)
+                BlockChat_Button.onClick.AddListener(() => { Emit_BlockChat(); });
             /// Interpolate.onClick.AddListener(startMovxxx);
 
 
@@ -230,7 +231,7 @@ namespace Diaco.SoccerStar.Server
 
         public void OnEnable()
         {
-            ConnectToServer(URLGlobal);
+            ConnectToServer();
         }
         private void OnDestroy()
         {
@@ -240,18 +241,22 @@ namespace Diaco.SoccerStar.Server
         #endregion
 
 
-        public void ConnectToServer(string URL)
+        public void ConnectToServer()
         {
-           
 
+            var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
             var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
+            var namespaceserver = FindObjectOfType<GameLuncher>().NamespaceServer;
+            
+            string URL = setting.ServerAddress;
+
             Notification_Dialog.server_soccer = this;
             Notification_Dialog.init_Notification_soccer();
 
             SocketOptions options = new SocketOptions();
 
             options.AutoConnect = true;
-            var namespaceserver = FindObjectOfType<GameLuncher>().NamespaceServer;
+            
             this.NamespaceServer = namespaceserver;
             socket_manager = new SocketManager(new Uri(URL), options);
             socket = socket_manager["/soccer" + namespaceserver];
@@ -845,7 +850,7 @@ namespace Diaco.SoccerStar.Server
                 {
 
 
-                    if (!Marbles[i].CheckMoveWithDistanceFromLastPosition())
+                    if (!Marbles[i].OnlyCheckMove())
                     {
                         count_stoped++;
 
@@ -1356,6 +1361,11 @@ namespace Diaco.SoccerStar.Server
         public  void Emit_BlockChat()
         {
             socket.Emit("blockChat");
+            Debug.Log("ChatBloked!");
+        }
+        public void Emit_AddFriend()
+        {
+            socket.Emit("add-friend");
             Debug.Log("ChatBloked!");
         }
         public void Emit_DialogAndNotification(string eventName, string data)

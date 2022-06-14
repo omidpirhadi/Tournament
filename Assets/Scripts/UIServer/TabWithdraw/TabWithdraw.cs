@@ -11,7 +11,7 @@ namespace Diaco.UI.WithDrawGem
         public Text DiamondAmount;
        
         public InputField ShabaNumber;
-        public InputField OwnerAccountName;
+        public TMPro.TMP_InputField OwnerAccountName;
         public InputField Amount;
         public Button Withdraw;
 

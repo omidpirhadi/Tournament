@@ -82,14 +82,16 @@ public class ResultGame : MonoBehaviour
                 CloseGameButton.interactable = false;
                 this.gameObject.SetActive(false);
             });
-
+        AddFriendButton.onClick.AddListener(() => {
+            Server.Emit_AddFriend();
+        });
 
     }
     void  OnDisable()
     {
         Server.OnGameResult -= Server_OnGameResult;
         RematchButton.onClick.RemoveAllListeners();
-
+        AddFriendButton.onClick.RemoveAllListeners();
         CloseGameButton.onClick.RemoveAllListeners();
     }
     void OnDestroy()
@@ -97,7 +99,7 @@ public class ResultGame : MonoBehaviour
 
         Server.OnGameResult -= Server_OnGameResult;
         RematchButton.onClick.RemoveAllListeners();
-
+        AddFriendButton.onClick.RemoveAllListeners();
         CloseGameButton.onClick.RemoveAllListeners();
     }
     private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result,bool playaginactive)
@@ -109,12 +111,13 @@ public class ResultGame : MonoBehaviour
             RematchButton.interactable = true;
         else
             RematchButton.interactable = false;
+        EnableAddFriendButton(result.isFriend);
         //SetCostType(result.costType);
         if(Server.UserName.userName == result.winner.userName)
         {
             WinnerBackground.enabled = true;
             LoserBackground.enabled = false;
-            EnableAddFriendButton(result.winner.friends, result.loser.userName);
+          //  EnableAddFriendButton(result.winner.friends, result.loser.userName);
             SetResultPageElements(true,
                  Server.Avatars.LoadImage(result.winner.avatar),
                  Server.Avatars.LoadImage(result.loser.avatar),
@@ -134,7 +137,7 @@ public class ResultGame : MonoBehaviour
         {
             WinnerBackground.enabled = false;
             LoserBackground.enabled = true;
-            EnableAddFriendButton(result.loser.friends, result.winner.userName);
+           // EnableAddFriendButton(result.loser.friends, result.winner.userName);
            
             SetResultPageElements(false,
                Server.Avatars.LoadImage(result.loser.avatar),
@@ -155,11 +158,11 @@ public class ResultGame : MonoBehaviour
 
 
   
-    public void EnableAddFriendButton( List<string>friends , string opponetUsername)
+    public void EnableAddFriendButton( bool isFriend)
     {
-        friends.ForEach((E) => {
+        
 
-            if(E == opponetUsername)
+            if(isFriend)
             {
                 AddFriendButton.gameObject.SetActive(false);
             }
@@ -167,7 +170,7 @@ public class ResultGame : MonoBehaviour
             {
                 AddFriendButton.gameObject.SetActive(true);
             }
-        });
+        
         
     }
     public void SetCostType(int cost)

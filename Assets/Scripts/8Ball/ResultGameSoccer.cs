@@ -50,6 +50,9 @@ public class ResultGameSoccer : MonoBehaviour
             Server.Emit_PlayAgain();
             RematchButton.interactable = false;
         });
+        AddFriendButton.onClick.AddListener(() => {
+            Server.Emit_AddFriend();
+        });
         CloseGameButton.onClick.AddListener(() =>
         {
 
@@ -74,7 +77,7 @@ public class ResultGameSoccer : MonoBehaviour
     {
         Server.OnGameResult -= Server_OnGameResult;
         RematchButton.onClick.RemoveAllListeners();
-
+        AddFriendButton.onClick.RemoveAllListeners();
         CloseGameButton.onClick.RemoveAllListeners();
     }
     void OnDestroy()
@@ -82,7 +85,7 @@ public class ResultGameSoccer : MonoBehaviour
 
         Server.OnGameResult -= Server_OnGameResult;
         RematchButton.onClick.RemoveAllListeners();
-
+        AddFriendButton.onClick.RemoveAllListeners();
         CloseGameButton.onClick.RemoveAllListeners();
     }
     private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result, bool playaginactive)
@@ -93,14 +96,14 @@ public class ResultGameSoccer : MonoBehaviour
             RematchButton.interactable = true;
         else
             RematchButton.interactable = false;
-
+        EnableAddFriendButton(result.isFriend);
         // SetCostType(result.costType);
         if (Server.Info.userName == result.winner.userName)
         {
             WinnerBackground.enabled = true;
             LoserBackground.enabled = false;
 
-            EnableAddFriendButton(result.winner.friends, result.loser.userName);
+            //EnableAddFriendButton(result.winner.friends, result.loser.userName);
            // Debug.Log("####3######"+result.winner.goalCount);
             SetResultPageElements(true,
                 Server.imageContainer.LoadImage(result.winner.avatar),
@@ -126,7 +129,7 @@ public class ResultGameSoccer : MonoBehaviour
             WinnerBackground.enabled = false;
             LoserBackground.enabled = true;
 
-            EnableAddFriendButton(result.loser.friends, result.winner.userName);
+          //  EnableAddFriendButton(result.loser.friends, result.winner.userName);
           // Debug.Log("@@@2@@2" + result.winner.goalCount);
             SetResultPageElements(false,
                Server.imageContainer.LoadImage(result.loser.avatar),
@@ -144,24 +147,23 @@ public class ResultGameSoccer : MonoBehaviour
                result.loser.rank
                );
         }
-        ///StartCoroutine(Server.ResetData());
+        //StartCoroutine(Server.ResetData());
     }
 
 
-    public void EnableAddFriendButton(List<string> friends, string opponetUsername)
+    public void EnableAddFriendButton(bool isFriend)
     {
-        friends.ForEach((E) =>
-        {
 
-            if (E == opponetUsername)
-            {
-                AddFriendButton.gameObject.SetActive(false);
-            }
-            else
-            {
-                AddFriendButton.gameObject.SetActive(true);
-            }
-        });
+
+        if (isFriend)
+        {
+            AddFriendButton.gameObject.SetActive(false);
+        }
+        else
+        {
+            AddFriendButton.gameObject.SetActive(true);
+        }
+
 
     }
     public void SetCostType(int cost)

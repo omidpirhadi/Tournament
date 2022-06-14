@@ -23,6 +23,7 @@ namespace Diaco.UI.TeamInfo
         public Image TeamImage;
         public RTLTMPro.RTLTextMeshPro TeamName;
         public RTLTMPro.RTLTextMeshPro Description;
+        public Button EditDescription_button;
         public Text Game; // biliard socor
         public Image CostType;// gem cup coin
         public Text Cost;
@@ -105,6 +106,10 @@ namespace Diaco.UI.TeamInfo
                 Server.LeaveTheTeam();
                 navigationui.ClosePopUp("teaminfo");
             });
+            EditDescription_button.onClick.AddListener(() => {
+                Server.Emit_DescriptionEdit();
+
+            });
 
 
 
@@ -126,7 +131,7 @@ namespace Diaco.UI.TeamInfo
             AwardButton.onClick.RemoveAllListeners();
             JoinButton.onClick.RemoveAllListeners();
             LeaveTeamButton.onClick.RemoveAllListeners();
-
+            EditDescription_button.onClick.RemoveAllListeners();
             ClearTeamInfo();
             
         }
@@ -233,7 +238,7 @@ namespace Diaco.UI.TeamInfo
             {
                 CostType.sprite = CoinCostAsset;
             }
-            else
+            else if (teamInfos.costType == 2)
             {
                 CostType.sprite = GemCostAsset;
             }

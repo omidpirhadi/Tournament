@@ -181,7 +181,7 @@ namespace Diaco.EightBall.Structs
         
         public ResultPlayer winner;
         public ResultPlayer loser;
-        
+        public bool isFriend;
 
     }
 }

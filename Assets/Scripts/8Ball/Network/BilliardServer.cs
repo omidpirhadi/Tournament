@@ -40,10 +40,10 @@ namespace Diaco.EightBall.Server
         #region ServerSettings
         public Socket socket;
         public SocketManager socketmanager;
-        [FoldoutGroup("ServerSettings")]
-        public string GlobalURL;
-        [FoldoutGroup("ServerSettings")]
-        public string LocalURL;
+      ////  [FoldoutGroup("ServerSettings")]
+       /// public string GlobalURL;
+       /// [FoldoutGroup("ServerSettings")]
+      ///  public string LocalURL;
         [FoldoutGroup("ServerSettings")]
         public string Namespaceserver;
         [SerializeField]
@@ -259,7 +259,8 @@ namespace Diaco.EightBall.Server
 
                 SelectTable(tableName.Substring(1));
             }
-            BlockChat_Button.onClick.AddListener(() => { Emit_BlockChat(); });
+            if (BlockChat_Button)
+                BlockChat_Button.onClick.AddListener(() => { Emit_BlockChat(); });
         }
         public void OnEnable()
         {
@@ -280,7 +281,12 @@ namespace Diaco.EightBall.Server
         #region Server_On
         public void OnInitializeServer()
         {
+
+            var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+            var namespaceserver = FindObjectOfType<GameLuncher>().NamespaceServer;
             var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
+            string URL = setting.ServerAddress;
+
             Notification_Dialog.server_billiard = this;
             Notification_Dialog.init_Notification_billiard();
 
@@ -288,9 +294,9 @@ namespace Diaco.EightBall.Server
             SocketOptions options = new SocketOptions();
             options.AutoConnect = true;
 
-            var namespaceserver = FindObjectOfType<GameLuncher>().NamespaceServer;
+            
             this.Namespaceserver = namespaceserver;
-            socketmanager = new SocketManager(new Uri(GlobalURL), options);
+            socketmanager = new SocketManager(new Uri(URL), options);
             socket = socketmanager["/billiard" + namespaceserver];
 
             socket.On("connect", (s, p, m) =>
@@ -608,6 +614,11 @@ namespace Diaco.EightBall.Server
         public void Emit_BlockChat()
         {
             socket.Emit("blockChat");
+            Debug.Log("ChatBloked!");
+        }
+        public void Emit_AddFriend()
+        {
+            socket.Emit("add-friend");
             Debug.Log("ChatBloked!");
         }
         public void Emit_CallPocket(int  id)
