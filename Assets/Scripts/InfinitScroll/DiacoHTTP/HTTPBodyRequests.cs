@@ -266,6 +266,7 @@ namespace Diaco.HTTPBody
         public SOCIAL social;
         public Inventory inventory;
     }
+
     [Serializable]
     public struct GameLock
     {
@@ -277,8 +278,18 @@ namespace Diaco.HTTPBody
     public struct Inventory
     {
         public List<string> avatars;
-       public  List<LeagueFlage> leagueFlags;
-        public int tickets;
+        public  List<LeagueFlage> leagueFlags;
+        public List<TicketData> tickets;
+    }
+    [Serializable]
+    public struct TicketData
+    {
+        public string id;
+        public short gameType;//0 soccer  1 billiard
+        public short costType; // 0 cup 1 coin 2 gem
+        public string cost;
+        public string capacity;
+        public int time;
     }
     [Serializable]
     public struct Award

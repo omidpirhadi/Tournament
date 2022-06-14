@@ -1,18 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class TicketManager : MonoBehaviour
+namespace Diaco.UI.TicketManagers
 {
-    // Start is called before the first frame update
-    void Start()
+    public class TicketManager : MonoBehaviour
     {
+        public GameObject IdleTicket;
+        public Ticket ticket;
+
+        public void Show(List<Diaco.HTTPBody.TicketData> data)
+        {
+            if(data.Count >0)
+            {
+                IdleTicket.SetActive(false);
+                ticket.gameObject.SetActive(true);
+                ticket.Set(data[0]);
+            }
+            else
+            {
+                IdleTicket.SetActive(true);
+                ticket.gameObject.SetActive(false);
+            }
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

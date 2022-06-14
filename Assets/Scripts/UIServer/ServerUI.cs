@@ -116,8 +116,9 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-           // BODY = new BODY();
-          //  Debug.Log("VVVVVVVVVV");
+            // BODY = new BODY();
+            //  Debug.Log("VVVVVVVVVV");
+            var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
@@ -182,6 +183,7 @@ public class ServerUI : MonoBehaviour
 
             UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
             SetElementInHeaderAndFooter();
+            ticket.Show(BODY.inventory.tickets);
             Handler_OnCreateTeamCompeleted();
 
             Handler_OnGameBodyUpdate();
@@ -1331,6 +1333,16 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("achievement-dialog",achivename);
         Debug.Log("Achivment Description"+achivename);
+    }
+    public void Emit_Ticket(string id)
+    {
+        socket.Emit("use-ticket", id);
+        Debug.Log("Use Ticket :" + id);
+    }
+    public void Emit_Card(string id)
+    {
+        socket.Emit("card-dialog", id);
+        Debug.Log("Card Dialog :" + id);
     }
     #endregion
     /// <summary>

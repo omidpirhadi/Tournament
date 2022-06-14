@@ -10,7 +10,7 @@ namespace Diaco.UI.Chatbox
     {
         public ServerUI Server;
         public List<Sticker> stickers;
-       
+        public Image Onlineindicator_image;
         public string IDReciver = "";
         public Image AvatarReciver;
         public Text UserNameReciver;
@@ -152,10 +152,19 @@ namespace Diaco.UI.Chatbox
         }
         public void SetElementPage(ChatBoxData data)
         {
+            
             AvatarReciver.sprite = Server.AvatarContainer.LoadImage(data.avatar);
             UserNameReciver.text = data.username;
             IDReciver = data.id;
             Cup.text = data.cup;
+            if(data.isOnline)
+            {
+                Onlineindicator_image.gameObject.SetActive(true);
+            }
+            else
+            {
+                Onlineindicator_image.gameObject.SetActive(false);
+            }
         }
         private Sticker SelectSticker(string stickername)
         {
@@ -193,6 +202,7 @@ namespace Diaco.UI.Chatbox
     [Serializable]
     public struct ChatBoxData
     {
+        public bool isOnline;
         public string avatar;
         public string username;
         public string id;

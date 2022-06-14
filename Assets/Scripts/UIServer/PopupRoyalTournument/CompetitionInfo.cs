@@ -123,7 +123,7 @@ namespace Diaco.UI.RoyalTournument
                 {
                     admin = false;
                 }
-                card.Set(admin, image, player[i].userName, player[i].cup);
+                card.Set(admin,player[i].userId ,image, player[i].userName, player[i].cup);
                 ListPlayer.Add(card.gameObject);
             }
         }
@@ -212,8 +212,10 @@ namespace Diaco.UI.RoyalTournument
     [Serializable]
     public struct PlayerInCompetition
     {
+
         public string avatar;
         public string userName;
+        public string userId;
         public int cup;
     }
 }

@@ -1587,10 +1587,16 @@ namespace Diaco.EightBall.Server
         private void SpawnAssetInRecordMode(Vector3 whiteball,  Vector3 colorball, Vector3 siblpos)
         {
             var w_ball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
+            w_ball.GetComponent<Collider>().enabled = true;
+            
+            w_ball.GetComponent<Rigidbody>().isKinematic = false;
+            w_ball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+
             w_ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
             w_ball.transform.position = whiteball;
             w_ball.DragIsBusy = false;
             w_ball.InMove = false;
+
             //var rand = UnityEngine.Random.Range(1, BallsPrefabs.Count];
             var c_ball = Instantiate(BallsPrefabs[1], colorball ,Quaternion.identity, ParentForspwan);
             var sibl = Instantiate(SiblPrefab, siblpos, Quaternion.identity, ParentForspwan);
