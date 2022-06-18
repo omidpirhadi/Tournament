@@ -65,6 +65,8 @@ namespace Diaco.UI.TeamInfo
 
             Cost_Image.sprite = CostTypeImage_Container.LoadImage(data.costType.ToString());
             Cost_txt.text = data.cost.ToString();
+
+            Debug.Log(data.awards1.cardName + data.awards2.cardName + data.awards3.cardName);
         }
 
         private void ElementOfSlideNumberTurnOn(HTTPBody.AwardsName awardsname)

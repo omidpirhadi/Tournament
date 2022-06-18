@@ -174,6 +174,23 @@ namespace Diaco.Social
             soccerLeaguePrecent_text.text = data.soccerAward;
             billiardLeaguePrecent_text.text = data.billiardAward;
             ReminingTimeToCreateLeague_text.text = data.remainingTime;
+            ///statusLeague =>  0 = firndly 1 = General 2 = mix
+            if (data.statusLeague == 0)
+            {
+                Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ " });
+
+            }
+            else if (data.statusLeague == 1)
+            {
+                Mode.PrimeryData = "ﯽﻣﻮﻤﻋ ";
+                Mode.FillElementContexts(new List<string> { "ﯽﻣﻮﻤﻋ " });
+            }
+            else if (data.statusLeague == 2)
+            {
+                Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ ", "ﯽﻣﻮﻤﻋ " });
+            }
         }
         [Obsolete]
         public void ShowTickets()
@@ -257,6 +274,7 @@ namespace Diaco.Social
         public string soccerAward;
         public string billiardAward;
         public string remainingTime;
+        public int statusLeague;///statusLeague =>  0 = firndly 1 = General 2 = mix
 
     }
 }

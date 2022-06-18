@@ -8,76 +8,76 @@ namespace Diaco.EightBall.Structs
     [Serializable]
     public struct PositionAndRotateBalls
     {
-        [DataMember] public Vector2 CueBall;
-        [DataMember] public Vector3 CueBall_R;
-     ////   [DataMember] public bool CueBallInPocket;
+        public Vector2 CueBall;
+        public Vector3 CueBall_R;
+        public Vector3 CueBall_velocity;
 
-        [DataMember] public Vector2 Ball_1;
-        [DataMember] public Vector3 Ball_1_R;
-       //// [DataMember] public bool Ball_1InPocket;
-
-
-
-        [DataMember] public Vector2 Ball_2;
-        [DataMember] public Vector3 Ball_2_R;
-      ///  [DataMember] public bool Ball_2InPocket;
-
-        [DataMember] public Vector2 Ball_3;
-        [DataMember] public Vector3 Ball_3_R;
-       /// [DataMember] public bool Ball_3InPocket;
-
-        [DataMember] public Vector2 Ball_4;
-        [DataMember] public Vector3 Ball_4_R;
-      ////  [DataMember] public bool Ball_4InPocket;
+        public Vector2 Ball_1;
+        public Vector3 Ball_1_R;
+        public Vector3 Ball_1_velocity;
 
 
-        [DataMember] public Vector2 Ball_5;
-        [DataMember] public Vector3 Ball_5_R;
-       // [DataMember] public bool Ball_5InPocket;
 
-        [DataMember] public Vector2 Ball_6;
-        [DataMember] public Vector3 Ball_6_R;
-     ///   [DataMember] public bool Ball_6InPocket;
+        public Vector2 Ball_2;
+        public Vector3 Ball_2_R;
+        public Vector3 Ball_2_velocity;
 
-        [DataMember] public Vector2 Ball_7;
-        [DataMember] public Vector3 Ball_7_R;
-       /// [DataMember] public bool Ball_7InPocket;
+        public Vector2 Ball_3;
+        public Vector3 Ball_3_R;
+        public Vector3 Ball_3_velocity;
 
-        [DataMember] public Vector2 Ball_8;
-        [DataMember] public Vector3 Ball_8_R;
-      ///  [DataMember] public bool Ball_8InPocket;
-
-        [DataMember] public Vector2 Ball_9;
-        [DataMember] public Vector3 Ball_9_R;
-       /// [DataMember] public bool Ball_9InPocket;
-
-        [DataMember] public Vector2 Ball_10;
-        [DataMember] public Vector3 Ball_10_R;
-       // [DataMember] public bool Ball_10InPocket;
+        public Vector2 Ball_4;
+        public Vector3 Ball_4_R;
+        public Vector3 Ball_4_velocity;
 
 
-        [DataMember] public Vector2 Ball_11;
-        [DataMember] public Vector3 Ball_11_R;
-       // [DataMember] public bool Ball_11InPocket;
+        public Vector2 Ball_5;
+        public Vector3 Ball_5_R;
+        public Vector3 Ball_5_velocity;
 
-        [DataMember] public Vector2 Ball_12;
-        [DataMember] public Vector3 Ball_12_R;
-       /// [DataMember] public bool Ball_12InPocket;
+        public Vector2 Ball_6;
+        public Vector3 Ball_6_R;
+        public Vector3 Ball_6_velocity;
 
-        [DataMember] public Vector2 Ball_13;
-        [DataMember] public Vector3 Ball_13_R;
-      //  [DataMember] public bool Ball_13InPocket;
+        public Vector2 Ball_7;
+        public Vector3 Ball_7_R;
+        public Vector3 Ball_7_velocity;
 
-        [DataMember] public Vector2 Ball_14;
-        [DataMember] public Vector3 Ball_14_R;
-       /// [DataMember] public bool Ball_14InPocket;
+        public Vector2 Ball_8;
+        public Vector3 Ball_8_R;
+        public Vector3 Ball_8_velocity;
 
-        [DataMember] public Vector2 Ball_15;
-        [DataMember] public Vector3 Ball_15_R;
-      //  [DataMember] public bool Ball_15InPocket;
+        public Vector2 Ball_9;
+        public Vector3 Ball_9_R;
+        public Vector3 Ball_9_velocity;
 
-        [DataMember] public float TimeStepPacket;
-        [DataMember] public bool isLastPacket;
+        public Vector2 Ball_10;
+        public Vector3 Ball_10_R;
+        public Vector3 Ball_10_velocity;
+
+
+        public Vector2 Ball_11;
+        public Vector3 Ball_11_R;
+        public Vector3 Ball_11_velocity;
+
+        public Vector2 Ball_12;
+        public Vector3 Ball_12_R;
+        public Vector3 Ball_12_velocity;
+
+        public Vector2 Ball_13;
+        public Vector3 Ball_13_R;
+        public Vector3 Ball_13_velocity;
+
+        public Vector2 Ball_14;
+        public Vector3 Ball_14_R;
+        public Vector3 Ball_14_velocity;
+
+        public Vector2 Ball_15;
+        public Vector3 Ball_15_R;
+        public Vector3 Ball_15_velocity;
+
+
+        public bool isLastPacket;
     }
     [Serializable]
     public  struct AimData

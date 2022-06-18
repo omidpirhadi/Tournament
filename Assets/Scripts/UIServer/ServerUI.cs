@@ -1385,11 +1385,11 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("CompetitionCommand::" + commandindex);
     }
-    public void RequestLeaveCompetition()//
+    public void RequestLeaveCompetition(string id)//
     {
-        socket.Emit("competition-leave");
+        socket.Emit("competition-leave"+ id);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("Request Competition Leave" );
+        Debug.Log("Request Competition Leave" +id);
     }
     public void RequestGoToTableRanking()
     {
