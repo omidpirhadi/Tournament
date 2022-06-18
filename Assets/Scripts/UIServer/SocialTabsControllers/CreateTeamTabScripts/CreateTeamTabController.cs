@@ -16,11 +16,11 @@ namespace Diaco.Social
         public SelectFriendsPopup SelectFriendPopup;
         public SelectBadgePopUpController SelectBadgesController;
 
-      /*  public DialogYesNo Dialog_CreateTeam;
-        public DialogOk Dialog_Error_Ticket;
-        public DialogOk Dialog_Error_Cup;
-        public DialogOk Dialog_Error_Gem;
-        public DialogOk Dialog_Error_Coin;*/
+        /*  public DialogYesNo Dialog_CreateTeam;
+          public DialogOk Dialog_Error_Ticket;
+          public DialogOk Dialog_Error_Cup;
+          public DialogOk Dialog_Error_Gem;
+          public DialogOk Dialog_Error_Coin;*/
 
         public Text soccerLeaguePrecent_text;
         public Text billiardLeaguePrecent_text;
@@ -47,7 +47,7 @@ namespace Diaco.Social
 
         public void Awake()
         {
-           
+
         }
 
 
@@ -57,10 +57,10 @@ namespace Diaco.Social
 
             SelectFriendPopup.OnSelectFriendInPopup += SelectFriendPopup_OnSelectFriendInPopup;
             SelectBadgesController.OnChangeBadgeId += SelectBadgesController_OnChangeBadgeId;
-          ////  Server.OnCreateTeamCompeleted += Server_OnCreateTeamCompeleted;
+            ////  Server.OnCreateTeamCompeleted += Server_OnCreateTeamCompeleted;
 
-           // Server.OnErrorCreateTeam += Server_OnErrorCreateTeam;
-           /// Dialog_CreateTeam.OnClickYes += Dialog_CreateTeam_OnClickYes;
+            // Server.OnErrorCreateTeam += Server_OnErrorCreateTeam;
+            /// Dialog_CreateTeam.OnClickYes += Dialog_CreateTeam_OnClickYes;
 
             CreateButton.onClick.AddListener(() =>
             {
@@ -71,7 +71,8 @@ namespace Diaco.Social
                 }
             });
             InviteFriendButton.onClick.AddListener(() => { FriendsAdded.Clear(); });
-            TabButton.onClick.AddListener(() => {
+            TabButton.onClick.AddListener(() =>
+            {
                 Reset();
                 Server.RequestLeagueRules();
             });
@@ -84,11 +85,11 @@ namespace Diaco.Social
 
         public void OnDisable()
         {
-             SelectFriendPopup.OnSelectFriendInPopup -= SelectFriendPopup_OnSelectFriendInPopup;
+            SelectFriendPopup.OnSelectFriendInPopup -= SelectFriendPopup_OnSelectFriendInPopup;
             SelectBadgesController.OnChangeBadgeId -= SelectBadgesController_OnChangeBadgeId;
             //Server.OnCreateTeamCompeleted -= Server_OnCreateTeamCompeleted;
-          //  Server.OnErrorCreateTeam -= Server_OnErrorCreateTeam;
-           // Dialog_CreateTeam.OnClickYes -= Dialog_CreateTeam_OnClickYes;
+            //  Server.OnErrorCreateTeam -= Server_OnErrorCreateTeam;
+            // Dialog_CreateTeam.OnClickYes -= Dialog_CreateTeam_OnClickYes;
             CreateButton.onClick.RemoveAllListeners();
             TabButton.onClick.RemoveAllListeners();
             InviteFriendButton.onClick.RemoveAllListeners();
@@ -97,33 +98,33 @@ namespace Diaco.Social
         }
         private void Dialog_CreateTeam_OnClickYes()
         {
-           
-        }
-     /*   private void Server_OnCreateTeamCompeleted()
-        {
-           // Tickets = Server.BODY.inventory.tickets;
-            //ShowTickets();
-        }*/
-      /*  private void Server_OnErrorCreateTeam(string error)
-        {
-            if(error == "1")
-            {
-                Dialog_Error_Ticket.ShowDialog();
-            }
-            else if(error == "2")
-            {
-                Dialog_Error_Coin.ShowDialog();
-            }
-            else if (error == "3")
-            {
-                Dialog_Error_Cup.ShowDialog();
-            }
-            else if (error == "4")
-            {
-                Dialog_Error_Gem.ShowDialog();
-            }
 
-        }*/
+        }
+        /*   private void Server_OnCreateTeamCompeleted()
+           {
+              // Tickets = Server.BODY.inventory.tickets;
+               //ShowTickets();
+           }*/
+        /*  private void Server_OnErrorCreateTeam(string error)
+          {
+              if(error == "1")
+              {
+                  Dialog_Error_Ticket.ShowDialog();
+              }
+              else if(error == "2")
+              {
+                  Dialog_Error_Coin.ShowDialog();
+              }
+              else if (error == "3")
+              {
+                  Dialog_Error_Cup.ShowDialog();
+              }
+              else if (error == "4")
+              {
+                  Dialog_Error_Gem.ShowDialog();
+              }
+
+          }*/
 
         private void SelectBadgesController_OnChangeBadgeId(string badge)
         {
@@ -137,7 +138,7 @@ namespace Diaco.Social
                 FriendsAdded.Add(e);
             });
         }
-      
+
         public Diaco.HTTPBody.CreateTeam CreateTeam()
         {
             var Team = new Diaco.HTTPBody.CreateTeam();
@@ -146,8 +147,8 @@ namespace Diaco.Social
             Team.description = Description.text;
             Team.game = Game.CurrentElementContext;
             Team.mode = Mode.CurrentElementContext;
-           
-                Team.typeCost = TypeCost.CurrentElementContext;
+
+            Team.typeCost = TypeCost.CurrentElementContext;
             Team.cost = Cost.CurrentValueDigit;
             Team.capacity = System.Convert.ToInt32(Capacity.ElementContexts[Capacity.CurrentElementContext]);
             Team.hour = Hour.CurrentValueDigit;
@@ -174,7 +175,25 @@ namespace Diaco.Social
             soccerLeaguePrecent_text.text = data.soccerAward;
             billiardLeaguePrecent_text.text = data.billiardAward;
             ReminingTimeToCreateLeague_text.text = data.remainingTime;
+            ///statusLeague =>  0 = firndly 1 = General 2 = mix
+            if (data.statusLeague == 0)
+            {
+                Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ " });
+
+            }
+            else if (data.statusLeague == 1)
+            {
+                Mode.PrimeryData = "ﯽﻣﻮﻤﻋ ";
+                Mode.FillElementContexts(new List<string> { "ﯽﻣﻮﻤﻋ " });
+            }
+            else if (data.statusLeague == 2)
+            {
+                Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ ", "ﯽﻣﻮﻤﻋ " });
+            }
         }
+    
         [Obsolete]
         public void ShowTickets()
         {
@@ -257,6 +276,7 @@ namespace Diaco.Social
         public string soccerAward;
         public string billiardAward;
         public string remainingTime;
+        public int statusLeague;///statusLeague => 0 = firndly 1 = General 2 = mix
 
     }
 }

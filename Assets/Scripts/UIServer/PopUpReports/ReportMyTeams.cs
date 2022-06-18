@@ -32,7 +32,7 @@ namespace Diaco.UI.Reports
             AwardGem.text = (myTeams.award.awardGem).ToString();
             AwardCoin.text = (myTeams.award.awardCoin).ToString();
             TotalAwardGem.text = (myTeams.award.totalawardGem).ToString();
-            TotalAwardCoin.text = (myTeams.award.totalawardGem).ToString();
+            TotalAwardCoin.text = (myTeams.award.awardCoin).ToString();
             for (int i = 0; i < myTeams.createdTeams.Count; i++)
             {
                 var card = Instantiate(CreatedTeamsCardElement, Content);

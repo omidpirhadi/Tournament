@@ -75,9 +75,11 @@ namespace Diaco.Social.TeamsInputField
         }
         public void FillElementContexts(List<string> contexts)
         {
+            ElementContexts.Clear();
+
             for (int i = 0; i < contexts.Count; i++)
             {
-                // ElementContexts[i] = contexts[i]
+                ElementContexts.Add(contexts[i]);
             }
         }
     }
