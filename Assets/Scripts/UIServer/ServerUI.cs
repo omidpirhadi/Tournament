@@ -118,7 +118,9 @@ public class ServerUI : MonoBehaviour
 
             // BODY = new BODY();
             //  Debug.Log("VVVVVVVVVV");
+            BODY.inventory.tickets = new System.Collections.Generic.List<TicketData>();
             var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
+
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
@@ -179,16 +181,17 @@ public class ServerUI : MonoBehaviour
                 Header.SetActive(true);
                 loadedpage = true;
             }
-           // Debug.Log("main-menu called"+json);
+          
 
             UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
             SetElementInHeaderAndFooter();
-            ticket.Show(BODY.inventory.tickets);
+            if (ticket != null)
+                ticket.Show(BODY.inventory.tickets);
             Handler_OnCreateTeamCompeleted();
 
             Handler_OnGameBodyUpdate();
             navigationUi.StopLoadingPage();
-            
+              Debug.Log("main-menu called");
         });
 
         socket.On("search-friend", (s, p, m) =>
@@ -311,7 +314,7 @@ public class ServerUI : MonoBehaviour
                 Handler_OnCreateTeamCompeleted();
 
 
-
+                Debug.Log("update ggggg");
             }
             navigationUi.StopLoadingPage();
         });
@@ -1387,7 +1390,7 @@ public class ServerUI : MonoBehaviour
     }
     public void RequestLeaveCompetition(string id)//
     {
-        socket.Emit("competition-leave"+ id);
+        socket.Emit("competition-leave", id);
         navigationUi.StartLoadingPageShow();
         Debug.Log("Request Competition Leave" +id);
     }

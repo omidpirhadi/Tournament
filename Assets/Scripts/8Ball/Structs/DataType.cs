@@ -8,79 +8,79 @@ namespace Diaco.EightBall.Structs
     [Serializable]
     public struct PositionAndRotateBalls
     {
-        public Vector2 CueBall;
-        public Vector3 CueBall_R;
-        public Vector3 CueBall_velocity;
+        [DataMember] public Vector2 CueBall;
+        [DataMember] public Vector3 CueBall_R;
+        ////   [DataMember] public bool CueBallInPocket;
 
-        public Vector2 Ball_1;
-        public Vector3 Ball_1_R;
-        public Vector3 Ball_1_velocity;
-
-
-
-        public Vector2 Ball_2;
-        public Vector3 Ball_2_R;
-        public Vector3 Ball_2_velocity;
-
-        public Vector2 Ball_3;
-        public Vector3 Ball_3_R;
-        public Vector3 Ball_3_velocity;
-
-        public Vector2 Ball_4;
-        public Vector3 Ball_4_R;
-        public Vector3 Ball_4_velocity;
+        [DataMember] public Vector2 Ball_1;
+        [DataMember] public Vector3 Ball_1_R;
+        //// [DataMember] public bool Ball_1InPocket;
 
 
-        public Vector2 Ball_5;
-        public Vector3 Ball_5_R;
-        public Vector3 Ball_5_velocity;
 
-        public Vector2 Ball_6;
-        public Vector3 Ball_6_R;
-        public Vector3 Ball_6_velocity;
+        [DataMember] public Vector2 Ball_2;
+        [DataMember] public Vector3 Ball_2_R;
+        ///  [DataMember] public bool Ball_2InPocket;
 
-        public Vector2 Ball_7;
-        public Vector3 Ball_7_R;
-        public Vector3 Ball_7_velocity;
+        [DataMember] public Vector2 Ball_3;
+        [DataMember] public Vector3 Ball_3_R;
+        /// [DataMember] public bool Ball_3InPocket;
 
-        public Vector2 Ball_8;
-        public Vector3 Ball_8_R;
-        public Vector3 Ball_8_velocity;
-
-        public Vector2 Ball_9;
-        public Vector3 Ball_9_R;
-        public Vector3 Ball_9_velocity;
-
-        public Vector2 Ball_10;
-        public Vector3 Ball_10_R;
-        public Vector3 Ball_10_velocity;
+        [DataMember] public Vector2 Ball_4;
+        [DataMember] public Vector3 Ball_4_R;
+        ////  [DataMember] public bool Ball_4InPocket;
 
 
-        public Vector2 Ball_11;
-        public Vector3 Ball_11_R;
-        public Vector3 Ball_11_velocity;
+        [DataMember] public Vector2 Ball_5;
+        [DataMember] public Vector3 Ball_5_R;
+        // [DataMember] public bool Ball_5InPocket;
 
-        public Vector2 Ball_12;
-        public Vector3 Ball_12_R;
-        public Vector3 Ball_12_velocity;
+        [DataMember] public Vector2 Ball_6;
+        [DataMember] public Vector3 Ball_6_R;
+        ///   [DataMember] public bool Ball_6InPocket;
 
-        public Vector2 Ball_13;
-        public Vector3 Ball_13_R;
-        public Vector3 Ball_13_velocity;
+        [DataMember] public Vector2 Ball_7;
+        [DataMember] public Vector3 Ball_7_R;
+        /// [DataMember] public bool Ball_7InPocket;
 
-        public Vector2 Ball_14;
-        public Vector3 Ball_14_R;
-        public Vector3 Ball_14_velocity;
+        [DataMember] public Vector2 Ball_8;
+        [DataMember] public Vector3 Ball_8_R;
+        ///  [DataMember] public bool Ball_8InPocket;
 
-        public Vector2 Ball_15;
-        public Vector3 Ball_15_R;
-        public Vector3 Ball_15_velocity;
+        [DataMember] public Vector2 Ball_9;
+        [DataMember] public Vector3 Ball_9_R;
+        /// [DataMember] public bool Ball_9InPocket;
+
+        [DataMember] public Vector2 Ball_10;
+        [DataMember] public Vector3 Ball_10_R;
+        // [DataMember] public bool Ball_10InPocket;
 
 
-        public bool isLastPacket;
+        [DataMember] public Vector2 Ball_11;
+        [DataMember] public Vector3 Ball_11_R;
+        // [DataMember] public bool Ball_11InPocket;
+
+        [DataMember] public Vector2 Ball_12;
+        [DataMember] public Vector3 Ball_12_R;
+        /// [DataMember] public bool Ball_12InPocket;
+
+        [DataMember] public Vector2 Ball_13;
+        [DataMember] public Vector3 Ball_13_R;
+        //  [DataMember] public bool Ball_13InPocket;
+
+        [DataMember] public Vector2 Ball_14;
+        [DataMember] public Vector3 Ball_14_R;
+        /// [DataMember] public bool Ball_14InPocket;
+
+        [DataMember] public Vector2 Ball_15;
+        [DataMember] public Vector3 Ball_15_R;
+        //  [DataMember] public bool Ball_15InPocket;
+
+        [DataMember] public float TimeStepPacket;
+        [DataMember] public bool isLastPacket;
     }
     [Serializable]
-    public  struct AimData
+    public struct AimData
     {
         [DataMember] public float X_position;
         [DataMember] public float Z_position;
@@ -102,9 +102,9 @@ namespace Diaco.EightBall.Structs
     {
         public List<int> IDBalls;
     }
-    public enum Side{ Left = 0 , Right = 1}
+    public enum Side { Left = 0, Right = 1 }
     public enum BillboardSection { Image = 0, CoolDown = 1, Coin = 2 }
-    public enum Shar {None = -1, Solid = 0, Stripe = 1 }
+    public enum Shar { None = -1, Solid = 0, Stripe = 1 }
     [Serializable]
     public struct _Shar
     {
@@ -168,17 +168,17 @@ namespace Diaco.EightBall.Structs
         public string avatar;
         public List<string> friends;
         public int goalCount;
-        
+
         public string rank;
         public string coin;
         public string cup;
         public string xp;
-        
+
     }
     [Serializable]
     public struct ResultGame
     {
-        
+
         public ResultPlayer winner;
         public ResultPlayer loser;
         public bool isFriend;
