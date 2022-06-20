@@ -9,29 +9,31 @@ namespace Diaco.UI.Reports
         public Image Profile;
         public Text TeamName;
         public Text CapacityTeam;
-        
+        public Text Cost_count;
         public Image Cost;
 
   
 
         private Button BtnCard;
-        private ServerUI server;
-        public void InitializReportCreatedTeamsCard(Sprite profile, string teamName, string capacityTeam , short costType,Action OnClickCard )
+        public Diaco.ImageContainerTool.ImageContainer CostImageContainer;
+        public void InitializReportCreatedTeamsCard(Sprite profile, string teamName, string capacityTeam ,string cost_count, short costType,Action OnClickCard )
         {
             BtnCard = this.GetComponent<Button>();
-            server = FindObjectOfType<ServerUI>();
+           // server = FindObjectOfType<ServerUI>();
             Profile.sprite = profile;
             TeamName.text = teamName;
             CapacityTeam.text = capacityTeam;
+           Cost_count.text = cost_count;
             if(costType == 0 )
             {
-                Cost.sprite = server.ImageTypeCosts.LoadImage("0");
+                Cost.sprite = CostImageContainer.LoadImage(costType.ToString());
             }
             else
             {
-                Cost.sprite = server.ImageTypeCosts.LoadImage("1");
+                Cost.sprite = CostImageContainer.LoadImage(costType.ToString()); 
             }
             BtnCard.onClick.AddListener(()=> { OnClickCard(); });
+            Debug.Log("+++++++"+costType);
         }
     }
 }

@@ -68,11 +68,11 @@ namespace Diaco.UI.Reports
     public struct AwardMyNetwork
     {
         public string timeRemaining;
-        public short awardGem;
-        public short awardCoin;
-        public short recivedawardGem;
-        public short recivedawardCoin;
-        public short totalinvitedPlayer;
+        public string awardGem;
+        public string awardCoin;
+        public string recivedawardGem;
+        public string recivedawardCoin;
+        public string totalinvitedPlayer;
     }
     [Serializable]
     public struct PlayerInvited

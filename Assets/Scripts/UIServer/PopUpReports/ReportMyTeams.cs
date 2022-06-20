@@ -41,7 +41,8 @@ namespace Diaco.UI.Reports
                     server.ImageGameType.LoadImage(myTeams.createdTeams[i].avatar),
                      myTeams.createdTeams[i].teamName,
                      myTeams.createdTeams[i].capacityTeam,
-                     myTeams.createdTeams[i].cost,
+                     myTeams.createdTeams[i].cost.ToString(),
+                     myTeams.createdTeams[i].costType,
                      () => { Debug.Log("Show Info Team Created"); });
                 listCreateTeams.Add(card);
                     
@@ -63,10 +64,10 @@ namespace Diaco.UI.Reports
     public struct Award
     {
         public string timeRemaining;
-        public short awardGem;
-        public short awardCoin;
-        public short totalawardGem;
-        public short totalawardCoin;
+        public string awardGem;
+        public string awardCoin;
+        public string totalawardGem;
+        public string totalawardCoin;
     }
     [Serializable]
     public struct CreatedTeam
@@ -74,7 +75,9 @@ namespace Diaco.UI.Reports
         public string avatar;
         public string teamName;
         public string capacityTeam;
+        public short costType;
         public short cost;
+       
     }
     [Serializable]
     public struct MyTeamsData
