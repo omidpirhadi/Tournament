@@ -46,12 +46,12 @@ namespace Diaco.SelectFriendForMatchs
                     friends[i].userName,
                     friends[i].cup.ToString(), 
                     () => {
-                        if(game ==  _GameLobby.Soccer)
+                        if(navigationUI.GameLobby ==  _GameLobby.Soccer)
                         {
                             Server.RequestPlayGameWithFriend(card.Username.text, 0, (short)navigationUI.SubGame);
                             DisableRequestButtonAfterRequest();
                         }
-                        else
+                        else if (navigationUI.GameLobby == _GameLobby.Billiard)
                         {
                             Server.RequestPlayGameWithFriend(card.Username.text, 1, (short)navigationUI.SubGame);
                             DisableRequestButtonAfterRequest();

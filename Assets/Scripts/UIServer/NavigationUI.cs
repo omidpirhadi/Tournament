@@ -279,7 +279,7 @@ public class NavigationUI : MonoBehaviour
     {
         if (lobby == "soccer")
             GameLobby = _GameLobby.Soccer;
-        else
+        else if (lobby == "billiard")
             GameLobby = _GameLobby.Billiard;
 
     }
