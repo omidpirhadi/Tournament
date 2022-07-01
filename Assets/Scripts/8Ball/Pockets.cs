@@ -91,7 +91,7 @@ namespace Diaco.EightBall.Pockets
                 // Debug.Log("kkkk");
             }
         }
-        private void OnMouseDown()
+        public void PocketClick()
         {
             if (Selectable)
             {

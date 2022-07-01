@@ -24,8 +24,8 @@ namespace Diaco.SoccerStar.CustomTypes
         public PlayerInfo playerOne;
         public PlayerInfo playerTwo;
         public List<MarbleMovementData> positions;
-        public int totalTime;
-        public int turnTime;
+        public float totalTime;
+        public float turnTime;
         public int ownerTurn;
         public int gameTime;
         public string winner;

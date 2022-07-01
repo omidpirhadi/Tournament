@@ -143,7 +143,7 @@ namespace Diaco.HTTPBody
         public int costType;//0 cup 1 coin 2gem
         public int cost;
         public string avatar;
-        public int capacity;
+        public string capacity;
         public string from;
         public List<FriendBody> members;
        // public List<AwardName> awardsname;

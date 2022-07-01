@@ -1438,6 +1438,11 @@ public class ServerUI : MonoBehaviour
         socket.Emit("getSticker");
         Debug.Log("Emit_getSticker");
     }
+    public void  Emit_CurrncyButton(string c)
+    {
+        socket.Emit("currency-dialog", c);
+        Debug.Log("currency-dialog:"+c);
+    }
     #endregion
     #region Function
 

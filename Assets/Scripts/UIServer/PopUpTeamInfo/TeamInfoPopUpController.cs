@@ -244,7 +244,7 @@ namespace Diaco.UI.TeamInfo
             }
 
             Cost.text = teamInfos.cost.ToString();
-            Capacity.text = teamInfos.capacity.ToString();
+            Capacity.text = teamInfos.capacity;
 
             if(teamInfos.mode == 0)
             {

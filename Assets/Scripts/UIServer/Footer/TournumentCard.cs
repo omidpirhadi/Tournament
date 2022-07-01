@@ -28,6 +28,12 @@ namespace Diaco.UI.TournumentCard
             Type = type;
             Name.text = name;
             CalculateTime(time);
+           
+        }
+        public void OnEnable()
+        {
+            // Set("id:test0", "Classic", 100, "ff"); for test
+            btn_tournament = GetComponent<Button>();
             btn_tournament.onClick.AddListener(() => {
                 if (H < 0.1f && M < 0.1 && S < 0.1f)
                 {
@@ -37,21 +43,17 @@ namespace Diaco.UI.TournumentCard
                 }
                 else
                 {
-                    if (Type == "competition" )
+                    if (Type == "competition")
                     {
                         server.RequestCompetitionInfo(Id);
                     }
-                    else if(Type==  "league")
+                    else if (Type == "league")
                     {
                         server.GetLeagueInfo(Id);
                     }
                 }
-                
+
             });
-        }
-        public void OnEnable()
-        {
-           // Set("id:test0", "Classic", 100, "ff"); for test
         }
         public void OnDisable()
         {

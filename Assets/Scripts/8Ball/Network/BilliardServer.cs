@@ -569,7 +569,8 @@ namespace Diaco.EightBall.Server
         }
         public void Emit_LeftGame()
         {
-            socket.Emit("left-game");
+           socket.Emit("left-game");
+            Debug.Log("Left game");
             //CloseConnection();
 
         }
@@ -704,7 +705,7 @@ namespace Diaco.EightBall.Server
                     initializTurn(data);
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
-                EnableCoolDown(Side.Left, data.turnTime, 0);
+                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
 
                 //  Debug.Log("TimeAndTurnOnwer");
             }
@@ -720,7 +721,7 @@ namespace Diaco.EightBall.Server
                 }
 
 
-                EnableCoolDown(Side.Right, data.turnTime, 0);
+                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
 
                 CheckEnable8BallRightInOtherClient();
 
@@ -814,7 +815,7 @@ namespace Diaco.EightBall.Server
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
 
-                EnableCoolDown(Side.Left, data.turnTime, 0);
+                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
 
                 //  Debug.Log("TimeAndTurnOnwer");
             }
@@ -828,7 +829,7 @@ namespace Diaco.EightBall.Server
                 {
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
-                EnableCoolDown(Side.Right, data.turnTime, 0);
+                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
 
 
                 CheckEnable8BallRightInOtherClient();
@@ -1755,10 +1756,24 @@ namespace Diaco.EightBall.Server
         }
 
 
-        private void EnableCoolDown(Diaco.EightBall.Structs.Side side, int Time, int totaltime)
+        private void EnableCoolDown(Diaco.EightBall.Structs.Side side, float Time, float totaltime)
         {
-            PlayerCoolDowns[0].fillAmount = 1;
-            PlayerCoolDowns[1].fillAmount = 1;
+
+            float t = Time / totaltime;
+            if (side == Side.Left)
+            {
+                PlayerCoolDowns[1].fillAmount = 1.0f;
+                PlayerCoolDowns[0].fillAmount = t;
+                Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
+            }
+            else if (side == Side.Right)
+            {
+                PlayerCoolDowns[0].fillAmount = 1.0f;
+                PlayerCoolDowns[1].fillAmount = t;
+                Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
+            }
+            
+            
             Timer = Time / 1000;
 
             // float fill = Time / totaltime;

@@ -124,8 +124,8 @@ namespace Diaco.EightBall.Structs
         public string gid;
         public PlayerInfo playerOne;
         public PlayerInfo playerTwo;
-        public int totalTime;
-        public int turnTime;
+        public float totalTime;
+        public float turnTime;
         public int ownerTurn;
         public int pitok;//0 no pitok
         public bool pitokCueBall;

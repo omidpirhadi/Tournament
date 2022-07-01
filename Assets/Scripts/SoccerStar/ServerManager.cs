@@ -1169,12 +1169,12 @@ namespace Diaco.SoccerStar.Server
 
                 if (gameData.ownerTurn == Side)
                 {
-                    // IndicatorTime[0].fillAmount = fill; 
+                     IndicatorTime[0].fillAmount = fill; 
                     StartInvokeTimerLeft();
                 }
                 else
                 {
-                    // IndicatorTime[1].fillAmount = fill;
+                     IndicatorTime[1].fillAmount = fill;
                     StartInvokeTimerRight();
                 }
 
