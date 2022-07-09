@@ -22,6 +22,7 @@ namespace Diaco.SoccerStar.Server
         public SoundEffectControll soundeffectcontrollLayer1;
         public SoundEffectControll soundeffectcontrollLayer2;
         public Transform ParentForSpawn;
+        Diaco.Setting.GeneralSetting setting;
         public bool MarblesInMove = false;
         public bool InRecordMode = false;
         public float TimeStep = 0.0f;
@@ -244,7 +245,7 @@ namespace Diaco.SoccerStar.Server
         public void ConnectToServer()
         {
 
-            var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+            setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
             var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
             var namespaceserver = FindObjectOfType<GameLuncher>().NamespaceServer;
             
@@ -632,8 +633,8 @@ namespace Diaco.SoccerStar.Server
                         Turn = true;
                         EnablerRingEffect = true;
                         soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
-                        Handheld.Vibrate();                                  //  Debug.Log("TRUN1");
-                                                                             /// KinimaticMarblesAndBall(false);
+                        if (setting.Setting.vibration)
+                            Handheld.Vibrate();                              
                     }
                     else
                     {
@@ -670,7 +671,8 @@ namespace Diaco.SoccerStar.Server
 
                         EnablerRingEffect = true;
                         soundeffectcontrollLayer2.PlaySoundSoccer(0);/////  play turn sound
-                        Handheld.Vibrate();
+                        if (setting.Setting.vibration)
+                            Handheld.Vibrate();
                         ///  Debug.Log("TRUN2");
                         //  KinimaticMarblesAndBall(false);
                     }

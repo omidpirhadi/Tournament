@@ -478,7 +478,7 @@ namespace Diaco.SoccerStar.Marble
             var normal = collision.contacts[0].normal;
 
 
-
+           
             //  var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
 
             var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;

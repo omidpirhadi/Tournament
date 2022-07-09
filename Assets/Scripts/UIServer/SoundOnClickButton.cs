@@ -6,9 +6,11 @@ public class SoundOnClickButton : MonoBehaviour
 {
     public SoundEffectControll soundEffectControll;
     private Button btn;
+   
     void Awake()
     {
         btn = GetComponent<Button>();
+
     }
     void OnEnable()
     {

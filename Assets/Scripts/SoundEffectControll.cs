@@ -7,6 +7,7 @@ public class SoundEffectControll : MonoBehaviour
     public bool Mute = false;
     public List<AudioClip> audios;
    [SerializeField] private AudioSource audioSource;
+    private Diaco.Setting.GeneralSetting setting;
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -15,6 +16,8 @@ public class SoundEffectControll : MonoBehaviour
     {
        // audios = new List<AudioClip>();
         audioSource = GetComponent<AudioSource>();
+        setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        Mute = setting.Setting.Sound;
     }
     
    /* void OnCollisionEnter(Collision obj)
@@ -28,25 +31,34 @@ public class SoundEffectControll : MonoBehaviour
 
     public void PlaySound(int index)
     {
-        if (audioSource)
+        if (!Mute)
         {
-            audioSource.clip = audios[index];
-            audioSource.Play();
+            if (audioSource)
+            {
+                audioSource.clip = audios[index];
+                audioSource.Play();
+            }
         }
     }
     public void PlaySoundSoccer(int index)
     {
-        if (audioSource)
+        if (!Mute)
         {
-            audioSource.clip = audios[index];
-            audioSource.Play();
+            if (audioSource)
+            {
+                audioSource.clip = audios[index];
+                audioSource.Play();
+            }
         }
     }
     public void PlaySoundMenu(int index)
     {
-        if (audioSource == null)
-            audioSource = GetComponent<AudioSource>();
-        audioSource.clip = audios[index];
-        audioSource.Play();
+        if (!Mute)
+        {
+            if (audioSource == null)
+                audioSource = GetComponent<AudioSource>();
+            audioSource.clip = audios[index];
+            audioSource.Play();
+        }
     }
 }

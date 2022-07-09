@@ -243,28 +243,12 @@ namespace Diaco.EightBall.CueControllers
                 }
                 EnergyCue.Show(true);
                 AimControllerUI.Show(true);
-                // ActiveAimSystem(true);
-                /// CUEWoodSetPosition(LastTouchPosition);
-                //  Debug.Log("TRUEEEEE");
-                /*    if (CheckMoveBall() == true)
-                    {
-                        waitForAim = true;
-                    }
-                    else
-                    {
-                        EnergyCue.Show(true);
-                        AimControllerUI.Show(true);
-
-                        if (Server.Pitok > 0)
-                        {
-                            CheckPitok();
-
-                        }
-                        soundeffectControll.PlaySound(1);///play sound change turn
-                        Handheld.Vibrate();
-                    }*/
+                soundeffectControll.PlaySound(1);///play sound change turn
+                if (generalSetting.Setting.vibration)
+                    Handheld.Vibrate();
                 last_value_cue_energy = 0;
                 count_imapct = 0;
+
             }
             else if (turn == false)
             {

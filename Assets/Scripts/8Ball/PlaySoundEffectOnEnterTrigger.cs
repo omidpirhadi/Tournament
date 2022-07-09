@@ -7,12 +7,13 @@ public class PlaySoundEffectOnEnterTrigger : MonoBehaviour
     public bool Mute = false;
     public AudioClip clips;
     private new AudioSource audio;
-
+    private Diaco.Setting.GeneralSetting setting;
     void Start()
     {
 
         audio = GetComponent<AudioSource>();
-
+        setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        Mute = setting.Setting.Sound;
     }
 
 

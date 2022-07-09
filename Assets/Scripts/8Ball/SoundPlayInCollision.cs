@@ -12,12 +12,15 @@ public class SoundPlayInCollision : MonoBehaviour
     private new Rigidbody rigidbody;
     private new AudioSource audio;
     private Vector3 LastPosition;
+
+    private Diaco.Setting.GeneralSetting setting;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
-
+        setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         LastPosition = transform.position;
+        Mute = setting.Setting.Sound;
     }
     private void FixedUpdate()
     {
