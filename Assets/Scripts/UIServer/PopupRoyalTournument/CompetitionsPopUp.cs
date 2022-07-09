@@ -11,7 +11,7 @@ namespace Diaco.UI.RoyalTournument
     public class CompetitionsPopUp : MonoBehaviour
     {
         public ServerUI server;
-        
+        public NavigationUI ui;
         public Button btn_Champion;
         public MatchCard ChampionCard;
 
@@ -23,6 +23,7 @@ namespace Diaco.UI.RoyalTournument
 
         public RectTransform Contact;
 
+        public Button Exit_button;
         //public UnityEngine.Events.UnityEvent OnEnableAction;
         [SerializeField] private List<GameObject> ListMatchCard;
 
@@ -41,7 +42,10 @@ namespace Diaco.UI.RoyalTournument
             btn_Royal.onClick.AddListener(() => {
                 server.RequestGetMatch("royal");
             });
-
+            Exit_button.onClick.AddListener(() => {
+                ui.SwitchUI(ui.CurrentPage);
+                Debug.Log(ui.CurrentPage);
+            });
             server.RequestGetMatch("champion");////For Load Defult Page
             /// OnEnableAction.Invoke();
         }

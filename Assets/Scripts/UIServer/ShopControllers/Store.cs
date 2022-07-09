@@ -22,7 +22,10 @@ namespace Diaco.Store
         public List<BuyBoxElement> BuyBoxCoins;
         [SerializeField]
         public List<BuyBoxElement> BuyBoxGems;
-       
+        private float H = 0;
+        private float M = 0;
+        private float S = 0;
+
         private void OnEnable()
         {
             Server.OnShopLoaded += Server_OnShopLoaded;
@@ -59,6 +62,7 @@ namespace Diaco.Store
 
             var imageawardleft = ConvertImageToSprite(data.awardleftBox.image);
             AwardBoxLeft.Set(data.awardleftBox.id, imageawardleft, data.awardleftBox.remainderTime);
+            CalculateTime(System.Convert.ToInt32(data.awardleftBox.remainderTime));
             yield return new WaitForSeconds(0.1f);
 
             var imageawardright = ConvertImageToSprite(data.awardrightBox.image);
@@ -111,6 +115,62 @@ namespace Diaco.Store
                 BuyBoxGems[i].RemoveListener();
             }
         }
+        private void CalculateTime(int time)
+        {
+            H = 0;
+            M = 0;
+            S = 0;
+            CancelInvoke("RunTimer");
+
+
+            H = (float)Mathf.Floor(time / 3600);
+            M = (float)Mathf.Floor(time / 60 % 60);
+            S = (float)Mathf.Floor(time % 60);
+            InvokeRepeating("RunTimer", 0, 1.0f);
+        }
+        /// <summary>
+        /// INVOKE IN Calculate
+        /// </summary>
+        private void RunTimer()
+        {
+            S--;
+            if (S < 0)
+            {
+                if (M > 0 || H > 0)
+                {
+                    S = 59;
+                    M--;
+                    if (M < 0)
+                    {
+                        if (H > 0)
+                        {
+                            M = 59;
+                            H--;
+                        }
+                        else
+                        {
+                            M = 0;
+                        }
+                    }
+
+                }
+                else
+                {
+                    S = 0;
+                }
+            }
+
+
+            AwardBoxLeft.RemainderTime.text = H + ":" + M + ":" + S;
+
+            if (S == 0 && M == 0 && H == 0)
+            {
+                CancelInvoke("RunTimer");
+
+
+            }
+        }
+
     }
     [Serializable]
     public struct SpecialBox
@@ -142,6 +202,7 @@ namespace Diaco.Store
         {
             btnSubmit.onClick.RemoveAllListeners();
         }
+ 
     }
     [Serializable]
     public struct AwardElement
@@ -163,6 +224,7 @@ namespace Diaco.Store
             Id = id; 
             backGround.sprite = backimage;
             RemainderTime.text = remainderTime;
+
             btnSubmit.onClick.AddListener(onclick);
         }
         public void Set2(string id, Sprite backimage, float current , float max)
@@ -186,6 +248,8 @@ namespace Diaco.Store
         {
             btnSubmit.onClick.RemoveAllListeners();
         }
+ 
+      
     }
     [Serializable]
     public struct BuyBoxElement

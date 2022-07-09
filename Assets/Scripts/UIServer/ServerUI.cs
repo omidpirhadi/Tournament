@@ -1347,6 +1347,11 @@ public class ServerUI : MonoBehaviour
         socket.Emit("card-dialog", id);
         Debug.Log("Card Dialog :" + id);
     }
+    public void Emit_ShopT2Button(string name, int price )
+    {
+        socket.Emit("shop-t2", name, price);
+        Debug.Log("Price Of Prodoct :" + name +":"+ price);
+    }
     #endregion
     /// <summary>
     /// 
