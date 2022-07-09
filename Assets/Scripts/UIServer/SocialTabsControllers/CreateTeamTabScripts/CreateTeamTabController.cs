@@ -44,7 +44,9 @@ namespace Diaco.Social
         public List<Toggle> TicketsIndicator;
         public List<string> FriendsAdded;
         public string BadgeID = "";
-
+        private float H;
+        private float M;
+        private float S;
         public void Awake()
         {
            
@@ -173,7 +175,7 @@ namespace Diaco.Social
         {
             soccerLeaguePrecent_text.text = data.soccerAward;
             billiardLeaguePrecent_text.text = data.billiardAward;
-            ReminingTimeToCreateLeague_text.text = data.remainingTime;
+            CalculateTime(Convert.ToInt32(data.remainingTime));
             ///statusLeague =>  0 = firndly 1 = General 2 = mix
             if (data.statusLeague == 0)
             {
@@ -265,6 +267,60 @@ namespace Diaco.Social
                 Fill = false;
             }*/
             return Fill;
+        }
+        public void CalculateTime(float time)
+        {
+            H = 0;
+            M = 0;
+            S = 0;
+            CancelInvoke("RunTimer");
+
+
+            H = (float)Math.Floor(time / 3600);
+            M = (float)Math.Floor(time / 60 % 60);
+            S = (float)Math.Floor(time % 60);
+            InvokeRepeating("RunTimer", 0, 1.0f);
+        }
+        /// <summary>
+        /// INVOKE IN Calculate
+        /// </summary>
+        public void RunTimer()
+        {
+            S--;
+            if (S < 0)
+            {
+                if (M > 0 || H > 0)
+                {
+                    S = 59;
+                    M--;
+                    if (M < 0)
+                    {
+                        if (H > 0)
+                        {
+                            M = 59;
+                            H--;
+                        }
+                        else
+                        {
+                            M = 0;
+                        }
+                    }
+
+                }
+                else
+                {
+                    S = 0;
+                }
+            }
+
+
+            ReminingTimeToCreateLeague_text.text = H + ":" + M + ":" + S;
+            if (S == 0 && M == 0 && H == 0)
+            {
+                CancelInvoke("RunTimer");
+
+
+            }
         }
     }
     [Serializable]
