@@ -32,6 +32,9 @@ public class ServerUI : MonoBehaviour
     private bool loadedpage = false;
     private int intergation = 0;
 
+    public float NormalPing = 1.0f;
+    private float Ping = 0.0f;
+    private Diaco.Notification.Notification_Dialog_Manager Notification_Dialog;
     public void Update()
     {
 
@@ -46,7 +49,7 @@ public class ServerUI : MonoBehaviour
     {
         Luncher = FindObjectOfType<GameLuncher>();
         var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
-        var Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
+        Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
         var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
         navigationUi = FindObjectOfType<NavigationUI>();
 
@@ -71,14 +74,34 @@ public class ServerUI : MonoBehaviour
         {
 
             intergation = 0;
-            socket.Emit("authToken", ReadToken("token"));
+            socket.Emit("authToken", ReadToken("token"), setting.Version);
             Emit_Setting();
+            CancelInvoke("Emit_Ping");
+            Ping = 0.0f;
+            Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = Ping.ToString() }, false);
+            InvokeRepeating("Emit_Ping", 3.0f, 1.0f);////For Get ping in sec 
             navigationUi.StopLoadingPage();
 
             Debug.Log($"<color=blue><b>Connection And ReadToken</b></color>");
         });
-        socket.On("reconnect", (s, p, m) => { Debug.Log("reconnect"); });
-        socket.On("reconnecting", (s, p, m) => { Debug.Log("reconnecting"); });
+        socket.On("pong2", (s, p, m) => {
+
+            Ping = Time.realtimeSinceStartup - Ping;
+            if (Ping > NormalPing)
+                Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context ="اتصال اینترنت شما ضعیف است." }, true);
+            else
+                Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = Ping.ToString() }, false);
+          //  Debug.Log("Ping is :" + Ping);
+        });
+        socket.On("reconnect", (s, p, m) => {
+            Ping = 0;
+            CancelInvoke("Emit_Ping");
+
+            Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = "اتصال اینترنت خود را بررسی کنید." }, true);
+            Debug.Log("reconnect");
+
+        });
+       // socket.On("reconnecting", (s, p, m) => { Debug.Log("reconnecting"); });
         socket.On("wrong-token", (s, p, m) =>
         {
             Login.SetActive(true);
@@ -86,6 +109,8 @@ public class ServerUI : MonoBehaviour
             SplashScreen.SetActive(false);
             /*DeleteToken("token");
             StartCoroutine(Luncher.RestartGame());*/
+            CloseConnectionUIToServer(); 
+
             Debug.Log($"<color=red><b>Wrong Token</b></color>");
         });
         socket.On("loginError", (S, p, m) =>
@@ -124,49 +149,52 @@ public class ServerUI : MonoBehaviour
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
-           
-            if (BODY.inGame.id != "" && intergation == 0)
+
+
+            if (navigationUi.CurrentPage != "findplayer")
             {
-               /// Debug.Log("InGame");
-                if (BODY.inGame.gameType == "soccer")
+                if (BODY.inGame.id != "" && intergation == 0)
                 {
-                    //navigationUi.GetComponent<SceneManagers>().loadlevel("SoccerGame");
-                    Debug.Log("Soccer In Game ");
-                    if (BODY.inGame.namespaceServer == "_record")
+                    /// Debug.Log("InGame");
+                    if (BODY.inGame.gameType == "soccer")
                     {
-                        Luncher.SetNameSpaceServer(2, BODY.inGame.namespaceServer);
-                        Luncher.SwitchScene(2);
+                        //navigationUi.GetComponent<SceneManagers>().loadlevel("SoccerGame");
+                        Debug.Log("Soccer In Game ");
+                        if (BODY.inGame.namespaceServer == "_record")
+                        {
+                            Luncher.SetNameSpaceServer(2, BODY.inGame.namespaceServer);
+                            Luncher.SwitchScene(2);
+
+                        }
+                        else
+                        {
+                            Luncher.SetNameSpaceServer(0, BODY.inGame.namespaceServer);
+                            Luncher.SwitchScene(0);
+
+                        }
 
                     }
-                    else
+                    else if (BODY.inGame.gameType == "billiard")
                     {
-                        Luncher.SetNameSpaceServer(0, BODY.inGame.namespaceServer);
-                        Luncher.SwitchScene(0);
-
+                        // navigationUi.GetComponent<SceneManagers>().loadlevel("8ballgame");
+                        Debug.Log("Billiard In Game");
+                        if (BODY.inGame.namespaceServer == "_record")
+                        {
+                            Luncher.SetNameSpaceServer(3, BODY.inGame.namespaceServer);
+                            Luncher.SwitchScene(3);
+                            // Debug.Log("InGame!!!!!");
+                        }
+                        else
+                        {
+                            Luncher.SetNameSpaceServer(1, BODY.inGame.namespaceServer);
+                            Luncher.SwitchScene(1);
+                            //  Debug.Log("InGame@@@@@");
+                        }
                     }
-
+                    intergation = 1;
+                    return;
                 }
-                else if (BODY.inGame.gameType == "billiard")
-                {
-                    // navigationUi.GetComponent<SceneManagers>().loadlevel("8ballgame");
-                    Debug.Log("Billiard In Game");
-                    if (BODY.inGame.namespaceServer == "_record")
-                    {
-                        Luncher.SetNameSpaceServer(3, BODY.inGame.namespaceServer);
-                        Luncher.SwitchScene(3);
-                       // Debug.Log("InGame!!!!!");
-                    }
-                    else
-                    {
-                        Luncher.SetNameSpaceServer(1, BODY.inGame.namespaceServer);
-                        Luncher.SwitchScene(1);
-                      //  Debug.Log("InGame@@@@@");
-                    }
-                }
-                intergation = 1;
-                return;
             }
-
 
 
 
@@ -978,7 +1006,13 @@ public class ServerUI : MonoBehaviour
         });
         socket.On("disconnect", (s, p, m) =>
         {
-        Debug.Log("disConnection");
+
+            Ping = 0.0f;
+            CancelInvoke("Emit_Ping");
+
+            Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = "اتصال اینترنت خود را بررسی کنید." }, true);
+
+            Debug.Log("disConnection");
         });
 
     }
@@ -1009,6 +1043,15 @@ public class ServerUI : MonoBehaviour
     #endregion
     #region EmitServer
 
+    /// <summary>
+    /// Run in ON Connet invoke
+    /// </summary>
+    public void Emit_Ping()
+    {
+        Ping = Time.realtimeSinceStartup;
+        socket.Emit("ping2");
+        //Debug.Log("Ping");
+    }
     public void  Emit_DialogAndNotification(string eventName ="shop")
     {
         socket.Emit(eventName);
@@ -1469,6 +1512,8 @@ public class ServerUI : MonoBehaviour
         socket.Manager.Close();
         socket.Disconnect();
         navigationUi.OnChangePage -= ServerUI_OnChangePage;
+        CancelInvoke("Emit_Ping");
+        Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = "" }, false);
         Debug.Log("MainMenuCloseConnection");
 
     }

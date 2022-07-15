@@ -9,7 +9,7 @@ namespace Diaco.SelectFriendForMatchs
     public class SelectFriendForMatch : MonoBehaviour
     {
        
-        public _GameLobby game;
+       // public _GameLobby game;
         public ServerUI Server;
         public RectTransform Content;
         public NavigationUI navigationUI;
@@ -38,30 +38,34 @@ namespace Diaco.SelectFriendForMatchs
         {
             for (int i = 0; i < friends.Count; i++)
             {
-               
-                var card = Instantiate(CardFriend, Content);
-                var image = Server.AvatarContainer.LoadImage(friends[i].avatar);
-                card.SetCard(
-                    image,
-                    friends[i].userName,
-                    friends[i].cup.ToString(), 
-                    () => {
-                        if(navigationUI.GameLobby ==  _GameLobby.Soccer)
+                if (friends[i].matchBlock == false)
+                {
+                    var card = Instantiate(CardFriend, Content);
+                    var image = Server.AvatarContainer.LoadImage(friends[i].avatar);
+                    card.SetCard(
+                        image,
+                        friends[i].userName,
+                        friends[i].cup.ToString(),
+                        () =>
                         {
-                            Server.RequestPlayGameWithFriend(card.Username.text, 0, (short)navigationUI.SubGame);
-                            DisableRequestButtonAfterRequest();
-                        }
-                        else if (navigationUI.GameLobby == _GameLobby.Billiard)
-                        {
-                            Server.RequestPlayGameWithFriend(card.Username.text, 1, (short)navigationUI.SubGame);
-                            DisableRequestButtonAfterRequest();
-                        }
+                            if (navigationUI.GameLobby == _GameLobby.Soccer)
+                            {
+                                Server.RequestPlayGameWithFriend(card.Username.text, 0, (short)navigationUI.SubGame);
+                                DisableRequestButtonAfterRequest();
+                            }
+                            else if (navigationUI.GameLobby == _GameLobby.Billiard)
+                            {
+                                Server.RequestPlayGameWithFriend(card.Username.text, 1, (short)navigationUI.SubGame);
+                                DisableRequestButtonAfterRequest();
+                            }
 
-                    });
-                    
+                        });
+
+
+                    CardFriendList.Add(card);
+                    // Debug.Log(friends[i].userName);
+                }
                
-                CardFriendList.Add(card);
-               // Debug.Log(friends[i].userName);
             }
         }
         private void DisableRequestButtonAfterRequest()

@@ -14,13 +14,16 @@ namespace Diaco.Setting
 
         [SerializeField] public string ServerAddress;
         [SerializeField] public string LoginAPI;
-        [SerializeField]public  GameSettingData Setting;
+        [SerializeField] public GameSettingData Setting;
+        [SerializeField] public string Version;
+        [SerializeField] public string Description;
+
         private void Awake()
         {
 
             if (ExistSettingFile("setting"))
             {
-             //   GameSetting = new GameSettingData();
+                //   GameSetting = new GameSettingData();
                 Setting = LoadSetting("setting");
             }
             else
@@ -75,8 +78,8 @@ namespace Diaco.Setting
         public void SaveSetting()
         {
             var FileName = "setting";
-        
-           
+
+
             var set_json = JsonUtility.ToJson(Setting);
             if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
             {
@@ -84,21 +87,21 @@ namespace Diaco.Setting
             }
             File.WriteAllText(Application.persistentDataPath + "//" + FileName + ".json", set_json);
             Handler_OnChangeSetting();
-       
+
 
             Debug.Log("Setting Saved!");
         }
 
 
         private Action settingchange;
-        public event  Action OnChangeSetting
+        public event Action OnChangeSetting
         {
             add { settingchange += value; }
             remove { settingchange -= value; }
         }
         protected void Handler_OnChangeSetting()
         {
-            if(settingchange !=null)
+            if (settingchange != null)
             {
                 settingchange();
 
@@ -106,9 +109,9 @@ namespace Diaco.Setting
         }
     }
     [Flags]
-    public enum PositionElemenInUi:short { Left = 0, Right = 1, Up = 3, Bottom = 4 };
+    public enum PositionElemenInUi : short { Left = 0, Right = 1, Up = 3, Bottom = 4 };
     [Flags]
-    public enum SpeedElemenInUi:short { Slow = 0, Normal = 1, Fast = 2 };
+    public enum SpeedElemenInUi : short { Slow = 0, Normal = 1, Fast = 2 };
     [Serializable]
     public struct GameSettingData
     {
@@ -124,7 +127,7 @@ namespace Diaco.Setting
     [Serializable]
     public struct GameSettingDataServer
     {
- 
+
         public bool status;
         public bool reciveFriendRequest;
         public bool reciveMatchFriendRequest;
@@ -135,7 +138,7 @@ namespace Diaco.Setting
     public struct BilliardSettingData
     {
         public bool accuracyAimShow;
-       // public PositionElemenInUi powerWoodCueShow;
+        // public PositionElemenInUi powerWoodCueShow;
         //public PositionElemenInUi powerWoodCuePosition;
         public SpeedElemenInUi speedRotateAimCue;
     }

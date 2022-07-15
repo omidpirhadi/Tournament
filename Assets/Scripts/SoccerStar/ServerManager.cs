@@ -263,7 +263,7 @@ namespace Diaco.SoccerStar.Server
             socket = socket_manager["/soccer" + namespaceserver];
             socket.On("connect", (s, p, a) =>
             {
-                socket.Emit("authToken", ReadToken("token"));
+                socket.Emit("authToken", ReadToken("token"),setting.Version);
                 BadConnectionShow(false);
                 Time.timeScale = 1;
                 print("Connected");

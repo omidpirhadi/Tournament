@@ -9,8 +9,9 @@ public class StaticShopButton : MonoBehaviour
     public int Price;
     private ServerUI server;
     private Button btn;
-    void Start()
+    void OnEnable()
     {
+        server = FindObjectOfType<ServerUI>();
         btn = GetComponent<Button>();
         btn.onClick.AddListener(() => {
 
@@ -18,7 +19,10 @@ public class StaticShopButton : MonoBehaviour
            
         });
     }
-
+    void OnDisable()
+    {
+        btn.onClick.RemoveAllListeners();
+    }
 
 }
 

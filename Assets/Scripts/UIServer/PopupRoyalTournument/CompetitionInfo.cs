@@ -25,6 +25,8 @@ namespace Diaco.UI.RoyalTournument
         public Button btn_Award;
         public Button btn_Join;
         public Button btn_Leave;
+
+        public Button btn_Exit;
         private float H = 0;
         private float M = 0;
         private float S = 0;
@@ -34,6 +36,8 @@ namespace Diaco.UI.RoyalTournument
         {
             ListPlayer = new List<GameObject>();
             server = FindObjectOfType<ServerUI>();
+            var ui = FindObjectOfType<NavigationUI>();
+
             server.OnCompetitionInfo += Server_OnCompetitionInfo;
             btn_Leave.onClick.AddListener(() => { server.RequestCompetitionCommand(tournumentId, 0); });
             btn_Join.onClick.AddListener(() => {server.RequestCompetitionCommand(tournumentId,1); });
@@ -42,7 +46,17 @@ namespace Diaco.UI.RoyalTournument
                 server.RequestCompetitionCommand(tournumentId,2);
 
             });
-            
+            btn_Exit.onClick.AddListener(() =>
+            {
+                if (ui.CurrentPage == "selectgame")
+                {
+                    ui.SwitchUI("selectgame");
+                }
+                else
+                {
+                    ui.ShowPopUp("mosabeghat");
+                }
+            });
         }
 
         private void Server_OnCompetitionInfo(CompetitionInfoData data)

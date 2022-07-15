@@ -17,6 +17,7 @@ namespace Diaco.Notification
         public NotificationPallet notificationPallet;
         public DialogPallet dialogPallet;
         public TextPallet textPallet;
+        public InternetConnectionPallet internetConnectionPallet;
         public void init_Notification_menu()
         {
 
@@ -36,7 +37,12 @@ namespace Diaco.Notification
             ClearEvent();
             server_billiard.OnNotification += Server_OnNotification;
         }
+        public void InternetPingDialog(Notification_Dialog_Body body, bool show)
+        {
 
+            internetConnectionPallet.SetInternetDialog(body, show);
+
+        }
         private void Server_OnNotification(Notification_Dialog_Body body)
         {
 
@@ -52,6 +58,7 @@ namespace Diaco.Notification
             {
                 textPallet.SetTextPallet(body);
             }
+
         }
 
         private void ClearEvent()
@@ -86,6 +93,6 @@ namespace Diaco.Notification
         public string greenButtonText;
         
         public string redButtonText;
-
+       
     }
 }

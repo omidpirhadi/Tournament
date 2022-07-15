@@ -225,7 +225,9 @@ namespace Diaco.HTTPBody
         public int cup;
         public bool isOnline;
         public bool isBlock;
-        [Multiline]
+        public bool leagueBlock;
+        public bool matchBlock;
+        
         public string avatar;
     }
     [Serializable]

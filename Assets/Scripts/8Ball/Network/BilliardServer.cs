@@ -301,7 +301,7 @@ namespace Diaco.EightBall.Server
 
             socket.On("connect", (s, p, m) =>
             {
-                socket.Emit("authToken", ReadToken("token"));
+                socket.Emit("authToken", ReadToken("token"),setting.Version);
                 BadConnectionShow(false);
                 Time.timeScale = 2;
                 Debug.Log("Connection");

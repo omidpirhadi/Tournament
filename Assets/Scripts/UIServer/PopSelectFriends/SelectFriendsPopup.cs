@@ -48,12 +48,15 @@ namespace Diaco.Social
         {
             for (int i = 0; i < friends.Count; i++)
             {
-                var card = Instantiate(CardFriend, Content);
-                var image = Server.AvatarContainer.LoadImage(friends[i].avatar);
-                card.SetCard(image, friends[i].userName, friends[i].id, friends[i].cup.ToString());
-                card.SelectFriendPopController = this;
-                CardFriendList.Add(card);
-               // Debug.Log(friends[i].userName);
+                if (friends[i].leagueBlock == false)
+                {
+                    var card = Instantiate(CardFriend, Content);
+                    var image = Server.AvatarContainer.LoadImage(friends[i].avatar);
+                    card.SetCard(image, friends[i].userName, friends[i].id, friends[i].cup.ToString());
+                    card.SelectFriendPopController = this;
+                    CardFriendList.Add(card);
+                    // Debug.Log(friends[i].userName);
+                }
             }
             Debug.Log("FriendsListLoaded");
         }

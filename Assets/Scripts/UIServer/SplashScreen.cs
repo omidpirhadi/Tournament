@@ -11,10 +11,12 @@ public class SplashScreen : MonoBehaviour
     public GameObject loginPage;
     public Image Prograssbar;
     public Text CounterPrograssbar;
+    public Text VersionClient;
     private SoundEffectControll soundEffect;
     private IEnumerator Start()
     {
         soundEffect = GetComponent<SoundEffectControll>();
+        VersionClient.text = FindObjectOfType<Diaco.Setting.GeneralSetting>().Version;
         soundEffect.PlaySound(0);
         // CheckInternetConnection();
         if (Server.ExistTokenFile("token"))
