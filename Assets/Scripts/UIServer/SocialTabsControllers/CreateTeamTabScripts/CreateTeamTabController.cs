@@ -173,6 +173,7 @@ namespace Diaco.Social
         }
         public void Rules(RulesData data)
         {
+            
             soccerLeaguePrecent_text.text = data.soccerAward;
             billiardLeaguePrecent_text.text = data.billiardAward;
             CalculateTime(Convert.ToInt32(data.remainingTime));

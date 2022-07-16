@@ -112,9 +112,9 @@ namespace Diaco.SoccerStar.Marble
                 RotateMarble();
             if (IsRotateBall)
                 RotateBall();
-           // FixOverflowMovment();
+            // FixOverflowMovment();
 
-            
+         //   Debug.Log($"Speed{GetSpeed}, Object{this.name}");
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
             WallHit();
@@ -267,8 +267,8 @@ namespace Diaco.SoccerStar.Marble
                             
 
                             LastVelocity = GetVlocity;
-                           // GetComponent<SoundManagerMarble>().PlaySound()
-                            // Debug.Log("WallHit");
+                        // GetComponent<SoundManagerMarble>().PlaySound()
+                        Debug.Log("WallHit" + LastVelocity.magnitude);
                         }
                     }
                     // Debug.Log("swap test :" + hitwall.collider.name);
@@ -478,25 +478,31 @@ namespace Diaco.SoccerStar.Marble
             var normal = collision.contacts[0].normal;
 
 
-           
+
             //  var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
 
-            var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
-            rigidbody.velocity = (reflect2 * LastVelocity.magnitude) * bouncepower;
-          /*  if (LastVelocity.magnitude>TEST_Force)
+            if (LastVelocity.magnitude>0)
             {
                 var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
                 rigidbody.velocity = (reflect2 * LastVelocity.magnitude) * bouncepower;
-                Debug.Log("AAAAAA"+reflect2);
+               // Debug.Log(collision.impulse.magnitude + "  BounceMarble:  " + reflect2 + "Last :  " + LastVelocity.magnitude + "............." + this.name);
             }
-            else if(LastVelocity.magnitude < TEST_Force)
-            {
-                var reflect2 = Vector3.Reflect(collision.impulse, normal).normalized;
-                rigidbody.AddForce(reflect2 * collision.impulse.magnitude,ForceMode.Impulse);
-                Debug.Log("bbbB"+reflect2);
-            }*/
-           // var E = rigidbody.velocity.sqrMagnitude * 0.5f;
-            Debug.Log(collision.impulse.magnitude+"  BounceMarble:  " +reflect2+ "Last :  "+LastVelocity.magnitude);
+
+            /*  if (LastVelocity.magnitude>TEST_Force)
+              {
+                  var reflect2 = Vector3.Reflect(LastVelocity, normal).normalized;
+                  rigidbody.velocity = (reflect2 * LastVelocity.magnitude) * bouncepower;
+                  Debug.Log("AAAAAA"+reflect2);
+              }
+              else if(LastVelocity.magnitude < TEST_Force)
+              {
+                  var reflect2 = Vector3.Reflect(collision.impulse, normal).normalized;
+                  rigidbody.AddForce(reflect2 * collision.impulse.magnitude,ForceMode.Impulse);
+                  Debug.Log("bbbB"+reflect2);
+              }*/
+            // var E = rigidbody.velocity.sqrMagnitude * 0.5f;
+
+          
             /*  if (GetSpeed > ThresholdSleep)
               {
                   rigidbody.velocity = reflect2 * collision.relativeVelocity.magnitude;
@@ -671,4 +677,5 @@ namespace Diaco.SoccerStar.Marble
             }
         }
     }
+
 }

@@ -5,13 +5,16 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace Diaco.EightBall.Structs
 {
+    
+
+
     [Serializable]
     public struct PositionAndRotateBalls
     {
         [DataMember] public Vector2 CueBall;
         [DataMember] public Vector3 CueBall_R;
         ////   [DataMember] public bool CueBallInPocket;
-
+     
         [DataMember] public Vector2 Ball_1;
         [DataMember] public Vector3 Ball_1_R;
         //// [DataMember] public bool Ball_1InPocket;
