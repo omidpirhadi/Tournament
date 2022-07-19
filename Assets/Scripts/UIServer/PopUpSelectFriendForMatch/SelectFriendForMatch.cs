@@ -38,7 +38,7 @@ namespace Diaco.SelectFriendForMatchs
         {
             for (int i = 0; i < friends.Count; i++)
             {
-                if (friends[i].matchBlock == false)
+                if (friends[i].matchBlock == true)
                 {
                     var card = Instantiate(CardFriend, Content);
                     var image = Server.AvatarContainer.LoadImage(friends[i].avatar);

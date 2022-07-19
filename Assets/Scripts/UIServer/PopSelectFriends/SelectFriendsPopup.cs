@@ -48,7 +48,7 @@ namespace Diaco.Social
         {
             for (int i = 0; i < friends.Count; i++)
             {
-                if (friends[i].leagueBlock == false)
+                if (friends[i].leagueBlock == true)
                 {
                     var card = Instantiate(CardFriend, Content);
                     var image = Server.AvatarContainer.LoadImage(friends[i].avatar);
