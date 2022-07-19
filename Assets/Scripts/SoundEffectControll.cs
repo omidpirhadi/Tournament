@@ -17,21 +17,26 @@ public class SoundEffectControll : MonoBehaviour
        // audios = new List<AudioClip>();
         audioSource = GetComponent<AudioSource>();
         setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        setting.OnChangeSetting += Setting_OnChangeSetting;
         Mute = setting.Setting.Sound;
     }
     
-   /* void OnCollisionEnter(Collision obj)
+    private void Setting_OnChangeSetting()
     {
-        if (obj.gameObject.tag == "marble" && Mute)
-        {
-            //  audioSource.clip = audios[0];
-            // audioSource.Play();
-        }
-    }*/
+        Mute = setting.Setting.Sound;
+    }
+    /* void OnCollisionEnter(Collision obj)
+     {
+         if (obj.gameObject.tag == "marble" && Mute)
+         {
+             //  audioSource.clip = audios[0];
+             // audioSource.Play();
+         }
+     }*/
 
     public void PlaySound(int index)
     {
-        if (!Mute)
+        if (Mute)
         {
             if (audioSource)
             {
@@ -42,7 +47,7 @@ public class SoundEffectControll : MonoBehaviour
     }
     public void PlaySoundSoccer(int index)
     {
-        if (!Mute)
+        if (Mute)
         {
             if (audioSource)
             {
@@ -53,7 +58,7 @@ public class SoundEffectControll : MonoBehaviour
     }
     public void PlaySoundMenu(int index)
     {
-        if (!Mute)
+        if (Mute)
         {
             if (audioSource == null)
                 audioSource = GetComponent<AudioSource>();

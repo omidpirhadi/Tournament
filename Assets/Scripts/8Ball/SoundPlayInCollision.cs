@@ -19,9 +19,16 @@ public class SoundPlayInCollision : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
         setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        setting.OnChangeSetting += Setting_OnChangeSetting;
         LastPosition = transform.position;
         Mute = setting.Setting.Sound;
     }
+   
+    private void Setting_OnChangeSetting()
+    {
+        Mute = setting.Setting.Sound;
+    }
+
     private void FixedUpdate()
     {
         LastPosition = this.transform.position;
@@ -46,7 +53,7 @@ public class SoundPlayInCollision : MonoBehaviour
     }
     public void PlaySound(int index, float volume)
     {
-        if (!Mute)
+        if (Mute)
         {
             audio.volume = volume;
             audio.clip = clips[index];

@@ -22,11 +22,18 @@ public class SoundManagerMarble : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         audio = GetComponent<AudioSource>();
         setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
+        setting.OnChangeSetting += Setting_OnChangeSetting;
         Mute = setting.Setting.Sound;
 
         LastPosition = transform.position;
 
     }
+    
+    private void Setting_OnChangeSetting()
+    {
+        Mute = setting.Setting.Sound;
+    }
+
     private void FixedUpdate()
     {
        //speedVolume = Vector3.Distance(transform.position, LastPosition) / Time.deltaTime;
