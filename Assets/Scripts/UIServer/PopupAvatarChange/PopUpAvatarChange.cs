@@ -54,10 +54,13 @@ namespace Diaco.PopupAvatar
 
                 if (!avatars.Contains(Avatars.imageContainers[i].name))
                 {
-                    var element = Instantiate(avatarElement, Grid);
-                    element.Set(Avatars.LoadImage(Avatars.imageContainers[i].name), false, false, Avatars.imageContainers[i].name);
+                    if (Avatars.imageContainers[i].name != "-1")
+                    {
+                        var element = Instantiate(avatarElement, Grid);
+                        element.Set(Avatars.LoadImage(Avatars.imageContainers[i].name), false, false, Avatars.imageContainers[i].name);
 
-                    ListElements.Add(element.gameObject);
+                        ListElements.Add(element.gameObject);
+                    }
                 }
             }
         }

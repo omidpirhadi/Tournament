@@ -142,6 +142,7 @@ namespace Diaco.Notification
             /// close bttn
             CloseButton.onClick.AddListener(() => {
                 ShowDialog(false);
+                Debug.Log("SSSSSSSSSSSSSS");
                 ClearPallet();
             });
         }

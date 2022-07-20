@@ -8,11 +8,14 @@ public class SplashScreen : MonoBehaviour
 {
 
     public ServerUI Server;
+    
     public GameObject loginPage;
     public Image Prograssbar;
     public Text CounterPrograssbar;
     public Text VersionClient;
     private SoundEffectControll soundEffect;
+    public RTLTMPro.RTLTextMeshPro context;
+    public string[] Contexts;
     private IEnumerator Start()
     {
         soundEffect = GetComponent<SoundEffectControll>();
@@ -52,5 +55,10 @@ public class SplashScreen : MonoBehaviour
     private void Check_net_OnResponse(string response)
     {
         Debug.Log("OMIDPIRHADI");
+    }
+    private void SetContext()
+    {
+        var rand = Random.Range(0, Contexts.Length);
+        context.text = Contexts[rand];
     }
 }

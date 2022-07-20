@@ -1377,7 +1377,7 @@ RectTransform:
   - {fileID: 1057533779}
   - {fileID: 1770481138}
   m_Father: {fileID: 1355699927}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -2132,7 +2132,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1068442315
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2194,7 +2194,7 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 1068442317}
   m_TextViewport: {fileID: 1170718922}
-  m_TextComponent: {fileID: 0}
+  m_TextComponent: {fileID: 322956335}
   m_Placeholder: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}
   m_VerticalScrollbarEventHandler: {fileID: 0}
@@ -2418,7 +2418,7 @@ RectTransform:
   - {fileID: 1586946967}
   - {fileID: 1997062832}
   m_Father: {fileID: 1355699927}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.18400002, y: 0.77669835}
   m_AnchorMax: {x: 0.8163821, y: 1}
@@ -2903,8 +2903,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 666647093}
   - {fileID: 1189933472}
+  - {fileID: 666647093}
   - {fileID: 5255069}
   - {fileID: 1396647277}
   m_Father: {fileID: 0}
@@ -3999,18 +3999,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1770481140}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: ClosePopUp
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: referal
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1770481140
 MonoBehaviour:
   m_ObjectHideFlags: 0
