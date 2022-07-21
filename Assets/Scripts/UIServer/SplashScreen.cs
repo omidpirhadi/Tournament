@@ -64,4 +64,7 @@ public class SplashScreen : MonoBehaviour
         var rand = Random.Range(0, Contexts.Length);
         context.text = Contexts[rand];
     }
+
+   
+
 }

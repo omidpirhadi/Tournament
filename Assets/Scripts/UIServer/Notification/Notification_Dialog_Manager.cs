@@ -78,7 +78,7 @@ namespace Diaco.Notification
     
     public struct Notification_Dialog_Body
     {
-        
+        public string closeEvent;
         public string eventName;
         public string eventData;
         public int actionButton; //0 =open page in event name ,  1 = emit eventName

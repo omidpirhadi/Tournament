@@ -10,6 +10,7 @@ namespace Diaco.Notification
 {
     public class DialogPallet : MonoBehaviour
     {
+        [SerializeField] private string CloseEvent = "";
         [SerializeField] private string DialogEvent = "";
         [SerializeField] private string EventData = "";
         [SerializeField] private int TypeAction;
@@ -26,9 +27,11 @@ namespace Diaco.Notification
         public void SetDialog(Notification_Dialog_Body body)
         {
             ClearPallet();
-            TypeAction = body.actionButton;
-            DialogEvent = body.eventName;
-            EventData = body.eventData;
+
+            this.TypeAction = body.actionButton;
+            this.DialogEvent = body.eventName;
+            this.EventData = body.eventData;
+            this.CloseEvent = body.closeEvent;
             SetTypeDialog(body.dialogType, body.greenButtonText,body.redButtonText);
             if (body.image.Length > 0)
             {
@@ -141,8 +144,10 @@ namespace Diaco.Notification
             });
             /// close bttn
             CloseButton.onClick.AddListener(() => {
+
+                FindObjectOfType<ServerUI>().Emit_CloseDialog(CloseEvent);
                 ShowDialog(false);
-                Debug.Log("SSSSSSSSSSSSSS");
+                
                 ClearPallet();
             });
         }

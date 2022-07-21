@@ -1004,6 +1004,13 @@ public class ServerUI : MonoBehaviour
             Handler_GetStickers(data);
             Debug.Log("StickerRecived");
         });
+        socket.On("open-hint", (s, p, m) => {
+            navigationUi.ShowPopUpOnPopup("hint");
+
+            var pop = FindObjectOfType<PopupHint>();
+            pop.SetHint(m[0].ToString());
+            Debug.Log("Hint Opned");
+        });
         socket.On("disconnect", (s, p, m) =>
         {
 
@@ -1394,6 +1401,11 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("shop-t2", name, price);
         Debug.Log("Price Of Prodoct :" + name +":"+ price);
+    }
+    public void Emit_CloseDialog(string closeEvent)
+    {
+        socket.Emit("close-dialog", closeEvent);
+        Debug.Log("CloseDialog");
     }
     #endregion
     /// <summary>
