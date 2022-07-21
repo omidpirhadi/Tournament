@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Diaco;
+using Sirenix.OdinInspector;
 public class SplashScreen : MonoBehaviour
 {
 
@@ -15,9 +16,11 @@ public class SplashScreen : MonoBehaviour
     public Text VersionClient;
     private SoundEffectControll soundEffect;
     public RTLTMPro.RTLTextMeshPro context;
+    [MultiLineProperty]
     public string[] Contexts;
     private IEnumerator Start()
     {
+        SetContext();
         soundEffect = GetComponent<SoundEffectControll>();
         VersionClient.text = FindObjectOfType<Diaco.Setting.GeneralSetting>().Version;
         soundEffect.PlaySound(0);
