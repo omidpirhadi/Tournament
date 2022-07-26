@@ -1008,7 +1008,8 @@ public class ServerUI : MonoBehaviour
             navigationUi.ShowPopUpOnPopup("hint");
 
             var pop = FindObjectOfType<PopupHint>();
-            pop.SetHint(m[0].ToString());
+            pop.Init_Hint(Convert.ToInt32(m[0].ToString()), m[1].ToString(), m[2].ToString(), m[3].ToString());
+            //pop.SetHint(m[0].ToString());
             Debug.Log("Hint Opned");
         });
         socket.On("disconnect", (s, p, m) =>
