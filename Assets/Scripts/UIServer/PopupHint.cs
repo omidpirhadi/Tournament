@@ -14,6 +14,8 @@ public class PopupHint : MonoBehaviour
     }
     public void Init_Hint(int count, params string[] data)
     {
+
+        
         if (count == 1)
         {
             
@@ -47,4 +49,5 @@ public class PopupHint : MonoBehaviour
         texture.LoadImage(image_byte);
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }
+
 }
