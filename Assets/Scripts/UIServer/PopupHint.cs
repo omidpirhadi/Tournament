@@ -10,7 +10,7 @@ public class PopupHint : MonoBehaviour
     public void SetHint(string Hint)
     {
         hint_image.sprite = ConvertImageToSprite(Hint);
-        close_button.onClick.AddListener(() => { gameObject.SetActive(false); });
+      //  close_button.onClick.AddListener(() => { this.gameObject.SetActive(false); });
     }
     public void Init_Hint(int count, params string[] data)
     {
@@ -22,9 +22,9 @@ public class PopupHint : MonoBehaviour
         else if (count == 2)
         {
             hint_image.sprite = ConvertImageToSprite(data[0]);
-          //  var image = Instantiate(hint_image, content);
+          
             var image1 = Instantiate(hint_image, content);
-          //  image.sprite = ConvertImageToSprite(data[0]);
+          
             image1.sprite = ConvertImageToSprite(data[1]);
         }
         else if (count == 3)
@@ -37,6 +37,7 @@ public class PopupHint : MonoBehaviour
             image1.sprite = ConvertImageToSprite(data[1]);
             image2.sprite = ConvertImageToSprite(data[2]);
         }
+        close_button.onClick.AddListener(() => { this.gameObject.SetActive(false); });
     }
     private Sprite ConvertImageToSprite(string image)
     {
