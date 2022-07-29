@@ -107,7 +107,7 @@ namespace Diaco.SoccerStar.Marble
             GetVlocity = (this.transform.position - LastPosition) / Time.deltaTime;
             ///LastVelocity = GetVlocity; 
             GetSpeed = GetVlocity.magnitude;
-            CheckMoveWithDistanceFromLastPosition();
+         ///   CheckMoveWithDistanceFromLastPosition();
             if (IsRotatingMarble)
                 RotateMarble();
             if (IsRotateBall)
@@ -117,7 +117,7 @@ namespace Diaco.SoccerStar.Marble
          //   Debug.Log($"Speed{GetSpeed}, Object{this.name}");
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
-            WallHit();
+          //  WallHit();
         }
 
 
@@ -125,7 +125,7 @@ namespace Diaco.SoccerStar.Marble
         {
             var tag_collider = collision.collider.tag;
 
-            if (MarbleType == Marble_Type.Marble)
+          /*  if (MarbleType == Marble_Type.Marble)
             {
                // var dis = Vector3.Distance(transform.position, collision.contacts[0].point);
                // Debug.Log(dis);
@@ -168,7 +168,7 @@ namespace Diaco.SoccerStar.Marble
                     
 
                 }
-            }
+            }*/
         }
 
         public void OnDestroy()
