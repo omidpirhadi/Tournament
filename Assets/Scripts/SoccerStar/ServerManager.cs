@@ -22,7 +22,6 @@ namespace Diaco.SoccerStar.Server
         public SoundEffectControll soundeffectcontrollLayer1;
         public SoundEffectControll soundeffectcontrollLayer2;
         public Transform ParentForSpawn;
-        Diaco.Setting.GeneralSetting setting;
         public bool MarblesInMove = false;
         public bool InRecordMode = false;
         public float TimeStep = 0.0f;
@@ -30,19 +29,19 @@ namespace Diaco.SoccerStar.Server
         #region DataMemberGlobal
         [FoldoutGroup("ServerSettings")]
         public GameObject ResultGamePage;
-       /// [FoldoutGroup("ServerSettings")]
+        /// [FoldoutGroup("ServerSettings")]
 
-       /// public string URLLocal;
-       // [FoldoutGroup("ServerSettings")]
-       // public string URLGlobal;
+        /// public string URLLocal;
+        // [FoldoutGroup("ServerSettings")]
+        // public string URLGlobal;
         [FoldoutGroup("ServerSettings")]
         public string NamespaceServer;
         [FoldoutGroup("ServerSettings")]
         public int SendRate = 100;
         [FoldoutGroup("ServerSettings")]
         public float TimeTurn = 10.0f;
-       // [FoldoutGroup("ServerSettings")]
-       // private float _temptime = 0.0f;
+        // [FoldoutGroup("ServerSettings")]
+        // private float _temptime = 0.0f;
         [FoldoutGroup("ServerSettings")]
         private bool turn;
         [FoldoutGroup("ServerSettings")]
@@ -53,16 +52,15 @@ namespace Diaco.SoccerStar.Server
                 turn = value;
 
                 handler_OnTurnChange(turn);
-               // Debug.Log("GENERAlTURN");
+                // Debug.Log("GENERAlTURN");
                 if (turn == true)
                 {
-               /*     DOVirtual.Float(0, 1, 0.3f, x =>
-                    {
-
-                    }).OnComplete(() =>
-                    {
-                        Handler_OnPhysicFreeze(false);
-                    });*/
+                    /*     DOVirtual.Float(0, 1, 0.3f, x =>
+                         {
+                         }).OnComplete(() =>
+                         {
+                             Handler_OnPhysicFreeze(false);
+                         });*/
                 }
 
 
@@ -110,12 +108,12 @@ namespace Diaco.SoccerStar.Server
         [FoldoutGroup("ServerSettings")]
         public int IsGoal = -1;///SendWithDirection
         [FoldoutGroup("ServerSettings")]
-        public float smooth;
+        public float FrameRate;
 
 
-      
-       
-       
+
+
+
         //[FoldoutGroup("ServerSettingsInRecordMode")]
         //public RecordModeGameData recordmodeGameData;
         [FoldoutGroup("ServerSettingsInRecordMode")]
@@ -178,11 +176,13 @@ namespace Diaco.SoccerStar.Server
         private bool GameDataRecive = false;
         private int Side;
         private bool intergate = true;
+        private Diaco.Setting.GeneralSetting setting;
         #endregion
 
         #region StructGame
 
-        Queue<MarbleMovementPackets> QueuemovementPackets;
+        //  Queue<MarbleMovementPackets> QueuemovementPackets;
+        List<MarblesData> MarblesDataRecived = new List<MarblesData>();
         //  public List<Frame> Frames;
 
         #endregion
@@ -190,10 +190,10 @@ namespace Diaco.SoccerStar.Server
 
         public void Start()
         {
-          
+
             //  Frames = new List<Frame>();
-            QueuemovementPackets = new Queue<MarbleMovementPackets>();
-  
+            // QueuemovementPackets = new Queue<MarbleMovementPackets>();
+
             OnChangeTurn += ServerManager_OnChangeTurn;
             if (InRecordMode)
                 MarblesInRecorodMode = new List<ForceToBall>();
@@ -204,7 +204,6 @@ namespace Diaco.SoccerStar.Server
 
             //  Debug.Log(SoftFloat.Soft(12));
         }
-
         // private float timer;
 
         void Update()
@@ -354,12 +353,12 @@ namespace Diaco.SoccerStar.Server
                 socket.On("Position", (s, p, a) =>
                 {
 
-
-                    var packets = JsonUtility.FromJson<MarbleMovementPackets>(a[0].ToString());
-                    QueuemovementPackets.Enqueue(packets);
-                    if (QueuemovementPackets.Count > 0 && intergate)
+                   // Debug.Log("XXX");
+                    var data = JsonUtility.FromJson<MarblesData>(a[0].ToString());
+                    MarblesDataRecived.Add(data);
+                    if (MarblesDataRecived.Count > 0 && intergate)
                     {
-
+                        //Debug.Log("ZZZ");
                         StartCoroutine(ReciveDataMarblesMovment());
                         intergate = false;
                     }
@@ -622,7 +621,7 @@ namespace Diaco.SoccerStar.Server
                 }
                 else
                 {
-                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, smooth));
+                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, FrameRate));
                     yield return new WaitForSeconds(0.4f);
                 }
 
@@ -660,7 +659,7 @@ namespace Diaco.SoccerStar.Server
                 }
                 else
                 {
-                    StartCoroutine(MoveMarbelsToPositionFromServer(gameData, -1, smooth));
+                    StartCoroutine(MoveMarbelsToPositionFromServer(gameData, -1, FrameRate));
                     yield return new WaitForSeconds(0.4f);
                 }
                 if (gameData.state == 1)
@@ -690,25 +689,72 @@ namespace Diaco.SoccerStar.Server
 
         public void RunSpawnMarble_New(GameData data, int Side, string selfskin, string enemyskin)
         {
-            var count_movement = data.positions.Count;
-            // Debug.Log(count_movement);
 
-            for (int i = 0; i < count_movement; i++)
+            Vector3 pos = new Vector3();
+           // Debug.Log("Side:" + Side);
+            for (int i = 0; i < 10; i++)
             {
+
+
+
+                if (i == 0)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_1, Side);
+                }
+                else if (i == 1)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_2, Side);
+                }
+                else if (i == 2)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_3, Side);
+                }
+                else if (i == 3)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_4, Side);
+                }
+                else if (i == 4)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_5, Side);
+                }
+                else if (i == 5)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_6, Side);
+                }
+                else if (i == 6)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_7, Side);
+                }
+                else if (i == 7)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_8, Side);
+                }
+                else if (i == 8)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_9, Side);
+                }
+                else if (i == 9)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_10, Side);
+                }
+
                 if (i >= 0 && i < 5)
                 {
                     var type = SelectBottomFlag(selfskin);
-                    var marble = Instantiate(MarbleRegistered[type], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
+                    var marble = Instantiate(MarbleRegistered[type], pos, Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
 
                     marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(selfskin));
+                    //  Debug.Log("POS:" + pos);
                 }
+
                 else if (i > 4 && i < 10)
                 {
                     var type = SelectBottomFlag(enemyskin);
-                    var marble = Instantiate(MarbleRegistered[type], new Vector3(data.positions[i].position.x * Side, 2.0f, data.positions[i].position.z), Quaternion.identity, ParentForSpawn);
+                    var marble = Instantiate(MarbleRegistered[type], pos, Quaternion.identity, ParentForSpawn);
                     marble.GetComponent<ForceToBall>().ID = i;
                     marble.GetComponent<ForceToBall>().SetSkinMarble(SelectFlag(enemyskin));
+                    ///  Debug.Log("POS:" + pos);
                 }
             }
             SpwanedMarbels = true;
@@ -719,26 +765,242 @@ namespace Diaco.SoccerStar.Server
         public IEnumerator MoveMarbelsToPositionFromServer(GameData data, int side, float speed)
         {
             EnablerRingEffect = false;
-            
-            var count_movement = data.positions.Count;
-            for (int i = 0; i < count_movement; i++)
+            Vector3 pos = new Vector3();
+            for (int i = 0; i < Marbles.Count; i++)
             {
-                var index_marble = data.positions[i].id;
+                if (i == 0)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_1, side);
+                }
+                else if (i == 1)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_2, side);
+                }
+                else if (i == 2)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_3, side);
+                }
+                else if (i == 3)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_4, side);
+                }
+                else if (i == 4)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_5, side);
+                }
+                else if (i == 5)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_6, side);
+                }
+                else if (i == 6)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_7, side);
+                }
+                else if (i == 7)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_8, side);
+                }
+                else if (i == 8)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_9, side);
+                }
+                else if (i == 9)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.m_p_10, side);
+                }
+                else if (i == 10)
+                {
+                    pos = VectorHelper.ToVector3WithSide(data.positions.b_p, side);
+                }
+                Marbles[i].transform.position = pos;
 
-                var temp_pos = data.positions[i].position;
-                var pos = new Vector3(side * temp_pos.x, Marbles[index_marble].transform.position.y, temp_pos.z);
-
-                //  var rotate = new Vector3(0.0f, 0.0f, 0.0f);
 
 
-                ///Marbles[index_marble].transform.eulerAngles = rotate;
-               // Marbles[index_marble].transform.position = pos;
-                Marbles[index_marble].transform.DOMove(pos, 0.2f);
-                
             }
-            //Debug.Log("MOVVVVEEEEE1212212E:::"+Marbles[10].transform.position); 
-            
             yield return null;
+
+        }
+
+
+
+        /// <summary>
+        /// use in Invoke_CheckMovemenInSecond()
+        /// </summary>
+
+        private void CheckMovment()
+        {
+            /// var move = false;
+            int count_stoped = 0;
+            for (int i = 0; i < Marbles.Count; i++)
+            {
+                if (Marbles[i])
+                {
+
+
+                    if (!Marbles[i].OnlyCheckMove())
+                    {
+                        count_stoped++;
+
+                    }
+
+                    if (count_stoped == Marbles.Count)
+                    {
+
+                        CancelInvoke("CheckMovment");
+                        MarblesInMove = false;
+                        Debug.Log("All Marbles Stoped");
+                    }
+                }
+            }
+
+        }
+        public IEnumerator SendDataMarblesMovement()
+        {
+            MarblesInMove = true;
+            Turn = false;
+            Invoke_CheckMovemenInSecond();
+            MarblesData Data = new MarblesData();
+
+            do
+            {
+                Data.m_p_1 = VectorHelper.To_Vec_Soccer(Marbles[0].transform.position);
+                Data.m_v_1 = VectorHelper.To_Vec_Soccer(Marbles[0].rigidbody.velocity);
+
+                Data.m_p_2 = VectorHelper.To_Vec_Soccer(Marbles[1].transform.position);
+                Data.m_v_2 = VectorHelper.To_Vec_Soccer(Marbles[1].rigidbody.velocity);
+
+                Data.m_p_3 = VectorHelper.To_Vec_Soccer(Marbles[2].transform.position);
+                Data.m_v_3 = VectorHelper.To_Vec_Soccer(Marbles[2].rigidbody.velocity);
+
+                Data.m_p_4 = VectorHelper.To_Vec_Soccer(Marbles[3].transform.position);
+                Data.m_v_4 = VectorHelper.To_Vec_Soccer(Marbles[3].rigidbody.velocity);
+
+                Data.m_p_5 = VectorHelper.To_Vec_Soccer(Marbles[4].transform.position);
+                Data.m_v_5 = VectorHelper.To_Vec_Soccer(Marbles[4].rigidbody.velocity);
+
+                Data.m_p_6 = VectorHelper.To_Vec_Soccer(Marbles[5].transform.position);
+                Data.m_v_6 = VectorHelper.To_Vec_Soccer(Marbles[5].rigidbody.velocity);
+
+                Data.m_p_7 = VectorHelper.To_Vec_Soccer(Marbles[6].transform.position);
+                Data.m_v_7 = VectorHelper.To_Vec_Soccer(Marbles[6].rigidbody.velocity);
+
+                Data.m_p_8 = VectorHelper.To_Vec_Soccer(Marbles[7].transform.position);
+                Data.m_v_8 = VectorHelper.To_Vec_Soccer(Marbles[7].rigidbody.velocity);
+
+                Data.m_p_9 = VectorHelper.To_Vec_Soccer(Marbles[8].transform.position);
+                Data.m_v_9 = VectorHelper.To_Vec_Soccer(Marbles[8].rigidbody.velocity);
+
+                Data.m_p_10 = VectorHelper.To_Vec_Soccer(Marbles[9].transform.position);
+                Data.m_v_10 = VectorHelper.To_Vec_Soccer(Marbles[9].rigidbody.velocity);
+
+                Data.b_p = VectorHelper.To_Vec_Soccer(Marbles[10].transform.position);
+                Data.b_v = VectorHelper.To_Vec_Soccer(Marbles[10].rigidbody.velocity);
+
+                Data.Tik += 1;
+                Data.LastPacket = false;
+
+
+
+                Emit_DataMarblesToServer(Data);
+                Debug.Log("SendData");
+                yield return new WaitForSecondsRealtime(FrameRate);
+            }
+            while (MarblesInMove);
+            if (!MarblesInMove)
+            {
+                Data.LastPacket = true;
+                Emit_DataMarblesToServer(Data);
+                Debug.Log("LastPacket:" + Data.Tik);
+            }
+            yield return new WaitForSecondsRealtime(FrameRate);
+            socket.Emit("EndTurn", IsGoal);
+            Debug.Log("ISGoal::" + IsGoal);
+            IsGoal = -1;
+        }
+        public void Emit_DataMarblesToServer(MarblesData data)
+        {
+            string json = JsonUtility.ToJson(data);
+            socket.Emit("Position", json);
+        }
+        public IEnumerator ReciveDataMarblesMovment()
+        {
+            DoResetAim();
+            EnablerRingEffect = false;
+            bool LoopCancle = false;
+            int tik = 0;
+            yield return new WaitForSecondsRealtime(2.0f);
+            while (LoopCancle == false)
+            {
+              
+                int t = Mathf.Clamp(tik, 0, MarblesDataRecived.Count - 1);
+                Marbles[0].SetMovmentData(MarblesDataRecived[t].m_p_1, MarblesDataRecived[t].m_v_1);
+                Marbles[1].SetMovmentData(MarblesDataRecived[t].m_p_2, MarblesDataRecived[t].m_v_2);
+                Marbles[2].SetMovmentData(MarblesDataRecived[t].m_p_3, MarblesDataRecived[t].m_v_3);
+                Marbles[3].SetMovmentData(MarblesDataRecived[t].m_p_4, MarblesDataRecived[t].m_v_4);
+                Marbles[4].SetMovmentData(MarblesDataRecived[t].m_p_5, MarblesDataRecived[t].m_v_5);
+                Marbles[5].SetMovmentData(MarblesDataRecived[t].m_p_6, MarblesDataRecived[t].m_v_6);
+                Marbles[6].SetMovmentData(MarblesDataRecived[t].m_p_7, MarblesDataRecived[t].m_v_7);
+                Marbles[7].SetMovmentData(MarblesDataRecived[t].m_p_8, MarblesDataRecived[t].m_v_8);
+                Marbles[8].SetMovmentData(MarblesDataRecived[t].m_p_9, MarblesDataRecived[t].m_v_9);
+                Marbles[9].SetMovmentData(MarblesDataRecived[t].m_p_10, MarblesDataRecived[t].m_v_10);
+                Marbles[10].SetMovmentData(MarblesDataRecived[t].b_p, MarblesDataRecived[t].b_v);
+                tik++;
+
+                Debug.Log("ReciveData" + MarblesDataRecived[t].LastPacket);
+                yield return new WaitForSecondsRealtime(FrameRate);
+
+
+                if (MarblesDataRecived[t].LastPacket)
+                {
+                    LoopCancle = true;
+                    socket.Emit("EndTurn");
+                    for (int i = 0; i < Marbles.Count; i++)
+                    {
+                        if (Marbles[i] != null)
+                            Marbles[i].MarbleStop();
+                    }
+
+
+                    Debug.Log("LastRecive:" + MarblesDataRecived[t].Tik);
+
+                }
+            }
+            MarblesDataRecived.Clear();
+
+            intergate = true;
+
+            yield return null;
+
+        }
+
+        public IEnumerator DelayAim(string json)//ReciveFromServer
+        {
+            var aim = JsonUtility.FromJson<AimData>(json);
+            //Debug.Log("2");
+            yield return new WaitForSeconds(0.001f);
+            /* for (int i = 0; i < Marbles.Length; i++)
+             {
+                 var marble = Marbles[i].GetComponent<ForceToBall>();
+                 if (marble.ID == aim.ID)
+                 {
+                     marble.ReciveAimdataFromSever(aim);
+
+                 }
+
+             }*/
+            Handler_OnAimrRecive(aim);
+        }
+
+        public void SendForceData(FORCEDATA forcedata)
+        {
+            var force = JsonUtility.ToJson(forcedata);
+            socket.Emit("Force", force);
+            Debug.Log(force);
+        }
+        public void SendAimData(AimData aimRecord)
+        {
+            var j = JsonUtility.ToJson(aimRecord);
+            socket.Emit("Aim", j);
 
         }
 
@@ -746,16 +1008,16 @@ namespace Diaco.SoccerStar.Server
         {
             Arena.ForEach(e => {
 
-                if(e.name == name)
+                if (e.name == name)
                 {
                     e.arena.SetActive(true);
 
                 }
-                else if(e.name != name)
+                else if (e.name != name)
                 {
                     e.arena.SetActive(false);
                 }
-                else if (e.name =="")
+                else if (e.name == "")
                 {
                     Arena[0].arena.SetActive(true);
                 }
@@ -765,7 +1027,7 @@ namespace Diaco.SoccerStar.Server
         public Sprite SelectFlag(string name)
         {
 
-           Texture2D texture = new Texture2D(512, 512);
+            Texture2D texture = new Texture2D(512, 512);
 
             //var sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
             Flags.ForEach(e => {
@@ -773,13 +1035,13 @@ namespace Diaco.SoccerStar.Server
                 if (e.name == name)
                 {
                     texture = e.flag;
-                  
+
                 }
 
                 else if (e.name == "")
                 {
                     texture = Flags[0].flag;
-                    
+
                 }
 
             });
@@ -829,7 +1091,7 @@ namespace Diaco.SoccerStar.Server
         {
 
             im_BadConnection.SetActive(show);
-           
+
 
         }
         public void Invoke_CheckMovemenInSecond()
@@ -837,197 +1099,6 @@ namespace Diaco.SoccerStar.Server
             InvokeRepeating("CheckMovment", 1, 1);
             Debug.Log("CheckMovmentFromServer");
         }
-
-        /// <summary>
-        /// use in Invoke_CheckMovemenInSecond()
-        /// </summary>
-
-        private void CheckMovment()
-        {
-            /// var move = false;
-            int count_stoped = 0;
-            for (int i = 0; i < Marbles.Count; i++)
-            {
-                if (Marbles[i])
-                {
-
-
-                    if (!Marbles[i].OnlyCheckMove())
-                    {
-                        count_stoped++;
-
-                    }
-
-                    if (count_stoped == Marbles.Count)
-                    {
-
-                        CancelInvoke("CheckMovment");
-                        MarblesInMove = false;
-                        Debug.Log("All Marbles Stoped");
-                    }
-                }
-            }
-
-        }
-        public IEnumerator SendDataMarblesMovement()
-        {
-            //  Debug.Log("ForceT2222T");
-            MarblesInMove = true;
-            Turn = false;
-            List<MarbleMovementData> marbleMovments;
-            MarbleMovementPackets movementPackets = new MarbleMovementPackets();
-            string json_packet;
-            Invoke_CheckMovemenInSecond();
-            do
-            {
-                marbleMovments = new List<MarbleMovementData>();
-                movementPackets.marbleMovements = new List<MarbleMovementData>();
-                Vector3 CurrentPositionMarbles;
-             //   Vector3 velocity;
-                for (int i = 0; i < Marbles.Count; i++)
-                {
-                    CurrentPositionMarbles = Marbles[i].transform.position;
-                   // velocity = Marbles[i].GetVlocity;
-                    marbleMovments.Add(new MarbleMovementData
-                    {
-                        id = (short)Marbles[i].ID,
-                        position = CurrentPositionMarbles,
-                       // velocity = velocity,
-                        IsRotateBall = Marbles[i].IsRotateBall,
-                        IsRotateMarble = Marbles[i].IsRotatingMarble,
-
-
-                    });
-                }
-                
-                movementPackets.marbleMovements = marbleMovments;
-                
-
-                if (TimeStep == 0.0f)
-                {
-                    movementPackets.TimeStepPacket = smooth;
-                }
-                else
-                {
-                    movementPackets.TimeStepPacket = Mathf.Abs(Time.realtimeSinceStartup - TimeStep);
-                   // Debug.Log($"<color=green>TimeStepPacket{movementPackets.TimeStepPacket}</color>");
-                }
-
-                 json_packet = JsonUtility.ToJson(movementPackets);
-                socket.Emit("Position", json_packet);
-
-                this.TimeStep = TimeStep = Time.realtimeSinceStartup;
-                yield return new WaitForSecondsRealtime(smooth);
-                   //Debug.Log("SendPositions");
-            }
-            while (MarblesInMove);
-
-
-            movementPackets.IsLastPacket = true;
-            json_packet = JsonUtility.ToJson(movementPackets);
-            Debug.Log("ISLastPacket::" + movementPackets.IsLastPacket+"Count"+movementPackets.marbleMovements.Count);
-            socket.Emit("Position", json_packet);
-
-
-            ///Handler_OnPhysicFreeze(true);
-            socket.Emit("EndTurn", IsGoal);
-            Debug.Log("ISGoal::"+ IsGoal);
-            IsGoal = -1;
-            
-            // Handler_SoftPositionAndRotation();
-            this.TimeStep = 0.0f;
-            
-            yield return null;
-        }
-
-        public IEnumerator ReciveDataMarblesMovment()
-        {
-
-            DoResetAim();
-            EnablerRingEffect = false;
-            // Handler_EnableRingMarbleForOpponent(false);
-            //yield return new WaitForSecondsRealtime(slider.value);
-            while (QueuemovementPackets.Count > 0)
-            {
-                var movement_packet = QueuemovementPackets.Dequeue();
-                var count_movement_in_packet = movement_packet.marbleMovements.Count;
-               
-                for (int i = 0; i < count_movement_in_packet; i++)
-                {
-                    var data = movement_packet.marbleMovements[i];
-
-                    var index_marble = data.id;
-
-                    var temp_pos = data.position;
-                    var pos = new Vector3(-1 * temp_pos.x, Marbles[index_marble].transform.position.y, temp_pos.z);
-
-                    /// var rotate = new Vector3(0.0f, movement_packet.marbleMovements[i].rotate_y, 0.0f);
-                    Marbles[index_marble].transform.DOMove(pos, movement_packet.TimeStepPacket);
-                    if (index_marble < 10)
-                    {
-                        
-                        Marbles[index_marble].RotateMarbleFromServer(data.IsRotateMarble);
-                    }
-                    else
-                    {
-                        Marbles[index_marble].RotateBallFromServer(data.IsRotateBall);
-                    }
-                  /////  Marbles[index_marble].transform.DORotate(rotate, movement_packet.TimeStepPacket);
-
-                }
-                yield return new WaitForSecondsRealtime(movement_packet.TimeStepPacket);
-                Debug.Log("Endpacket "+ movement_packet.IsLastPacket); 
-                if (movement_packet.IsLastPacket)
-                {
-                    socket.Emit("EndTurn");
-
-                    ///Debug.Log("iSLaaaaA");
-
-                }
-                //   Debug.Log("C");
-            }
-
-
-            intergate = true;
-           /* if (GameDataRecive)
-            {
-                InitializTurn_new();
-            }*/
-            yield return null;
-        }
-
-        public IEnumerator DelayAim(string json)//ReciveFromServer
-        {
-            var aim = JsonUtility.FromJson<AimData>(json);
-            //Debug.Log("2");
-            yield return new WaitForSeconds(0.001f);
-            /* for (int i = 0; i < Marbles.Length; i++)
-             {
-                 var marble = Marbles[i].GetComponent<ForceToBall>();
-                 if (marble.ID == aim.ID)
-                 {
-                     marble.ReciveAimdataFromSever(aim);
-
-                 }
-
-             }*/
-            Handler_OnAimrRecive(aim);
-        }
-
-        public void SendForceData(FORCEDATA forcedata)
-        {
-            var force = JsonUtility.ToJson(forcedata);
-            socket.Emit("Force", force);
-            Debug.Log(force);
-        }
-        public void SendAimData(AimData aimRecord)
-        {
-            var j = JsonUtility.ToJson(aimRecord);
-            socket.Emit("Aim", j);
-
-        }
-
-
         public IEnumerator ShowResualtPage(object []a)
         {
             Time.timeScale = 1;

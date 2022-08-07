@@ -11,76 +11,79 @@ namespace Diaco.EightBall.Structs
     [Serializable]
     public struct PositionAndRotateBalls
     {
-        [DataMember] public Vector2 CueBall;
-        [DataMember] public Vector3 CueBall_R;
-        ////   [DataMember] public bool CueBallInPocket;
-     
-        [DataMember] public Vector2 Ball_1;
-        [DataMember] public Vector3 Ball_1_R;
-        //// [DataMember] public bool Ball_1InPocket;
+
+
+        public Diaco_Billiard_Vec CueBall;
+        public Diaco_Billiard_Vec CueBall_R;
+        public Diaco_Billiard_Vec CueBall_velocity;
+
+        public Diaco_Billiard_Vec Ball_1;
+        public Diaco_Billiard_Vec Ball_1_R;
+        public Diaco_Billiard_Vec Ball_1_velocity;
 
 
 
-        [DataMember] public Vector2 Ball_2;
-        [DataMember] public Vector3 Ball_2_R;
-        ///  [DataMember] public bool Ball_2InPocket;
+        public Diaco_Billiard_Vec Ball_2;
+        public Diaco_Billiard_Vec Ball_2_R;
+        public Diaco_Billiard_Vec Ball_2_velocity;
 
-        [DataMember] public Vector2 Ball_3;
-        [DataMember] public Vector3 Ball_3_R;
-        /// [DataMember] public bool Ball_3InPocket;
+        public Diaco_Billiard_Vec Ball_3;
+        public Diaco_Billiard_Vec Ball_3_R;
+        public Diaco_Billiard_Vec Ball_3_velocity;
 
-        [DataMember] public Vector2 Ball_4;
-        [DataMember] public Vector3 Ball_4_R;
-        ////  [DataMember] public bool Ball_4InPocket;
-
-
-        [DataMember] public Vector2 Ball_5;
-        [DataMember] public Vector3 Ball_5_R;
-        // [DataMember] public bool Ball_5InPocket;
-
-        [DataMember] public Vector2 Ball_6;
-        [DataMember] public Vector3 Ball_6_R;
-        ///   [DataMember] public bool Ball_6InPocket;
-
-        [DataMember] public Vector2 Ball_7;
-        [DataMember] public Vector3 Ball_7_R;
-        /// [DataMember] public bool Ball_7InPocket;
-
-        [DataMember] public Vector2 Ball_8;
-        [DataMember] public Vector3 Ball_8_R;
-        ///  [DataMember] public bool Ball_8InPocket;
-
-        [DataMember] public Vector2 Ball_9;
-        [DataMember] public Vector3 Ball_9_R;
-        /// [DataMember] public bool Ball_9InPocket;
-
-        [DataMember] public Vector2 Ball_10;
-        [DataMember] public Vector3 Ball_10_R;
-        // [DataMember] public bool Ball_10InPocket;
+        public Diaco_Billiard_Vec Ball_4;
+        public Diaco_Billiard_Vec Ball_4_R;
+        public Diaco_Billiard_Vec Ball_4_velocity;
 
 
-        [DataMember] public Vector2 Ball_11;
-        [DataMember] public Vector3 Ball_11_R;
-        // [DataMember] public bool Ball_11InPocket;
+        public Diaco_Billiard_Vec Ball_5;
+        public Diaco_Billiard_Vec Ball_5_R;
+        public Diaco_Billiard_Vec Ball_5_velocity;
 
-        [DataMember] public Vector2 Ball_12;
-        [DataMember] public Vector3 Ball_12_R;
-        /// [DataMember] public bool Ball_12InPocket;
+        public Diaco_Billiard_Vec Ball_6;
+        public Diaco_Billiard_Vec Ball_6_R;
+        public Diaco_Billiard_Vec Ball_6_velocity;
 
-        [DataMember] public Vector2 Ball_13;
-        [DataMember] public Vector3 Ball_13_R;
-        //  [DataMember] public bool Ball_13InPocket;
+        public Diaco_Billiard_Vec Ball_7;
+        public Diaco_Billiard_Vec Ball_7_R;
+        public Diaco_Billiard_Vec Ball_7_velocity;
 
-        [DataMember] public Vector2 Ball_14;
-        [DataMember] public Vector3 Ball_14_R;
-        /// [DataMember] public bool Ball_14InPocket;
+        public Diaco_Billiard_Vec Ball_8;
+        public Diaco_Billiard_Vec Ball_8_R;
+        public Diaco_Billiard_Vec Ball_8_velocity;
 
-        [DataMember] public Vector2 Ball_15;
-        [DataMember] public Vector3 Ball_15_R;
-        //  [DataMember] public bool Ball_15InPocket;
+        public Diaco_Billiard_Vec Ball_9;
+        public Diaco_Billiard_Vec Ball_9_R;
+        public Diaco_Billiard_Vec Ball_9_velocity;
 
-        [DataMember] public float TimeStepPacket;
-        [DataMember] public bool isLastPacket;
+        public Diaco_Billiard_Vec Ball_10;
+        public Diaco_Billiard_Vec Ball_10_R;
+        public Diaco_Billiard_Vec Ball_10_velocity;
+
+
+        public Diaco_Billiard_Vec Ball_11;
+        public Diaco_Billiard_Vec Ball_11_R;
+        public Diaco_Billiard_Vec Ball_11_velocity;
+
+        public Diaco_Billiard_Vec Ball_12;
+        public Diaco_Billiard_Vec Ball_12_R;
+        public Diaco_Billiard_Vec Ball_12_velocity;
+
+        public Diaco_Billiard_Vec Ball_13;
+        public Diaco_Billiard_Vec Ball_13_R;
+        public Diaco_Billiard_Vec Ball_13_velocity;
+
+        public Diaco_Billiard_Vec Ball_14;
+        public Diaco_Billiard_Vec Ball_14_R;
+        public Diaco_Billiard_Vec Ball_14_velocity;
+
+        public Diaco_Billiard_Vec Ball_15;
+        public Diaco_Billiard_Vec Ball_15_R;
+        public Diaco_Billiard_Vec Ball_15_velocity;
+
+        public int Tik;
+
+        public bool isLastPacket;
     }
     [Serializable]
     public struct AimData
@@ -186,5 +189,63 @@ namespace Diaco.EightBall.Structs
         public ResultPlayer loser;
         public bool isFriend;
 
+    }
+
+
+    public static class Vec3Helper
+    {
+        public static Vector3 ToVector3(Diaco_Billiard_Vec billiard_Vec)
+        {
+            var vec = new Vector3(billiard_Vec.x, billiard_Vec.y, billiard_Vec.z);
+            return vec;
+        }
+        public static Diaco_Billiard_Vec ToBilliardVec(Vector3 vector)
+        {
+            return new Diaco_Billiard_Vec(vector.x, vector.y, vector.z);
+        }
+    }
+    [Serializable]
+    public struct Diaco_Billiard_Vec
+    {
+        public float x;
+        public float y;
+        public float z;
+        public Diaco_Billiard_Vec(float x, float y, float z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+    }
+    [Serializable]
+    public struct Diaco_Soccer_Vec
+    {
+        public float x;
+        public float y;
+        public float z;
+        public float r;
+        public Diaco_Soccer_Vec(float x, float y, float z, float r)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+            this.r = r;
+        }
+
+    }
+    [Serializable]
+    public struct BallData
+    {
+        public List<Diaco_Billiard_Vec> Position;
+        public List<Diaco_Billiard_Vec> Velocity;
+        public List<Diaco_Billiard_Vec> Rotation;
+
+        /* public BallData(BallData data)
+         {
+             this.Position = data.Position;
+             this.Velocity = data.Velocity;
+             this.Rotation = data.Rotation;
+         }*/
     }
 }

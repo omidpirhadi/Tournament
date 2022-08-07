@@ -64,7 +64,7 @@ namespace Diaco.Notification
                 notification.Title = data.notifications[i].title;
                 notification.Text = data.notifications[i].context;
                 notification.FireTime = System.DateTime.Now.AddMinutes(data.notifications[i].addMinutes);
-                AndroidNotificationCenter.SendNotificationWithExplicitID(notification, "diacostudio", data.notifications[i].id);
+                AndroidNotificationCenter.SendNotificationWithExplicitID(notification, ChannelID, data.notifications[i].id);
             }
         }
         public void CancleNotification(int id)

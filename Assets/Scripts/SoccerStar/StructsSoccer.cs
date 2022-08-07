@@ -23,7 +23,7 @@ namespace Diaco.SoccerStar.CustomTypes
         public string gid;
         public PlayerInfo playerOne;
         public PlayerInfo playerTwo;
-        public List<MarbleMovementData> positions;
+        public MarblesData positions;
         public float totalTime;
         public float turnTime;
         public int ownerTurn;
@@ -138,5 +138,81 @@ namespace Diaco.SoccerStar.CustomTypes
         public List<int> ID;
         public List<Vector3> LastPosition;
 
+    }
+
+    [Serializable]
+    public struct MarblesData
+    {
+        public Vec_Soccer m_p_1; /// Marble 1 Position
+        public Vec_Soccer m_v_1;// Marable 1 Velocity
+
+        public Vec_Soccer m_p_2;
+        public Vec_Soccer m_v_2;
+
+        public Vec_Soccer m_p_3;
+        public Vec_Soccer m_v_3;
+
+        public Vec_Soccer m_p_4;
+        public Vec_Soccer m_v_4;
+
+        public Vec_Soccer m_p_5;
+        public Vec_Soccer m_v_5;
+
+        public Vec_Soccer m_p_6;
+        public Vec_Soccer m_v_6;
+
+        public Vec_Soccer m_p_7;
+        public Vec_Soccer m_v_7;
+
+        public Vec_Soccer m_p_8;
+        public Vec_Soccer m_v_8;
+
+        public Vec_Soccer m_p_9;
+        public Vec_Soccer m_v_9;
+
+        public Vec_Soccer m_p_10;
+        public Vec_Soccer m_v_10;
+
+        public Vec_Soccer b_p; // Ball Position
+        public Vec_Soccer b_v; // Ball Velocity
+
+        public int Tik;
+        public bool LastPacket;
+    }
+    [Serializable]
+    public struct Vec_Soccer
+    {
+        public float x;
+        public float y;
+        public float z;
+
+        public Vec_Soccer(float x, float y, float z)
+        {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+
+    }
+    public static class VectorHelper
+
+    {
+        public static Vec_Soccer To_Vec_Soccer(Vector3 vec3)
+        {
+            return new Vec_Soccer(vec3.x, vec3.y, vec3.z);
+        }
+        public static Vector3 ToVector3(Vec_Soccer vec_Soccer)
+        {
+            return new Vector3(vec_Soccer.x, vec_Soccer.y, vec_Soccer.z);
+        }
+        public static Vector3 ToVector3WithReversX(Vec_Soccer vec_Soccer)
+        {
+            return new Vector3(-1 * vec_Soccer.x, vec_Soccer.y, vec_Soccer.z);
+        }
+        public static Vector3 ToVector3WithSide(Vec_Soccer vec_Soccer, int side)
+        {
+            return new Vector3(side * vec_Soccer.x, vec_Soccer.y, vec_Soccer.z);
+        }
     }
 }

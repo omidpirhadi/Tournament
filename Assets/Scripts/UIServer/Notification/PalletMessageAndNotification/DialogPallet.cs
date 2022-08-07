@@ -102,7 +102,9 @@ namespace Diaco.Notification
                 {
                     if (DialogEvent == "store")
                     {
-                        var ui = FindObjectOfType<NavigationUI>(); 
+                        
+                        var ui = FindObjectOfType<NavigationUI>();
+                        ui.CloseAllPopUp();
                         ui.SwitchUI("shop");
                         FindObjectOfType<ServerUI>().RequestItemShop();
                         ShowDialog(false);
@@ -123,6 +125,7 @@ namespace Diaco.Notification
                     if (DialogEvent == "store")
                     {
                         var ui = FindObjectOfType<NavigationUI>();
+                        ui.CloseAllPopUp();
                         ui.SwitchUI("shop");
                         FindObjectOfType<ServerUI>().RequestItemShop();
                         ShowDialog(false);

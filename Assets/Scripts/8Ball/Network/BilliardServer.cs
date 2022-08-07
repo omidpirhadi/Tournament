@@ -56,7 +56,7 @@ namespace Diaco.EightBall.Server
         public GameObject ResultGamePage;
 
         [FoldoutGroup("ServerSettings")]
-        public float SpeedPlayRecord = 0.02f;
+        public float Framerate = 0.02f;
         [FoldoutGroup("ServerSettings")]
         // public bool TurnRecived = false;
         [FoldoutGroup("ServerSettings")]
@@ -89,7 +89,7 @@ namespace Diaco.EightBall.Server
         private float S;
         private Coroutine CoroutineSendPositionToServer;
         private Coroutine CoroutineRecivePositionFromServer;
-        private Queue<PositionAndRotateBalls> QueuePositionsBallFromServer;
+        private List<PositionAndRotateBalls> QueuePositionsBallFromServer;
         private Queue<CueBallData> QueueCueBallPositionFromServer;
         private Queue<AimData> QueueAimFromServer;
         #endregion
@@ -230,12 +230,14 @@ namespace Diaco.EightBall.Server
         #region UnityFunctions
         public void Start()
         {
+            ///  Debug.Log("tiiiim" + Time.fixedDeltaTime);
+
             if (InRecordMode == false)
             {
                 var PocketsInScene = FindObjectsOfType<Pockets.Pockets>().ToList();
                 AllowAreaForMoveCueBallRenderer = GameObject.Find("AreaForMoveCueBall").GetComponent<SpriteRenderer>();
                 this.Basket = FindObjectOfType<Basket>();
-                QueuePositionsBallFromServer = new Queue<PositionAndRotateBalls>();
+                QueuePositionsBallFromServer = new List<PositionAndRotateBalls>(1024);
                 QueueCueBallPositionFromServer = new Queue<CueBallData>();
                 QueueAimFromServer = new Queue<AimData>();
                 IDImpactToWall = new List<int>();
@@ -377,8 +379,8 @@ namespace Diaco.EightBall.Server
                 socket.On("Position", (s, p, m) =>
                 {
                     var positions = JsonUtility.FromJson<Diaco.EightBall.Structs.PositionAndRotateBalls>(m[0].ToString());
-                    QueuePositionsBallFromServer.Enqueue(positions);
-
+                    QueuePositionsBallFromServer.Insert(positions.Tik, positions);
+                    //  Debug.Log("tik" + positions.Tik + "S" + positions.CueBall.x);
                     if (intergateplayposition == 0)
                     {
 
@@ -666,7 +668,7 @@ namespace Diaco.EightBall.Server
 
             ///   SetPositionsBalls(data.positions);
             yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
-            QueuePositionsBallFromServer.Enqueue(data.positions);
+            QueuePositionsBallFromServer.Insert(0, data.positions);
             yield return StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer());
 
             ResetSharBillboard();
@@ -705,7 +707,7 @@ namespace Diaco.EightBall.Server
                     initializTurn(data);
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
-                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Left, data.turnTime, 0);
 
                 //  Debug.Log("TimeAndTurnOnwer");
             }
@@ -721,7 +723,7 @@ namespace Diaco.EightBall.Server
                 }
 
 
-                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Right, data.turnTime, 0);
 
                 CheckEnable8BallRightInOtherClient();
 
@@ -779,7 +781,7 @@ namespace Diaco.EightBall.Server
             yield return new WaitForSeconds(0.01f);
 
             yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
-            QueuePositionsBallFromServer.Enqueue(data.positions);
+            QueuePositionsBallFromServer.Insert(0, data.positions);
             yield return StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer());
 
 
@@ -815,7 +817,7 @@ namespace Diaco.EightBall.Server
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
 
-                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Left, data.turnTime, 0);
 
                 //  Debug.Log("TimeAndTurnOnwer");
             }
@@ -829,7 +831,7 @@ namespace Diaco.EightBall.Server
                 {
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
-                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
+                EnableCoolDown(Side.Right, data.turnTime, 0);
 
 
                 CheckEnable8BallRightInOtherClient();
@@ -928,120 +930,130 @@ namespace Diaco.EightBall.Server
             do
             {
 
+                #region T3
                 if (AddressBalls[0] != null)
                 {
-                    PositionBalls.CueBall = new Vector2(AddressBalls[0].transform.position.x, AddressBalls[0].transform.position.z);
-                    PositionBalls.CueBall_R = AddressBalls[0].transform.eulerAngles;
+                    PositionBalls.CueBall = Vec3Helper.ToBilliardVec(AddressBalls[0].transform.position);
+                    PositionBalls.CueBall_velocity = Vec3Helper.ToBilliardVec(AddressBalls[0].rb.velocity);
+                    PositionBalls.CueBall_R = Vec3Helper.ToBilliardVec(AddressBalls[0].rb.angularVelocity);
+
                     // PositionBalls.CueBallInPocket = false;
                 }
                 if (AddressBalls[1] != null)
                 {
-                    PositionBalls.Ball_1 = new Vector2(AddressBalls[1].transform.position.x, AddressBalls[1].transform.position.z);
-                    PositionBalls.Ball_1_R = AddressBalls[1].transform.eulerAngles;
-                    /// PositionBalls.Ball_1InPocket = AddressBalls[1].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
+                    PositionBalls.Ball_1 = Vec3Helper.ToBilliardVec(AddressBalls[1].transform.position);
+                    PositionBalls.Ball_1_velocity = Vec3Helper.ToBilliardVec(AddressBalls[1].rb.velocity);
+                    PositionBalls.Ball_1_R = Vec3Helper.ToBilliardVec(AddressBalls[1].rb.angularVelocity);
                 }
                 if (AddressBalls[2] != null)
                 {
-                    PositionBalls.Ball_2 = new Vector2(AddressBalls[2].transform.position.x, AddressBalls[2].transform.position.z);
-                    PositionBalls.Ball_2_R = AddressBalls[2].transform.eulerAngles;
-                    // PositionBalls.Ball_2InPocket = AddressBalls[2].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
+                    PositionBalls.Ball_2 = Vec3Helper.ToBilliardVec(AddressBalls[2].transform.position);
+                    PositionBalls.Ball_2_velocity = Vec3Helper.ToBilliardVec(AddressBalls[2].rb.velocity);
+                    PositionBalls.Ball_2_R = Vec3Helper.ToBilliardVec(AddressBalls[2].rb.angularVelocity);
                 }
                 if (AddressBalls[3] != null)
                 {
-                    PositionBalls.Ball_3 = new Vector2(AddressBalls[3].transform.position.x, AddressBalls[3].transform.position.z);
-                    PositionBalls.Ball_3_R = AddressBalls[3].transform.eulerAngles;
-                    //  PositionBalls.Ball_3InPocket = AddressBalls[3].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
+                    PositionBalls.Ball_3 = Vec3Helper.ToBilliardVec(AddressBalls[3].transform.position);
+                    PositionBalls.Ball_3_velocity = Vec3Helper.ToBilliardVec(AddressBalls[3].rb.velocity);
+                    PositionBalls.Ball_3_R = Vec3Helper.ToBilliardVec(AddressBalls[3].rb.angularVelocity);
                 }
                 if (AddressBalls[4] != null)
                 {
-                    PositionBalls.Ball_4 = new Vector2(AddressBalls[4].transform.position.x, AddressBalls[4].transform.position.z);
-                    PositionBalls.Ball_4_R = AddressBalls[4].transform.eulerAngles;
+                    PositionBalls.Ball_4 = Vec3Helper.ToBilliardVec(AddressBalls[4].transform.position);
+                    PositionBalls.Ball_4_velocity = Vec3Helper.ToBilliardVec(AddressBalls[4].rb.velocity);
+                    PositionBalls.Ball_4_R = Vec3Helper.ToBilliardVec(AddressBalls[4].rb.angularVelocity);
                     ///  PositionBalls.Ball_4InPocket = AddressBalls[4].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[5] != null)
                 {
-                    PositionBalls.Ball_5 = new Vector2(AddressBalls[5].transform.position.x, AddressBalls[5].transform.position.z);
-                    PositionBalls.Ball_5_R = AddressBalls[5].transform.eulerAngles;
+                    PositionBalls.Ball_5 = Vec3Helper.ToBilliardVec(AddressBalls[5].transform.position);
+                    PositionBalls.Ball_5_velocity = Vec3Helper.ToBilliardVec(AddressBalls[5].rb.velocity);
+                    PositionBalls.Ball_5_R = Vec3Helper.ToBilliardVec(AddressBalls[5].rb.angularVelocity);
                     ///  PositionBalls.Ball_5InPocket = AddressBalls[5].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[6] != null)
                 {
-                    PositionBalls.Ball_6 = new Vector2(AddressBalls[6].transform.position.x, AddressBalls[6].transform.position.z);
-                    PositionBalls.Ball_6_R = AddressBalls[6].transform.eulerAngles;
+                    PositionBalls.Ball_6 = Vec3Helper.ToBilliardVec(AddressBalls[6].transform.position);
+                    PositionBalls.Ball_6_velocity = Vec3Helper.ToBilliardVec(AddressBalls[6].rb.velocity);
+                    PositionBalls.Ball_6_R = Vec3Helper.ToBilliardVec(AddressBalls[6].rb.angularVelocity);
                     ///  PositionBalls.Ball_6InPocket = AddressBalls[6].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[7] != null)
                 {
-                    PositionBalls.Ball_7 = new Vector2(AddressBalls[7].transform.position.x, AddressBalls[7].transform.position.z);
-                    PositionBalls.Ball_7_R = AddressBalls[7].transform.eulerAngles;
+                    PositionBalls.Ball_7 = Vec3Helper.ToBilliardVec(AddressBalls[7].transform.position);
+                    PositionBalls.Ball_7_velocity = Vec3Helper.ToBilliardVec(AddressBalls[7].rb.velocity);
+                    PositionBalls.Ball_7_R = Vec3Helper.ToBilliardVec(AddressBalls[7].rb.angularVelocity);
                     //   PositionBalls.Ball_7InPocket = AddressBalls[7].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[8] != null)
                 {
-                    PositionBalls.Ball_8 = new Vector2(AddressBalls[8].transform.position.x, AddressBalls[8].transform.position.z);
-                    PositionBalls.Ball_8_R = AddressBalls[8].transform.eulerAngles;
+                    PositionBalls.Ball_8 = Vec3Helper.ToBilliardVec(AddressBalls[8].transform.position);
+                    PositionBalls.Ball_8_velocity = Vec3Helper.ToBilliardVec(AddressBalls[8].rb.velocity);
+                    PositionBalls.Ball_8_R = Vec3Helper.ToBilliardVec(AddressBalls[8].rb.angularVelocity);
                     /////  PositionBalls.Ball_8InPocket = AddressBalls[8].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[9] != null)
                 {
-                    PositionBalls.Ball_9 = new Vector2(AddressBalls[9].transform.position.x, AddressBalls[9].transform.position.z);
-                    PositionBalls.Ball_9_R = AddressBalls[9].transform.eulerAngles;
+                    PositionBalls.Ball_9 = Vec3Helper.ToBilliardVec(AddressBalls[9].transform.position);
+                    PositionBalls.Ball_9_velocity = Vec3Helper.ToBilliardVec(AddressBalls[9].rb.velocity);
+                    PositionBalls.Ball_9_R = Vec3Helper.ToBilliardVec(AddressBalls[9].rb.angularVelocity);
                     //// PositionBalls.Ball_9InPocket = AddressBalls[99].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[10] != null)
                 {
-                    PositionBalls.Ball_10 = new Vector2(AddressBalls[10].transform.position.x, AddressBalls[10].transform.position.z);
-                    PositionBalls.Ball_10_R = AddressBalls[10].transform.eulerAngles;
+                    PositionBalls.Ball_10 = Vec3Helper.ToBilliardVec(AddressBalls[10].transform.position);
+                    PositionBalls.Ball_10_velocity = Vec3Helper.ToBilliardVec(AddressBalls[10].rb.velocity);
+                    PositionBalls.Ball_10_R = Vec3Helper.ToBilliardVec(AddressBalls[10].rb.angularVelocity);
                     ////   PositionBalls.Ball_10InPocket = AddressBalls[10].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[11] != null)
                 {
-                    PositionBalls.Ball_11 = new Vector2(AddressBalls[11].transform.position.x, AddressBalls[11].transform.position.z);
-                    PositionBalls.Ball_11_R = AddressBalls[11].transform.eulerAngles;
+                    PositionBalls.Ball_11 = Vec3Helper.ToBilliardVec(AddressBalls[11].transform.position);
+                    PositionBalls.Ball_11_velocity = Vec3Helper.ToBilliardVec(AddressBalls[11].rb.velocity);
+                    PositionBalls.Ball_11_R = Vec3Helper.ToBilliardVec(AddressBalls[11].rb.angularVelocity);
                     ///   PositionBalls.Ball_11InPocket = AddressBalls[11].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[12] != null)
                 {
-                    PositionBalls.Ball_12 = new Vector2(AddressBalls[12].transform.position.x, AddressBalls[12].transform.position.z);
-                    PositionBalls.Ball_12_R = AddressBalls[12].transform.eulerAngles;
+                    PositionBalls.Ball_12 = Vec3Helper.ToBilliardVec(AddressBalls[12].transform.position);
+                    PositionBalls.Ball_12_velocity = Vec3Helper.ToBilliardVec(AddressBalls[12].rb.velocity);
+                    PositionBalls.Ball_12_R = Vec3Helper.ToBilliardVec(AddressBalls[12].rb.angularVelocity);
                     ////   PositionBalls.Ball_12InPocket = AddressBalls[12].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[13] != null)
                 {
-                    PositionBalls.Ball_13 = new Vector2(AddressBalls[13].transform.position.x, AddressBalls[13].transform.position.z);
-                    PositionBalls.Ball_13_R = AddressBalls[13].transform.eulerAngles;
+                    PositionBalls.Ball_13 = Vec3Helper.ToBilliardVec(AddressBalls[13].transform.position);
+                    PositionBalls.Ball_13_velocity = Vec3Helper.ToBilliardVec(AddressBalls[13].rb.velocity);
+                    PositionBalls.Ball_13_R = Vec3Helper.ToBilliardVec(AddressBalls[13].rb.angularVelocity);
                     ////   PositionBalls.Ball_13InPocket = AddressBalls[13].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[14] != null)
                 {
-                    PositionBalls.Ball_14 = new Vector2(AddressBalls[14].transform.position.x, AddressBalls[14].transform.position.z);
-                    PositionBalls.Ball_14_R = AddressBalls[14].transform.eulerAngles;
+                    PositionBalls.Ball_14 = Vec3Helper.ToBilliardVec(AddressBalls[14].transform.position);
+                    PositionBalls.Ball_14_velocity = Vec3Helper.ToBilliardVec(AddressBalls[14].rb.velocity);
+                    PositionBalls.Ball_14_R = Vec3Helper.ToBilliardVec(AddressBalls[14].rb.angularVelocity);
                     ///    PositionBalls.Ball_14InPocket = AddressBalls[14].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
                 if (AddressBalls[15] != null)
                 {
-                    PositionBalls.Ball_15 = new Vector2(AddressBalls[15].transform.position.x, AddressBalls[15].transform.position.z);
-                    PositionBalls.Ball_15_R = AddressBalls[15].transform.eulerAngles;
+                    PositionBalls.Ball_15 = Vec3Helper.ToBilliardVec(AddressBalls[15].transform.position);
+                    PositionBalls.Ball_15_velocity = Vec3Helper.ToBilliardVec(AddressBalls[15].rb.velocity);
+                    PositionBalls.Ball_15_R = Vec3Helper.ToBilliardVec(AddressBalls[15].rb.angularVelocity);
                     /////PositionBalls.Ball_15InPocket = AddressBalls[15].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
                 }
-                if (TimeStep == 0.0f)
-                {
-                    PositionBalls.TimeStepPacket = SpeedPlayRecord;
-                }
-                else
-                {
-                    PositionBalls.TimeStepPacket = Mathf.Abs(Time.realtimeSinceStartup - TimeStep);
-                    //  Debug.Log($"<color=green>TimeStepPacket{PositionBalls.TimeStepPacket}</color>");
-                }
-
+                #endregion
                 PositionBalls.isLastPacket = false;
                 Emit_PositionsBalls(PositionBalls);
-                TimeStep = Time.realtimeSinceStartup;
-                yield return new WaitForSecondsRealtime(SpeedPlayRecord);
+
+                //Debug.Log(PositionBalls.Tik);
+                yield return new WaitForSecondsRealtime(Framerate);
+                PositionBalls.Tik++;
+
             } while (CheckBallsMove());
 
 
             PositionBalls.isLastPacket = true;
+            Debug.Log("LastSend:" + PositionBalls.Tik);
             Emit_PositionsBalls(PositionBalls);
             //TimeStep = Time.realtimeSinceStartup;
             Emit_SendDataOfGameOnEndTurn(AddressBalls[0].transform.position);
@@ -1057,124 +1069,197 @@ namespace Diaco.EightBall.Server
         }
         public IEnumerator PositionsBallsRecivedFromServer()
         {
-            //  yield return new WaitForSecondsRealtime(0.5f);
+
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
+            PositionAndRotateBalls PositionBalls = new PositionAndRotateBalls();
+            cueball.Handler_OnHitBall(-1, Vector3.zero);
             cueball.DragIsBusy = true;
             cueball.inPlayPos = true;
-            /// cueball.ActiveAimSystem(false);
-            //ActiveAimSystemForShowInOtherClient(true);
-            cueball.Handler_OnHitBall(-1, Vector3.zero);
-            do
+            int tik = 0;
+            bool loopCancle = false;
+
+            yield return new WaitForSecondsRealtime(2.0f);
+            while (loopCancle == false)
             {
+                
+                if (QueuePositionsBallFromServer.Count > 0)
+                {
+                    Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
+                    PositionBalls = QueuePositionsBallFromServer[Mathf.Clamp(tik, 0, QueuePositionsBallFromServer.Count - 1)];
+                    tik++;
+                    //  if (tik > QueuePositionsBallFromServer.Count)
+                    //      tik = QueuePositionsBallFromServer.Count;
+                    //  Debug.Log(tik +"   ::::::::::   "+ QueuePositionsBallFromServer.Count);
 
-                var PositionBalls = QueuePositionsBallFromServer.Dequeue();
+                    if (AddressBalls[0] != null)
+                    {
 
-                if (AddressBalls[0] != null)
-                {
+                        AddressBalls[0].MoveBall(PositionBalls.CueBall,
+                            PositionBalls.CueBall_R,
+                            PositionBalls.CueBall_velocity,
 
-                    AddressBalls[0].transform.DOMove(new Vector3(PositionBalls.CueBall.x, AddressBalls[0].transform.position.y, PositionBalls.CueBall.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[0].transform.DORotate(PositionBalls.CueBall_R, PositionBalls.TimeStepPacket);
-                    /// PositionBalls.Ball_1InPocket = AddressBalls[1].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
-                }
-                if (AddressBalls[1] != null)
-                {
-                    AddressBalls[1].transform.DOMove(new Vector3(PositionBalls.Ball_1.x, AddressBalls[1].transform.position.y, PositionBalls.Ball_1.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[1].transform.DORotate(PositionBalls.Ball_1_R, PositionBalls.TimeStepPacket);
-                    //// AddressBalls[1].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_1InPocket;
-                }
-                if (AddressBalls[2] != null)
-                {
-                    AddressBalls[2].transform.DOMove(new Vector3(PositionBalls.Ball_2.x, AddressBalls[2].transform.position.y, PositionBalls.Ball_2.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[2].transform.DORotate(PositionBalls.Ball_2_R, PositionBalls.TimeStepPacket);
-                    ///    AddressBalls[2].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_2InPocket;
-                }
-                if (AddressBalls[3] != null)
-                {
-                    AddressBalls[3].transform.DOMove(new Vector3(PositionBalls.Ball_3.x, AddressBalls[3].transform.position.y, PositionBalls.Ball_3.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[3].transform.DORotate(PositionBalls.Ball_3_R, PositionBalls.TimeStepPacket);
-                    ////   AddressBalls[3].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_3InPocket;
-                }
-                if (AddressBalls[4] != null)
-                {
-                    AddressBalls[4].transform.DOMove(new Vector3(PositionBalls.Ball_4.x, AddressBalls[4].transform.position.y, PositionBalls.Ball_4.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[4].transform.DORotate(PositionBalls.Ball_4_R, PositionBalls.TimeStepPacket);
-                    //////  AddressBalls[4].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_4InPocket;
-                }
-                if (AddressBalls[5] != null)
-                {
-                    AddressBalls[5].transform.DOMove(new Vector3(PositionBalls.Ball_5.x, AddressBalls[5].transform.position.y, PositionBalls.Ball_5.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[5].transform.DORotate(PositionBalls.Ball_5_R, PositionBalls.TimeStepPacket);
-                    //////   AddressBalls[5].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_5InPocket;
-                }
-                if (AddressBalls[6] != null)
-                {
-                    AddressBalls[6].transform.DOMove(new Vector3(PositionBalls.Ball_6.x, AddressBalls[6].transform.position.y, PositionBalls.Ball_6.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[6].transform.DORotate(PositionBalls.Ball_6_R, PositionBalls.TimeStepPacket);
-                    ////  AddressBalls[6].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_6InPocket;
-                }
-                if (AddressBalls[7] != null)
-                {
-                    AddressBalls[7].transform.DOMove(new Vector3(PositionBalls.Ball_7.x, AddressBalls[7].transform.position.y, PositionBalls.Ball_7.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[7].transform.DORotate(PositionBalls.Ball_7_R, PositionBalls.TimeStepPacket);
-                    //   AddressBalls[7].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_7InPocket;
-                }
-                if (AddressBalls[8] != null)
-                {
-                    AddressBalls[8].transform.DOMove(new Vector3(PositionBalls.Ball_8.x, AddressBalls[8].transform.position.y, PositionBalls.Ball_8.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[8].transform.DORotate(PositionBalls.Ball_8_R, PositionBalls.TimeStepPacket);
-                    ///   AddressBalls[8].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_8InPocket;
-                }
-                if (AddressBalls[9] != null)
-                {
-                    AddressBalls[9].transform.DOMove(new Vector3(PositionBalls.Ball_9.x, AddressBalls[9].transform.position.y, PositionBalls.Ball_9.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[9].transform.DORotate(PositionBalls.Ball_9_R, PositionBalls.TimeStepPacket);
-                    //  AddressBalls[9].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_9InPocket;
-                }
-                if (AddressBalls[10] != null)
-                {
-                    AddressBalls[10].transform.DOMove(new Vector3(PositionBalls.Ball_10.x, AddressBalls[10].transform.position.y, PositionBalls.Ball_10.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[10].transform.DORotate(PositionBalls.Ball_10_R, PositionBalls.TimeStepPacket);
-                    //   AddressBalls[10].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_10InPocket;
-                }
-                if (AddressBalls[11] != null)
-                {
-                    AddressBalls[11].transform.DOMove(new Vector3(PositionBalls.Ball_11.x, AddressBalls[11].transform.position.y, PositionBalls.Ball_11.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[11].transform.DORotate(PositionBalls.Ball_11_R, PositionBalls.TimeStepPacket);
-                    //  AddressBalls[11].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_11InPocket;
-                }
-                if (AddressBalls[12] != null)
-                {
-                    AddressBalls[12].transform.DOMove(new Vector3(PositionBalls.Ball_12.x, AddressBalls[12].transform.position.y, PositionBalls.Ball_12.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[12].transform.DORotate(PositionBalls.Ball_12_R, PositionBalls.TimeStepPacket);
-                    //  AddressBalls[12].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_12InPocket;
-                }
-                if (AddressBalls[13] != null)
-                {
-                    AddressBalls[13].transform.DOMove(new Vector3(PositionBalls.Ball_13.x, AddressBalls[13].transform.position.y, PositionBalls.Ball_13.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[13].transform.DORotate(PositionBalls.Ball_13_R, PositionBalls.TimeStepPacket);
-                    //   AddressBalls[13].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_13InPocket;
-                }
-                if (AddressBalls[14] != null)
-                {
-                    AddressBalls[14].transform.DOMove(new Vector3(PositionBalls.Ball_14.x, AddressBalls[14].transform.position.y, PositionBalls.Ball_14.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[14].transform.DORotate(PositionBalls.Ball_14_R, PositionBalls.TimeStepPacket);
-                    /// AddressBalls[14].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_14InPocket;
-                }
-                if (AddressBalls[15] != null)
-                {
-                    AddressBalls[15].transform.DOMove(new Vector3(PositionBalls.Ball_15.x, AddressBalls[15].transform.position.y, PositionBalls.Ball_15.y), PositionBalls.TimeStepPacket);
-                    AddressBalls[15].transform.DORotate(PositionBalls.Ball_15_R, PositionBalls.TimeStepPacket);
-                    ///  AddressBalls[15].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_15InPocket;
-                }
-                yield return new WaitForSecondsRealtime(PositionBalls.TimeStepPacket);
+                            Framerate,
+                            PositionBalls.Tik, tik);
+                        // AddressBalls[0].Rotate(PositionBalls.CueBall_R, Framerate);
+                        /// PositionBalls.Ball_1InPocket = AddressBalls[1].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
+                    }
+                    if (AddressBalls[1] != null)
+                    {
+                        AddressBalls[1].MoveBall(PositionBalls.Ball_1,
+                            PositionBalls.Ball_1_R,
+                            PositionBalls.Ball_1_velocity,
+                            Framerate, PositionBalls.Tik, tik);
+                        //     AddressBalls[1].Rotate(PositionBalls.Ball_1_R, Framerate);
+                        //// AddressBalls[1].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_1InPocket;
+                    }
+                    if (AddressBalls[2] != null)
+                    {
+                        AddressBalls[2].MoveBall(PositionBalls.Ball_2,
+                            PositionBalls.Ball_2_R,
+                            PositionBalls.Ball_2_velocity,
+                              Framerate, PositionBalls.Tik, tik);
+                        ///   AddressBalls[2].Rotate(PositionBalls.Ball_2_R, Framerate);
+                        ///    AddressBalls[2].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_2InPocket;
+                    }
+                    if (AddressBalls[3] != null)
+                    {
+                        AddressBalls[3].MoveBall(PositionBalls.Ball_3,
+                            PositionBalls.Ball_3_R,
+                            PositionBalls.Ball_3_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        //  AddressBalls[3].Rotate(PositionBalls.Ball_3_R, Framerate);
+                        ////   AddressBalls[3].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_3InPocket;
+                    }
+                    if (AddressBalls[4] != null)
+                    {
+                        AddressBalls[4].MoveBall(PositionBalls.Ball_4,
+                            PositionBalls.Ball_4_R,
+                            PositionBalls.Ball_4_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        //     AddressBalls[4].Rotate(PositionBalls.Ball_4_R, Framerate);
+                        //////  AddressBalls[4].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_4InPocket;
+                    }
+                    if (AddressBalls[5] != null)
+                    {
+                        AddressBalls[5].MoveBall(PositionBalls.Ball_5,
+                            PositionBalls.Ball_5_R,
+                            PositionBalls.Ball_5_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        //  AddressBalls[5].Rotate(PositionBalls.Ball_5_R, Framerate);
+                        //////   AddressBalls[5].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_5InPocket;
+                    }
+                    if (AddressBalls[6] != null)
+                    {
+                        AddressBalls[6].MoveBall(PositionBalls.Ball_6,
+                            PositionBalls.Ball_6_R,
+                            PositionBalls.Ball_6_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        /// AddressBalls[6].Rotate(PositionBalls.Ball_6_R, Framerate);
+                        ////  AddressBalls[6].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_6InPocket;
+                    }
+                    if (AddressBalls[7] != null)
+                    {
+                        AddressBalls[7].MoveBall(PositionBalls.Ball_7,
+                            PositionBalls.Ball_7_R,
+                            PositionBalls.Ball_7_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        // AddressBalls[7].Rotate(PositionBalls.Ball_7_R, Framerate);
+                        //   AddressBalls[7].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_7InPocket;
+                    }
+                    if (AddressBalls[8] != null)
+                    {
+                        AddressBalls[8].MoveBall(PositionBalls.Ball_8,
+                            PositionBalls.Ball_8_R,
+                            PositionBalls.Ball_8_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        ///    AddressBalls[8].Rotate(PositionBalls.Ball_8_R, Framerate);
+                        ///   AddressBalls[8].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_8InPocket;
+                    }
+                    if (AddressBalls[9] != null)
+                    {
+                        AddressBalls[9].MoveBall(PositionBalls.Ball_9,
+                            PositionBalls.Ball_9_R,
+                            PositionBalls.Ball_9_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        // AddressBalls[9].Rotate(PositionBalls.Ball_9_R, Framerate);
+                        //  AddressBalls[9].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_9InPocket;
+                    }
+                    if (AddressBalls[10] != null)
+                    {
+                        AddressBalls[10].MoveBall(PositionBalls.Ball_10,
+                            PositionBalls.Ball_10_R,
+                            PositionBalls.Ball_10_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        //// AddressBalls[10].Rotate(PositionBalls.Ball_10_R, Framerate);
+                        //   AddressBalls[10].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_10InPocket;
+                    }
+                    if (AddressBalls[11] != null)
+                    {
+                        AddressBalls[11].MoveBall(PositionBalls.Ball_11,
+                            PositionBalls.Ball_11_R,
+                            PositionBalls.Ball_11_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        ///  AddressBalls[11].Rotate(PositionBalls.Ball_11_R, Framerate);
+                        //  AddressBalls[11].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_11InPocket;
+                    }
+                    if (AddressBalls[12] != null)
+                    {
+                        AddressBalls[12].MoveBall(PositionBalls.Ball_12,
+                            PositionBalls.Ball_12_R,
+                            PositionBalls.Ball_12_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        ///      AddressBalls[12].Rotate(PositionBalls.Ball_12_R, Framerate);
+                        //  AddressBalls[12].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_12InPocket;
+                    }
+                    if (AddressBalls[13] != null)
+                    {
+                        AddressBalls[13].MoveBall(PositionBalls.Ball_13,
+                            PositionBalls.Ball_13_R,
+                            PositionBalls.Ball_13_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        // AddressBalls[13].Rotate(PositionBalls.Ball_13_R, Framerate);
+                        //   AddressBalls[13].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_13InPocket;
+                    }
+                    if (AddressBalls[14] != null)
+                    {
+                        AddressBalls[14].MoveBall(PositionBalls.Ball_14,
+                            PositionBalls.Ball_14_R,
+                            PositionBalls.Ball_14_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        ////   AddressBalls[14].Rotate(PositionBalls.Ball_14_R, Framerate);
+                        /// AddressBalls[14].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_14InPocket;
+                    }
+                    if (AddressBalls[15] != null)
+                    {
+                        AddressBalls[15].MoveBall(PositionBalls.Ball_15,
+                            PositionBalls.Ball_15_R,
+                            PositionBalls.Ball_15_velocity,
+                             Framerate, PositionBalls.Tik, tik);
+                        //  AddressBalls[15].Rotate(PositionBalls.Ball_15_R, Framerate);
+                        ///  AddressBalls[15].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = PositionBalls.Ball_15InPocket;
+                    }
+                    if (PositionBalls.isLastPacket)
+                    {
 
-                if (PositionBalls.isLastPacket)
-                {
-                    Emit_EndPlayRecord();
+                        for (int i = 0; i < AddressBalls.Count; i++)
+                        {
+                            if (AddressBalls[i] != null)
+                                AddressBalls[i].StopMoving();
+                        }
+                        Emit_EndPlayRecord();
+                        loopCancle = true;
+                        Debug.Log("LastRecive:" + PositionBalls.Tik);
+
+                    }
                 }
-            } while (QueuePositionsBallFromServer.Count > 0);
 
+                //  Physics.Simulate(Time.fixedDeltaTime);
+                yield return new WaitForSecondsRealtime(Framerate);
 
+                // Debug.Log(tik);
+            }
+
+            QueuePositionsBallFromServer.Clear();
             // cueball.resetpos();
             intergateplayposition = 0;
 
@@ -1185,99 +1270,158 @@ namespace Diaco.EightBall.Server
         {
 
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
-            //  cueball.ActiveAimSystem(false);
-            do
+            // cueball.ActiveAimSystem(false);
+
+
+            var PositionBalls = QueuePositionsBallFromServer[0];
+
+            #region T1
+            if (AddressBalls[0] != null)
             {
-                var PositionBalls = QueuePositionsBallFromServer.Dequeue();
 
-                if (AddressBalls[0] != null)
-                {
-                    AddressBalls[0].transform.DOMove(new Vector3(PositionBalls.CueBall.x, AddressBalls[0].transform.position.y, PositionBalls.CueBall.y), 0.001f);
-                    AddressBalls[0].transform.DORotate(PositionBalls.CueBall_R, 0.001f);
-                }
-                if (AddressBalls[1] != null)
-                {
-                    AddressBalls[1].transform.DOMove(new Vector3(PositionBalls.Ball_1.x, AddressBalls[1].transform.position.y, PositionBalls.Ball_1.y), 0.001f);
-                    AddressBalls[1].transform.DORotate(PositionBalls.Ball_1_R, 0.001f);
-                }
-                if (AddressBalls[2] != null)
-                {
-                    AddressBalls[2].transform.DOMove(new Vector3(PositionBalls.Ball_2.x, AddressBalls[2].transform.position.y, PositionBalls.Ball_2.y), 0.001f);
-                    AddressBalls[2].transform.DORotate(PositionBalls.Ball_2_R, 0.001f);
-                }
-                if (AddressBalls[3] != null)
-                {
-                    AddressBalls[3].transform.DOMove(new Vector3(PositionBalls.Ball_3.x, AddressBalls[3].transform.position.y, PositionBalls.Ball_3.y), 0.001f);
-                    AddressBalls[3].transform.DORotate(PositionBalls.Ball_3_R, 0.001f);
-                }
-                if (AddressBalls[4] != null)
-                {
-                    AddressBalls[4].transform.DOMove(new Vector3(PositionBalls.Ball_4.x, AddressBalls[4].transform.position.y, PositionBalls.Ball_4.y), 0.001f);
-                    AddressBalls[4].transform.DORotate(PositionBalls.Ball_4_R, 0.001f);
-                }
-                if (AddressBalls[5] != null)
-                {
-                    AddressBalls[5].transform.DOMove(new Vector3(PositionBalls.Ball_5.x, AddressBalls[5].transform.position.y, PositionBalls.Ball_5.y), 0.001f);
-                    AddressBalls[5].transform.DORotate(PositionBalls.Ball_5_R, 0.001f);
-                }
-                if (AddressBalls[6] != null)
-                {
-                    AddressBalls[6].transform.DOMove(new Vector3(PositionBalls.Ball_6.x, AddressBalls[6].transform.position.y, PositionBalls.Ball_6.y), 0.001f);
-                    AddressBalls[6].transform.DORotate(PositionBalls.Ball_6_R, 0.001f);
-                }
-                if (AddressBalls[7] != null)
-                {
-                    AddressBalls[7].transform.DOMove(new Vector3(PositionBalls.Ball_7.x, AddressBalls[7].transform.position.y, PositionBalls.Ball_7.y), 0.001f);
-                    AddressBalls[7].transform.DORotate(PositionBalls.Ball_7_R, 0.001f);
-                }
-                if (AddressBalls[8] != null)
-                {
-                    AddressBalls[8].transform.DOMove(new Vector3(PositionBalls.Ball_8.x, AddressBalls[8].transform.position.y, PositionBalls.Ball_8.y), 0.001f);
-                    AddressBalls[8].transform.DORotate(PositionBalls.Ball_8_R, 0.001f);
-                }
-                if (AddressBalls[9] != null)
-                {
-                    AddressBalls[9].transform.DOMove(new Vector3(PositionBalls.Ball_9.x, AddressBalls[9].transform.position.y, PositionBalls.Ball_9.y), 0.001f);
-                    AddressBalls[9].transform.DORotate(PositionBalls.Ball_9_R, 0.001f);
-                }
-                if (AddressBalls[10] != null)
-                {
-                    AddressBalls[10].transform.DOMove(new Vector3(PositionBalls.Ball_10.x, AddressBalls[10].transform.position.y, PositionBalls.Ball_10.y), 0.001f);
-                    AddressBalls[10].transform.DORotate(PositionBalls.Ball_10_R, 0.001f);
-                }
-                if (AddressBalls[11] != null)
-                {
-                    AddressBalls[11].transform.DOMove(new Vector3(PositionBalls.Ball_11.x, AddressBalls[11].transform.position.y, PositionBalls.Ball_11.y), 0.001f);
-                    AddressBalls[11].transform.DORotate(PositionBalls.Ball_11_R, 0.001f);
-                }
-                if (AddressBalls[12] != null)
-                {
-                    AddressBalls[12].transform.DOMove(new Vector3(PositionBalls.Ball_12.x, AddressBalls[12].transform.position.y, PositionBalls.Ball_12.y), 0.001f);
-                    AddressBalls[12].transform.DORotate(PositionBalls.Ball_12_R, 0.001f);
-                }
-                if (AddressBalls[13] != null)
-                {
-                    AddressBalls[13].transform.DOMove(new Vector3(PositionBalls.Ball_13.x, AddressBalls[13].transform.position.y, PositionBalls.Ball_13.y), 0.001f);
-                    AddressBalls[13].transform.DORotate(PositionBalls.Ball_13_R, 0.001f);
-                }
-                if (AddressBalls[14] != null)
-                {
-                    AddressBalls[14].transform.DOMove(new Vector3(PositionBalls.Ball_14.x, AddressBalls[14].transform.position.y, PositionBalls.Ball_14.y), 0.001f);
-                    AddressBalls[14].transform.DORotate(PositionBalls.Ball_14_R, 0.001f);
-                }
-                if (AddressBalls[15] != null)
-                {
-                    AddressBalls[15].transform.DOMove(new Vector3(PositionBalls.Ball_15.x, AddressBalls[15].transform.position.y, PositionBalls.Ball_15.y), 0.001f);
-                    AddressBalls[15].transform.DORotate(PositionBalls.Ball_15_R, 0.001f);
-                }
-                yield return new WaitForSecondsRealtime(0.001f);
-            } while (QueuePositionsBallFromServer.Count > 0);
+                AddressBalls[0].MoveBall(PositionBalls.CueBall,
+                    PositionBalls.CueBall_R,
+                    PositionBalls.CueBall_velocity,
+                     0, 0, 0);
+                // AddressBalls[0].Rotate(PositionBalls.CueBall_R, Framerate);
+                /// PositionBalls.Ball_1InPocket = AddressBalls[1].GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix;
+            }
+            if (AddressBalls[1] != null)
+            {
+                AddressBalls[1].MoveBall(PositionBalls.Ball_1,
+                    PositionBalls.Ball_1_R,
+                    PositionBalls.Ball_1_velocity,
+                     0, 0, 0);
+               
+            }
+            if (AddressBalls[2] != null)
+            {
+                AddressBalls[2].MoveBall(PositionBalls.Ball_2,
+                    PositionBalls.Ball_2_R,
+                    PositionBalls.Ball_2_velocity,
+                     0, 0, 0);
+              
+            }
+            if (AddressBalls[3] != null)
+            {
+                AddressBalls[3].MoveBall(PositionBalls.Ball_3,
+                    PositionBalls.Ball_3_R,
+                    PositionBalls.Ball_3_velocity,
+                     0, 0, 0);
+              
+            }
+            if (AddressBalls[4] != null)
+            {
+                AddressBalls[4].MoveBall(PositionBalls.Ball_4,
+                    PositionBalls.Ball_4_R,
+                    PositionBalls.Ball_4_velocity,
+                     0, 0, 0);
 
-            CheckPitok(gameData.pitok, gameData.positions.CueBall);
+            }
+            if (AddressBalls[5] != null)
+            {
+                AddressBalls[5].MoveBall(PositionBalls.Ball_5,
+                    PositionBalls.Ball_5_R,
+                    PositionBalls.Ball_5_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[6] != null)
+            {
+                AddressBalls[6].MoveBall(PositionBalls.Ball_6,
+                    PositionBalls.Ball_6_R,
+                    PositionBalls.Ball_6_velocity,
+                     0, 0, 0);
+ 
+            }
+            if (AddressBalls[7] != null)
+            {
+                AddressBalls[7].MoveBall(PositionBalls.Ball_7,
+                    PositionBalls.Ball_7_R,
+                    PositionBalls.Ball_7_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[8] != null)
+            {
+                AddressBalls[8].MoveBall(PositionBalls.Ball_8,
+                    PositionBalls.Ball_8_R,
+                    PositionBalls.Ball_8_velocity,
+                     0, 0, 0);
+ 
+            }
+            if (AddressBalls[9] != null)
+            {
+                AddressBalls[9].MoveBall(PositionBalls.Ball_9,
+                    PositionBalls.Ball_9_R,
+                    PositionBalls.Ball_9_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[10] != null)
+            {
+                AddressBalls[10].MoveBall(PositionBalls.Ball_10,
+                    PositionBalls.Ball_10_R,
+                    PositionBalls.Ball_10_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[11] != null)
+            {
+                AddressBalls[11].MoveBall(PositionBalls.Ball_11,
+                    PositionBalls.Ball_11_R,
+                    PositionBalls.Ball_11_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[12] != null)
+            {
+                AddressBalls[12].MoveBall(PositionBalls.Ball_12,
+                    PositionBalls.Ball_12_R,
+                    PositionBalls.Ball_12_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[13] != null)
+            {
+                AddressBalls[13].MoveBall(PositionBalls.Ball_13,
+                    PositionBalls.Ball_13_R,
+                    PositionBalls.Ball_13_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[14] != null)
+            {
+                AddressBalls[14].MoveBall(PositionBalls.Ball_14,
+                    PositionBalls.Ball_14_R,
+                    PositionBalls.Ball_14_velocity,
+                     0, 0, 0);
+
+            }
+            if (AddressBalls[15] != null)
+            {
+                AddressBalls[15].MoveBall(PositionBalls.Ball_15,
+                    PositionBalls.Ball_15_R,
+                    PositionBalls.Ball_15_velocity,
+                     0, 0, 0);
+
+            }
+            #endregion
+            yield return new WaitForSecondsRealtime(0.001f);
+
+
+            for (int i = 0; i < AddressBalls.Count; i++)
+            {
+                if (AddressBalls[i] != null)
+                    AddressBalls[i].StopMoving();
+            }
+            yield return new WaitForSecondsRealtime(0.001f);
+            CheckPitok(gameData.pitok, Vec3Helper.ToVector3(gameData.positions.CueBall));
             KinimaticBalls(false);
             intergateplayposition = 0;
-
+            QueuePositionsBallFromServer.Clear();
             cueball.DragIsBusy = false;
+            yield return null;
         }
 
         public IEnumerator CueBallPositionRecivedFromServer()
@@ -1444,22 +1588,23 @@ namespace Diaco.EightBall.Server
         public void SpwnBalls(GameData gameData)
         {
             Vector3[] positions = new Vector3[16] {
-                new Vector3(gameData.positions.CueBall.x,0.08885605f,gameData.positions.CueBall.y),
-                new Vector3(gameData.positions.Ball_1.x,0.08885605f,gameData.positions.Ball_1.y),
-                new Vector3(gameData.positions.Ball_2.x,0.08885605f,gameData.positions.Ball_2.y),
-                new Vector3(gameData.positions.Ball_3.x,0.08885605f,gameData.positions.Ball_3.y),
-                new Vector3(gameData.positions.Ball_4.x,0.08885605f,gameData.positions.Ball_4.y),
-                new Vector3(gameData.positions.Ball_5.x,0.08885605f,gameData.positions.Ball_5.y),
-                new Vector3(gameData.positions.Ball_6.x,0.08885605f,gameData.positions.Ball_6.y),
-                new Vector3(gameData.positions.Ball_7.x,0.08885605f,gameData.positions.Ball_7.y),
-                new Vector3(gameData.positions.Ball_8.x,0.08885605f,gameData.positions.Ball_8.y),
-                new Vector3(gameData.positions.Ball_9.x,0.08885605f,gameData.positions.Ball_9.y),
-                new Vector3(gameData.positions.Ball_10.x,0.08885605f,gameData.positions.Ball_10.y),
-                new Vector3(gameData.positions.Ball_11.x,0.08885605f,gameData.positions.Ball_11.y),
-                new Vector3(gameData.positions.Ball_12.x,0.08885605f,gameData.positions.Ball_12.y),
-                new Vector3(gameData.positions.Ball_13.x,0.08885605f,gameData.positions.Ball_13.y),
-                new Vector3(gameData.positions.Ball_14.x,0.08885605f,gameData.positions.Ball_14.y),
-                new Vector3(gameData.positions.Ball_15.x,0.08885605f,gameData.positions.Ball_15.y),
+
+                new Vector3(gameData.positions.CueBall.x,0.08885605f,gameData.positions.CueBall.z),
+                new Vector3(gameData.positions.Ball_1.x,0.08885605f,gameData.positions.Ball_1.z),
+                new Vector3(gameData.positions.Ball_2.x,0.08885605f,gameData.positions.Ball_2.z),
+                new Vector3(gameData.positions.Ball_3.x,0.08885605f,gameData.positions.Ball_3.z),
+                new Vector3(gameData.positions.Ball_4.x,0.08885605f,gameData.positions.Ball_4.z),
+                new Vector3(gameData.positions.Ball_5.x,0.08885605f,gameData.positions.Ball_5.z),
+                new Vector3(gameData.positions.Ball_6.x,0.08885605f,gameData.positions.Ball_6.z),
+                new Vector3(gameData.positions.Ball_7.x,0.08885605f,gameData.positions.Ball_7.z),
+                new Vector3(gameData.positions.Ball_8.x,0.08885605f,gameData.positions.Ball_8.z),
+                new Vector3(gameData.positions.Ball_9.x,0.08885605f,gameData.positions.Ball_9.z),
+                new Vector3(gameData.positions.Ball_10.x,0.08885605f,gameData.positions.Ball_10.z),
+                new Vector3(gameData.positions.Ball_11.x,0.08885605f,gameData.positions.Ball_11.z),
+                new Vector3(gameData.positions.Ball_12.x,0.08885605f,gameData.positions.Ball_12.z),
+                new Vector3(gameData.positions.Ball_13.x,0.08885605f,gameData.positions.Ball_13.z),
+                new Vector3(gameData.positions.Ball_14.x,0.08885605f,gameData.positions.Ball_14.z),
+                new Vector3(gameData.positions.Ball_15.x,0.08885605f,gameData.positions.Ball_15.z),
 
             };
             var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
@@ -1987,17 +2132,17 @@ namespace Diaco.EightBall.Server
 
 
         }
-        public void CheckPitok(int pitok, Vector2 pos)
+        public void CheckPitok(int pitok, Vector3 pos)
         {
             if (pitok == 1)
             {
-                var lastpos = new Vector3(pos.x, 0.08885605f, pos.y);
+                var lastpos = new Vector3(pos.x, 0.08885605f, pos.z);
 
                 NormalPitok(lastpos);
             }
             else if (pitok == 2)
             {
-                var lastpos = new Vector3(pos.x, 0.08885605f, pos.y);
+                var lastpos = new Vector3(pos.x, 0.08885605f, pos.z);
                 Pitok1_3(lastpos);
             }
             else if (pitok == 0)
