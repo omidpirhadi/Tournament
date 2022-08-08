@@ -435,7 +435,7 @@ namespace Diaco.SoccerStar.Server
                     Turn = true;
                     SiblArea.Area = 4;
                     Handler_GameReady();
-                    Debug.Log("READY" + a[0].ToString());
+                  //  Debug.Log("READY" + a[0].ToString());
                 });
                 socket.On("result", (s, p, a) =>
                 {

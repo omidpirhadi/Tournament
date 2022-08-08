@@ -148,6 +148,7 @@ namespace Diaco.SoccerStar.Marble
                 {
 
                     IsRotatingMarble = true;
+                    Debug.Log("rotateMarble On Wall");
 
                 }
                 if (tag_collider == "ball")
@@ -658,7 +659,7 @@ namespace Diaco.SoccerStar.Marble
             GetSpeed = 0;
             rigidbody.Sleep();
 
-            Debug.Log("stoped:" + gameObject.name);
+          //  Debug.Log("stoped:" + gameObject.name);
             // }
         }
         private void PhysicFreeze(bool enable)
