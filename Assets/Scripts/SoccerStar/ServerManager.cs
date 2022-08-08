@@ -854,6 +854,11 @@ namespace Diaco.SoccerStar.Server
             }
 
         }
+        public void Invoke_CheckMovemenInSecond()
+        {
+            InvokeRepeating("CheckMovment", 1, 1);
+            Debug.Log("CheckMovmentFromServer");
+        }
         public IEnumerator SendDataMarblesMovement()
         {
             MarblesInMove = true;
@@ -1094,11 +1099,7 @@ namespace Diaco.SoccerStar.Server
 
 
         }
-        public void Invoke_CheckMovemenInSecond()
-        {
-            InvokeRepeating("CheckMovment", 1, 1);
-            Debug.Log("CheckMovmentFromServer");
-        }
+       
         public IEnumerator ShowResualtPage(object []a)
         {
             Time.timeScale = 1;
@@ -1322,60 +1323,7 @@ namespace Diaco.SoccerStar.Server
             Debug.Log("update");
         }
         //public float ThresholdSleep = 0.09f;
-        public bool CheckMarbleMove()
-        {
-            var move = false;
-            if (InRecordMode == false)
-            {
-                for (int i = 0; i < Marbles.Count; i++)
-                {
-                    if (Marbles[i])
-                    {
-                        if (Marbles[i].GetVlocity != Vector3.zero )
-                        {
-                            /* if (Marbles[i].GetComponent<Rigidbody>().velocity.magnitude < ThresholdSleep)
-                             {
-                                 Marbles[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
-                                 Marbles[i].GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                             }
-                             {
-
-
-                             }*/
-                            move = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-             //   Debug.Log("MOvE1");
-                for (int i = 0; i < MarblesInRecorodMode.Count; i++)
-                {
-                 //   Debug.Log("MOvE2");
-                    if (MarblesInRecorodMode[i])
-                    {
-                     //   Debug.Log("MOvE3");
-                        if (MarblesInRecorodMode[i].GetComponent<Rigidbody>().velocity != Vector3.zero || MarblesInRecorodMode[i].GetComponent<Rigidbody>().angularVelocity != Vector3.zero)
-                        {
-                            /*if (MarblesInRecorodMode[i].GetComponent<Rigidbody>().velocity.magnitude < ThresholdSleep)
-                            {
-                                MarblesInRecorodMode[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
-                                MarblesInRecorodMode[i].GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                            }
-                            {
-
-                                
-                            }*/
-                           /// Debug.Log("MOvE4");
-                            move = true;
-                        }
-                    }
-                }
-            }
-         //   Debug.Log("MOvE5");
-            return move;
-        }
+        
        /* public bool EqeulPosition(Vector3 a, Vector3 b)
         {
             bool eqeul = false;
@@ -1527,25 +1475,52 @@ namespace Diaco.SoccerStar.Server
             }
             MarblesInRecorodMode.Clear();
         }
+        public bool CheckMarbleMoveInRecordMode()
+        {
+            var move = false;
 
-        public void StarCheckMovment()
-        {
-            Turn = false;
-            InvokeRepeating("CheckMOVE", 1f, 1f * Time.timeScale);
-        }
-        private void CheckMOVE()
-        {
-            if(CheckMarbleMove() == false)
+                
+                for (int i = 0; i < MarblesInRecorodMode.Count; i++)
+                {
+                   
+                    if (MarblesInRecorodMode[i])
+                    {
+                       
+                        if (MarblesInRecorodMode[i].GetComponent<Rigidbody>().velocity != Vector3.zero || MarblesInRecorodMode[i].GetComponent<Rigidbody>().angularVelocity != Vector3.zero)
+                        {
+
+                            move = true;
+                        }
+                    }
+                }
+
+            if (move == false)
             {
                 Emit_EndTurnInRecordMode();
             }
+            return move;
         }
+        /// <summary>
+        /// invoke CheckMarbleMoveInRecordMode
+        /// </summary>
+        public void StartCheckMovmentInRecordMode()
+        {
+            Turn = false;
+            InvokeRepeating("CheckMarbleMoveInRecordMode", 1f, 1f * Time.timeScale);
+        }
+       /* private void CheckMOVEInRecordMode()
+        {
+            if(CheckMarbleMoveInRecordMode() == false)
+            {
+                Emit_EndTurnInRecordMode();
+            }
+        }*/
         private void Emit_EndTurnInRecordMode()
         {
             if (SiblArea.Area != 4)
                 soundeffectcontrollLayer2.PlaySoundSoccer(0);///sib sound
             socket.Emit("EndTurn", SiblArea.Area);
-            CancelInvoke("CheckMOVE");
+            CancelInvoke("CheckMarbleMoveInRecordMode");
             Debug.Log($"<color=blue><b>EndTurn</b>{SiblArea.Area}</color>");
         }
         private void SetUIInRecordMode(int totalpoint, string level, int time, int[] pointsibl)

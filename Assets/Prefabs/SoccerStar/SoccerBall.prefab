@@ -31,7 +31,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8508796437853943257}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 10.58, y: 1.685932, z: 12.96}
   m_LocalScale: {x: 0.45894966, y: 0.45894966, z: 0.45894966}
   m_Children: []
@@ -93,7 +93,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8508796437853943257}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c06f45958918cf04796ed0174c99d7e5, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -143,10 +143,11 @@ MonoBehaviour:
   EaseTypeRotate: 1
   ThresholdSleep: 2.5
   InMove: 0
+  rigidbody: {fileID: 0}
   GetVlocity: {x: 0, y: 0, z: 0}
   GetSpeed: 0
   LastVelocity: {x: 0, y: 0, z: 0}
-  MaxDisFromWall: 100
+  MaxDisFromWall: 5
   hitpointballtomarbl: {x: 0, y: 0, z: 0}
   hitpointballtowall: {x: 0, y: 0, z: 0}
   bouncepower: 0.71

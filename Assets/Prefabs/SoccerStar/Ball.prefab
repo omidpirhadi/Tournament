@@ -108,7 +108,7 @@ SphereCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5595711743205837392}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: c06f45958918cf04796ed0174c99d7e5, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -126,6 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e9e07734ad6eb040835adccd7c5522e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  TEST_Force: 0
   ID: 10
   MarbleType: 1
   forceMode: 0
@@ -141,6 +142,7 @@ MonoBehaviour:
   EaseTypeRotate: 1
   ThresholdSleep: 2.5
   InMove: 0
+  rigidbody: {fileID: 0}
   GetVlocity: {x: 0, y: 0, z: 0}
   GetSpeed: 0
   LastVelocity: {x: 0, y: 0, z: 0}

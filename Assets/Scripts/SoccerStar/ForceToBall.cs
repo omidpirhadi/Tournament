@@ -301,7 +301,7 @@ namespace Diaco.SoccerStar.Marble
 
             else
             {
-                server.StarCheckMovment();
+                server.StartCheckMovmentInRecordMode();
             }
 
 
@@ -658,7 +658,7 @@ namespace Diaco.SoccerStar.Marble
             GetSpeed = 0;
             rigidbody.Sleep();
 
-
+            Debug.Log("stoped:" + gameObject.name);
             // }
         }
         private void PhysicFreeze(bool enable)
