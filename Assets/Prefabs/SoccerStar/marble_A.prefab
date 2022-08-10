@@ -289,7 +289,7 @@ Rigidbody:
   m_GameObject: {fileID: 4867411009215751049}
   serializedVersion: 2
   m_Mass: 1.42
-  m_Drag: 0.78
+  m_Drag: 0.85
   m_AngularDrag: 10
   m_UseGravity: 0
   m_IsKinematic: 0
@@ -420,6 +420,7 @@ MonoBehaviour:
   EaseTypeRotate: 1
   ThresholdSleep: 4
   InMove: 0
+  rigidbody: {fileID: 0}
   GetVlocity: {x: 0, y: 0, z: 0}
   GetSpeed: 0
   LastVelocity: {x: 0, y: 0, z: 0}
