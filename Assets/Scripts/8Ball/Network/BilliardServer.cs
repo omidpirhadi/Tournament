@@ -2169,6 +2169,7 @@ namespace Diaco.EightBall.Server
             cueball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             cueball.GetComponent<Rigidbody>().WakeUp();
             cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = true;
+           cueball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
             // Debug.Log("Pitok1" + ooo);
 
             //  });
@@ -2191,6 +2192,7 @@ namespace Diaco.EightBall.Server
             cueball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             cueball.GetComponent<Rigidbody>().WakeUp();
             cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = true;
+           cueball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
             LimitPitokEffect();
             //  Debug.Log("Pitok2:1/3" + ooo);
             //// });

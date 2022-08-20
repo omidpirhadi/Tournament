@@ -42,12 +42,25 @@ public class SoundManagerSoccerBall : MonoBehaviour
             if (!audio.isPlaying)
                 PlaySound(0, speedVolume);
         }
+       /* if (obj.transform.tag == "post")
+        {
+            if (!audio.isPlaying)
+                PlaySound(1);
+        }*/
+    }
+    private void OnTriggerEnter(Collider obj)
+    {
+        var speedVolume = (Vector3.Distance(transform.position, LastPosition) / Time.deltaTime) / MaxSpeed;
+
+        
         if (obj.transform.tag == "post")
         {
             if (!audio.isPlaying)
                 PlaySound(1);
         }
+        Debug.Log("AAAAAAAAAAAAAAAAAA");
     }
+
     public void PlaySound(int index, float volume)
     {
         audio.volume = volume;

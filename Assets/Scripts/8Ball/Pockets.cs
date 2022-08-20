@@ -44,6 +44,7 @@ namespace Diaco.EightBall.Pockets
                 Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = false;
 
                 Ball.GetComponent<Rigidbody>().AddForce(Vector3.down * 50);
+              //  Ball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
                 if (Server.InRecordMode == false)
                 {
                     if (Server.FirstPocketCall == 0)
@@ -68,6 +69,7 @@ namespace Diaco.EightBall.Pockets
             else if (Ball.tag == "whiteball" && Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>())
             {
 
+                Ball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
                 Ball.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
                 Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ID;

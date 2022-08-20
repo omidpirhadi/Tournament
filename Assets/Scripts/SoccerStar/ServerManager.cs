@@ -316,14 +316,19 @@ namespace Diaco.SoccerStar.Server
                     if (gameData.playerOne.userName == Info.userName)
                     {
                         Side = 1;
-                        //SetPlayerOne(gameData);
-                        aim_dot.DotPower = Mathf.Clamp(gameData.playerOne.aim, 0, 1);
+                        if (gameData.ownerTurn == 1)
+                            aim_dot.DotPower = Mathf.Clamp(gameData.playerOne.aim, 0, 1);
+                        else
+                            aim_dot.DotPower = Mathf.Clamp(gameData.playerTwo.aim, 0, 1);
                     }
                     else
                     {
                         Side = 2;
                         //SetPlayerTwo(gameData);
-                        aim_dot.DotPower = Mathf.Clamp(gameData.playerTwo.aim, 0, 1);
+                        if (gameData.ownerTurn == 2)
+                            aim_dot.DotPower = Mathf.Clamp(gameData.playerTwo.aim, 0, 1);
+                        else
+                            aim_dot.DotPower = Mathf.Clamp(gameData.playerOne.aim, 0, 1);
                     }
            
                     if (!SpwanedMarbels)
