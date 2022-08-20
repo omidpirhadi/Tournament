@@ -23,15 +23,20 @@ public class SoundManagerMarble : MonoBehaviour
         audio = GetComponent<AudioSource>();
         setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         setting.OnChangeSetting += Setting_OnChangeSetting;
-        Mute = setting.Setting.Sound;
-
+        if (setting.Setting.Sound == true)
+            Mute = false;
+        else
+            Mute = true;
         LastPosition = transform.position;
 
     }
     
     private void Setting_OnChangeSetting()
     {
-        Mute = setting.Setting.Sound;
+        if (setting.Setting.Sound == true)
+            Mute = false;
+        else
+            Mute = true;
     }
 
     private void FixedUpdate()
@@ -63,9 +68,11 @@ public class SoundManagerMarble : MonoBehaviour
     }
     public void PlaySound(int index, float volume)
     {
-       
-        audio.volume = volume;
-        audio.clip = clips[index];
-        audio.Play();
+        if (Mute == false)
+        {
+            audio.volume = volume;
+            audio.clip = clips[index];
+            audio.Play();
+        }
     }
 }

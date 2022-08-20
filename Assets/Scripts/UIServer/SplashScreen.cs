@@ -14,16 +14,16 @@ public class SplashScreen : MonoBehaviour
     public Image Prograssbar;
     public Text CounterPrograssbar;
     public Text VersionClient;
-    private SoundEffectControll soundEffect;
+   // private SoundEffectControll soundEffect;
     public RTLTMPro.RTLTextMeshPro context;
     [MultiLineProperty]
     public string[] Contexts;
     private IEnumerator Start()
     {
         SetContext();
-        soundEffect = GetComponent<SoundEffectControll>();
+      //  soundEffect = GetComponent<SoundEffectControll>();
         VersionClient.text = FindObjectOfType<Diaco.Setting.GeneralSetting>().Version;
-        soundEffect.PlaySound(0);
+      //  soundEffect.PlaySound(0);
         // CheckInternetConnection();
         if (Server.ExistTokenFile("token"))
         {

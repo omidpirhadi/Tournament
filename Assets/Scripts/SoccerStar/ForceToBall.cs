@@ -109,7 +109,7 @@ namespace Diaco.SoccerStar.Marble
             GetVlocity = (this.transform.position - LastPosition) / Time.deltaTime;
 
             GetSpeed = GetVlocity.magnitude;
-            if (GetSpeed > 0)
+            if (GetSpeed > 0 && server.Turn)
             {
 
 
@@ -659,7 +659,7 @@ namespace Diaco.SoccerStar.Marble
             GetSpeed = 0;
             rigidbody.Sleep();
 
-          //  Debug.Log("stoped:" + gameObject.name);
+            Debug.Log("stoped:" + gameObject.name);
             // }
         }
         private void PhysicFreeze(bool enable)

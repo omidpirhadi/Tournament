@@ -13,14 +13,20 @@ public class PlaySoundEffectOnEnterTrigger : MonoBehaviour
 
         audio = GetComponent<AudioSource>();
         setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
-        
-        Mute = setting.Setting.Sound;
         setting.OnChangeSetting += Setting_OnChangeSetting;
+        if (setting.Setting.Sound == true)
+            Mute = false;
+        else
+            Mute = true;
+        
     }
 
     private void Setting_OnChangeSetting()
     {
-        Mute = setting.Setting.Sound;
+        if (setting.Setting.Sound == true)
+            Mute = false;
+        else
+            Mute = true;
     }
 
     private void OnTriggerEnter(Collider Ball)
@@ -36,7 +42,7 @@ public class PlaySoundEffectOnEnterTrigger : MonoBehaviour
     
     public void PlaySound()
     {
-        if (Mute)
+        if (Mute== false)
         {
             audio.clip = clips;
             audio.Play();

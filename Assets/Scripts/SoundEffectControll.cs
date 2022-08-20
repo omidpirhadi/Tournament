@@ -18,12 +18,18 @@ public class SoundEffectControll : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         setting.OnChangeSetting += Setting_OnChangeSetting;
-        Mute = setting.Setting.Sound;
+        if (setting.Setting.Sound == true)
+            Mute = false;
+        else
+            Mute = true;
     }
     
     private void Setting_OnChangeSetting()
     {
-        Mute = setting.Setting.Sound;
+        if (setting.Setting.Sound == true)
+            Mute = false;
+        else
+            Mute = true;
     }
     /* void OnCollisionEnter(Collision obj)
      {
@@ -36,7 +42,7 @@ public class SoundEffectControll : MonoBehaviour
 
     public void PlaySound(int index)
     {
-        if (Mute)
+        if (Mute  == false)
         {
             if (audioSource)
             {
@@ -47,7 +53,7 @@ public class SoundEffectControll : MonoBehaviour
     }
     public void PlaySoundSoccer(int index)
     {
-        if (Mute)
+        if (Mute== false)
         {
             if (audioSource)
             {
@@ -58,7 +64,7 @@ public class SoundEffectControll : MonoBehaviour
     }
     public void PlaySoundMenu(int index)
     {
-        if (Mute)
+        if (Mute== false)
         {
             if (audioSource == null)
                 audioSource = GetComponent<AudioSource>();
