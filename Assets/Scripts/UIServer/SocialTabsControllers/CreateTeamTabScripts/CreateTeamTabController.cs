@@ -71,6 +71,10 @@ namespace Diaco.Social
                     Server.RequestCreateTeam(CreateTeam());
 
                 }
+                else
+                {
+                    Server.RequestCreateTeam_NULLfeid();
+                }
             });
             InviteFriendButton.onClick.AddListener(() => { FriendsAdded.Clear(); });
             TabButton.onClick.AddListener(() => {

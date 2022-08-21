@@ -1258,6 +1258,13 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("TeamCreated");
     }
+    public void RequestCreateTeam_NULLfeid()
+    {
+        
+        socket.Emit("create-league");
+        
+        Debug.Log("Field Null");
+    }
     public void RequestLeagueRules()
     {
         socket.Emit("league-rules");

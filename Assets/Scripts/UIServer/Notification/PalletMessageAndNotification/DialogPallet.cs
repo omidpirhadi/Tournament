@@ -224,6 +224,7 @@ namespace Diaco.Notification
             DialogButtons[0].onClick.RemoveAllListeners();
             DialogButtons[1].onClick.RemoveAllListeners();
             DialogButtons[2].onClick.RemoveAllListeners();
+            CloseButton.onClick.RemoveAllListeners();
         }
 
         private Sprite ConvertImageToSprite(string image)
