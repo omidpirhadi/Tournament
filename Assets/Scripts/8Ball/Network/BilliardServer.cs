@@ -906,17 +906,6 @@ namespace Diaco.EightBall.Server
 
                     if (AddressBalls[i].GetComponent<Rigidbody>().velocity != Vector3.zero || AddressBalls[i].GetComponent<Rigidbody>().angularVelocity != Vector3.zero)
                     {
-                        /* if(AddressBalls[i].GetComponent<Rigidbody>().velocity.magnitude<ThresholdSleep)
-                         {
-                             AddressBalls[i].GetComponent<Rigidbody>().velocity = Vector3.zero;
-                             AddressBalls[i].GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-                             Debug.Log("0.5f");
-
-                         }
-                         {
-
-
-                         }*/
 
                         move = true;
                     }
