@@ -53,7 +53,8 @@ public class TempPlayerControll : MonoBehaviour
     }
     void OnDestroy()
     {
-        generalSetting.OnChangeSetting -= TempPlayerControll_OnChangeSetting;
+        if (generalSetting)
+            generalSetting.OnChangeSetting -= TempPlayerControll_OnChangeSetting;
     }
     private void TempPlayerControll_OnChangeSetting()
     {

@@ -271,12 +271,14 @@ namespace Diaco.EightBall.Server
         public void OnDisable()
         {
             CloseConnection();
-            BlockChat_Button.onClick.RemoveAllListeners();
+            if (BlockChat_Button)
+                BlockChat_Button.onClick.RemoveAllListeners();
         }
         public void Destroy()
         {
             CloseConnection();
-            BlockChat_Button.onClick.RemoveAllListeners();
+            if (BlockChat_Button)
+                BlockChat_Button.onClick.RemoveAllListeners();
         }
         #endregion
 
@@ -1084,7 +1086,7 @@ namespace Diaco.EightBall.Server
                 
                 if (QueuePositionsBallFromServer.Count > 0)
                 {
-                    Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
+                   // Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
                     PositionBalls = QueuePositionsBallFromServer[Mathf.Clamp(tik, 0, QueuePositionsBallFromServer.Count - 1)];
                     tik++;
                     //  if (tik > QueuePositionsBallFromServer.Count)

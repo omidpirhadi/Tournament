@@ -1261,7 +1261,7 @@ public class ServerUI : MonoBehaviour
     public void RequestCreateTeam_NULLfeid()
     {
         
-        socket.Emit("create-league");
+        socket.Emit("create-league-error");
         
         Debug.Log("Field Null");
     }

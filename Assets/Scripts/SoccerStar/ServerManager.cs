@@ -45,6 +45,7 @@ namespace Diaco.SoccerStar.Server
         [FoldoutGroup("ServerSettings")]
         private bool turn;
         [FoldoutGroup("ServerSettings")]
+
         public bool Turn
         {
             set
@@ -177,6 +178,8 @@ namespace Diaco.SoccerStar.Server
         private int Side;
         private bool intergate = true;
         private Diaco.Setting.GeneralSetting setting;
+
+        private Coroutine ReciveDataMarblesMovment_Coroutine;
         #endregion
 
         #region StructGame
@@ -299,9 +302,13 @@ namespace Diaco.SoccerStar.Server
                 });
                 socket.On("gameData", (s, p, m) =>
                 {
-                    
+
+                    StopCoroutineDataRecive();
+
                     DoResetAim();
                     gameData = JsonUtility.FromJson<GameData>(m[0].ToString());
+                    if (!SpwanedMarbels)
+                        SelectArena(gameData.ground);
                    // Debug.Log("GameStep::" + gameData.step);
                     if(gameData.step  ==0 )
                     {
@@ -330,12 +337,6 @@ namespace Diaco.SoccerStar.Server
                         else
                             aim_dot.DotPower = Mathf.Clamp(gameData.playerOne.aim, 0, 1);
                     }
-           
-                    if (!SpwanedMarbels)
-                        SelectArena(gameData.ground);
-
-                    SetPlayer();
-
 
                     if (NamespaceServer != "_classic")
                         CalculateGameTime(gameData.gameTime / 1000.0f);
@@ -343,7 +344,7 @@ namespace Diaco.SoccerStar.Server
                         SetTypeCost(gameData.costType);
                         SetUICountCost(gameData.cost.ToString());
 
-                    Handler_GameReady();
+                    SetPlayer();
                    // Debug.Log("gameData");
                 });
                 socket.On("Aim", (s, p, a) =>
@@ -363,8 +364,8 @@ namespace Diaco.SoccerStar.Server
                     MarblesDataRecived.Add(data);
                     if (MarblesDataRecived.Count > 0 && intergate)
                     {
-                        //Debug.Log("ZZZ");
-                        StartCoroutine(ReciveDataMarblesMovment());
+                     //   Debug.Log("DDDD");
+                        ReciveDataMarblesMovment_Coroutine = StartCoroutine(ReciveDataMarblesMovment());
                         intergate = false;
                     }
 
@@ -603,6 +604,7 @@ namespace Diaco.SoccerStar.Server
 
                }*/
             StartCoroutine(InitializTurn_new());
+            Handler_GameReady();
             IsGoal = -1;
         }
         public IEnumerator InitializTurn_new()
@@ -861,7 +863,7 @@ namespace Diaco.SoccerStar.Server
         }
         public void Invoke_CheckMovemenInSecond()
         {
-            InvokeRepeating("CheckMovment", 1, 1);
+            InvokeRepeating("CheckMovment", 0.5F, 0.5F);
             Debug.Log("CheckMovmentFromServer");
         }
         public IEnumerator SendDataMarblesMovement()
@@ -931,6 +933,14 @@ namespace Diaco.SoccerStar.Server
         {
             string json = JsonUtility.ToJson(data);
             socket.Emit("Position", json);
+        }
+
+        public void StopCoroutineDataRecive()
+        {
+            MarblesDataRecived = new List<MarblesData>();
+            if (ReciveDataMarblesMovment_Coroutine != null)
+                StopCoroutine(ReciveDataMarblesMovment_Coroutine);
+            intergate = true;
         }
         public IEnumerator ReciveDataMarblesMovment()
         {
@@ -1016,23 +1026,23 @@ namespace Diaco.SoccerStar.Server
 
         public void SelectArena(string name)
         {
-            Arena.ForEach(e => {
 
-                if (e.name == name)
+            for (int i = 0; i < Arena.Count; i++)
+            {
+                if (Arena[i].name == name)
                 {
-                    e.arena.SetActive(true);
+                    Arena[i].arena.SetActive(true);
 
                 }
-                else if (e.name != name)
+                else if (Arena[i].name != name)
                 {
-                    e.arena.SetActive(false);
+                    Arena[i].arena.SetActive(false);
                 }
-                else if (e.name == "")
+                else if (Arena[i].name == "")
                 {
                     Arena[0].arena.SetActive(true);
                 }
-
-            });
+            }
         }
         public Sprite SelectFlag(string name)
         {
