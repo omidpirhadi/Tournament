@@ -30,7 +30,7 @@ namespace Diaco.SoccerStar.Server
         [FoldoutGroup("ServerSettings")]
         public GameObject ResultGamePage;
         /// [FoldoutGroup("ServerSettings")]
-
+        
         /// public string URLLocal;
         // [FoldoutGroup("ServerSettings")]
         // public string URLGlobal;
@@ -861,6 +861,7 @@ namespace Diaco.SoccerStar.Server
             }
 
         }
+
         public void Invoke_CheckMovemenInSecond()
         {
             InvokeRepeating("CheckMovment", 0.5F, 0.5F);

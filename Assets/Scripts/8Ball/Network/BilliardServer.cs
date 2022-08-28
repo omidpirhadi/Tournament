@@ -164,13 +164,7 @@ namespace Diaco.EightBall.Server
         // public List<Diaco.EightBall.Band.BandsController> BandsControllers;
         [FoldoutGroup("GameData")]
         private List<int> IDImpactToWall;
-        [FoldoutGroup("GameData")]
-        //private int temp_pitok = -1;
-        [FoldoutGroup("GameData")]
-        // private Vector3 temp_lastpos;
 
-        //public Slider SendRate;
-        //public Text SendRateCounter;
         #endregion
 
 
@@ -709,7 +703,7 @@ namespace Diaco.EightBall.Server
                     initializTurn(data);
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
-                EnableCoolDown(Side.Left, data.turnTime, 0);
+                EnableCoolDown(Side.Left, data.turnTime,  data.totalTime);
 
                 //  Debug.Log("TimeAndTurnOnwer");
             }
@@ -725,7 +719,7 @@ namespace Diaco.EightBall.Server
                 }
 
 
-                EnableCoolDown(Side.Right, data.turnTime, 0);
+                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
 
                 CheckEnable8BallRightInOtherClient();
 
@@ -819,7 +813,7 @@ namespace Diaco.EightBall.Server
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
 
-                EnableCoolDown(Side.Left, data.turnTime, 0);
+                EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
 
                 //  Debug.Log("TimeAndTurnOnwer");
             }
@@ -833,7 +827,7 @@ namespace Diaco.EightBall.Server
                 {
                     Handler_EnableBoarderPocket(true, gameData.selectedPocket);
                 }
-                EnableCoolDown(Side.Right, data.turnTime, 0);
+                EnableCoolDown(Side.Right, data.turnTime, data.totalTime);
 
 
                 CheckEnable8BallRightInOtherClient();
