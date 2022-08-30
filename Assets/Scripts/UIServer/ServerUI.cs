@@ -797,6 +797,8 @@ public class ServerUI : MonoBehaviour
                 popup_reports.reports = new Diaco.UI.Reports.ReportsData();
                 popup_reports.reports = data;
                 popup_reports.SetMyteams();
+                popup_reports.SetMynework();
+                popup_reports.SetReportWithdarw();
                 navigationUi.StopLoadingPage();
                 Debug.Log("ReportsLoaded" + m[1].ToString());
             }

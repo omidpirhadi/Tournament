@@ -20,7 +20,7 @@ namespace Diaco.Social.MessageCards
         public Image GameTypeIndicator8ball;
         public Image GameTypeIndicatorsoccer;
         public Image TeamImageIndicator;
-        public Text TeamNameIndicator;
+        public RTLTMPro.RTLTextMeshPro TeamNameIndicator;
         public Text CapacityIndicator;
         public Text TimeIndicator;
         public Image CostTypeIndicator;
