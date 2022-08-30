@@ -34,8 +34,10 @@ namespace Diaco.EightBall.CueControllers
        [SerializeField] private float MaxAngularvelocity = 150;
 
         public Vector3 LastPosition;
+        private Vector3 LastPositionInFrame20;
         public Vector3 LastRotation;
-
+        public float GetSpeed;
+         private int frame;
 
         void Start()
         {
@@ -51,7 +53,7 @@ namespace Diaco.EightBall.CueControllers
             if (testSetting)
                 testSetting.OnChangeSetting += HitBallController_OnChangeSetting;*/
 
-            SetYPositionRefrence();
+            //SetYPositionRefrence();
             rigidbody.maxAngularVelocity = MaxAngularvelocity;
         }
 
@@ -67,18 +69,34 @@ namespace Diaco.EightBall.CueControllers
         private void FixedUpdate()
         {
             VlocityBallCurrent = rigidbody.velocity;
+            GetSpeed = VlocityBallCurrent.magnitude;
             TravelToTarget();
+
+          
+
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
+
+            if (frame >= 20 && GetSpeed<0.1f)
+            {
+                LastPositionInFrame20 = LastPosition;
+                CheckMoveWithDistanceFromLastPosition();
+                frame = 0;
+
+            }
+
+            frame++;
+
+   
         }
         void LateUpdate()
         {
-            if (EnableYFix)
+           /* if (EnableYFix)
                 FixOverflowMovment();
 
            
 
-            DisableFixY();
+            DisableFixY();*/
         }
 
 
@@ -252,6 +270,54 @@ namespace Diaco.EightBall.CueControllers
 
             return move;
         }
+
+
+        public float SensivityCheckMovment = 0.001f;
+        public void CheckMoveWithDistanceFromLastPosition()
+        {
+
+
+            var dis = Vector3.Distance(transform.position, LastPositionInFrame20);
+            if (dis <= SensivityCheckMovment)
+            {
+                StopMovment();
+            }
+            else
+            {
+                InMove = true;
+                Debug.Log("Move");
+            }
+
+
+        }
+        public bool OnlyCheckMove()
+        {
+
+
+            var dis = Vector3.Distance(transform.position, LastPositionInFrame20);
+            if (dis <= SensivityCheckMovment)
+            {
+
+                return false;
+            }
+            else
+            {
+                InMove = true;
+
+                return true;
+            }
+
+        }
+        public void StopMovment()
+        {
+            rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+            InMove = false;
+            rigidbody.Sleep();
+            // Debug.Log("Stoped");
+        }
+
+
         private void BounceBall(Collision collision)
         {
             var normal = collision.contacts[0].normal;

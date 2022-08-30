@@ -78,12 +78,14 @@ namespace Diaco.EightBall.CueControllers
         public bool InMove = false;
         // public bool TEsTaimDir = false;
         public Vector3 LastPosition;
+        private Vector3 LastPositionInFrame20;
         public Vector3 LastRotation;
-       // public Vector3 vvv;
+        public float GetSpeed;
         private float powscalefactor;
         private bool SyncAimWithServeTurn = false;
        [SerializeField] private bool CueBallMoveInPitoke = false;
-     
+        
+        private int frame;
         #region MonoBehaviourFunctions
         void Start()
         {
@@ -109,10 +111,11 @@ namespace Diaco.EightBall.CueControllers
 
             UI.OnUIActive += UI_OnUIActive;
 
-            SetYPositionRefrence();
+           /// SetYPositionRefrence();
             SetSensivityRotate();
 
             LastPosition = this.transform.position;
+            LastPositionInFrame20 = LastPosition;
             LastRotation = this.transform.eulerAngles;
         }
 
@@ -125,16 +128,17 @@ namespace Diaco.EightBall.CueControllers
         void LateUpdate()
         {
             RadiusGhostBall = (GetComponent<SphereCollider>().radius * transform.localScale.x) * RadiusGhostBallScaleFactor;
-            if (EnableYFix)
-                FixOverflowMovment();
+          /*  if (EnableYFix)
+                FixOverflowMovment();*/
         }
         public void FixedUpdate()
         {
 
             VlocityBall = rigidbody.velocity;
+            GetSpeed = VlocityBall.magnitude;
             if (SyncAimWithServeTurn)
             {
-                if (CheckMoveBall() == true || DragIsBusy)
+                if (OnlyCheckMove() == true || DragIsBusy)
                 {
 
 
@@ -150,9 +154,7 @@ namespace Diaco.EightBall.CueControllers
                     ///Debug.Log("Stop111" );
                 }
             }
-
             AimSystem();
-
             TouchOrderControll();
             if (CueBallMoveInPitoke == true && Server.Pitok>0)
                 CueBallMoveInPitokTouchController();
@@ -161,10 +163,20 @@ namespace Diaco.EightBall.CueControllers
             //CueBallMoveInPitoke = false;
 
 
-
+            
 
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
+
+            if (frame >= 20 && GetSpeed < 0.1f)
+            {
+                LastPositionInFrame20 = LastPosition;
+                CheckMoveWithDistanceFromLastPosition();
+                frame = 0;
+
+            }
+
+            frame++;
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -1048,7 +1060,7 @@ namespace Diaco.EightBall.CueControllers
             }
             
         }*/
-        public void SetYPositionRefrence()
+       /* public void SetYPositionRefrence()
         {
             DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
             {
@@ -1092,7 +1104,7 @@ namespace Diaco.EightBall.CueControllers
             //    Debug.Log("Fix Move Ball");
                 
             }
-        }
+        }*/
         
         public void CueBallMoveFromServer(Diaco.EightBall.Structs.CueBallData data, float speed)
         {
@@ -1142,58 +1154,104 @@ namespace Diaco.EightBall.CueControllers
         {
             CancelInvoke("HandAnimationOnPitok");
         }
-        private bool CheckBallMove()
-        {
-            var move = false;
-            if (rigidbody.velocity.magnitude > ThresholdSleep || rigidbody.angularVelocity.magnitude > ThresholdSleep)
-            {
 
-                move = true;
+        public float SensivityCheckMovment = 0.001f;
+        public void CheckMoveWithDistanceFromLastPosition()
+        {
+
+
+            var dis = Vector3.Distance(transform.position, LastPositionInFrame20);
+            if (dis <= SensivityCheckMovment)
+            {
+                StopMovment();
+            }
+            else
+            {
+                InMove = true;
+
             }
 
-            return move;
-        }
 
-        private bool EqeulPosition(Vector3 a, Vector3 b)
+        }
+        public bool OnlyCheckMove()
         {
-            bool eqeul = false;
-            var x = a.x - b.x;
-            var z = a.z - b.z;
-            if (x == 0.0f && z == 0.0f)
+
+
+            var dis = Vector3.Distance(transform.position, LastPositionInFrame20);
+            if (dis <= SensivityCheckMovment)
             {
-                eqeul = true;
+       
+                return false;
             }
-          //  LastPosition = this.transform.position;
-            return eqeul;
-           
-        }
-        private bool EqeulRotation(Vector3 a, Vector3 b)
-        {
-            bool eqeul = false;
-            var x = a.x - b.x;
-            var y = a.y - b.y;
-            var z = a.z - b.z;
-            if (x == 0.0f && y == 0.0f && z == 0.0f)
+            else
             {
-                eqeul = true;
-            }
-           //// LastRotation = this.transform.eulerAngles;
-            return eqeul;
-        }
-        public bool CheckMoveBall()
-        {
-            var move = false;
-            var domove = EqeulPosition(transform.position, LastPosition);
-            var dorotate = EqeulRotation(transform.eulerAngles, LastPosition);
-
-            if (domove == false && dorotate == false)
-            {
-
-                move = true;
+                InMove = true;
+                
+                return true;
             }
 
-            return move;
         }
+        public void StopMovment()
+        {
+            rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
+            InMove = false;
+            rigidbody.Sleep();
+            //  Debug.Log("Stoped");
+        }
+
+        /*  private bool CheckBallMove()
+          {
+              var move = false;
+              if (rigidbody.velocity.magnitude > ThresholdSleep || rigidbody.angularVelocity.magnitude > ThresholdSleep)
+              {
+
+                  move = true;
+              }
+
+              return move;
+          }
+
+          private bool EqeulPosition(Vector3 a, Vector3 b)
+          {
+              bool eqeul = false;
+              var x = a.x - b.x;
+              var z = a.z - b.z;
+              if (x == 0.0f && z == 0.0f)
+              {
+                  eqeul = true;
+              }
+            //  LastPosition = this.transform.position;
+              return eqeul;
+
+          }
+          private bool EqeulRotation(Vector3 a, Vector3 b)
+          {
+              bool eqeul = false;
+              var x = a.x - b.x;
+              var y = a.y - b.y;
+              var z = a.z - b.z;
+              if (x == 0.0f && y == 0.0f && z == 0.0f)
+              {
+                  eqeul = true;
+              }
+             //// LastRotation = this.transform.eulerAngles;
+              return eqeul;
+          }
+          public bool CheckMoveBall()
+          {
+              var move = false;
+              var domove = EqeulPosition(transform.position, LastPosition);
+              var dorotate = EqeulRotation(transform.eulerAngles, LastPosition);
+
+              if (domove == false && dorotate == false)
+              {
+
+                  move = true;
+              }
+
+              return move;
+          }*/
         private void BounceBall(Collision collision)
         {
 
