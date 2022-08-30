@@ -1470,24 +1470,56 @@ namespace Diaco.EightBall.Server
 
         public IEnumerator SpwanBallInBasketAndDestroyBallInTable(Diaco.EightBall.Structs.GameData data)
         {
+            var list_object_in_basket = FindObjectsOfType<ballinbasket>().ToList();
+            yield return new WaitForSecondsRealtime(0.1f);
+
+            for (int i = 0; i < Basket.ballinbasket.Count; i++)
+            {
+                bool find = false;
+                var ballID = Basket.ballinbasket[i];
+                for (int j = 0; j < list_object_in_basket.Count; j++)
+                {
+                    if (list_object_in_basket[j].BallID == ballID)
+                    {
+                        Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
+                        find = true;
+
+                    }
+
+                }
+                if(!find)
+                {
+                    Basket.ballinbasket.Remove(ballID);
+                }
+
+            }
+
+            yield return new WaitForSecondsRealtime(0.1f);
             for (int i = 0; i < data.deletedBalls.Count; i++)
             {
 
-                if (!BallInBasket.Contains(data.deletedBalls[i]))
+                if (!Basket.ballinbasket.Contains(data.deletedBalls[i]))
                 {
-                    Basket.AddToQueue(data.deletedBalls[i]);
-                    BallInBasket.Add(data.deletedBalls[i]);
-                    Destroy(AddressBalls[data.deletedBalls[i]].gameObject);
-                    DeletedBallCount++;
+                    try
+                    {
+                        Basket.AddToQueue(data.deletedBalls[i]);
+                        BallInBasket.Add(data.deletedBalls[i]);
 
+                        Destroy(AddressBalls[data.deletedBalls[i]].gameObject);
+                        DeletedBallCount++;
+                    }
+                    catch ( Exception e)
+                    {
+
+                    }
                 }
             }
             /// Debug.Log("basket length : " + BallInBasket.Count);
-            yield return new WaitForSecondsRealtime(0.5f);
+            yield return new WaitForSecondsRealtime(0.3f);
 
-            for (int i = 0; i < BallInBasket.Count; i++)///check for Wrong Ball In Basket
+            for (int i = 0; i < Basket.ballinbasket.Count; i++)///check for Wrong Ball In Basket
             {
-                var id = BallInBasket[i];
+                var id = Basket.ballinbasket[i];
                 if (!data.deletedBalls.Contains(id))
                 {
                     var ball = Instantiate(BallsPrefabs[id - 1], new Vector3(0.0f, 0.08885605f, 0.0f), Quaternion.identity, ParentForspwan);
@@ -1503,7 +1535,7 @@ namespace Diaco.EightBall.Server
                         if (ball_in_basket[j].BallID == id)
                         {
                             Destroy(ball_in_basket[j].gameObject);
-                            BallInBasket.Remove(id);
+                            Basket.ballinbasket.Remove(id);
                             i = -1;
 
                         }
