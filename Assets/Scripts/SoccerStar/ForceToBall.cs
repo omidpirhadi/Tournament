@@ -111,12 +111,7 @@ namespace Diaco.SoccerStar.Marble
             GetVlocity = rigidbody.velocity;
 
             GetSpeed = GetVlocity.magnitude;
-            if (GetSpeed > 0 && server.Turn)
-            {
 
-
-                CheckMoveWithDistanceFromLastPosition();
-            }
 
             if (IsRotatingMarble)
                 RotateMarble();
@@ -126,16 +121,17 @@ namespace Diaco.SoccerStar.Marble
 
 
 
-            LastPosition = this.transform.position;
-            LastRotation = this.transform.eulerAngles;
-
-            if (frame >= 10)
+           
+            
+            if (frame >= 20 && GetSpeed<0.1f )
             {
                 LastPositionInFrame20 = LastPosition;
+                CheckMoveWithDistanceFromLastPosition();
                 frame = 0;
 
             }
-
+            LastPosition = this.transform.position;
+            LastRotation = this.transform.eulerAngles;
             frame++;
             // WallHit();
         }
@@ -304,6 +300,7 @@ namespace Diaco.SoccerStar.Marble
             var P_F = SoftFloat.Soft((PowerForce) * pow);
             //  GetDirectionForce = d_n * (float)P_F;
             // PositionBeforForce = this.transform.position;
+            
             rigidbody.AddForce(d_n * (float)P_F, forceMode);
             if (server.InRecordMode == false)
             {
@@ -575,7 +572,7 @@ namespace Diaco.SoccerStar.Marble
             var dis = Vector3.Distance(transform.position, LastPositionInFrame20);
             if (dis <= SensivityCheckMovment)
             {
-                StopMovment();
+               // StopMovment();
                 //Debug.Log("Stoped" );
                 return false;
             }
@@ -587,7 +584,7 @@ namespace Diaco.SoccerStar.Marble
             }
 
         }
-        private void StopMovment()
+        public  void StopMovment()
         {
             //if (InMove)
             // {
@@ -636,11 +633,11 @@ namespace Diaco.SoccerStar.Marble
             this.rigidbody.velocity = velocity;
             this.rigidbody.position = pos;
         }
-        public void MarbleStop()
+       /* public void MarbleStop()
         {
             rigidbody.velocity = Vector3.zero;
             rigidbody.angularVelocity = Vector3.zero;
             rigidbody.Sleep();
-        }
+        }*/
     }
 }

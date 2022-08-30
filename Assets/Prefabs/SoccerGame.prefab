@@ -1056,6 +1056,59 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: SpeedThersholdDefault:0.09
+--- !u!1 &981210116933463485
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6147538443941757671}
+  - component: {fileID: 2945389390215240687}
+  - component: {fileID: 6805016027236107478}
+  m_Layer: 19
+  m_Name: GoalOffset
+  m_TagString: wall
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &6147538443941757671
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981210116933463485}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 128.2, y: -11.494936, z: 21.1}
+  m_LocalScale: {x: 40.186092, y: 33.55728, z: 2.2156005}
+  m_Children: []
+  m_Father: {fileID: 2383272044396646725}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &2945389390215240687
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981210116933463485}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &6805016027236107478
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 981210116933463485}
+  m_Material: {fileID: 13400000, guid: 204e97f4a6d63044d922633e4b069bd8, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &983134687909730811
 GameObject:
   m_ObjectHideFlags: 0
@@ -2382,6 +2435,59 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 4
+--- !u!1 &2014809852521782992
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1267949163569452762}
+  - component: {fileID: 8378162996519519389}
+  - component: {fileID: 5285650211685814379}
+  m_Layer: 19
+  m_Name: GoalOffset (1)
+  m_TagString: wall
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 4294967295
+  m_IsActive: 1
+--- !u!4 &1267949163569452762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014809852521782992}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -129, y: -11.494936, z: 21.1}
+  m_LocalScale: {x: 40.186092, y: 33.55728, z: 2.2156005}
+  m_Children: []
+  m_Father: {fileID: 2383272044396646725}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!33 &8378162996519519389
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014809852521782992}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!65 &5285650211685814379
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014809852521782992}
+  m_Material: {fileID: 13400000, guid: 204e97f4a6d63044d922633e4b069bd8, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2054169528855063367
 GameObject:
   m_ObjectHideFlags: 0
@@ -6139,6 +6245,8 @@ Transform:
   - {fileID: 446199825757817353}
   - {fileID: 2571418907389207387}
   - {fileID: 7080378515430432784}
+  - {fileID: 6147538443941757671}
+  - {fileID: 1267949163569452762}
   m_Father: {fileID: 2383272044396646630}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8088,7 +8196,7 @@ MonoBehaviour:
   aimCricle: {fileID: 2383272044396658469}
   MaskForSelect:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1048576
   MaskForMove:
     serializedVersion: 2
     m_Bits: 1024

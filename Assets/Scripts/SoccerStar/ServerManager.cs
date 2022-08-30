@@ -864,7 +864,7 @@ namespace Diaco.SoccerStar.Server
 
         public void Invoke_CheckMovemenInSecond()
         {
-            InvokeRepeating("CheckMovment", 0.5F, 0.5F);
+            InvokeRepeating("CheckMovment", 1F, 1F);
             Debug.Log("CheckMovmentFromServer");
         }
         public IEnumerator SendDataMarblesMovement()
@@ -978,7 +978,7 @@ namespace Diaco.SoccerStar.Server
                     for (int i = 0; i < Marbles.Count; i++)
                     {
                         if (Marbles[i] != null)
-                            Marbles[i].MarbleStop();
+                            Marbles[i].StopMovment();
                     }
 
 
