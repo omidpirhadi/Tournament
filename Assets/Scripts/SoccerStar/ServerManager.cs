@@ -238,7 +238,8 @@ namespace Diaco.SoccerStar.Server
         }
         private void OnDestroy()
         {
-            BlockChat_Button.onClick.RemoveAllListeners();
+            if (BlockChat_Button)
+                BlockChat_Button.onClick.RemoveAllListeners();
             CloseSocket();
         }
         #endregion
