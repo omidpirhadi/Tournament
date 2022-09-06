@@ -868,6 +868,7 @@ namespace Diaco.SoccerStar.Server
             InvokeRepeating("CheckMovment", 1F, 1F);
             Debug.Log("CheckMovmentFromServer");
         }
+      
         public IEnumerator SendDataMarblesMovement()
         {
             MarblesInMove = true;
@@ -920,12 +921,11 @@ namespace Diaco.SoccerStar.Server
                 yield return new WaitForSecondsRealtime(FrameRate);
             }
             while (MarblesInMove);
-            if (!MarblesInMove)
-            {
+   
                 Data.LastPacket = true;
                 Emit_DataMarblesToServer(Data);
                 Debug.Log("LastPacket:" + Data.Tik);
-            }
+         
             yield return new WaitForSecondsRealtime(FrameRate);
             socket.Emit("EndTurn", IsGoal);
             Debug.Log("ISGoal::" + IsGoal);

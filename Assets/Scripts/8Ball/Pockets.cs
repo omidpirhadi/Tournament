@@ -39,12 +39,13 @@ namespace Diaco.EightBall.Pockets
         {
             if (Ball.tag == "ball" && Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>())
             {
-                Ball.GetComponent<Rigidbody>().velocity = Vector3.zero;
+                Ball.GetComponent<Rigidbody>().velocity *= 0.01f;
                 var id = Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().ID;
-                Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = false;
+              //  Ball.GetComponent<Diaco.EightBall.CueControllers.Ball>().EnableYFix = false;
 
                 Ball.GetComponent<Rigidbody>().AddForce(Vector3.down * 50);
-              //  Ball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
+             //   Ball.GetComponent<Rigidbody>().AddTorque(Vector3.down * 50);
+                //  Ball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
                 if (Server.InRecordMode == false)
                 {
                     if (Server.FirstPocketCall == 0)

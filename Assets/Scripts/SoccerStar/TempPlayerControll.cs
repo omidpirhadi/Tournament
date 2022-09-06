@@ -66,9 +66,12 @@ public class TempPlayerControll : MonoBehaviour
     {
         if (Input.touchCount == 1)
         {
-
+            rotateType2 = false;
+           // Touch2Clicked = false;
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
+
+              
                 Deselect();
                // Debug.Log("OMMMMMMDDDDD");
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
@@ -218,7 +221,7 @@ public class TempPlayerControll : MonoBehaviour
                 }
 
             }
-            if (Input.GetTouch(1).phase == TouchPhase.Moved)
+            else if (Input.GetTouch(1).phase == TouchPhase.Moved)
             {
 
                 var ray = Camera.main.ScreenPointToRay(Input.GetTouch(1).position);
@@ -254,7 +257,42 @@ public class TempPlayerControll : MonoBehaviour
                     Handler_EnableRingEffect(false);
                 }
             }
-           /// Debug.Log("Two Finger");
+            else if (Input.GetTouch(1).phase == TouchPhase.Ended)
+            {
+                if (Input.touchCount == 0)
+                {
+                    if (MarbleSelected != null && aimCricle.CurrentAimPower > 3.5f)
+                    {
+
+                        Touch2Clicked = false;
+                        rotateType2 = false;
+                        var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
+
+                        var dir = aimCricle.DirectionShoot();
+                        Handler_OnShoot(ID, dir.normalized, pow);
+                        aimCricle.StopRecordAim();
+                        aimCricle.ResetAimCircle();
+                        MarbleSelected = null;
+
+
+                    }
+                    else if (MarbleSelected != null && aimCricle.CurrentAimPower < 3.5f)
+                    {
+                        Touch2Clicked = false;
+                        rotateType2 = false;
+
+                        aimCricle.StopRecordAim();
+                        aimCricle.ResetAimCircle();
+                        Handler_EnableRingEffect(true);
+
+                    }
+                    Debug.Log("Two Finger");
+
+
+                    return;
+                }
+            }
+            /// Debug.Log("Two Finger");
         }
 
         if(Input.touchCount ==  0 && MarbleSelected != null  )
@@ -268,6 +306,7 @@ public class TempPlayerControll : MonoBehaviour
             aimCricle.StopRecordAim();
             aimCricle.ResetAimCircle();
             MarbleSelected = null;
+            Debug.Log("XxXXXXX");
             return;
         }
     }

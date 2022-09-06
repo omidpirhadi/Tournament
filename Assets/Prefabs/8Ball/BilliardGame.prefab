@@ -485,7 +485,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -0.01}
 --- !u!114 &54921576670648886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,7 +1049,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -0.07}
 --- !u!114 &54921576969336246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1484,7 +1484,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.13, y: 0, z: 0.23}
 --- !u!114 &54921577424443277
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1818,7 +1818,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0, z: -0.1}
 --- !u!114 &54921577780363672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4670,7 +4670,9 @@ MonoBehaviour:
   InMove: 0
   LastPosition: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0}
+  GetSpeed: 0
   CueBallMoveInPitoke: 0
+  SensivityCheckMovment: 0.001
 --- !u!114 &4871677854998683675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4684,6 +4686,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IDPost: 0
+  ease: 1
+  rb: {fileID: 0}
 --- !u!114 &785913498
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11760,39 +11764,199 @@ MonoBehaviour:
     loser: 
     state: 0
     positions:
-      CueBall: {x: 0, y: 0}
-      CueBall_R: {x: 0, y: 0, z: 0}
-      Ball_1: {x: 0, y: 0}
-      Ball_1_R: {x: 0, y: 0, z: 0}
-      Ball_2: {x: 0, y: 0}
-      Ball_2_R: {x: 0, y: 0, z: 0}
-      Ball_3: {x: 0, y: 0}
-      Ball_3_R: {x: 0, y: 0, z: 0}
-      Ball_4: {x: 0, y: 0}
-      Ball_4_R: {x: 0, y: 0, z: 0}
-      Ball_5: {x: 0, y: 0}
-      Ball_5_R: {x: 0, y: 0, z: 0}
-      Ball_6: {x: 0, y: 0}
-      Ball_6_R: {x: 0, y: 0, z: 0}
-      Ball_7: {x: 0, y: 0}
-      Ball_7_R: {x: 0, y: 0, z: 0}
-      Ball_8: {x: 0, y: 0}
-      Ball_8_R: {x: 0, y: 0, z: 0}
-      Ball_9: {x: 0, y: 0}
-      Ball_9_R: {x: 0, y: 0, z: 0}
-      Ball_10: {x: 0, y: 0}
-      Ball_10_R: {x: 0, y: 0, z: 0}
-      Ball_11: {x: 0, y: 0}
-      Ball_11_R: {x: 0, y: 0, z: 0}
-      Ball_12: {x: 0, y: 0}
-      Ball_12_R: {x: 0, y: 0, z: 0}
-      Ball_13: {x: 0, y: 0}
-      Ball_13_R: {x: 0, y: 0, z: 0}
-      Ball_14: {x: 0, y: 0}
-      Ball_14_R: {x: 0, y: 0, z: 0}
-      Ball_15: {x: 0, y: 0}
-      Ball_15_R: {x: 0, y: 0, z: 0}
-      TimeStepPacket: 0
+      CueBall:
+        x: 0
+        y: 0
+        z: 0
+      CueBall_R:
+        x: 0
+        y: 0
+        z: 0
+      CueBall_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_1:
+        x: 0
+        y: 0
+        z: 0
+      Ball_1_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_1_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_2:
+        x: 0
+        y: 0
+        z: 0
+      Ball_2_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_2_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_3:
+        x: 0
+        y: 0
+        z: 0
+      Ball_3_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_3_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_4:
+        x: 0
+        y: 0
+        z: 0
+      Ball_4_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_4_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_5:
+        x: 0
+        y: 0
+        z: 0
+      Ball_5_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_5_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_6:
+        x: 0
+        y: 0
+        z: 0
+      Ball_6_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_6_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_7:
+        x: 0
+        y: 0
+        z: 0
+      Ball_7_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_7_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_8:
+        x: 0
+        y: 0
+        z: 0
+      Ball_8_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_8_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_9:
+        x: 0
+        y: 0
+        z: 0
+      Ball_9_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_9_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_10:
+        x: 0
+        y: 0
+        z: 0
+      Ball_10_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_10_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_11:
+        x: 0
+        y: 0
+        z: 0
+      Ball_11_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_11_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_12:
+        x: 0
+        y: 0
+        z: 0
+      Ball_12_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_12_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_13:
+        x: 0
+        y: 0
+        z: 0
+      Ball_13_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_13_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_14:
+        x: 0
+        y: 0
+        z: 0
+      Ball_14_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_14_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_15:
+        x: 0
+        y: 0
+        z: 0
+      Ball_15_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_15_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Tik: 0
       isLastPacket: 0
     cueBallLastPosition: {x: 0, y: 0, z: 0}
     table: 
@@ -11803,7 +11967,7 @@ MonoBehaviour:
     award: 0
     selectedPocket: 0
   ResultGamePage: {fileID: 6979943296784886272}
-  SpeedPlayRecord: 0.02
+  Framerate: 0.02
   AddressBalls: []
   Tables:
   - name: classic
@@ -16591,7 +16755,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.08752698, y: 0.10166695}
   m_AnchorMax: {x: 0.17034025, y: 0.2583331}
-  m_AnchoredPosition: {x: -39.90039, y: -18.298828}
+  m_AnchoredPosition: {x: -39.900146, y: -18.298828}
   m_SizeDelta: {x: 7.7, y: 10.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5341003046193415153
@@ -16665,7 +16829,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.08752698, y: 0.77500004}
   m_AnchorMax: {x: 0.17034025, y: 0.93833226}
-  m_AnchoredPosition: {x: -39.90039, y: -0.10058594}
+  m_AnchoredPosition: {x: -39.900146, y: -0.10058594}
   m_SizeDelta: {x: 7.7, y: 6.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5341003046302180089
@@ -17544,7 +17708,7 @@ CapsuleCollider:
   m_Radius: 0.25
   m_Height: 1
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.04, y: 0, z: -0.04}
 --- !u!114 &262995970030803599
 MonoBehaviour:
   m_ObjectHideFlags: 0

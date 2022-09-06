@@ -42,7 +42,7 @@ namespace Diaco.SoccerStar.Marble
         public Ease EaseTypeRotate;
 
         public float ThresholdSleep = 0.09f;
-        public bool InMove = false;
+      //  public bool InMove = false;
 
 
         public new Rigidbody rigidbody;
@@ -64,12 +64,12 @@ namespace Diaco.SoccerStar.Marble
         private Vector3 LastPositionInFrame20;
         public Vector3 LastVelocity;
         private Vector3 LastRotation;
-        private RaycastHit hitwall;
+       // private RaycastHit hitwall;
 
         //  public LayerMask hitwall_layer;
         public float MaxDisFromWall = 5.00f;
-        [SerializeField] private Vector3 hitpointballtomarbl;
-        [SerializeField] private Vector3 hitpointballtowall;
+      //  [SerializeField] private Vector3 hitpointballtomarbl;
+       // [SerializeField] private Vector3 hitpointballtowall;
         public float bouncepower = 1;
         #region MonoBehaviour Function
         public void Start()
@@ -119,19 +119,19 @@ namespace Diaco.SoccerStar.Marble
                 RotateBall();
 
 
+            LastPosition = this.transform.position;
+            LastRotation = this.transform.eulerAngles;
 
 
-           
-            
-            if (frame >= 20 && GetSpeed<0.1f )
+
+            if (frame >= 20 && GetSpeed < 0.1f)
             {
                 LastPositionInFrame20 = LastPosition;
                 CheckMoveWithDistanceFromLastPosition();
                 frame = 0;
 
             }
-            LastPosition = this.transform.position;
-            LastRotation = this.transform.eulerAngles;
+
             frame++;
             // WallHit();
         }
@@ -559,7 +559,7 @@ namespace Diaco.SoccerStar.Marble
             }
             else
             {
-                InMove = true;
+                //InMove = true;
 
             }
 
@@ -578,7 +578,7 @@ namespace Diaco.SoccerStar.Marble
             }
             else
             {
-                InMove = true;
+                //InMove = true;
                 // Debug.Log("Moving");
                 return true;
             }
@@ -588,7 +588,7 @@ namespace Diaco.SoccerStar.Marble
         {
             //if (InMove)
             // {
-            InMove = false;
+           // InMove = false;
             IsRotatingMarble = false;
             IsRotateBall = false;
             rigidbody.velocity = Vector3.zero;
