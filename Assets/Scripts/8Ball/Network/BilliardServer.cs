@@ -1067,11 +1067,11 @@ namespace Diaco.EightBall.Server
             while (loopCancle == false)
             {
                 
-                if (QueuePositionsBallFromServer.Count > 0)
-                {
-                   // Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
-                    PositionBalls = QueuePositionsBallFromServer[Mathf.Clamp(tik, 0, QueuePositionsBallFromServer.Count - 1)];
-                    tik++;
+               
+                    // Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
+                    tik = Mathf.Clamp(tik, 0, QueuePositionsBallFromServer.Count - 1);
+                    PositionBalls = QueuePositionsBallFromServer[tik];
+                    
                     //  if (tik > QueuePositionsBallFromServer.Count)
                     //      tik = QueuePositionsBallFromServer.Count;
                     //  Debug.Log(tik +"   ::::::::::   "+ QueuePositionsBallFromServer.Count);
@@ -1233,17 +1233,18 @@ namespace Diaco.EightBall.Server
                         }
                         Emit_EndPlayRecord();
                         loopCancle = true;
-                        Debug.Log("LastRecive:" + PositionBalls.Tik);
+                       // Debug.Log("LastRecive:" + PositionBalls.Tik);
 
                     }
-                }
+                
 
                 //  Physics.Simulate(Time.fixedDeltaTime);
                 yield return new WaitForSecondsRealtime(Framerate);
 
-                // Debug.Log(tik);
+                 Debug.Log("................Count List:"+QueuePositionsBallFromServer.Count+"...............TIk PACKET:"+PositionBalls.Tik+"................TIkLOOP:"+tik);
+                tik++;
             }
-
+            Debug.Log("xXXXXXXXXXxXXXXXXXXXXXXXXX");
             QueuePositionsBallFromServer.Clear();
             // cueball.resetpos();
             intergateplayposition = 0;

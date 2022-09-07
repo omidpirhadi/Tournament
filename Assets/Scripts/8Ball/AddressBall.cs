@@ -12,25 +12,38 @@ public class AddressBall : MonoBehaviour
 
     public Rigidbody rb;
     private Sequence sequence;
+
+    private int lastpacket_index = -1;
+    private Diaco.EightBall.Server.BilliardServer server;
     void Start()
     {
+        server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
+        server.OnTurn += Server_OnTurn;
         rb = GetComponent<Rigidbody>();
         sequence = DOTween.Sequence();
+    }
+
+    private void Server_OnTurn(bool obj)
+    {
+        if (obj)
+            lastpacket_index = -1;
     }
 
     public void MoveBall(Diaco_Billiard_Vec pos, Diaco_Billiard_Vec angularvelocity, Diaco_Billiard_Vec velocity, float speed, int TikPacket, int TikLoop)
     {
 
-        //* sequence.Append(transform.DOMove(pos, speed)).SetEase(ease);
-        //* sequence.Join(transform.DORotate(angularvelocity, speed)).SetEase(ease);
 
-        // transform.DORotate(angularvelocity, speed).SetEase(ease);
 
         rb.velocity = Vec3Helper.ToVector3(velocity);
         rb.position = Vec3Helper.ToVector3(pos);
-        /// if (TikPacket == TikLoop)
+      /*  if (TikPacket != lastpacket_index)
+        {
+            
 
-        // rb.angularVelocity = angularvelocity;
+        }
+
+        lastpacket_index = TikPacket;*/
+
     }
     public void StopMoving()
     {
