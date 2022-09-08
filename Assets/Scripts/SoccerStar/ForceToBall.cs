@@ -155,7 +155,7 @@ namespace Diaco.SoccerStar.Marble
                 {
 
                     IsRotatingMarble = true;
-                    Debug.Log("rotateMarble On Wall");
+                   // Debug.Log("rotateMarble On Wall");
 
                 }
                 if (tag_collider == "ball")
@@ -313,7 +313,7 @@ namespace Diaco.SoccerStar.Marble
                 server.StartCheckMovmentInRecordMode();
             }
 
-
+            Debug.Log("FORCEEEEE");
         }
         public void SelectEffectEnable(bool Active)
         {

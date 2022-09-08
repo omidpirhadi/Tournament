@@ -362,7 +362,7 @@ namespace Diaco.EightBall.Server
 
 
 
-
+                    Debug.Log("GAME DATA");
                     //Handler_GameReady();
                     //  Debug.Log(m[0].ToString());
                 });
@@ -586,6 +586,8 @@ namespace Diaco.EightBall.Server
         public void Emit_UseCue(string id)
         {
             socket.Emit("useCue", id);
+
+            Debug.Log("USSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         }
         public void Emit_RentCue(string rentId)
         {
