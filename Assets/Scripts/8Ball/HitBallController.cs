@@ -664,7 +664,7 @@ namespace Diaco.EightBall.CueControllers
             Handler_OnShotCueBall();
             if (Server.InRecordMode == false)
             {
-                Server.StarSendPositionToServer();
+                Server.StartSendPositionToServer();
             }
             else
             {

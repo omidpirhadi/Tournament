@@ -245,6 +245,7 @@ namespace Diaco.SoccerStar.Server
         #endregion
 
 
+        private Tween canclemove;
         public void ConnectToServer()
         {
 
@@ -303,14 +304,14 @@ namespace Diaco.SoccerStar.Server
                 });
                 socket.On("gameData", (s, p, m) =>
                 {
-
+                    Debug.Log("gameData");
                     StopCoroutineDataRecive();
-
+                
                     DoResetAim();
                     gameData = JsonUtility.FromJson<GameData>(m[0].ToString());
                     if (!SpwanedMarbels)
                         SelectArena(gameData.ground);
-                   // Debug.Log("GameStep::" + gameData.step);
+                 //   Debug.Log("GameStep::" + gameData.ground);
                     if(gameData.step  ==0 )
                     {
                         FreePlay = true;
@@ -320,6 +321,7 @@ namespace Diaco.SoccerStar.Server
                     {
                         FreePlay = false;
                     }
+                //    Debug.Log("gameData2");
                     var aim_dot = FindObjectOfType<AimDot>();
                     if (gameData.playerOne.userName == Info.userName)
                     {
@@ -338,7 +340,7 @@ namespace Diaco.SoccerStar.Server
                         else
                             aim_dot.DotPower = Mathf.Clamp(gameData.playerOne.aim, 0, 1);
                     }
-
+                  //  Debug.Log("gameData3");
                     if (NamespaceServer != "_classic")
                         CalculateGameTime(gameData.gameTime / 1000.0f);
                     else
@@ -346,7 +348,7 @@ namespace Diaco.SoccerStar.Server
                         SetUICountCost(gameData.cost.ToString());
 
                     SetPlayer();
-                   // Debug.Log("gameData");
+                  //  Debug.Log("gameData4");
                 });
                 socket.On("Aim", (s, p, a) =>
                 {
@@ -862,7 +864,7 @@ namespace Diaco.SoccerStar.Server
             }
 
         }
-
+        public Text DebugEndTurn;
         public void Invoke_CheckMovemenInSecond()
         {
             InvokeRepeating("CheckMovment", 1f, 1f);
@@ -872,11 +874,21 @@ namespace Diaco.SoccerStar.Server
 
         public IEnumerator SendDataMarblesMovement()
         {
+            DebugEndTurn.text = "EndTurn : Send Data Wait";
             MarblesInMove = true;
             Turn = false;
             Invoke_CheckMovemenInSecond();
             MarblesData Data = new MarblesData();
+            canclemove = DOVirtual.DelayedCall(14, () =>
+            {
+                MarblesInMove = false;
+                for (int i = 0; i < Marbles.Count; i++)
+                {
+                    Marbles[i].StopMovment();
+                }
+                Debug.Log("Force Stop");
 
+            }, false);
             do
             {
                 Data.m_p_1 = VectorHelper.To_Vec_Soccer(Marbles[0].transform.position);
@@ -918,11 +930,12 @@ namespace Diaco.SoccerStar.Server
 
 
                 Emit_DataMarblesToServer(Data);
-                //Debug.Log("SendData");
+                Debug.Log("SendData++");
                 yield return new WaitForSecondsRealtime(FrameRate);
             }
             while (MarblesInMove);
 
+            canclemove.Kill(false);
             Data.LastPacket = true;
             Emit_DataMarblesToServer(Data);
             Debug.Log("LastPacket:" + Data.Tik);
@@ -931,6 +944,7 @@ namespace Diaco.SoccerStar.Server
             socket.Emit("EndTurn", IsGoal);
             Debug.Log("ISGoal::" + IsGoal);
             IsGoal = -1;
+            DebugEndTurn.text = "EndTurn : True";
             CancelInvoke("CheckMovment");
         }
         public void Emit_DataMarblesToServer(MarblesData data)

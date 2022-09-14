@@ -694,6 +694,7 @@ namespace Diaco.EightBall.Server
             {
                 if (gameData.selectedPocket == -1)
                 {
+                    Handler_EnableBoarderPocket(false, 0);
                     initializTurn(data);
                 }
                 else if (gameData.selectedPocket == 0)
@@ -798,11 +799,15 @@ namespace Diaco.EightBall.Server
                 }
                 SetDisableSharInBiliboard(data.deletedBalls);
             }
+
             /// SetTimePlayerInUI(data.playerTwo.time / 1000, data.playerOne.time / 1000);
+            /// 
+            Handler_EnableBoarderPocket(false, 0);
             if (data.ownerTurn == 2)
             {
                 if (gameData.selectedPocket == -1)
                 {
+                    Handler_EnableBoarderPocket(false, 0);
                     initializTurn(data);
                 }
                 else if (gameData.selectedPocket == 0)
@@ -911,9 +916,21 @@ namespace Diaco.EightBall.Server
             return move;
         }
 
+        private Tween canclemove;
         private IEnumerator PositionsBallsSendToServer()
         {
             PositionAndRotateBalls PositionBalls = new PositionAndRotateBalls();
+            bool integateAllow = true;
+            canclemove = DOVirtual.DelayedCall(14, () =>
+            {
+                integateAllow  = false;
+                for (int i = 0; i < AddressBalls.Count; i++)
+                {
+                    AddressBalls[i].StopMoving();
+                }
+                Debug.Log("Force Stop");
+
+            }, false);
             do
             {
 
@@ -1036,9 +1053,9 @@ namespace Diaco.EightBall.Server
                 yield return new WaitForSecondsRealtime(Framerate);
                 PositionBalls.Tik++;
 
-            } while (CheckBallsMove());
+            } while (CheckBallsMove() && integateAllow);
 
-
+            canclemove.Kill(false);
             PositionBalls.isLastPacket = true;
             Debug.Log("LastSend:" + PositionBalls.Tik);
             Emit_PositionsBalls(PositionBalls);
@@ -1048,9 +1065,9 @@ namespace Diaco.EightBall.Server
 
             // AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemOnPlayRecord(true);
 
-            yield return null;
+            yield return new WaitForSecondsRealtime(Framerate);
         }
-        public void StarSendPositionToServer()
+        public void StartSendPositionToServer()
         {
             CoroutineSendPositionToServer = StartCoroutine(PositionsBallsSendToServer());
         }
@@ -1246,7 +1263,7 @@ namespace Diaco.EightBall.Server
                  Debug.Log("................Count List:"+QueuePositionsBallFromServer.Count+"...............TIk PACKET:"+PositionBalls.Tik+"................TIkLOOP:"+tik);
                 tik++;
             }
-            Debug.Log("xXXXXXXXXXxXXXXXXXXXXXXXXX");
+            //Debug.Log("xXXXXXXXXXxXXXXXXXXXXXXXXX");
             QueuePositionsBallFromServer.Clear();
             // cueball.resetpos();
             intergateplayposition = 0;
@@ -1484,7 +1501,7 @@ namespace Diaco.EightBall.Server
                 {
                     if (list_object_in_basket[j].BallID == ballID)
                     {
-                        Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
+                      //  Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
                         find = true;
 
                     }
@@ -1929,13 +1946,13 @@ namespace Diaco.EightBall.Server
             {
                 PlayerCoolDowns[1].fillAmount = 1.0f;
                 PlayerCoolDowns[0].fillAmount = t;
-                Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
+               // Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
             }
             else if (side == Side.Right)
             {
                 PlayerCoolDowns[0].fillAmount = 1.0f;
                 PlayerCoolDowns[1].fillAmount = t;
-                Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
+             //   Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
             }
             
             

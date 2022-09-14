@@ -142,18 +142,18 @@ public class AimCircle : MonoBehaviour
 
         });*/
     }
-    public void AimCircleRotate(int marbleId,float angel)
+    public void AimCircleRotate(int marbleId,float angel , Vector3 marblepos  )
     {
         ////Debug.Log(this.transform.localEulerAngles.y);
        
-        int side = 0;
+        int side =  1;
 
-        if(Input.touchCount>1)
+        if (Input.touchCount > 1)
         {
-            var pos1 =  Input.GetTouch(0).position;
+            var pos1 = Input.GetTouch(0).position;
             var pos2 = Input.GetTouch(1).position;
             var d = (pos2 - pos1).normalized;
-            if(d.x>0)
+            if (d.x > 0)
             {
                 side = -1;
             }
@@ -161,6 +161,23 @@ public class AimCircle : MonoBehaviour
             {
                 side = 1;
             }
+        }
+        else
+        {
+            Vector3 pos1 = Input.GetTouch(0).position;
+            Vector3 pos2 = Camera.main.WorldToScreenPoint(marblepos);
+            var d = (pos2 - pos1).normalized;
+            if (d.x > 0)
+            {
+                side = 1;
+                //Debug.Log("SIDEYYYY" + side);
+            }
+            else
+            {
+                side = -1;
+               // Debug.Log("SIDEXXX" + side);
+            }
+            
         }
         //Debug.Log($"Angel:{angel * side}");
        // this.transform.rotation = Quaternion.Euler(new Vector3(0.0f, this.transform.localEulerAngles.y + (angel * side), 0.0f));

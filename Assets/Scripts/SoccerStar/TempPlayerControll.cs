@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Profiling;
 using Diaco.SoccerStar.Server;
 using Diaco.SoccerStar.Marble;
+using UnityEngine.UI;
 public class TempPlayerControll : MonoBehaviour
 {
     public ServerManager server;
@@ -31,6 +32,8 @@ public class TempPlayerControll : MonoBehaviour
     // [SerializeField] private bool UIActive = false;
 
     private Diaco.Setting.GeneralSetting generalSetting;
+
+    public Text debug;
     void Start()
     {
         // ui = FindObjectOfType<NavigationUI>();
@@ -66,7 +69,7 @@ public class TempPlayerControll : MonoBehaviour
     {
         if (Input.touchCount == 1)
         {
-            rotateType2 = false;
+            //rotateType2 = false;
            // Touch2Clicked = false;
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
@@ -132,11 +135,12 @@ public class TempPlayerControll : MonoBehaviour
 
                         if (rotateType2)
                         {
-                            var dis_current = Vector3.Distance(new Vector3(hit.point.x, 0, hit.point.z), pos_marble);
-                            aimCricle.ScaleAim(ID, aimCricle.transform.localScale.x + dis_current - dis_last);
-                            aimCricle.AimCircleRotate(ID, Input.GetTouch(0).deltaPosition.y * Sensiviti);
-                            ///    aimCricle.SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData { ID = ID, CircleRotate_Y = CircleAim.transform.eulerAngles.y, CricleScale = CircleAim.transform.localScale.x, PositionIndicator = indicator.transform.localPosition, RotateIndicator_Y = indicator.transform.eulerAngles.y });
+                            //var dis_current = Vector3.Distance(new Vector3(hit.point.x, 0, hit.point.z), pos_marble);
+                            //aimCricle.ScaleAim(ID, aimCricle.transform.localScale.x + dis_current - dis_last);
 
+                            aimCricle.AimCircleRotate(ID, Input.GetTouch(0).deltaPosition.y * Sensiviti, pos_marble);
+
+                      //      Debug.Log(ID +" : " + Input.GetTouch(0).deltaPosition.y + " : "+ Sensiviti);
                         }
                         else
                         {
@@ -145,18 +149,17 @@ public class TempPlayerControll : MonoBehaviour
                                 aimCricle.AimCircleAndIndicatorRotate(ID, hit.point);
                             else if (AimForward == true)
                                 aimCricle.AimCircleAndIndicatorRotate2(ID, hit.point);
+                           // Debug.Log("2");
                             //   aimCricle.SendAimDataToServer(new Diaco.SoccerStar.CustomTypes.AimData { ID = ID, CircleRotate_Y = CircleAim.transform.eulerAngles.y, CricleScale = CircleAim.transform.localScale.x, PositionIndicator = indicator.transform.localPosition, RotateIndicator_Y = indicator.transform.eulerAngles.y });
                         }
-
+                       // Debug.Log("3");
                     }
                     else
                     {
                         LastPos = new Vector3(hit.point.x, 0, hit.point.z);
-                        // var dis_current = Vector3.Distance(hit.point, firstouch);
-                        // var dis_last = Vector3.Distance(LastPos, firstouch);
-
-                        //aimCricle.ScaleAim(ID, dis_current - dis_last);
+ 
                         Touch2Clicked = false;
+                      //  Debug.Log("4");
 
                     }
                 }
@@ -184,9 +187,12 @@ public class TempPlayerControll : MonoBehaviour
 
                     var dir = aimCricle.DirectionShoot();
                     Handler_OnShoot(ID, dir.normalized, pow);
+                    
                     aimCricle.StopRecordAim();
                     aimCricle.ResetAimCircle();
                     MarbleSelected = null;
+                    if (!server.InRecordMode)
+                        debug.text = $"DIR:{dir.normalized}Power:{pow}";
 
 
                 }
@@ -198,11 +204,13 @@ public class TempPlayerControll : MonoBehaviour
                     aimCricle.StopRecordAim();
                     aimCricle.ResetAimCircle();
                     Handler_EnableRingEffect(true);
+                    if (!server.InRecordMode)
+                        debug.text = $"DIR:{Vector3.zero}Power:{0.0}";
 
                 }
                 return;
             }
-
+            
         }
         else if (Input.touchCount == 2 && AimForward == false)
         {
@@ -244,7 +252,7 @@ public class TempPlayerControll : MonoBehaviour
 
 
                     LastPos = hit2.point;
-                    aimCricle.AimCircleRotate(ID, Input.GetTouch(1).deltaPosition.y * Sensiviti);
+                    aimCricle.AimCircleRotate(ID, Input.GetTouch(1).deltaPosition.y * Sensiviti, Vector3.zero);
                    // aimCricle.AimCircleRotate(ID, Input.GetTouch(1).deltaPosition.x * Sensiviti);
                     // aimCricle.AimCircleAndIndicatorRotate2(ID, hit2.point);
                 }
@@ -264,26 +272,30 @@ public class TempPlayerControll : MonoBehaviour
                     if (MarbleSelected != null && aimCricle.CurrentAimPower > 3.5f)
                     {
 
-                        Touch2Clicked = false;
-                        rotateType2 = false;
+                      //  Touch2Clicked = false;
+                        //rotateType2 = false;
                         var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
 
                         var dir = aimCricle.DirectionShoot();
                         Handler_OnShoot(ID, dir.normalized, pow);
+                        
                         aimCricle.StopRecordAim();
                         aimCricle.ResetAimCircle();
                         MarbleSelected = null;
-
+                        if (!server.InRecordMode)
+                            debug.text = $"DIR:{dir.normalized}Power:{pow}";
 
                     }
                     else if (MarbleSelected != null && aimCricle.CurrentAimPower < 3.5f)
                     {
-                        Touch2Clicked = false;
-                        rotateType2 = false;
+                      //  Touch2Clicked = false;
+                        //rotateType2 = false;
 
                         aimCricle.StopRecordAim();
                         aimCricle.ResetAimCircle();
                         Handler_EnableRingEffect(true);
+                        if (!server.InRecordMode)
+                            debug.text = $"DIR:{Vector3.zero}Power:{0.0}";
 
                     }
                     Debug.Log("Two Finger");
@@ -306,7 +318,8 @@ public class TempPlayerControll : MonoBehaviour
             aimCricle.StopRecordAim();
             aimCricle.ResetAimCircle();
             MarbleSelected = null;
-            Debug.Log("XxXXXXX");
+            if (!server.InRecordMode)
+                debug.text = $"DIR:{Vector3.zero}Power:{0.0}";
             return;
         }
     }
