@@ -231,7 +231,7 @@ namespace Diaco.EightBall.Server
                 var PocketsInScene = FindObjectsOfType<Pockets.Pockets>().ToList();
                 AllowAreaForMoveCueBallRenderer = GameObject.Find("AreaForMoveCueBall").GetComponent<SpriteRenderer>();
                 this.Basket = FindObjectOfType<Basket>();
-                QueuePositionsBallFromServer = new List<PositionAndRotateBalls>(1024);
+                QueuePositionsBallFromServer = new List<PositionAndRotateBalls>();
                 QueueCueBallPositionFromServer = new Queue<CueBallData>();
                 QueueAimFromServer = new Queue<AimData>();
                 IDImpactToWall = new List<int>();
@@ -375,7 +375,7 @@ namespace Diaco.EightBall.Server
                 socket.On("Position", (s, p, m) =>
                 {
                     var positions = JsonUtility.FromJson<Diaco.EightBall.Structs.PositionAndRotateBalls>(m[0].ToString());
-                    QueuePositionsBallFromServer.Insert(positions.Tik, positions);
+                    QueuePositionsBallFromServer.Add(positions);
                     //  Debug.Log("tik" + positions.Tik + "S" + positions.CueBall.x);
                     if (intergateplayposition == 0)
                     {
@@ -642,8 +642,10 @@ namespace Diaco.EightBall.Server
 
             if (SpwnedBall == false)
             {
-                SpwnBalls(data);
+                SpawnBalls(data);
+                Debug.Log("AAAAAAAAAAAA");
             }
+
             if (ResultGamePage.activeSelf && data.state != -1)
             {
                 // ResultGamePage.SetActive(false);
@@ -665,9 +667,14 @@ namespace Diaco.EightBall.Server
             yield return new WaitForSeconds(0.01f);
 
             ///   SetPositionsBalls(data.positions);
-            yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
-            QueuePositionsBallFromServer.Insert(0, data.positions);
-            yield return StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer());
+            /*  if (!Infunc)
+                  yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));*/
+            /// StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
+
+            StartCoroutine(DeleteAdditionsBallInTable(data));
+            StartCoroutine(CheckBallInBasket(data));
+            yield return new WaitForSeconds(0.2f);
+            StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer(data));
 
             ResetSharBillboard();
             if (data.sharSeted)
@@ -758,8 +765,10 @@ namespace Diaco.EightBall.Server
 
             if (SpwnedBall == false)
             {
-                SpwnBalls(data);
+                SpawnBalls(data);
+                
             }
+
             if (ResultGamePage.activeSelf && data.state != -1)
             {
                 //  ResultGamePage.SetActive(false);
@@ -778,12 +787,14 @@ namespace Diaco.EightBall.Server
             SetTypeCost(Convert.ToInt16(data.costType));
             SetCountCostBillboard(data.cost.ToString());
             yield return new WaitForSeconds(0.01f);
+            /*  if (!Infunc)
+                   yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));*/
+            /// StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
 
-            yield return StartCoroutine(SpwanBallInBasketAndDestroyBallInTable(data));
-            QueuePositionsBallFromServer.Insert(0, data.positions);
-            yield return StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer());
-
-
+            StartCoroutine(DeleteAdditionsBallInTable(data));
+            StartCoroutine(CheckBallInBasket(data));
+            yield return new WaitForSeconds(0.2f);
+            StartCoroutine(FASTPlayRecordPositionsBallsAndRecivedFromServer(data));
 
             ResetSharBillboard();
             if (data.sharSeted)
@@ -923,7 +934,7 @@ namespace Diaco.EightBall.Server
             bool integateAllow = true;
             canclemove = DOVirtual.DelayedCall(14, () =>
             {
-                integateAllow  = false;
+                integateAllow = false;
                 for (int i = 0; i < AddressBalls.Count; i++)
                 {
                     AddressBalls[i].StopMoving();
@@ -1085,12 +1096,14 @@ namespace Diaco.EightBall.Server
             yield return new WaitForSecondsRealtime(2.0f);
             while (loopCancle == false)
             {
-                
-               
+
+
+                try
+                {
                     // Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
                     tik = Mathf.Clamp(tik, 0, QueuePositionsBallFromServer.Count - 1);
                     PositionBalls = QueuePositionsBallFromServer[tik];
-                    
+
                     //  if (tik > QueuePositionsBallFromServer.Count)
                     //      tik = QueuePositionsBallFromServer.Count;
                     //  Debug.Log(tik +"   ::::::::::   "+ QueuePositionsBallFromServer.Count);
@@ -1252,15 +1265,19 @@ namespace Diaco.EightBall.Server
                         }
                         Emit_EndPlayRecord();
                         loopCancle = true;
-                       // Debug.Log("LastRecive:" + PositionBalls.Tik);
+                        // Debug.Log("LastRecive:" + PositionBalls.Tik);
 
                     }
-                
 
+                }
+                catch(Exception r)
+                {
+
+                }
                 //  Physics.Simulate(Time.fixedDeltaTime);
                 yield return new WaitForSecondsRealtime(Framerate);
 
-                 Debug.Log("................Count List:"+QueuePositionsBallFromServer.Count+"...............TIk PACKET:"+PositionBalls.Tik+"................TIkLOOP:"+tik);
+               //  Debug.Log("................Count List:"+QueuePositionsBallFromServer.Count+"...............TIk PACKET:"+PositionBalls.Tik+"................TIkLOOP:"+tik);
                 tik++;
             }
             //Debug.Log("xXXXXXXXXXxXXXXXXXXXXXXXXX");
@@ -1271,14 +1288,15 @@ namespace Diaco.EightBall.Server
 
 
         }
-        public IEnumerator FASTPlayRecordPositionsBallsAndRecivedFromServer()
+        public IEnumerator FASTPlayRecordPositionsBallsAndRecivedFromServer(Diaco.EightBall.Structs.GameData data)
         {
+            PositionAndRotateBalls PositionBalls = new PositionAndRotateBalls();
+            PositionBalls = data.positions;
 
             var cueball = AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>();
             // cueball.ActiveAimSystem(false);
 
 
-            var PositionBalls = QueuePositionsBallFromServer[0];
 
             #region T1
             if (AddressBalls[0] != null)
@@ -1487,7 +1505,8 @@ namespace Diaco.EightBall.Server
                 }
             }
         }
-
+        private bool Infunc = false;
+        // private GameObject finded_ball;
         public IEnumerator SpwanBallInBasketAndDestroyBallInTable(Diaco.EightBall.Structs.GameData data)
         {
             var list_object_in_basket = FindObjectsOfType<ballinbasket>().ToList();
@@ -1501,13 +1520,13 @@ namespace Diaco.EightBall.Server
                 {
                     if (list_object_in_basket[j].BallID == ballID)
                     {
-                      //  Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
+                        Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
                         find = true;
 
                     }
 
                 }
-                if(!find)
+                if (!find)
                 {
                     Basket.ballinbasket.Remove(ballID);
                 }
@@ -1528,7 +1547,7 @@ namespace Diaco.EightBall.Server
                         Destroy(AddressBalls[data.deletedBalls[i]].gameObject);
                         DeletedBallCount++;
                     }
-                    catch ( Exception e)
+                    catch (Exception e)
                     {
 
                     }
@@ -1567,6 +1586,151 @@ namespace Diaco.EightBall.Server
             yield return new WaitForSecondsRealtime(0.5f);
             StartCoroutine(Basket.ExtractBallFast());
         }
+
+        public bool SpawnBallWorng(GameData gameData)
+        {
+            bool findworng = false;
+            for (int i = 0; i < AddressBalls.Count; i++)
+            {
+                if (AddressBalls[i] != null)
+                {
+                    var idball = AddressBalls[i].IDPost;
+                    if (gameData.deletedBalls.Contains(idball))
+                    {
+                        Debug.Log("............" + idball);
+                        findworng = true;
+                    }
+                }
+            }
+
+            return findworng;
+        }
+        public IEnumerator DeleteAdditionsBallInTable(GameData data)
+        {
+            //List<AddressBall> mustbedelete = new List<AddressBall>();
+            var BallInTable = FindObjectsOfType<AddressBall>();
+            //List<int> mustbedelete_ids = new List<int>();
+            bool need_reset = false;
+            for (int i = 0; i < BallInTable.Length; i++)
+            {
+                if (!need_reset)
+                {
+                    var ID = BallInTable[i].IDPost;
+                    for (int j = 0; j < BallInTable.Length; j++)
+                    {
+                        var ID2 = BallInTable[j].IDPost;
+                        if (i != j && ID == ID2)
+                        {
+                            need_reset = true;
+                            Debug.Log("..............ResetBallAdd33333");
+                        }
+                    }
+                }
+            }
+           
+            if (!need_reset)
+            {
+                if(SpawnBallWorng(data))
+                {
+                    need_reset = true;
+                    Debug.Log("..............ResetBallAdd2222");
+                }
+            }
+
+            if (!need_reset)
+            {
+                if((16-data.deletedBalls.Count) != BallInTable.Length)
+                {
+                    need_reset = true;
+                }
+            }
+            if (need_reset)
+            {
+                for (int i = 0; i < BallInTable.Length; i++)
+                {
+                    if (BallInTable[i].tag != "whiteball")
+                    {
+                        Debug.Log("..............count ball in table"+BallInTable.Length);
+                        Destroy(BallInTable[i].gameObject);
+                    }
+
+                }
+                AddressBalls.Clear();
+                Debug.Log("..............ResetBallAdd");
+                SpawnBalls2(data);
+            }
+            yield return null;
+        }
+      
+        public IEnumerator CheckBallInBasket(Diaco.EightBall.Structs.GameData data)
+
+        {
+            //Check For Worng 
+          //  bool findworng = false;
+            var list_object_in_basket = FindObjectsOfType<ballinbasket>();
+
+            bool need_reset = false;
+            for (int i = 0; i < list_object_in_basket.Length; i++)
+            {
+                if (!need_reset)
+                {
+                    var ID = list_object_in_basket[i].BallID;
+                    for (int j = 0; j < list_object_in_basket.Length; j++)
+                    {
+                        var ID2 = list_object_in_basket[j].BallID;
+                        if (i != j && ID == ID2)
+                        {
+                            need_reset = true;
+                        }
+                    }
+                }
+            }
+
+            if (!need_reset)
+            {
+                for (int i = 0; i < data.deletedBalls.Count; i++)
+                {
+                    var ballidDeleted = data.deletedBalls[i];
+
+                    if (!this.Basket.ballinbasket.Contains(ballidDeleted))
+                    {
+                        need_reset = true;
+                        Debug.Log("Find Worng this id: " + ballidDeleted);
+
+                    }
+                }
+
+            }
+            //yield return new WaitForSecondsRealtime(0.1f);
+            if (need_reset)
+            {
+                Debug.Log("Start solving the problem in basket");
+                for (int i = 0; i < list_object_in_basket.Length; i++)
+                {
+                    Destroy(list_object_in_basket[i].gameObject);
+                    this.Basket.QueueBasket.Clear();
+                    this.Basket.ballinbasket.Clear();
+                    Debug.Log("DESTROY BALL IN BASKET");
+                }
+               // yield return new WaitForSecondsRealtime(0.1f);
+                for (int i = 0; i < data.deletedBalls.Count; i++)
+                {
+
+                    var deletedballID = data.deletedBalls[i];
+                    Debug.Log("ADD BALL IN BASKET:::   " + deletedballID);
+                    this.Basket.AddToQueue(deletedballID);
+
+
+                }
+                Debug.Log("The problem was solved in basket.");
+                ///yield return new WaitForSecondsRealtime(0.1f);
+                StartCoroutine(this.Basket.ExtractBallFast());
+                
+            }
+            
+            yield return null;
+        }
+
         public void CloseConnection()
         {
             socket.Off();
@@ -1622,7 +1786,7 @@ namespace Diaco.EightBall.Server
 
             gameData = new GameData();
         }
-        public void SpwnBalls(GameData gameData)
+        public void SpawnBalls(GameData gameData)
         {
             Vector3[] positions = new Vector3[16] {
 
@@ -1649,19 +1813,76 @@ namespace Diaco.EightBall.Server
 
             cueball.transform.position = positions[0];
             AddressBalls.Add(cueball.GetComponent<AddressBall>());
+
+
             for (int i = 0; i < BallsPrefabs.Count; i++)
             {
+                if (!gameData.deletedBalls.Contains(i + 1))
+                {
+                    var ball = Instantiate(BallsPrefabs[i], positions[i + 1], Quaternion.identity, ParentForspwan);
+                    //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
+                    ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
+                    AddressBalls.Add(ball.GetComponent<AddressBall>());
+                    // Debug.Log("BALLLLLttttt::::::::::::");
 
-
-                var ball = Instantiate(BallsPrefabs[i], positions[i + 1], Quaternion.identity, ParentForspwan);
-                //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
-                ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
-                AddressBalls.Add(ball.GetComponent<AddressBall>());
-
-
-
+                }
+                else
+                {
+                    AddressBalls.Add(null);
+                }
             }
+            
+
             soundeffectcontroll.PlaySound(2);////  play arrange  ball;
+            SpwnedBall = true;
+        }
+        public void SpawnBalls2(GameData gameData)
+        {
+            Vector3[] positions = new Vector3[16] {
+
+                new Vector3(gameData.positions.CueBall.x,0.08885605f,gameData.positions.CueBall.z),
+                new Vector3(gameData.positions.Ball_1.x,0.08885605f,gameData.positions.Ball_1.z),
+                new Vector3(gameData.positions.Ball_2.x,0.08885605f,gameData.positions.Ball_2.z),
+                new Vector3(gameData.positions.Ball_3.x,0.08885605f,gameData.positions.Ball_3.z),
+                new Vector3(gameData.positions.Ball_4.x,0.08885605f,gameData.positions.Ball_4.z),
+                new Vector3(gameData.positions.Ball_5.x,0.08885605f,gameData.positions.Ball_5.z),
+                new Vector3(gameData.positions.Ball_6.x,0.08885605f,gameData.positions.Ball_6.z),
+                new Vector3(gameData.positions.Ball_7.x,0.08885605f,gameData.positions.Ball_7.z),
+                new Vector3(gameData.positions.Ball_8.x,0.08885605f,gameData.positions.Ball_8.z),
+                new Vector3(gameData.positions.Ball_9.x,0.08885605f,gameData.positions.Ball_9.z),
+                new Vector3(gameData.positions.Ball_10.x,0.08885605f,gameData.positions.Ball_10.z),
+                new Vector3(gameData.positions.Ball_11.x,0.08885605f,gameData.positions.Ball_11.z),
+                new Vector3(gameData.positions.Ball_12.x,0.08885605f,gameData.positions.Ball_12.z),
+                new Vector3(gameData.positions.Ball_13.x,0.08885605f,gameData.positions.Ball_13.z),
+                new Vector3(gameData.positions.Ball_14.x,0.08885605f,gameData.positions.Ball_14.z),
+                new Vector3(gameData.positions.Ball_15.x,0.08885605f,gameData.positions.Ball_15.z),
+
+            };
+            var cueball = FindObjectOfType<Diaco.EightBall.CueControllers.HitBallController>();
+            cueball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
+
+            cueball.transform.position = positions[0];
+            AddressBalls.Add(cueball.GetComponent<AddressBall>());
+
+            for (int i = 0; i < BallsPrefabs.Count; i++)
+            {
+                if (!gameData.deletedBalls.Contains(i + 1))
+                {
+                    var ball = Instantiate(BallsPrefabs[i], positions[i + 1], Quaternion.identity, ParentForspwan);
+                    //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
+                    ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
+                    AddressBalls.Add(ball.GetComponent<AddressBall>());
+                    // Debug.Log("BALLLLLttttt::::::::::::");
+
+                }
+                else
+                {
+                    AddressBalls.Add(null);
+                }
+            }
+
+
+            // soundeffectcontroll.PlaySound(2);////  play arrange  ball;
             SpwnedBall = true;
         }
         public string ReadToken(string FileName)
@@ -1944,15 +2165,17 @@ namespace Diaco.EightBall.Server
             float t = Time / totaltime;
             if (side == Side.Left)
             {
-                PlayerCoolDowns[1].fillAmount = 1.0f;
+               
                 PlayerCoolDowns[0].fillAmount = t;
-               // Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
+
+                PlayerCoolDowns[1].fillAmount = 1.0f;
+               Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
             }
             else if (side == Side.Right)
             {
                 PlayerCoolDowns[0].fillAmount = 1.0f;
                 PlayerCoolDowns[1].fillAmount = t;
-             //   Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
+                Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
             }
             
             
