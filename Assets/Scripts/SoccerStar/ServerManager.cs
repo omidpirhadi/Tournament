@@ -969,22 +969,22 @@ namespace Diaco.SoccerStar.Server
             yield return new WaitForSecondsRealtime(2.0f);
             while (LoopCancle == false)
             {
-              
+
                 int t = Mathf.Clamp(tik, 0, MarblesDataRecived.Count - 1);
-                Marbles[0].SetMovmentData(MarblesDataRecived[t].m_p_1, MarblesDataRecived[t].m_v_1);
-                Marbles[1].SetMovmentData(MarblesDataRecived[t].m_p_2, MarblesDataRecived[t].m_v_2);
-                Marbles[2].SetMovmentData(MarblesDataRecived[t].m_p_3, MarblesDataRecived[t].m_v_3);
-                Marbles[3].SetMovmentData(MarblesDataRecived[t].m_p_4, MarblesDataRecived[t].m_v_4);
-                Marbles[4].SetMovmentData(MarblesDataRecived[t].m_p_5, MarblesDataRecived[t].m_v_5);
-                Marbles[5].SetMovmentData(MarblesDataRecived[t].m_p_6, MarblesDataRecived[t].m_v_6);
-                Marbles[6].SetMovmentData(MarblesDataRecived[t].m_p_7, MarblesDataRecived[t].m_v_7);
-                Marbles[7].SetMovmentData(MarblesDataRecived[t].m_p_8, MarblesDataRecived[t].m_v_8);
-                Marbles[8].SetMovmentData(MarblesDataRecived[t].m_p_9, MarblesDataRecived[t].m_v_9);
-                Marbles[9].SetMovmentData(MarblesDataRecived[t].m_p_10, MarblesDataRecived[t].m_v_10);
-                Marbles[10].SetMovmentData(MarblesDataRecived[t].b_p, MarblesDataRecived[t].b_v);
+                Marbles[0].SetMovmentData(MarblesDataRecived[t].m_p_1, MarblesDataRecived[t].m_v_1, t);
+                Marbles[1].SetMovmentData(MarblesDataRecived[t].m_p_2, MarblesDataRecived[t].m_v_2, t);
+                Marbles[2].SetMovmentData(MarblesDataRecived[t].m_p_3, MarblesDataRecived[t].m_v_3, t);
+                Marbles[3].SetMovmentData(MarblesDataRecived[t].m_p_4, MarblesDataRecived[t].m_v_4, t);
+                Marbles[4].SetMovmentData(MarblesDataRecived[t].m_p_5, MarblesDataRecived[t].m_v_5, t);
+                Marbles[5].SetMovmentData(MarblesDataRecived[t].m_p_6, MarblesDataRecived[t].m_v_6, t);
+                Marbles[6].SetMovmentData(MarblesDataRecived[t].m_p_7, MarblesDataRecived[t].m_v_7, t);
+                Marbles[7].SetMovmentData(MarblesDataRecived[t].m_p_8, MarblesDataRecived[t].m_v_8, t);
+                Marbles[8].SetMovmentData(MarblesDataRecived[t].m_p_9, MarblesDataRecived[t].m_v_9, t);
+                Marbles[9].SetMovmentData(MarblesDataRecived[t].m_p_10, MarblesDataRecived[t].m_v_10, t);
+                Marbles[10].SetMovmentData(MarblesDataRecived[t].b_p, MarblesDataRecived[t].b_v, t);
                 tik++;
 
-              //  Debug.Log("ReciveData" + MarblesDataRecived[t].LastPacket);
+                //  Debug.Log("ReciveData" + MarblesDataRecived[t].LastPacket);
                 yield return new WaitForSecondsRealtime(FrameRate);
 
 

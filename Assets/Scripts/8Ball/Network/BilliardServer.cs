@@ -1666,16 +1666,17 @@ namespace Diaco.EightBall.Server
 
         {
             //Check For Worng 
-          //  bool findworng = false;
-            var list_object_in_basket = FindObjectsOfType<ballinbasket>();
+            //  bool findworng = false;
+            var temp_deletedball = data.deletedBalls;
+            var list_object_in_basket = FindObjectsOfType<ballinbasket>().ToList();
 
             bool need_reset = false;
-            for (int i = 0; i < list_object_in_basket.Length; i++)
+            for (int i = 0; i < list_object_in_basket.Count; i++)
             {
                 if (!need_reset)
                 {
                     var ID = list_object_in_basket[i].BallID;
-                    for (int j = 0; j < list_object_in_basket.Length; j++)
+                    for (int j = 0; j < list_object_in_basket.Count; j++)
                     {
                         var ID2 = list_object_in_basket[j].BallID;
                         if (i != j && ID == ID2)
@@ -1688,24 +1689,32 @@ namespace Diaco.EightBall.Server
 
             if (!need_reset)
             {
-                for (int i = 0; i < data.deletedBalls.Count; i++)
+                for (int i = 0; i < list_object_in_basket.Count; i++)
                 {
-                    var ballidDeleted = data.deletedBalls[i];
+                    var ballID = list_object_in_basket[i].BallID;
 
-                    if (!this.Basket.ballinbasket.Contains(ballidDeleted))
+                    if (!temp_deletedball.Contains(ballID))
                     {
                         need_reset = true;
-                        Debug.Log("Find Worng this id: " + ballidDeleted);
+                        Debug.Log("Find Worng this id: " + ballID);
 
                     }
                 }
 
             }
+
+            if (!need_reset)
+            {
+                if(data.deletedBalls.Count != list_object_in_basket.Count)
+                {
+                    need_reset = true;
+                }
+            }
             //yield return new WaitForSecondsRealtime(0.1f);
             if (need_reset)
             {
                 Debug.Log("Start solving the problem in basket");
-                for (int i = 0; i < list_object_in_basket.Length; i++)
+                for (int i = 0; i < list_object_in_basket.Count; i++)
                 {
                     Destroy(list_object_in_basket[i].gameObject);
                     this.Basket.QueueBasket.Clear();

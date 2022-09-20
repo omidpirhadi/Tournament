@@ -255,6 +255,7 @@ namespace Diaco.SoccerStar.Marble
         {
             // SelectEffectEnable(obj);
             // Debug.Log("TURN SelectEffectEnable");
+            lastpacket_index = -1;
         }
         private void PlayerControll_OnShoot(int marbleID, Vector3 dir, float pow)
         {
@@ -628,13 +629,17 @@ namespace Diaco.SoccerStar.Marble
             }
         }
 
-
-        public void SetMovmentData(Vec_Soccer p, Vec_Soccer v)
+        private int lastpacket_index = -1;
+        public void SetMovmentData(Vec_Soccer p, Vec_Soccer v, int packetTik)
         {
-            Vector3 pos = VectorHelper.ToVector3WithReversX(p);
-            Vector3 velocity = VectorHelper.ToVector3WithReversX(v);
-            this.rigidbody.velocity = velocity;
-            this.rigidbody.position = pos;
+            if (lastpacket_index != packetTik)
+            {
+                Vector3 pos = VectorHelper.ToVector3WithReversX(p);
+                Vector3 velocity = VectorHelper.ToVector3WithReversX(v);
+                this.rigidbody.velocity = velocity;
+                this.rigidbody.position = pos;
+            }
+            lastpacket_index = packetTik;
         }
        /* public void MarbleStop()
         {

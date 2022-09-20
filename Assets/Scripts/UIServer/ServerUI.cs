@@ -1000,6 +1000,28 @@ public class ServerUI : MonoBehaviour
 
             }
         });
+
+        socket.On("after_DC_result", (s, p, m) =>
+        {
+            if (Convert.ToBoolean(m[0]) == true)///Error
+            {
+
+                // popup.AllowUsername = false;
+                Debug.Log("<color=red>Error: Cant Load Award League Popup </color>" + m[1].ToString());
+                ///Handler_OnChangeUsername(m[1].ToString());
+
+            }
+            else
+            {
+                navigationUi.ShowPopUp("resultDC");
+                var data = JsonUtility.FromJson<Diaco.UI.PopupResualtAfterDC.ResultAfterDCData>(m[1].ToString());
+                var popup = FindObjectOfType< Diaco.UI.PopupResualtAfterDC.ResultAfterDC>();
+                popup.Set(data);
+                Debug.Log("<color=green Load Award League Popup : </color>");
+
+            }
+        });
+
         socket.On("getSticker", (s, p, m) => {
 
             var data = JsonUtility.FromJson<StickerData>(m[0].ToString());
@@ -1014,6 +1036,7 @@ public class ServerUI : MonoBehaviour
             //pop.SetHint(m[0].ToString());
             Debug.Log("Hint Opned");
         });
+
         socket.On("disconnect", (s, p, m) =>
         {
 

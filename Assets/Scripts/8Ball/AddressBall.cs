@@ -25,7 +25,7 @@ public class AddressBall : MonoBehaviour
 
     private void Server_OnTurn(bool obj)
     {
-        if (obj)
+       
             lastpacket_index = -1;
     }
 
@@ -34,15 +34,16 @@ public class AddressBall : MonoBehaviour
 
 
 
-        rb.velocity = Vec3Helper.ToVector3(velocity);
-        rb.position = Vec3Helper.ToVector3(pos);
-      /*  if (TikPacket != lastpacket_index)
+        
+        
+        if (TikPacket != lastpacket_index)
         {
-            
+            rb.velocity = Vec3Helper.ToVector3(velocity);
+            rb.position = Vec3Helper.ToVector3(pos);
 
         }
 
-        lastpacket_index = TikPacket;*/
+        lastpacket_index = TikPacket;
 
     }
     public void StopMoving()
