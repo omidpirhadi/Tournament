@@ -178,7 +178,7 @@ public class TempPlayerControll : MonoBehaviour
             else if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
 
-                if (MarbleSelected != null && aimCricle.CurrentAimPower > 3.5f)
+               /* if (MarbleSelected != null && aimCricle.CurrentAimPower > 3.5f)
                 {
 
                     Touch2Clicked = false;
@@ -208,7 +208,7 @@ public class TempPlayerControll : MonoBehaviour
                         debug.text = $"DIR:{Vector3.zero}Power:{0.0}";
 
                 }
-                return;
+                return;*/
             }
             
         }
@@ -267,54 +267,45 @@ public class TempPlayerControll : MonoBehaviour
             }
             else if (Input.GetTouch(1).phase == TouchPhase.Ended)
             {
-                if (Input.touchCount == 0)
+             /*   if (Input.touchCount == 0)
                 {
-                    if (MarbleSelected != null && aimCricle.CurrentAimPower > 3.5f)
-                    {
 
-                      //  Touch2Clicked = false;
-                        //rotateType2 = false;
-                        var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
-
-                        var dir = aimCricle.DirectionShoot();
-                        Handler_OnShoot(ID, dir.normalized, pow);
-                        
-                        aimCricle.StopRecordAim();
-                        aimCricle.ResetAimCircle();
-                        MarbleSelected = null;
-                        if (!server.InRecordMode)
-                            debug.text = $"DIR:{dir.normalized}Power:{pow}";
-
-                    }
-                    else if (MarbleSelected != null && aimCricle.CurrentAimPower < 3.5f)
-                    {
-                      //  Touch2Clicked = false;
-                        //rotateType2 = false;
-
-                        aimCricle.StopRecordAim();
-                        aimCricle.ResetAimCircle();
-                        Handler_EnableRingEffect(true);
-                        if (!server.InRecordMode)
-                            debug.text = $"DIR:{Vector3.zero}Power:{0.0}";
-
-                    }
-                    Debug.Log("Two Finger");
 
 
                     return;
-                }
+                }*/
             }
             /// Debug.Log("Two Finger");
         }
 
         if(Input.touchCount ==  0 && MarbleSelected != null  )
         {
+
+            if (MarbleSelected != null && aimCricle.CurrentAimPower > 3.5f)
+            {
+                var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
+                var dir = aimCricle.DirectionShoot();
+                Handler_OnShoot(ID, dir.normalized, pow);
+                aimCricle.StopRecordAim();
+                aimCricle.ResetAimCircle();
+                MarbleSelected = null;
+                if (!server.InRecordMode)
+                    debug.text = $"DIR:{dir.normalized}Power:{pow}";
+
+            }
+            else if (MarbleSelected != null && aimCricle.CurrentAimPower < 3.5f)
+            {
+
+                aimCricle.StopRecordAim();
+                aimCricle.ResetAimCircle();
+                Handler_EnableRingEffect(true);
+                if (!server.InRecordMode)
+                    debug.text = $"DIR:{Vector3.zero}Power:{0.0}";
+
+            }
+            
             Touch2Clicked = false;
             rotateType2 = false;
-           // var pow = (aimCricle.CurrentAimPower - 3.5f) / (aimCricle.PowerRadius - 3.5f);
-
-          //  var dir = aimCricle.DirectionShoot();
-            //Handler_OnShoot(ID, dir.normalized, pow);
             aimCricle.StopRecordAim();
             aimCricle.ResetAimCircle();
             MarbleSelected = null;

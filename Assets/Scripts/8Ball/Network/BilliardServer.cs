@@ -1828,7 +1828,7 @@ namespace Diaco.EightBall.Server
             {
                 if (!gameData.deletedBalls.Contains(i + 1))
                 {
-                    var ball = Instantiate(BallsPrefabs[i], positions[i + 1], Quaternion.identity, ParentForspwan);
+                    var ball = Instantiate(BallsPrefabs[i], positions[i + 1], BallsPrefabs[i].transform.rotation, ParentForspwan);
                     //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
                     ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
                     AddressBalls.Add(ball.GetComponent<AddressBall>());

@@ -13,7 +13,7 @@ namespace Diaco.EightBall.CueControllers
         public bool HaveTarget = false;
         public bool IsCueBallMove = false;
         public float powerbounce = 1.0f;
-        public bool EnableYFix = true;
+     //   public bool EnableYFix = true;
 
         private int intergatDestinationBall = 0;
         private new Rigidbody rigidbody;
@@ -253,7 +253,7 @@ namespace Diaco.EightBall.CueControllers
             float maxZ = 2.98f;
             if ((LastPosition.x< minX || LastPosition.x > maxX)  || (LastPosition.z < minZ || LastPosition.z > maxZ))
             {
-                    EnableYFix = false;
+                 //   EnableYFix = false;
             //    Debug.Log("DisableY" + this.name + "LAST" + LastPosition);
 
             }

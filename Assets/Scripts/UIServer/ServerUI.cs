@@ -299,12 +299,16 @@ public class ServerUI : MonoBehaviour
             else
             {
                 var opponent = JsonUtility.FromJson<Opponent>(m[1].ToString());
-
+                if (opponent.game == 0)
+                    navigationUi.GameLobby = _GameLobby.Soccer;
+                else
+                    navigationUi.GameLobby = _GameLobby.Billiard;
                 // Luncher.SwitchScene(Convert.ToInt16(m[2]) + 1);
                 Luncher.SetNameSpaceServer(opponent.game, opponent.namespaceServer);
 
                 Handler_OnOpponentFind(opponent.userName, opponent.avatar);
             }
+            
         });
         socket.On("join-game", (s, p, m) =>
         {
@@ -1000,7 +1004,13 @@ public class ServerUI : MonoBehaviour
 
             }
         });
+        socket.On("close-popup", (s, p, m) =>
+        {
 
+            navigationUi.CloseAllPopUp();
+            Debug.Log("CloseAllPopup");
+            
+        });
         socket.On("after_DC_result", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error

@@ -583,31 +583,20 @@ namespace Diaco.SoccerStar.Server
                 if (gameData.winner == Info.userName)
                 {
                     Debug.Log("Winner");
-                    //  GameResult.enabled = true;
-                    //  GameResult.text = "Winner";
+
                 }
                 if (gameData.loser == Info.userName)
                 {
                     Debug.Log("Loser");
-                    //GameResult.enabled = true;
-                    // GameResult.text = "Loser";
+
                 }
                 Turn = false;
-                // Debug.Log("TRUN3");
+                
             }
-            //*********///****///***///
-            /*   if (QueuemovementPackets.Count > 0)
-               {
-                   GameDataRecive = true;
-               }
-               else
-               {
 
-
-
-               }*/
             StartCoroutine(InitializTurn_new());
-            Handler_GameReady();
+            DOVirtual.DelayedCall(0.2f,()=>{Handler_GameReady(); });
+            
             IsGoal = -1;
         }
         public IEnumerator InitializTurn_new()
