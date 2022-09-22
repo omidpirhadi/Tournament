@@ -23,13 +23,13 @@ namespace Diaco.UI.PopupResualtAfterDC
         public Image cup_right_logo_image;
         public Image PlayerRightCostType;
 
-        public Text PlayerOneUserName;
+        public RTLTMPro.RTLTextMeshPro PlayerOneUserName;
         public Text GoalLeft;
         public Text PlayerOneCup;
         public Text PlayerOneCoin;
         public Text PlayerOneXp;
 
-        public Text PlayerTwoUserName;
+        public RTLTMPro.RTLTextMeshPro PlayerTwoUserName;
         public Text GoalRight;
         public Text PlayerTwoCup;
         public Text PlayerTwoCoin;

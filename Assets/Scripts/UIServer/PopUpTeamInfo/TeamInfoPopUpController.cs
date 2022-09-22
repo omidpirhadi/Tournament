@@ -228,7 +228,7 @@ namespace Diaco.UI.TeamInfo
             }
             else
             {
-                Game.text = "ﺮﮐﺎﺳ";
+                Game.text = "ﻝﺎﺒﺗﻮﻓ ";
             }
             if(teamInfos.costType == 0)
             {

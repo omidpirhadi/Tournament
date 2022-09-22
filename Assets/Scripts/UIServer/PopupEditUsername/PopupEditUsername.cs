@@ -7,7 +7,7 @@ namespace Diaco.UI.PopupEditUsername
     public class PopupEditUsername : MonoBehaviour
     {
         private ServerUI server;
-        public InputField Username_Text;
+        public TMPro.TMP_InputField Username_Text;
         public Text Dialog_text;
         // public bool AllowUsername = false;
 

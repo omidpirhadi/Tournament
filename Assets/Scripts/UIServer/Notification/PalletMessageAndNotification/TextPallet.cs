@@ -13,6 +13,7 @@ namespace Diaco.Notification
     public class TextPallet : MonoBehaviour
     {
         public RTLTMPro.RTLTextMeshPro TextPallet_text;
+        public Image background;
         public float SpeedAnimation;
         public float DurationShow;
 
@@ -25,8 +26,14 @@ namespace Diaco.Notification
         [Button("ShowTest", ButtonSizes.Medium, ButtonStyle.Box)]
         public void ShowTextPallet()
         {
-  
-            TextPallet_text.DOFade(1.0f,SpeedAnimation).OnComplete(() => {
+
+            background.DOFade(1.0f, SpeedAnimation).OnComplete(() => {
+
+                DOVirtual.DelayedCall(DurationShow, () => {
+                    background.DOFade(0.0f, SpeedAnimation);
+                });
+            });
+            TextPallet_text.DOFade(0.6f,SpeedAnimation).OnComplete(() => {
 
                 DOVirtual.DelayedCall(DurationShow, () => {
                     TextPallet_text.DOFade(0.0f, SpeedAnimation);

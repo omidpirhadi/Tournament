@@ -7,7 +7,7 @@ namespace Diaco.UI.Reports
     public class ReportCreatedTeamsCard : MonoBehaviour
     {
         public Image Profile;
-        public Text TeamName;
+        public RTLTMPro.RTLTextMeshPro TeamName;
         public Text CapacityTeam;
         public Text Cost_count;
         public Image Cost;

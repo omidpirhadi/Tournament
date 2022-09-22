@@ -190,7 +190,7 @@ namespace Diaco.EightBall.Server
         public Sprite Coin_sprite;
 
         [FoldoutGroup("BillboardUI")]
-        public List<Text> UserNameIndicator;
+        public List<RTLTMPro.RTLTextMeshPro> UserNameIndicator;
         [FoldoutGroup("BillboardUI")]
         public Image CostTypeIndicator;
         [FoldoutGroup("BillboardUI")]

@@ -141,7 +141,7 @@ namespace Diaco.SoccerStar.Server
         [FoldoutGroup("NetworkedUI")]
         public List<Text> GoalIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
-        public List<Text> NameIndicatorOnBiliboard;
+        public List<RTLTMPro.RTLTextMeshPro> NameIndicatorOnBiliboard;
         [FoldoutGroup("NetworkedUI")]
         public Image CostTypeIndicator;
         [FoldoutGroup("NetworkedUI")]

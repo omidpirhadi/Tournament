@@ -10,7 +10,7 @@ namespace Diaco.UI.TournumentCard
     {
         public string Id;
         public string Type;
-        public Text Name;
+        public RTLTMPro.RTLTextMeshPro Name;
         public Text Timer;
 
         private Button btn_tournament;

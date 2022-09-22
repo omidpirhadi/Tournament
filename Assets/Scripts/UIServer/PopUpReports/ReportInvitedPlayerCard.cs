@@ -7,7 +7,7 @@ namespace Diaco.UI.Reports
     public class ReportInvitedPlayerCard : MonoBehaviour
     {
         public Image Profile;
-        public Text Name;
+        public RTLTMPro.RTLTextMeshPro Name;
         public Text Cup;
 
         private Button ButtonCard;

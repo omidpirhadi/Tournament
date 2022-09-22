@@ -13,7 +13,7 @@ namespace Diaco.UI.Chatbox
         public Image Onlineindicator_image;
         public string IDReciver = "";
         public Image AvatarReciver;
-        public Text UserNameReciver;
+        public RTLTMPro.RTLTextMeshPro UserNameReciver;
         public Text Cup;
         public Scrollbar ChatScroll;
         public RectTransform ContentChats;

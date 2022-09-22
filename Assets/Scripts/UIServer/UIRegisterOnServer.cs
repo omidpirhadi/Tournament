@@ -12,7 +12,7 @@ namespace Diaco.UI
         [FoldoutGroup("HeaderUIs")]
         public Image ImageUser_inPageSelectGame;
         [FoldoutGroup("HeaderUIs")]
-        public Text UserName_inPageSelectGame;
+        public RTLTMPro.RTLTextMeshPro UserName_inPageSelectGame;
         [FoldoutGroup("HeaderUIs")]
         public Text CurrentXpLevel_text;
         [FoldoutGroup("HeaderUIs")]

@@ -26,7 +26,7 @@ namespace Diaco.UI.Profile
         public Text CupSoccer;
         public Text CupBilliard;
         public Image RankLevel;
-        public Text Description;
+        public RTLTMPro.RTLTextMeshPro Description;
         /// <summary>
         /// /soocer state
         /// </summary>
@@ -97,7 +97,7 @@ namespace Diaco.UI.Profile
                 if(data.profile.soccer.win ==0.0f)
                     S_WinRate.text = "0%";
                 else
-                S_WinRate.text = Mathf.Round((data.profile.soccer.win / data.profile.soccer.total) * 100.00f).ToString();
+                S_WinRate.text = Mathf.Round((data.profile.soccer.win / data.profile.soccer.total) * 100.00f).ToString()+"%";
             }
             catch (DivideByZeroException e)
             {
@@ -119,7 +119,7 @@ namespace Diaco.UI.Profile
                 if (data.profile.billiard.win == 0.0f)
                     B_WinRate.text = "0%";
                 else
-                    B_WinRate.text = Mathf.Round((data.profile.billiard.win / data.profile.billiard.total) * 100.00f).ToString();
+                    B_WinRate.text = Mathf.Round((data.profile.billiard.win / data.profile.billiard.total) * 100.00f).ToString()+"%";
             }
             catch (DivideByZeroException e)
             {
