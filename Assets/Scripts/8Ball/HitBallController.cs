@@ -368,7 +368,7 @@ namespace Diaco.EightBall.CueControllers
                 var ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit_touch;
 
-                if (Physics.Raycast(ray, out hit_touch, 1000, mask_for_move_Aim))
+                if (Physics.Raycast(ray, out hit_touch, 10, mask_for_move_Aim))
                 {
                     var hitpos = new Vector3(hit_touch.point.x, 00, hit_touch.point.z);
                     var cueball_pos = new Vector3(transform.position.x, 00, transform.position.z);
@@ -743,7 +743,7 @@ namespace Diaco.EightBall.CueControllers
                 dir = dir.normalized;
                 ray_line.origin = transform.position;
                 ray_line.direction = dir;
-                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 20, mask_for_Line_Aim))
+                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 10, mask_for_Line_Aim))
                 {
                     if (hit2.collider && hit2.collider.GetComponent<Ball>())
                     {   

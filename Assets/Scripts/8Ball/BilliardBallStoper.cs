@@ -16,11 +16,16 @@ public class BilliardBallStoper : MonoBehaviour
 
 
            */
+            Ball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
             var rigi = Ball.GetComponent<Rigidbody>();
-            rigi.velocity = Vector3.zero;
-            rigi.angularVelocity = Vector3.zero;
-            rigi.Sleep();
-            Debug.Log(".......................STOPER");
+              rigi.isKinematic = true;
+            ////  rigi.velocity = Vector3.zero;
+            /// rigi.angularVelocity = Vector3.zero;
+            // rigi.Sleep();
+            DOVirtual.Float(0.33f, 0, 0.05f, (x) => {
+                Ball.transform.localScale = new Vector3(x, x, x);
+            });
+              Debug.Log(".......................STOPER");
         }
 
         
