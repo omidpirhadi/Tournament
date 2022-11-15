@@ -32,11 +32,15 @@ namespace Diaco.UI.MatchRecord
         private List<MatchRecordPlayerCard> listplayer;
 
         private ServerUI server;
-
+        
         private float H;
         private float M;
         private float S;
 
+        [SerializeField] private Image TicketRenderer_Image;
+        [SerializeField] private Sprite TicketSoccer_sprite;
+        [SerializeField] private Sprite TicketBilliard_sprite;
+        ///"modepool modesoccer"
         private void OnEnable()
         {
             server = FindObjectOfType<ServerUI>();
@@ -52,6 +56,16 @@ namespace Diaco.UI.MatchRecord
             });
             FilterByAllContent_btn.onClick.AddListener(() => { LeaderboardFilterByAllContacts(); });
             FilterByFriend_btn.onClick.AddListener(() => { LeaderboardFilterByFriends(); });
+
+
+            if(server.navigationUi.CurrentPage == "modepool")
+            {
+                TicketRenderer_Image.sprite = TicketBilliard_sprite;
+            }
+            else
+            {
+                TicketRenderer_Image.sprite = TicketSoccer_sprite;
+            }
         }
 
 
