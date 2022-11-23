@@ -6,7 +6,7 @@ namespace Diaco.Alart
 {
 
     public enum AlartType { Notification = 0, Dialog = 1, SmallPopup = 2 }
-
+    [Obsolete]
     public class Alart : MonoBehaviour
     {
         public Diaco.ImageContainerTool.ImageContainer Logo;
@@ -28,6 +28,7 @@ namespace Diaco.Alart
         }
     }
     [Serializable]
+    [Obsolete]
     public struct AlartData
     {
         public int alartType;//0 

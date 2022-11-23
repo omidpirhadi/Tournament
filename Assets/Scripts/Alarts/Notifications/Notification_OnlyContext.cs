@@ -1,10 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
+using System;
+
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 namespace Diaco.Alart.Notifications
 {
+    [Obsolete]
     public class Notification_OnlyContext : MonoBehaviour
     {
         public RectTransform Panel;
