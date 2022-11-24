@@ -50,7 +50,7 @@ public class ServerUI : MonoBehaviour
         Luncher = FindObjectOfType<GameLuncher>();
         var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
-       // var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
+        var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
         navigationUi = FindObjectOfType<NavigationUI>();
 
         string URL = setting.ServerAddress;
@@ -59,8 +59,8 @@ public class ServerUI : MonoBehaviour
         Notification_Dialog.init_Notification_menu();
 
         
-        //PushNotification.server = this;
-       // PushNotification.InstantiateEvent();
+        PushNotification.server = this;
+        PushNotification.InstantiateEvent();
 
        
         navigationUi.OnChangePage += ServerUI_OnChangePage;

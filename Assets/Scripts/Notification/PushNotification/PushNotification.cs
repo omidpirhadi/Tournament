@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-//using Unity.Notifications.Android;
+using Unity.Notifications.Android;
 using UnityEngine;
 
 namespace Diaco.Notification
@@ -9,7 +9,7 @@ namespace Diaco.Notification
 
 
     public class PushNotification : MonoBehaviour
-    {/*
+    {
         public ServerUI server;
         public  string ChannelID;
         public string ChannelName;
@@ -72,7 +72,7 @@ namespace Diaco.Notification
             AndroidNotificationCenter.CancelNotification(id);
             Debug.Log("push cancel:" + id);
         }
-                */
+                
     }
     [Serializable]
     public struct PushNotificationBody
