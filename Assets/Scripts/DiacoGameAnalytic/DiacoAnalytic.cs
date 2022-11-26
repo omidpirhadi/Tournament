@@ -16,7 +16,7 @@ namespace Diaco.GameAnalytic
             {
                 GameAnalytics.Initialize();
             }
-            EventSend();
+          
         }
         public void GameAnalyticsATTListenerAuthorized()
         {

@@ -6,8 +6,6 @@ using UnityEngine;
 
 namespace Diaco.Notification
 {
-
-
     public class PushNotification : MonoBehaviour
     {
         public ServerUI server;
@@ -20,24 +18,20 @@ namespace Diaco.Notification
         }
         private AndroidNotificationChannel channel;
         private AndroidNotification notification;
-
         public void InstantiateEvent()
         {
-          CreateNotificationChannel();
+            CreateNotificationChannel();
             server.OnPushNotification += Server_OnPushNotification;
             server.OnPushNotificationCancle += Server_OnPushNotificationCancle;
         }
-
         private void Server_OnPushNotificationCancle(int id)
         {
             CancleNotification(id);
         }
-
         private void Server_OnPushNotification(PushNotifcationsData data)
         {
             SendNotifications(data);
         }
-
         public void CreateNotificationChannel()
         {
             channel = new AndroidNotificationChannel();
@@ -46,17 +40,11 @@ namespace Diaco.Notification
             channel.Description = ChannelDescription;
             channel.Importance = Importance.High;
             AndroidNotificationCenter.RegisterNotificationChannel(channel);
-
-           
-
-            
         }
         public void SendNotifications(PushNotifcationsData data)
         {
             for (int i = 0; i < data.notifications.Count; i++)
             {
-
-
                 notification.Number = NumberNotification;
                 notification.Color = Color.green;
                 notification.SmallIcon = "small_ic";
@@ -71,8 +59,7 @@ namespace Diaco.Notification
         {
             AndroidNotificationCenter.CancelNotification(id);
             Debug.Log("push cancel:" + id);
-        }
-                
+        }  
     }
     [Serializable]
     public struct PushNotificationBody
