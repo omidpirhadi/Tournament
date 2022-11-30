@@ -743,7 +743,8 @@ namespace Diaco.EightBall.CueControllers
                 dir = dir.normalized;
                 ray_line.origin = transform.position;
                 ray_line.direction = dir;
-                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 10, mask_for_Line_Aim))
+               // Debug.Log("Aim System Active");
+                if (Physics.SphereCast(ray_line, RadiusGhostBall, out hit2, 100, mask_for_Line_Aim))
                 {
                     if (hit2.collider && hit2.collider.GetComponent<Ball>())
                     {   
@@ -875,6 +876,7 @@ namespace Diaco.EightBall.CueControllers
 
                             }
                         }
+                      //  Debug.Log("BALL:" + hit2.collider.name);
                     }
                     else if (hit2.collider && !hit2.collider.GetComponent<Ball>())
                     {
@@ -918,7 +920,8 @@ namespace Diaco.EightBall.CueControllers
 
                         Handler_OnMissTarget();
                          Handler_OnHitBall(-1, Vector3.zero);
-                     ///  vvv = Vector3.zero;
+                        ///  vvv = Vector3.zero;
+                      //  Debug.Log("Wall:" + hit2.collider.name);
                     }
                 }
             }

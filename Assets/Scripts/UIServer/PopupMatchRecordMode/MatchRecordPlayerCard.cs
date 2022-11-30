@@ -27,10 +27,10 @@ namespace Diaco.UI.MatchRecord
 
             Star.text = bestrecord.ToString();
             Time.text = time;
-            for (int i = 0; i < failcount; i++)
+           /* for (int i = 0; i < failcount; i++)
             {
                 Fail[i].isOn = true;
-            }
+            }*/
         }
     }
 }

@@ -2224,7 +2224,7 @@ MonoBehaviour:
   colorMode: 0
   colorEnd: {r: 1, g: 1, b: 1, a: 1}
   start: {x: 0, y: 0, z: 0}
-  end: {x: 5.0645933, y: 0, z: -0.020805359}
+  end: {x: 0, y: 0, z: 0}
   thickness: 0.06
   thicknessSpace: 0
   endCaps: 2
@@ -6078,10 +6078,10 @@ MonoBehaviour:
   maxanguler: 150
   CUEWood: {fileID: 7905920253461134978}
   CueRenderer: {fileID: 6759711325672940860}
-  PowerCUE: 1.51
-  PowerSpin: 3
+  PowerCUE: 1.34
+  PowerSpin: 4
   GhostBall: {fileID: 5881009258470545297}
-  RadiusGhostBallScaleFactor: 0.94
+  RadiusGhostBallScaleFactor: 1
   cueAim: 1
   AimOffset: 3
   AimSystemShow: 0
@@ -6099,7 +6099,9 @@ MonoBehaviour:
   InMove: 0
   LastPosition: {x: 0, y: 0, z: 0}
   LastRotation: {x: 0, y: 0, z: 0}
+  GetSpeed: 0
   CueBallMoveInPitoke: 0
+  SensivityCheckMovment: 0.001
 --- !u!114 &4151183100686460850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6113,6 +6115,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IDPost: 0
+  ease: 1
+  rb: {fileID: 0}
 --- !u!114 &6694829524497617423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10678,39 +10682,199 @@ MonoBehaviour:
     loser: 
     state: 0
     positions:
-      CueBall: {x: 0, y: 0}
-      CueBall_R: {x: 0, y: 0, z: 0}
-      Ball_1: {x: 0, y: 0}
-      Ball_1_R: {x: 0, y: 0, z: 0}
-      Ball_2: {x: 0, y: 0}
-      Ball_2_R: {x: 0, y: 0, z: 0}
-      Ball_3: {x: 0, y: 0}
-      Ball_3_R: {x: 0, y: 0, z: 0}
-      Ball_4: {x: 0, y: 0}
-      Ball_4_R: {x: 0, y: 0, z: 0}
-      Ball_5: {x: 0, y: 0}
-      Ball_5_R: {x: 0, y: 0, z: 0}
-      Ball_6: {x: 0, y: 0}
-      Ball_6_R: {x: 0, y: 0, z: 0}
-      Ball_7: {x: 0, y: 0}
-      Ball_7_R: {x: 0, y: 0, z: 0}
-      Ball_8: {x: 0, y: 0}
-      Ball_8_R: {x: 0, y: 0, z: 0}
-      Ball_9: {x: 0, y: 0}
-      Ball_9_R: {x: 0, y: 0, z: 0}
-      Ball_10: {x: 0, y: 0}
-      Ball_10_R: {x: 0, y: 0, z: 0}
-      Ball_11: {x: 0, y: 0}
-      Ball_11_R: {x: 0, y: 0, z: 0}
-      Ball_12: {x: 0, y: 0}
-      Ball_12_R: {x: 0, y: 0, z: 0}
-      Ball_13: {x: 0, y: 0}
-      Ball_13_R: {x: 0, y: 0, z: 0}
-      Ball_14: {x: 0, y: 0}
-      Ball_14_R: {x: 0, y: 0, z: 0}
-      Ball_15: {x: 0, y: 0}
-      Ball_15_R: {x: 0, y: 0, z: 0}
-      TimeStepPacket: 0
+      CueBall:
+        x: 0
+        y: 0
+        z: 0
+      CueBall_R:
+        x: 0
+        y: 0
+        z: 0
+      CueBall_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_1:
+        x: 0
+        y: 0
+        z: 0
+      Ball_1_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_1_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_2:
+        x: 0
+        y: 0
+        z: 0
+      Ball_2_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_2_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_3:
+        x: 0
+        y: 0
+        z: 0
+      Ball_3_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_3_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_4:
+        x: 0
+        y: 0
+        z: 0
+      Ball_4_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_4_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_5:
+        x: 0
+        y: 0
+        z: 0
+      Ball_5_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_5_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_6:
+        x: 0
+        y: 0
+        z: 0
+      Ball_6_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_6_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_7:
+        x: 0
+        y: 0
+        z: 0
+      Ball_7_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_7_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_8:
+        x: 0
+        y: 0
+        z: 0
+      Ball_8_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_8_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_9:
+        x: 0
+        y: 0
+        z: 0
+      Ball_9_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_9_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_10:
+        x: 0
+        y: 0
+        z: 0
+      Ball_10_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_10_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_11:
+        x: 0
+        y: 0
+        z: 0
+      Ball_11_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_11_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_12:
+        x: 0
+        y: 0
+        z: 0
+      Ball_12_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_12_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_13:
+        x: 0
+        y: 0
+        z: 0
+      Ball_13_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_13_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_14:
+        x: 0
+        y: 0
+        z: 0
+      Ball_14_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_14_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Ball_15:
+        x: 0
+        y: 0
+        z: 0
+      Ball_15_R:
+        x: 0
+        y: 0
+        z: 0
+      Ball_15_velocity:
+        x: 0
+        y: 0
+        z: 0
+      Tik: 0
       isLastPacket: 0
     cueBallLastPosition: {x: 0, y: 0, z: 0}
     table: 
@@ -10721,7 +10885,7 @@ MonoBehaviour:
     award: 0
     selectedPocket: 0
   ResultGamePage: {fileID: 0}
-  SpeedPlayRecord: 0.02
+  Framerate: 0.02
   AddressBalls: []
   Tables: []
   TableRenderer: {fileID: 0}
@@ -12066,7 +12230,7 @@ MonoBehaviour:
   colorMode: 0
   colorEnd: {r: 0, g: 0, b: 0, a: 1}
   start: {x: 0, y: 0, z: 0}
-  end: {x: 5.0645933, y: 0, z: -0.020805359}
+  end: {x: 0, y: 0, z: 0}
   thickness: 0.12
   thicknessSpace: 0
   endCaps: 2

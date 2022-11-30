@@ -85,7 +85,7 @@ namespace Diaco.HightScoreTab
         {
             ResetToggel();
             clearCardGem();
-            time_text.text = players.time;
+            ///time_text.text = players.time;
             for (int i = 0; i < players.players.Count; i++)
             {
                 var card = Instantiate(CardWithElementGEM, Content_CUPGEM);

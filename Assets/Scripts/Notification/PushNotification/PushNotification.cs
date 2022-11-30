@@ -12,12 +12,14 @@ namespace Diaco.Notification
         public  string ChannelID;
         public string ChannelName;
         public string ChannelDescription;
+
         public int NumberNotification
         {
             get;set;
         }
         private AndroidNotificationChannel channel;
         private AndroidNotification notification;
+
         public void InstantiateEvent()
         {
             CreateNotificationChannel();

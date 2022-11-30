@@ -97,7 +97,7 @@ namespace Diaco.UI.MatchRecord
                 Point.text = data.point.ToString();
                 Rank.text = data.rank;
                 CostCoin_txt.text = (data.cost).ToString();
-                SetFailTry(data.tryToggle);
+               // SetFailTry(data.tryToggle);
             }
             else
 

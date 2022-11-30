@@ -737,12 +737,10 @@ public class ServerUI : MonoBehaviour
             if (Convert.ToBoolean(m[0]) == true)///Error
             {
                 Debug.Log("<color=red>Error: get-record: </color>" + m[1].ToString());
-
             }
             else
             {
                 var recorddata = JsonUtility.FromJson<Diaco.UI.MatchRecord.MatchRecordModeData>(m[1].ToString());
-
                 Handler_OnMatchRecord(recorddata);
                 Debug.Log("get-record ");
             }

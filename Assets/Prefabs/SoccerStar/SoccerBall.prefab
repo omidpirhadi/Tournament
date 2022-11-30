@@ -142,15 +142,13 @@ MonoBehaviour:
   DurationStep: 0.1
   EaseTypeRotate: 1
   ThresholdSleep: 2.5
-  InMove: 0
   rigidbody: {fileID: 0}
   GetVlocity: {x: 0, y: 0, z: 0}
   GetSpeed: 0
   LastVelocity: {x: 0, y: 0, z: 0}
   MaxDisFromWall: 5
-  hitpointballtomarbl: {x: 0, y: 0, z: 0}
-  hitpointballtowall: {x: 0, y: 0, z: 0}
   bouncepower: 0.71
+  ISMOVING: 0
   SensivityCheckMovment: 0.01
 --- !u!96 &8508796437853943252
 TrailRenderer:
@@ -371,3 +369,4 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 62023327f3917d147b279582008cf88a, type: 3}
   - {fileID: 8300000, guid: 648d237537ac7bf448c35ed54acebd76, type: 3}
   MaxSpeed: 100
+  soundEffect: {fileID: 0}
