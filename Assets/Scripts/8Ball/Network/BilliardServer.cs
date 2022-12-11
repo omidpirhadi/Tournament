@@ -1507,6 +1507,7 @@ namespace Diaco.EightBall.Server
         }
         private bool Infunc = false;
         // private GameObject finded_ball;
+        [Obsolete]
         public IEnumerator SpwanBallInBasketAndDestroyBallInTable(Diaco.EightBall.Structs.GameData data)
         {
             var list_object_in_basket = FindObjectsOfType<ballinbasket>().ToList();
@@ -1665,78 +1666,80 @@ namespace Diaco.EightBall.Server
         public IEnumerator CheckBallInBasket(Diaco.EightBall.Structs.GameData data)
 
         {
-            //Check For Worng 
-            //  bool findworng = false;
-            var temp_deletedball = data.deletedBalls;
-            var list_object_in_basket = FindObjectsOfType<ballinbasket>().ToList();
-
-            bool need_reset = false;
-            for (int i = 0; i < list_object_in_basket.Count; i++)
+            if (this.Basket.InUse == false)
             {
-                if (!need_reset)
+                //Check For Worng 
+                //  bool findworng = false;
+                var temp_deletedball = data.deletedBalls;
+                var list_object_in_basket = FindObjectsOfType<ballinbasket>().ToList();
+
+                bool need_reset = false;
+                for (int i = 0; i < list_object_in_basket.Count; i++)
                 {
-                    var ID = list_object_in_basket[i].BallID;
-                    for (int j = 0; j < list_object_in_basket.Count; j++)
+                    if (!need_reset)
                     {
-                        var ID2 = list_object_in_basket[j].BallID;
-                        if (i != j && ID == ID2)
+                        var ID = list_object_in_basket[i].BallID;
+                        for (int j = 0; j < list_object_in_basket.Count; j++)
                         {
-                            need_reset = true;
+                            var ID2 = list_object_in_basket[j].BallID;
+                            if (i != j && ID == ID2)
+                            {
+                                need_reset = true;
+                            }
                         }
                     }
                 }
-            }
 
-            if (!need_reset)
-            {
-                for (int i = 0; i < list_object_in_basket.Count; i++)
+                if (!need_reset)
                 {
-                    var ballID = list_object_in_basket[i].BallID;
+                    for (int i = 0; i < list_object_in_basket.Count; i++)
+                    {
+                        var ballID = list_object_in_basket[i].BallID;
 
-                    if (!temp_deletedball.Contains(ballID))
+                        if (!temp_deletedball.Contains(ballID))
+                        {
+                            need_reset = true;
+                            Debug.Log("Find Worng this id: " + ballID);
+
+                        }
+                    }
+
+                }
+
+                if (!need_reset)
+                {
+                    if (data.deletedBalls.Count != list_object_in_basket.Count)
                     {
                         need_reset = true;
-                        Debug.Log("Find Worng this id: " + ballID);
-
                     }
                 }
-
-            }
-
-            if (!need_reset)
-            {
-                if(data.deletedBalls.Count != list_object_in_basket.Count)
+                //yield return new WaitForSecondsRealtime(0.1f);
+                if (need_reset)
                 {
-                    need_reset = true;
+                    Debug.Log("Start solving the problem in basket");
+                    for (int i = 0; i < list_object_in_basket.Count; i++)
+                    {
+                        Destroy(list_object_in_basket[i].gameObject);
+                        this.Basket.QueueBasket.Clear();
+                        this.Basket.ballinbasket.Clear();
+                        Debug.Log("DESTROY BALL IN BASKET");
+                    }
+                    // yield return new WaitForSecondsRealtime(0.1f);
+                    for (int i = 0; i < data.deletedBalls.Count; i++)
+                    {
+
+                        var deletedballID = data.deletedBalls[i];
+                        Debug.Log("ADD BALL IN BASKET:::   " + deletedballID);
+                        this.Basket.AddToQueue(deletedballID);
+
+
+                    }
+                    Debug.Log(".............................................The problem was solved in basket.");
+                    ///yield return new WaitForSecondsRealtime(0.1f);
+                    StartCoroutine(this.Basket.ExtractBallFast());
+
                 }
             }
-            //yield return new WaitForSecondsRealtime(0.1f);
-            if (need_reset)
-            {
-                Debug.Log("Start solving the problem in basket");
-                for (int i = 0; i < list_object_in_basket.Count; i++)
-                {
-                    Destroy(list_object_in_basket[i].gameObject);
-                    this.Basket.QueueBasket.Clear();
-                    this.Basket.ballinbasket.Clear();
-                    Debug.Log("DESTROY BALL IN BASKET");
-                }
-               // yield return new WaitForSecondsRealtime(0.1f);
-                for (int i = 0; i < data.deletedBalls.Count; i++)
-                {
-
-                    var deletedballID = data.deletedBalls[i];
-                    Debug.Log("ADD BALL IN BASKET:::   " + deletedballID);
-                    this.Basket.AddToQueue(deletedballID);
-
-
-                }
-                Debug.Log("The problem was solved in basket.");
-                ///yield return new WaitForSecondsRealtime(0.1f);
-                StartCoroutine(this.Basket.ExtractBallFast());
-                
-            }
-            
             yield return null;
         }
 

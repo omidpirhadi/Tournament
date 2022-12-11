@@ -72,11 +72,15 @@ namespace Diaco.UI.PopupResualtAfterDC
             {
                 cup_left_logo_image.sprite = SoccerCup_logo_sprite;
                 cup_right_logo_image.sprite = SoccerCup_logo_sprite;
+                GoalLeft.enabled = true;
+                GoalRight.enabled = true;
             }
             else/// billird
             {
                 cup_left_logo_image.sprite = BilliardCup_logo_sprite;
                 cup_right_logo_image.sprite = BilliardCup_logo_sprite;
+                GoalLeft.enabled = false;
+                GoalRight.enabled = false;
             }
             if (result.isWinner)
             {

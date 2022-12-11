@@ -125,7 +125,7 @@ namespace Diaco.SoccerStar.Marble
 
 
 
-            if (frame >= 20 && GetSpeed < 0.1f)
+            if (frame >= 5 && GetSpeed < 0.1f)
             {
                 LastPositionInFrame20 = LastPosition;
                 CheckMoveWithDistanceFromLastPosition();

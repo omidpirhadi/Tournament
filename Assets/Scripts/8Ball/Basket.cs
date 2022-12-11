@@ -24,28 +24,12 @@ public class Basket : MonoBehaviour
         {
             while (QueueBasket.Count > 0)
             {
-                ///  Debug.Log("A");
                 InUse = true;
                 var BallID = QueueBasket.Dequeue();
-                // Debug.Log("Queue++++" + QueueBasket.Count);
-                //   Debug.Log(BallID);
                 var ball = Instantiate(ConceptBall, PositionStart, ConceptBall.rotation, Parent);
                 ball.GetComponent<ballinbasket>().BallID = BallID;
                 ball.GetComponent<MeshRenderer>().material = SkinBalls[BallID];
-                //  ball.GetComponent<ConstantForce>().torque = new Vector3(0.0f, 0, -0.2f);
-                /*  for (int i = 0; i < Path.Length; i++)
-                  {
-                      ball.DOMove(Path[i].position, Duration).OnComplete(() =>
-                      {
-
-                          ball.GetComponent<ConstantForce>().force = new Vector3(0, 0, -0.7f);
-                          ball.GetComponent<ConstantForce>().torque = new Vector3(-0.2f, 0, 0.0f);
-                      });
-
-                  }*/
                 yield return new WaitForSecondsRealtime(Delay);
-
-
             }
             InUse = false;
         }
@@ -55,31 +39,15 @@ public class Basket : MonoBehaviour
     {
         if (InUse == false)
         {
+            Debug.Log(".....................................BASKET RELASE");
             while (QueueBasket.Count > 0)
             {
-                /// Debug.Log("A");
                 InUse = true;
                 var BallID = QueueBasket.Dequeue();
-                // Debug.Log("Queue++++" + QueueBasket.Count);
-                //   Debug.Log(BallID);
                 var ball = Instantiate(ConceptBall, PositionStart, ConceptBall.rotation, Parent);
-
                 ball.GetComponent<ballinbasket>().BallID = BallID;
                 ball.GetComponent<MeshRenderer>().material = SkinBalls[BallID];
-                /* ball.GetComponent<ConstantForce>().torque = new Vector3(0.0f, 0, -0.2f);
-                 for (int i = 0; i < Path.Length; i++)
-                 {
-                     ball.DOMove(Path[i].position, 0.0001f).OnComplete(() =>
-                     {
-
-                         ball.GetComponent<ConstantForce>().force = new Vector3(0, 0, -0.7f);
-                         ball.GetComponent<ConstantForce>().torque = new Vector3(-0.2f, 0, 0.0f);
-                     });
-
-                 }*/
                 yield return new WaitForSecondsRealtime(2f);
-
-
             }
             InUse = false;
         }
@@ -109,8 +77,7 @@ public class Basket : MonoBehaviour
     {
         QueueBasket = new Queue<int>(15);
         ballinbasket = new List<int>();
-        //server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
-        //Debug.Log("666566556");
+
     }
 
 }

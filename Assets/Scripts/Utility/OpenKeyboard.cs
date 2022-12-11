@@ -24,7 +24,7 @@ public class OpenKeyboard : MonoBehaviour
     }
     public void ShowKeyboard()
     {
-        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, true, false, false, false, "", 255);
+        keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, true, false, false, false, "", 50);
         Isopen = true;
     }
     void Ondone()

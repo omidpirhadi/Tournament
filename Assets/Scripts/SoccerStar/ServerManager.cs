@@ -620,8 +620,8 @@ namespace Diaco.SoccerStar.Server
                 }
                 else
                 {
-                     StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, FrameRate));
-                    yield return new WaitForSeconds(0.4f);
+                    yield return  StartCoroutine(MoveMarbelsToPositionFromServer(gameData, 1, FrameRate));
+                   /// yield return new WaitForSeconds(0.4f);
                 }
 
                 if (gameData.state == 1)
@@ -658,8 +658,8 @@ namespace Diaco.SoccerStar.Server
                 }
                 else
                 {
-                    StartCoroutine(MoveMarbelsToPositionFromServer(gameData, -1, FrameRate));
-                    yield return new WaitForSeconds(0.4f);
+                 yield return StartCoroutine(MoveMarbelsToPositionFromServer(gameData, -1, FrameRate));
+                  //  yield return new WaitForSeconds(0.4f);
                 }
                 if (gameData.state == 1)
                 {
@@ -814,9 +814,9 @@ namespace Diaco.SoccerStar.Server
                 Marbles[i].transform.position = pos;
 
 
-
+                yield return null;
             }
-            yield return null;
+            
 
         }
 
@@ -856,7 +856,7 @@ namespace Diaco.SoccerStar.Server
         public Text DebugEndTurn;
         public void Invoke_CheckMovemenInSecond()
         {
-            InvokeRepeating("CheckMovment", 1f, 1f);
+            InvokeRepeating("CheckMovment", 1f, 0.1f);
             Debug.Log("CheckMovmentFromServer");
         
         }
@@ -875,7 +875,7 @@ namespace Diaco.SoccerStar.Server
                 {
                     Marbles[i].StopMovment();
                 }
-                Debug.Log("Force Stop");
+                //Debug.Log("Force Stop");
 
             }, false);
             do
@@ -919,7 +919,7 @@ namespace Diaco.SoccerStar.Server
 
 
                 Emit_DataMarblesToServer(Data);
-                Debug.Log("SendData++");
+                //Debug.Log("SendData++");
                 yield return new WaitForSecondsRealtime(FrameRate);
             }
             while (MarblesInMove);
@@ -1237,7 +1237,7 @@ namespace Diaco.SoccerStar.Server
         }
         private void StartInvokeTimerLeft()
         {
-            InvokeRepeating("Timerleft", 0.0f, 0.01f* UnityEngine.Time.timeScale);
+            InvokeRepeating("Timerleft", 0.0f, 0.01f * UnityEngine.Time.timeScale);
             ///      Debug.Log("TimerLeftStart");
         }
         private void StartInvokeTimerRight()
