@@ -288,7 +288,7 @@ namespace Diaco.SoccerStar.Server
                 else
                 {
                     var notif = JsonUtility.FromJson<Diaco.Notification.Notification_Dialog_Body>(m[1].ToString());
-                    Debug.Log("Notifi" + m[1].ToString());
+                    //Debug.Log("Notifi" + m[1].ToString());
                     Handler_OnNotification(notif);
 
                 }
