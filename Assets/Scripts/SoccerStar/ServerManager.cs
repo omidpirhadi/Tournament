@@ -420,14 +420,7 @@ namespace Diaco.SoccerStar.Server
 
                     Debug.Log("ReciveMessage:" + message);
                 });
-                socket.On("BackToMenu", (s, p, m) => {
 
-                    
-                   //// CloseSocket();
-                    var Luncher = FindObjectOfType<GameLuncher>();
-                    Luncher.BackToMenu();
-                    
-                });
 
             }
             else
@@ -456,6 +449,15 @@ namespace Diaco.SoccerStar.Server
 
                 });
             }
+
+            socket.On("BackToMenu", (s, p, m) => {
+
+
+                //// CloseSocket();
+                var Luncher = FindObjectOfType<GameLuncher>();
+                Luncher.BackToMenu();
+
+            });
             socket.On("disconnect", (s, p, a) =>
             {
                 BadConnectionShow(true);
