@@ -348,7 +348,7 @@ namespace Diaco.SoccerStar.Server
                         SetUICountCost(gameData.cost.ToString());
 
                     SetPlayer();
-                  //  Debug.Log("gameData4");
+                 Debug.Log("gameData2");
                 });
                 socket.On("Aim", (s, p, a) =>
                 {

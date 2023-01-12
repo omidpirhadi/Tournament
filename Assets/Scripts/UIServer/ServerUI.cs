@@ -1045,6 +1045,15 @@ public class ServerUI : MonoBehaviour
             Debug.Log("Hint Opned");
         });
 
+        socket.On("static-shop-price", (s, p, m) => {
+           
+            
+            var static_shop = FindObjectOfType<StaticShop>();
+            var data = JsonUtility.FromJson<StaticShop.ItemPriceData>(m[0].ToString());
+            static_shop.Set(data);
+            Debug.Log("Static Shop Updated");
+        });
+
         socket.On("disconnect", (s, p, m) =>
         {
 
@@ -1442,6 +1451,13 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("shop-t2", name, price);
         Debug.Log("Price Of Prodoct :" + name +":"+ price);
+     
+    }
+    public void Emit_StaticShopUpdate()
+    {
+        socket.Emit("static-shop-price");
+        Debug.Log("StaticShop Requested");
+      
     }
     public void Emit_CloseDialog(string closeEvent)
     {
