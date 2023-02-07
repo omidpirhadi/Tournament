@@ -4,9 +4,9 @@ using UnityEngine;
 using Shapes;
 public class CustomLineRenderer : MonoBehaviour
 {
-    [SerializeField] Line Line;
-    [SerializeField] Transform CueBall, GhostBall;
-    [SerializeField] Transform StartPos, EndPos;
+    [SerializeField] private Line Line;
+    [SerializeField] private Transform CueBall, GhostBall;
+    [SerializeField] private Transform StartPos, EndPos;
     void Start()
     {
         Line = GetComponent<Line>();

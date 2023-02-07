@@ -1272,7 +1272,7 @@ namespace Diaco.EightBall.Server
                 }
                 catch(Exception r)
                 {
-
+                    Debug.Log($"Exception:{r.Message}");
                 }
                 //  Physics.Simulate(Time.fixedDeltaTime);
                 yield return new WaitForSecondsRealtime(Framerate);
@@ -1550,7 +1550,7 @@ namespace Diaco.EightBall.Server
                     }
                     catch (Exception e)
                     {
-
+                        Debug.Log($"Exception:{e.Message}");
                     }
                 }
             }

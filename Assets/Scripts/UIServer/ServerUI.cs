@@ -32,7 +32,7 @@ public class ServerUI : MonoBehaviour
     private bool loadedpage = false;
     private int intergation = 0;
 
-    public float NormalPing = 1.0f;
+    public float NormalPing = 2.5f;
     private float Ping = 0.0f;
     private Diaco.Notification.Notification_Dialog_Manager Notification_Dialog;
     public void Update()
