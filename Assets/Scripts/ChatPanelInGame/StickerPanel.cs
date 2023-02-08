@@ -22,7 +22,7 @@ public class StickerPanel : MonoBehaviour
     }
     private void OnEnable()
     {
-        texture = new Texture2D(512, 512);
+        texture = new Texture2D(512, 512,TextureFormat.ETC2_RGBA8,false);
         sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         //  liststicker = new List<GameObject>();
         if (Game == _GameLobby.Soccer)

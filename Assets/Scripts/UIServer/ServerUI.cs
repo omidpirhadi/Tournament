@@ -594,6 +594,16 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
+        socket.On("transaction-bazzar", (s, p, m) =>
+        {
+
+
+
+            var product_id = m[0].ToString();
+            var payload = m[1].ToString();
+
+            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
+        });
 
         socket.On("shop-soccer-plan", (s, p, m) =>
         {
@@ -1345,7 +1355,12 @@ public class ServerUI : MonoBehaviour
         Debug.Log("CheckUserName " + username); 
     }
     #region Emits_Shop
-
+    public void Emit_Transaction(string transacton_id , string product_id, string package_id)
+    {
+        socket.Emit("transaction-bazzar", package_id, product_id, transacton_id);
+        navigationUi.StartLoadingPageShow();
+        Debug.Log($"EmitTransaction:{transacton_id}:::{product_id}:::{package_id}");
+    }
     public void Emit_Shop(string id)
     {
         socket.Emit("shopBuy", id);
@@ -1619,7 +1634,7 @@ public class ServerUI : MonoBehaviour
     {
 
         var image_byte = Convert.FromBase64String(image);
-        Texture2D texture = new Texture2D(512, 512, TextureFormat.DXT5, false);
+        Texture2D texture = new Texture2D(512, 512, TextureFormat.ETC2_RGBA8, false);
         texture.LoadImage(image_byte);
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }

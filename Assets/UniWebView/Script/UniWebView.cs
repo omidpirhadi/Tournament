@@ -349,8 +349,8 @@ public class UniWebView: MonoBehaviour {
     }
 
     void Start() {
-      /*  if (showOnStart) {
-           // Show();
+      if (showOnStart) {
+           Show();
         }
         if (!string.IsNullOrEmpty(urlOnStart)) {
             Load(urlOnStart);
@@ -358,7 +358,7 @@ public class UniWebView: MonoBehaviour {
         started = true;
         if (referenceRectTransform != null) {
             UpdateFrame();
-        }*/
+        }
     }
 
     void Update() {

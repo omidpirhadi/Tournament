@@ -149,7 +149,7 @@ namespace BestHTTP
                 if (texture != null)
                     return texture;
 
-                texture = new Texture2D(0, 0, TextureFormat.ARGB32, false);
+                texture = new Texture2D(0, 0, TextureFormat.ETC2_RGBA8, false);
                 texture.LoadImage(Data);
 
                 return texture;

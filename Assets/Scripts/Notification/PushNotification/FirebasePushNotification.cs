@@ -6,10 +6,16 @@ namespace Diaco.FirebasePushNotificaton
 {
     public class FirebasePushNotification : MonoBehaviour
     {
- 
+        private void Awake()
+        {
+           var s =  Firebase.FirebaseApp.DefaultInstance;
+           
+        }
+
         void Start()
         {
             
+
             FirebaseMessaging.TokenReceived += FirebaseMessaging_TokenReceived;
             FirebaseMessaging.MessageReceived += FirebaseMessaging_MessageReceived;
         }
