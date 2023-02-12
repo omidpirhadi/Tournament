@@ -8,15 +8,16 @@ using UnityEngine.UI;
 namespace Diaco.Setting
 {
 
-
+    public enum _store { CafeBazzar = 0, Zarinpal= 1};
     public class GeneralSetting : MonoBehaviour
     {
 
-        [SerializeField] public string ServerAddress;
-        [SerializeField] public string LoginAPI;
-        [SerializeField] public GameSettingData Setting;
-        [SerializeField] public string Version;
-        [SerializeField] public string Description;
+        public string ServerAddress;
+        public string LoginAPI;
+        public GameSettingData Setting;
+        public string Version;
+        public string Description;
+        public _store Store;
 
         private void Awake()
         {

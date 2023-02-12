@@ -74,7 +74,7 @@ public class ServerUI : MonoBehaviour
         {
 
             intergation = 0;
-            socket.Emit("authToken", ReadToken("token"), setting.Version);
+            socket.Emit("authToken", ReadToken("token"), setting.Version, setting.Store);
             Emit_Setting();
             CancelInvoke("Emit_Ping");
             Ping = 0.0f;
