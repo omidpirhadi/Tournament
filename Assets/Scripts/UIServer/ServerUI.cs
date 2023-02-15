@@ -141,8 +141,13 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-            // BODY = new BODY();
-            //  Debug.Log("VVVVVVVVVV");
+            
+
+            if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
+            {
+                var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
+                Emit_Transaction(dt);
+            }
             BODY.inventory.tickets = new System.Collections.Generic.List<TicketData>();
             var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
 
@@ -596,15 +601,14 @@ public class ServerUI : MonoBehaviour
         });
         socket.On("transaction-bazzar", (s, p, m) =>
         {
-
-
-
             var product_id = m[0].ToString();
             var payload = m[1].ToString();
-
             Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
         });
-
+        socket.On("log-transaction-bazzar-delete", (s, p, m) =>
+        {
+            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DeleteTransaction("translog");
+        });
         socket.On("shop-soccer-plan", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -1355,12 +1359,15 @@ public class ServerUI : MonoBehaviour
         Debug.Log("CheckUserName " + username); 
     }
     #region Emits_Shop
-    public void Emit_Transaction(string transacton_id , string product_id, string package_id)
+    public void Emit_Transaction(string tranlog)
     {
-        socket.Emit("transaction-bazzar", package_id, product_id, transacton_id);
+        socket.Emit("transaction-bazzar", tranlog);
         navigationUi.StartLoadingPageShow();
-        Debug.Log($"EmitTransaction:{transacton_id}:::{product_id}:::{package_id}");
+        Debug.Log($"EmitTransaction:{tranlog}");
     }
+
+
+
     public void Emit_Shop(string id)
     {
         socket.Emit("shopBuy", id);
