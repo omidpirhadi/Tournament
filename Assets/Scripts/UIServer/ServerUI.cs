@@ -53,6 +53,8 @@ public class ServerUI : MonoBehaviour
         var PushNotification = FindObjectOfType<Diaco.Notification.PushNotification>();
         navigationUi = FindObjectOfType<NavigationUI>();
 
+        
+
         string URL = setting.ServerAddress;
 
         Notification_Dialog.server = this;
@@ -81,6 +83,7 @@ public class ServerUI : MonoBehaviour
             Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = Ping.ToString() }, false);
             InvokeRepeating("Emit_Ping", 3.0f, 1.0f);////For Get ping in sec 
             navigationUi.StopLoadingPage();
+            FindObjectOfType<Diaco.Store.CafeBazzar.CafeBazzarStore>().InitializeCafebazzarShop();
 
             Debug.Log($"<color=blue><b>Connection And ReadToken</b></color>");
         });
@@ -1641,7 +1644,7 @@ public class ServerUI : MonoBehaviour
     {
 
         var image_byte = Convert.FromBase64String(image);
-        Texture2D texture = new Texture2D(512, 512, TextureFormat.ETC2_RGBA8, false);
+        Texture2D texture = new Texture2D(512, 512, TextureFormat.RGBA32, false);
         texture.LoadImage(image_byte);
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }

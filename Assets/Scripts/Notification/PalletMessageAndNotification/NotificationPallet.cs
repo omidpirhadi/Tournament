@@ -111,7 +111,7 @@ namespace Diaco.Notification
         {
 
             var image_byte = System.Convert.FromBase64String(image);
-            Texture2D texture = new Texture2D(512, 512, TextureFormat.DXT5, false);
+            Texture2D texture = new Texture2D(512, 512, TextureFormat.RGBA32, false);
             texture.LoadImage(image_byte);
             return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
         }
