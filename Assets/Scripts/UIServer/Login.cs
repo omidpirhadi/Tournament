@@ -17,6 +17,7 @@ public class Login : MonoBehaviour
     public Button EnterButton;
     public GameObject Timer_parent;
     public Text Timer_text;
+    public Button privacy_button;
     private bool needcode = true;
 
     private float H = 0;
@@ -52,7 +53,18 @@ public class Login : MonoBehaviour
 
             }
         });
+        privacy_button.onClick.AddListener(() => {
 
+           Server.navigationUi.ShowPopUpOnPopup("webviwe");
+            var webview = FindObjectOfType<UniWebView>();
+            webview.CleanCache();
+            webview.urlOnStart = "https://noyangames.ir/privacy/#wz-section-wzs54";
+
+            webview.Load("https://noyangames.ir/privacy/#wz-section-wzs54");
+            webview.Show();
+            webview.UpdateFrame();
+            Debug.Log("WebViweLoaded" + "https://noyangames.ir/privacy/#wz-section-wzs54");
+        });
         if (EnterButton)
         {
             EnterButton.onClick.AddListener(() =>

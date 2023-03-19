@@ -4,7 +4,7 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.Rendering.PostProcessing;
 using Diaco.Social.TeamsInputField;
 
 namespace Diaco.Social
@@ -15,7 +15,7 @@ namespace Diaco.Social
         public ServerUI Server;
         public SelectFriendsPopup SelectFriendPopup;
         public SelectBadgePopUpController SelectBadgesController;
-
+      
       /*  public DialogYesNo Dialog_CreateTeam;
         public DialogOk Dialog_Error_Ticket;
         public DialogOk Dialog_Error_Cup;
@@ -235,10 +235,10 @@ namespace Diaco.Social
             {
                 Fill = false;
             }
-            if (Description.text == "")
+           /* if (Description.text == "")
             {
                 Fill = false;
-            }
+            }*/
             if (Game.FieldOfViwe.text == "")
             {
                 Fill = false;

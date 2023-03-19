@@ -32,7 +32,7 @@ public class ServerUI : MonoBehaviour
     private bool loadedpage = false;
     private int intergation = 0;
 
-    public float NormalPing = 1.0f;
+    public float NormalPing = 2.5f;
     private float Ping = 0.0f;
     private Diaco.Notification.Notification_Dialog_Manager Notification_Dialog;
     public void Update()
@@ -74,7 +74,7 @@ public class ServerUI : MonoBehaviour
         {
 
             intergation = 0;
-            socket.Emit("authToken", ReadToken("token"), setting.Version);
+            socket.Emit("authToken", ReadToken("token"), setting.Version, setting.Store);
             Emit_Setting();
             CancelInvoke("Emit_Ping");
             Ping = 0.0f;
@@ -141,8 +141,13 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-            // BODY = new BODY();
-            //  Debug.Log("VVVVVVVVVV");
+            
+
+            if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
+            {
+                var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
+                Emit_Transaction(dt);
+            }
             BODY.inventory.tickets = new System.Collections.Generic.List<TicketData>();
             var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
 
@@ -594,7 +599,16 @@ public class ServerUI : MonoBehaviour
             }
             navigationUi.StopLoadingPage();
         });
-
+        socket.On("transaction-bazzar", (s, p, m) =>
+        {
+            var product_id = m[0].ToString();
+            var payload = m[1].ToString();
+            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
+        });
+        socket.On("log-transaction-bazzar-delete", (s, p, m) =>
+        {
+            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DeleteTransaction("translog");
+        });
         socket.On("shop-soccer-plan", (s, p, m) =>
         {
             if (Convert.ToBoolean(m[0]) == true)///Error
@@ -1045,6 +1059,15 @@ public class ServerUI : MonoBehaviour
             Debug.Log("Hint Opned");
         });
 
+        socket.On("static-shop-price", (s, p, m) => {
+           
+            
+            var static_shop = FindObjectOfType<StaticShop>();
+            var data = JsonUtility.FromJson<StaticShop.ItemPriceData>(m[0].ToString());
+            static_shop.Set(data);
+            Debug.Log("Static Shop Updated");
+        });
+
         socket.On("disconnect", (s, p, m) =>
         {
 
@@ -1336,6 +1359,14 @@ public class ServerUI : MonoBehaviour
         Debug.Log("CheckUserName " + username); 
     }
     #region Emits_Shop
+    public void Emit_Transaction(string tranlog)
+    {
+        socket.Emit("transaction-bazzar", tranlog);
+        navigationUi.StartLoadingPageShow();
+        Debug.Log($"EmitTransaction:{tranlog}");
+    }
+
+
 
     public void Emit_Shop(string id)
     {
@@ -1442,6 +1473,13 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("shop-t2", name, price);
         Debug.Log("Price Of Prodoct :" + name +":"+ price);
+     
+    }
+    public void Emit_StaticShopUpdate()
+    {
+        socket.Emit("static-shop-price");
+        Debug.Log("StaticShop Requested");
+      
     }
     public void Emit_CloseDialog(string closeEvent)
     {
@@ -1603,7 +1641,7 @@ public class ServerUI : MonoBehaviour
     {
 
         var image_byte = Convert.FromBase64String(image);
-        Texture2D texture = new Texture2D(512, 512, TextureFormat.DXT5, false);
+        Texture2D texture = new Texture2D(512, 512, TextureFormat.ETC2_RGBA8, false);
         texture.LoadImage(image_byte);
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
     }

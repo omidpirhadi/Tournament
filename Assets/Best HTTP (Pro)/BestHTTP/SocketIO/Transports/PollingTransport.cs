@@ -463,6 +463,10 @@ namespace BestHTTP.SocketIO.Transports
                             catch (Exception ex)
                             {
                                 HTTPManager.Logger.Exception("PollingTransport", "ParseResponse - OnPacket", ex);
+                             UnityEngine.Debug.Log("............................." + packet.EventName);
+                                UnityEngine.Debug.Log("............................." + packet.Namespace);
+                                UnityEngine.Debug.Log("............................." + packet.Payload);
+                                // UnityEngine.Debug.Log("............................." + ex.Data);
                                 (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
                             }
                         }
@@ -475,7 +479,9 @@ namespace BestHTTP.SocketIO.Transports
             catch (Exception ex)
             {
                 (Manager as IManager).EmitError(SocketIOErrors.Internal, ex.Message + " " + ex.StackTrace);
-
+                UnityEngine.Debug.Log("............................." + resp.DataAsText);
+                UnityEngine.Debug.Log("............................." + resp.Message);
+                UnityEngine.Debug.Log("............................." + resp.StatusCode);
                 HTTPManager.Logger.Exception("PollingTransport", "ParseResponse", ex);
             }
         }
