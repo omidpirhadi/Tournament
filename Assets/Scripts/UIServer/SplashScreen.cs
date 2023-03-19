@@ -21,15 +21,15 @@ public class SplashScreen : MonoBehaviour
     private IEnumerator Start()
     {
         SetContext();
-        //  soundEffect = GetComponent<SoundEffectControll>();
+      //  soundEffect = GetComponent<SoundEffectControll>();
         VersionClient.text = FindObjectOfType<Diaco.Setting.GeneralSetting>().Version;
-        //  soundEffect.PlaySound(0);
+      //  soundEffect.PlaySound(0);
         // CheckInternetConnection();
         if (Server.ExistTokenFile("token"))
         {
 
             Prograssbar.DOFillAmount(1f, 3f);
-
+           
             yield return new WaitForSeconds(3.0f);
             Server.ConnectToUIServer();
             Debug.Log("Token Send To Server");
@@ -38,9 +38,8 @@ public class SplashScreen : MonoBehaviour
         else
         {
             yield return new WaitForSeconds(3.0f);
-            
-            loginPage.SetActive(true);
             this.gameObject.SetActive(false);
+            loginPage.SetActive(true);
             Debug.Log("Go To LoginPage");
         }
     }

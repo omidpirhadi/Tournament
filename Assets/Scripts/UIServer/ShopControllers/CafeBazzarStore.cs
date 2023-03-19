@@ -18,35 +18,29 @@ namespace Diaco.Store.CafeBazzar
 
         private IStoreController storeController;
 
-      //  private bool Cafe_initialized = false;
+        private bool Cafe_initialized = false;
         public static CafeBazzarStore instance;
-        /*private void Start()
+        private void Start()
         {
             if (instance == null)
                 instance = this;
             if (Cafe_initialized == false)
                 InitializeCafebazzarShop();
-        }*/
+        }
 
         public void InitializeCafebazzarShop()
         {
-            if (instance == null)
+            var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
+            for (int i = 0; i < cafeBazzarData.cafebazzarItems.Count; i++)
             {
-                instance = this;
-
-
-                var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
-                for (int i = 0; i < cafeBazzarData.cafebazzarItems.Count; i++)
-                {
-                    var name = cafeBazzarData.cafebazzarItems[i].name;
-                    var typeitem = cafeBazzarData.cafebazzarItems[i].productType;
-                    builder.AddProduct(name, typeitem);
-                    // Debug.Log($"AddProduct{name}{typeitem}");
-
-                }
-                //Cafe_initialized = true;
-                UnityPurchasing.Initialize(this, builder);
+                var name = cafeBazzarData.cafebazzarItems[i].name;
+                var typeitem = cafeBazzarData.cafebazzarItems[i].productType;
+                builder.AddProduct(name, typeitem);
+               // Debug.Log($"AddProduct{name}{typeitem}");
+                
             }
+            Cafe_initialized = true;
+            UnityPurchasing.Initialize(this, builder);
         }
 
 
