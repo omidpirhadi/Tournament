@@ -21,7 +21,7 @@ namespace Diaco.Setting
 
         private void Awake()
         {
-
+            
             if (ExistSettingFile("setting"))
             {
                 //   GameSetting = new GameSettingData();
