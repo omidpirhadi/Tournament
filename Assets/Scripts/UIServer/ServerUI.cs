@@ -449,7 +449,7 @@ public class ServerUI : MonoBehaviour
                 popup.initAward(awrad);
 
 
-                Debug.Log("Recive League Award");
+                Debug.Log("Recive League Award" + m[1].ToString());
                 navigationUi.StopLoadingPage();
             }
 
@@ -715,7 +715,7 @@ public class ServerUI : MonoBehaviour
             {
                 var awardcompetition = JsonUtility.FromJson<Diaco.UI.RoyalTournument.AwardsData>(m[1].ToString());
                 Handler_OnCompetitionAward(awardcompetition);
-                Debug.Log("competition-award");
+                Debug.Log("competition-award:" + m[1].ToString());
             }
             navigationUi.StopLoadingPage();
 
