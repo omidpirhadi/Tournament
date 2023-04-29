@@ -297,6 +297,7 @@ namespace Diaco.EightBall.Server
             socketmanager = new SocketManager(new Uri(URL), options);
             socket = socketmanager["/billiard" + namespaceserver];
 
+           
             socket.On("connect", (s, p, m) =>
             {
                 socket.Emit("authToken", ReadToken("token"),setting.Version);
