@@ -46,21 +46,21 @@ namespace Diaco.UI.TeamInfo
             Award1st.Coin.text = Convert.ToString(data.awards1.coin);
             Award1st.Card.text = Convert.ToString(data.awards1.card);
             Award1st.ImageCard.sprite = ImageCards.LoadImage(data.awards1.cardName);
-            Award1st.Cup.text = Convert.ToString(data.awards1.cpu);
+            Award1st.Cup.text = Convert.ToString(data.awards1.cup);
             Award1st.Xp.text = Convert.ToString(data.awards1.xp);
             /////AWARD PERSON TWO
             Award2nd.Gem.text = Convert.ToString(data.awards2.gem);
             Award2nd.Coin.text = Convert.ToString(data.awards2.coin);
             Award2nd.Card.text = Convert.ToString(data.awards2.card);
             Award2nd.ImageCard.sprite = ImageCards.LoadImage(data.awards2.cardName);
-            Award2nd.Cup.text = Convert.ToString(data.awards2.cpu);
+            Award2nd.Cup.text = Convert.ToString(data.awards2.cup);
             Award2nd.Xp.text = Convert.ToString(data.awards2.xp);
             /////AWARD PERSON THREE
             Award3rd.Gem.text = Convert.ToString(data.awards3.gem);
             Award3rd.Coin.text = Convert.ToString(data.awards3.coin);
             Award3rd.Card.text = Convert.ToString(data.awards3.card);
             Award3rd.ImageCard.sprite = ImageCards.LoadImage(data.awards3.cardName);
-            Award3rd.Cup.text = Convert.ToString(data.awards3.cpu);
+            Award3rd.Cup.text = Convert.ToString(data.awards3.cup);
             Award3rd.Xp.text = Convert.ToString(data.awards3.xp);
 
             Cost_Image.sprite = CostTypeImage_Container.LoadImage(data.costType.ToString());

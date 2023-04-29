@@ -76,6 +76,7 @@ namespace Diaco.UI.RoyalTournument
 
             Cost_Image.sprite = CostTypeImage_Container.LoadImage(data.costType.ToString());
             Cost_txt.text = data.cost.ToString();
+           
         }
 
         private void ElementOfSlideNumberTurnOn(AwardsData data)

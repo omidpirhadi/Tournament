@@ -302,7 +302,7 @@ namespace Diaco.HTTPBody
         public string cardName;
         public int ticket;
         public int xp;
-        public int cpu;
+        public int cup;
     }
     public struct AwardsName
     {

@@ -39,6 +39,7 @@ namespace Diaco.Social
                 Server.GetLeague();
 
             });
+            Server.GetLeague();
         }
         private void OnDisable()
         {
