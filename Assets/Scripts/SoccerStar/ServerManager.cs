@@ -234,10 +234,12 @@ namespace Diaco.SoccerStar.Server
 
         public void OnEnable()
         {
+
             ConnectToServer();
         }
         private void OnDestroy()
         {
+            ClearMemoryTextures();
             if (BlockChat_Button)
                 BlockChat_Button.onClick.RemoveAllListeners();
             CloseSocket();
@@ -1053,6 +1055,10 @@ namespace Diaco.SoccerStar.Server
                 }
             }
         }
+
+
+
+
         public Sprite SelectFlag(string name)
         {
 
@@ -1074,9 +1080,30 @@ namespace Diaco.SoccerStar.Server
                 }
 
             });
-
-            return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 512);
+            var s = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 512);
+            temp_texture.Add(texture);
+            temp_sprite.Add(s);
+            return s;
         }
+
+        private List<Texture2D> temp_texture = new List<Texture2D>();
+        private List<Sprite> temp_sprite = new List<Sprite>();
+        private void ClearMemoryTextures()
+        {
+            if (temp_texture.Count > 0)
+            {
+                for (int i = 0; i < temp_texture.Count; i++)
+                {
+                    Destroy(temp_texture[i]);
+                    Destroy(temp_sprite[i]);
+                }
+                temp_texture.Clear();
+                temp_sprite.Clear();
+            }
+        }
+
+
+
         /// <summary>
         /// 
         /// </summary>

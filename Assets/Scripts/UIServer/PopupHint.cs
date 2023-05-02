@@ -84,7 +84,35 @@ public class PopupHint : MonoBehaviour
         var image_byte = Convert.FromBase64String(image);
         Texture2D texture = new Texture2D(512, 512, TextureFormat.DXT5, false);
         texture.LoadImage(image_byte);
-        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        var s = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+        temp_texture.Add(texture);
+        temp_sprite.Add(s);
+        return s;
     }
 
+
+    private List<Texture2D> temp_texture = new List<Texture2D>();
+    private List<Sprite> temp_sprite = new List<Sprite>();
+    private void ClearMemoryTextures()
+    {
+        if (temp_texture.Count > 0)
+        {
+            for (int i = 0; i < temp_texture.Count; i++)
+            {
+                Destroy(temp_texture[i]);
+                Destroy(temp_sprite[i]);
+            }
+            temp_texture.Clear();
+            temp_sprite.Clear();
+        }
+    }
+
+    private void OnDisable()
+    {
+        ClearMemoryTextures();
+    }
+    private void OnDestroy()
+    {
+        ClearMemoryTextures();
+    }
 }

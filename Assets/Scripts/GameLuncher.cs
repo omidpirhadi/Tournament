@@ -121,6 +121,7 @@ public class GameLuncher : MonoBehaviour
     }
     private IEnumerator SwitchSceneRun(int index)
     {
+        Diaco.ImageContainerTool.ImageContainer.ClearMemoryTextures();
         navigationUi.CloseAllPopUp();
         FadeIn();
         yield return new WaitUntil(() => FadeInCompelete);
@@ -266,8 +267,8 @@ public class GameLuncher : MonoBehaviour
     private IEnumerator BackToMenuWithClearDataScene()
     {
 
-        
 
+        Diaco.ImageContainerTool.ImageContainer.ClearMemoryTextures();
 
         FadeIn();
         //Debug.Log("WaitForBackToMenu");

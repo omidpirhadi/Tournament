@@ -14,15 +14,16 @@ namespace Diaco.ImageContainerTool
         public static void InitializeTexture()
         {
             texture = new Texture2D(512, 512);
-           // Debug.Log("TextureInitialize");
+           // Debug.Log("*************TextureInitialize");
         }
         public Sprite LoadImage(string name)
         {
-           // texture = new Texture2D(512, 512);
+    
             imageContainers.ForEach((e) => {
                 if(e.name == name)
                 {
                     texture = e.Texture;
+                    
                 }
                 
             });
@@ -31,10 +32,29 @@ namespace Diaco.ImageContainerTool
             {
                 texture = imageContainers[0].Texture;
             }
-            return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            var s = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+            temp_sprite.Add(s);
+            return s;
         }
-     
-        public Texture2D LoadSkinMarble(string name)
+        private static List<Sprite> temp_sprite = new List<Sprite>();
+        public static void ClearMemoryTextures()
+        {
+            if (temp_sprite.Count > 0)
+            {
+                for (int i = 0; i < temp_sprite.Count; i++)
+                {
+                    
+                    Destroy(temp_sprite[i]);
+                }
+             
+                temp_sprite.Clear();
+            }
+        }
+
+
+
+
+        /*public Texture2D LoadSkinMarble(string name)
         {
             texture = new Texture2D(512, 512);
             imageContainers.ForEach((e) => {
@@ -45,7 +65,7 @@ namespace Diaco.ImageContainerTool
             });
 
             return texture;
-        }
+        }*/
     }
     [Serializable]
     public struct ImageContainerInfo
