@@ -33,13 +33,13 @@ namespace Diaco.ImageContainerTool
                 texture = imageContainers[0].Texture;
             }
             var s = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-            temp_sprite.Add(s);
+           // temp_sprite.Add(s);
             return s;
         }
-        private static List<Sprite> temp_sprite = new List<Sprite>();
+       /* private static List<Sprite> temp_sprite = new List<Sprite>();*/
         public static void ClearMemoryTextures()
         {
-            if (temp_sprite.Count > 0)
+            /*if (temp_sprite.Count > 0)
             {
                 for (int i = 0; i < temp_sprite.Count; i++)
                 {
@@ -48,7 +48,7 @@ namespace Diaco.ImageContainerTool
                 }
              
                 temp_sprite.Clear();
-            }
+            }*/
         }
 
 

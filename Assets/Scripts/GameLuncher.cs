@@ -43,7 +43,7 @@ public class GameLuncher : MonoBehaviour
     {
         //if (Application.isMobilePlatform)
          //   QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 0;
+        Application.targetFrameRate = 60;
         Diaco.ImageContainerTool.ImageContainer.InitializeTexture();
         MainMenu = Instantiate(MainMenuPrefab);
         navigationUi = MainMenu.GetComponentInChildren<ServerUI>().navigationUi;
@@ -121,7 +121,7 @@ public class GameLuncher : MonoBehaviour
     }
     private IEnumerator SwitchSceneRun(int index)
     {
-        Diaco.ImageContainerTool.ImageContainer.ClearMemoryTextures();
+        //Diaco.ImageContainerTool.ImageContainer.ClearMemoryTextures();
         navigationUi.CloseAllPopUp();
         FadeIn();
         yield return new WaitUntil(() => FadeInCompelete);
@@ -268,7 +268,7 @@ public class GameLuncher : MonoBehaviour
     {
 
 
-        Diaco.ImageContainerTool.ImageContainer.ClearMemoryTextures();
+       // Diaco.ImageContainerTool.ImageContainer.ClearMemoryTextures();
 
         FadeIn();
         //Debug.Log("WaitForBackToMenu");
