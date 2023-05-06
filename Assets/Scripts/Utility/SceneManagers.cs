@@ -10,6 +10,7 @@ public class SceneManagers : MonoBehaviour
     
 
     AsyncOperation asyncOperation;
+    [Sirenix.OdinInspector.Button("ChangeScene")]
     public void loadlevel(string name)
     {
         StartCoroutine(SceneLoad(name));
