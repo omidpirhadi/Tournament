@@ -41,7 +41,7 @@ namespace Diaco.Social
         public void InitializBadgeList(List<LeagueFlage> badgeslist)
         {
            
-            for (int i = 0; i < badgeslist.Count; i++)
+            for (int i = 8; i < badgeslist.Count; i++)
             {
                 var badge = Instantiate(BadgeElement, content);
                 badge.SetBadge(Server.LeagueFlagsContainer.LoadImage(badgeslist[i].name), badgeslist[i].id, this);

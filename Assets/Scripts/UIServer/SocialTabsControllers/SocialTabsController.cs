@@ -65,12 +65,12 @@ namespace Diaco.UI.SocialTabs
                 }
                 else
                 {
-                    ChatsTeamTab.SetActive(true);
+                    /*ChatsTeamTab.SetActive(true);
                     StartGameTimerTab.SetActive(true);
                     MakeTeamTab.SetActive(false);
                     TeamsTab.SetActive(false);
                     SocialTabs.ShowTabsDefalt = 4;
-                    Debug.Log(" HAVE A TEAM" + Server.BODY.social.team.teamId.Length);
+                    Debug.Log(" HAVE A TEAM" + Server.BODY.social.team.teamId.Length);*/
                 }
                 navigationUi.SwitchUI("social");
                 navigationUi.ColorButtonFix(Social_btn);
@@ -106,7 +106,7 @@ namespace Diaco.UI.SocialTabs
             }
             else
             {
-                if (!onceShowHaveTeam)
+                /*if (!onceShowHaveTeam)
                 {
                     ChatsTeamTab.SetActive(true);
                     StartGameTimerTab.SetActive(true);
@@ -117,7 +117,7 @@ namespace Diaco.UI.SocialTabs
                     SocialTabs.ShowTabs(5);
                     onceShowHaveTeam  = true;
                     onceShowDontHaveTeam = false;
-                }
+                }*/
             }
 
             // navigationUi.SwitchUI("social");

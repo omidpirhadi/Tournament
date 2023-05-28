@@ -224,7 +224,7 @@ namespace Diaco.EightBall.Server
         #region UnityFunctions
         public void Start()
         {
-            ///  Debug.Log("tiiiim" + Time.fixedDeltaTime);
+            ///  ///Debug.Log("tiiiim" + Time.fixedDeltaTime);
 
             if (InRecordMode == false)
             {
@@ -241,7 +241,7 @@ namespace Diaco.EightBall.Server
                 PocketsInScene.ForEach(pocket =>
                 {
                     pocket.OnPocket += GameManager_OnPocket0;
-                    //   Debug.Log("pocket find");
+                    //   ///Debug.Log("pocket find");
                     // pockets[1].OnPocket += GameManager_OnPocket1;
                     // pockets[2].OnPocket += GameManager_OnPocket2;
                     // pockets[3].OnPocket += GameManager_OnPocket3;
@@ -287,12 +287,8 @@ namespace Diaco.EightBall.Server
 
             Notification_Dialog.server_billiard = this;
             Notification_Dialog.init_Notification_billiard();
-
-
             SocketOptions options = new SocketOptions();
             options.AutoConnect = true;
-
-
             this.Namespaceserver = namespaceserver;
             socketmanager = new SocketManager(new Uri(URL), options);
             socket = socketmanager["/billiard" + namespaceserver];
@@ -303,7 +299,7 @@ namespace Diaco.EightBall.Server
                 socket.Emit("authToken", ReadToken("token"),setting.Version);
                 BadConnectionShow(false);
                 Time.timeScale = 2;
-                Debug.Log("Connection");
+                ///Debug.Log("Connection");
             });
             socket.On("notifications", (s, p, m) =>
             {
@@ -312,14 +308,14 @@ namespace Diaco.EightBall.Server
                 {
 
                     // popup.AllowUsername = false;
-                    Debug.Log("<color=red>Error: Notif cant Loaded: </color>" + m[1].ToString());
+                    ///Debug.Log("<color=red>Error: Notif cant Loaded: </color>" + m[1].ToString());
                     ///Handler_OnChangeUsername(m[1].ToString());
 
                 }
                 else
                 {
                     var notif = JsonUtility.FromJson<Diaco.Notification.Notification_Dialog_Body>(m[1].ToString());
-                    Debug.Log("Notifi" + m[1].ToString());
+                    ///Debug.Log("Notifi" + m[1].ToString());
                     Handler_OnNotification(notif);
 
                 }
@@ -363,21 +359,21 @@ namespace Diaco.EightBall.Server
 
 
 
-                    Debug.Log("GAME DATA");
+                    ///Debug.Log("GAME DATA");
                     //Handler_GameReady();
-                    //  Debug.Log(m[0].ToString());
+                    //  ///Debug.Log(m[0].ToString());
                 });
                 socket.On("RoomId", (s, p, m) =>
                 {
 
                     Emit_ReadyForPlayGame(m[0].ToString());
-                    //  Debug.Log(m[0].ToString());
+                    //  ///Debug.Log(m[0].ToString());
                 });
                 socket.On("Position", (s, p, m) =>
                 {
                     var positions = JsonUtility.FromJson<Diaco.EightBall.Structs.PositionAndRotateBalls>(m[0].ToString());
                     QueuePositionsBallFromServer.Add(positions);
-                    //  Debug.Log("tik" + positions.Tik + "S" + positions.CueBall.x);
+                    //  ///Debug.Log("tik" + positions.Tik + "S" + positions.CueBall.x);
                     if (intergateplayposition == 0)
                     {
 
@@ -385,7 +381,7 @@ namespace Diaco.EightBall.Server
                         intergateplayposition = 1;
 
                     }
-                    // Debug.Log("Reciveeeeee");
+                    // ///Debug.Log("Reciveeeeee");
                 });
                 socket.On("PositionCueBall", (s, p, m) =>
                 {
@@ -394,10 +390,10 @@ namespace Diaco.EightBall.Server
                     if (QueueCueBallPositionFromServer.Count > 0)
                     {
                         StartCoroutine(CueBallPositionRecivedFromServer());
-                        //  Debug.Log("Recive1" );
+                        //  ///Debug.Log("Recive1" );
                     }
 
-                    //Debug.Log("Recive3");
+                    /////Debug.Log("Recive3");
                 });
                 socket.On("Aim", (s, p, m) =>
                 {
@@ -424,23 +420,23 @@ namespace Diaco.EightBall.Server
 
                     var data = JsonUtility.FromJson<Diaco.Store.Billiard.BilliardShopDatas>(m[0].ToString());
                     Handler_InitShop(data);
-                    Debug.Log("ShopInGameRecive");
+                    ///Debug.Log("ShopInGameRecive");
                 });
                 socket.On("cueState", (s, p, m) => {
                     var data = JsonUtility.FromJson<CueStateData>(m[0].ToString());
                     SetWoodState(data);
-                    Debug.Log("ChangeCueSate");
+                    ///Debug.Log("ChangeCueSate");
                 });
                 socket.On("getSticker", (s, p, m) => {
 
                     var data = JsonUtility.FromJson<StickerData>(m[0].ToString());
                     Handler_GetStickers(data);
-                    Debug.Log("StickerRecived");
+                    ///Debug.Log("StickerRecived");
                 });
                 socket.On("shareSticker", (s, p, m) => {
 
                     StickerViwer(m[0], m[1]);
-                    Debug.Log("ShareStickerRecived");
+                    ///Debug.Log("ShareStickerRecived");
                 });
                 socket.On("message", (s, p, m) => {
 
@@ -451,7 +447,7 @@ namespace Diaco.EightBall.Server
                     else
                         Time.timeScale = 2;
                     Handler_IncomingMessage(message, durtaion);
-                    Debug.Log("ReciveMessage:" + message);
+                    ///Debug.Log("ReciveMessage:" + message);
                 });
 
 
@@ -478,7 +474,7 @@ namespace Diaco.EightBall.Server
                     Sibl.Area = 4;
                     Turn = true;
                     Handler_GameReady();
-                    Debug.Log("ReadyRecordMode");
+                    ///Debug.Log("ReadyRecordMode");
                 });
                 socket.On("result", (s, p, a) =>
                 {
@@ -487,7 +483,7 @@ namespace Diaco.EightBall.Server
                     resualtInRecordMode.gameObject.SetActive(true);
                     resualtInRecordMode.Set(result);
                     CancelInvoke("RunTimer");
-                    Debug.Log("ReadyRecordModeResualt");
+                    ///Debug.Log("ReadyRecordModeResualt");
                 });
             }
             socket.On("BackToMenu", (s, p, m) => {
@@ -496,7 +492,7 @@ namespace Diaco.EightBall.Server
                 //// CloseSocket();
                 var Luncher = FindObjectOfType<GameLuncher>();
                 Luncher.BackToMenu();
-                Debug.Log("back To menu from Server");
+                ///Debug.Log("back To menu from Server");
 
 
             });
@@ -513,7 +509,7 @@ namespace Diaco.EightBall.Server
                     Time.timeScale = 1;
                 }
                 BadConnectionShow(true);
-                // Debug.Log("disConnection");
+                // ///Debug.Log("disConnection");
             });
         }
 
@@ -526,20 +522,20 @@ namespace Diaco.EightBall.Server
         public void Emit_ReadyForPlayGame(string RoomID)
         {
             socket.Emit("ImReady", RoomID);
-            //   Debug.Log("Ready For Play Game");
+            //   ///Debug.Log("Ready For Play Game");
         }
         public void Emit_AimCueBall(AimData aimdata)
         {
             var json = JsonUtility.ToJson(aimdata);
             if (socket != null)
                 socket.Emit("Aim", json);
-            //   Debug.Log("Sending Aim To Server");
+            //   ///Debug.Log("Sending Aim To Server");
         }
         public void Emit_PositionCueBallInPitoks(CueBallData data)
         {
             var cue_data = JsonUtility.ToJson(data);
             socket.Emit("PositionCueBall", cue_data);
-            // Debug.Log("Sending Cue Ball Position To Server"+data.position);
+            // ///Debug.Log("Sending Cue Ball Position To Server"+data.position);
         }
 
 
@@ -547,7 +543,7 @@ namespace Diaco.EightBall.Server
         {
             var data = JsonUtility.ToJson(positionAndRotate);
             socket.Emit("Position", data);
-            //  Debug.Log("Sending  Balls Position To Server");
+            //  ///Debug.Log("Sending  Balls Position To Server");
         }
 
 
@@ -558,7 +554,7 @@ namespace Diaco.EightBall.Server
                 socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition);
             else
                 socket.Emit("EndRecord", PocketedBallsID, FirstBallImpact, IDImpactToWall, LastPosition, FirstPocketCall);
-            Debug.Log("End Record And SendData Of Turn");
+            ///Debug.Log("End Record And SendData Of Turn");
         }
         public void Emit_EndPlayRecord()
         {
@@ -569,7 +565,7 @@ namespace Diaco.EightBall.Server
         public void Emit_LeftGame()
         {
            socket.Emit("left-game");
-            Debug.Log("Left game");
+            ///Debug.Log("Left game");
             //CloseConnection();
 
         }
@@ -588,45 +584,45 @@ namespace Diaco.EightBall.Server
         {
             socket.Emit("useCue", id);
 
-            Debug.Log("USSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+            ///Debug.Log("USSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
         }
         public void Emit_RentCue(string rentId)
         {
             socket.Emit("rentCue", rentId);
-            Debug.Log("Emit_ShopformationRent=" + "::" + rentId);
+            ///Debug.Log("Emit_ShopformationRent=" + "::" + rentId);
         }
 
 
         public void Emit_GetSticker()
         {
             socket.Emit("getSticker");
-            Debug.Log("Emit_getSticker");
+            ///Debug.Log("Emit_getSticker");
         }
         public void Emit_ShareSticker(string name)
         {
             socket.Emit("shareSticker", name);
-            Debug.Log("Emit_shareSticker");
+            ///Debug.Log("Emit_shareSticker");
         }
         public void Emit_Message(string message)
         {
             socket.Emit("message", message);
-            Debug.Log("Emit_Message");
+            ///Debug.Log("Emit_Message");
 
         }
         public void Emit_BlockChat()
         {
             socket.Emit("blockChat");
-            Debug.Log("ChatBloked!");
+            ///Debug.Log("ChatBloked!");
         }
         public void Emit_AddFriend()
         {
             socket.Emit("add-friend");
-            Debug.Log("ChatBloked!");
+            ///Debug.Log("ChatBloked!");
         }
         public void Emit_CallPocket(int id)
         {
             socket.Emit("selectPocket", id);
-            Debug.Log("selectPocket:" + id);
+            ///Debug.Log("selectPocket:" + id);
         }
 
         public void Emit_DialogAndNotification(string eventName, string data)
@@ -644,7 +640,7 @@ namespace Diaco.EightBall.Server
             if (SpwnedBall == false)
             {
                 SpawnBalls(data);
-                Debug.Log("AAAAAAAAAAAA");
+                ///Debug.Log("AAAAAAAAAAAA");
             }
 
             if (ResultGamePage.activeSelf && data.state != -1)
@@ -716,7 +712,7 @@ namespace Diaco.EightBall.Server
                 }
                 EnableCoolDown(Side.Left, data.turnTime,  data.totalTime);
 
-                //  Debug.Log("TimeAndTurnOnwer");
+                //  ///Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
@@ -735,7 +731,7 @@ namespace Diaco.EightBall.Server
                 CheckEnable8BallRightInOtherClient();
 
                 // AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
-                //Debug.Log("HE::::::");
+                /////Debug.Log("HE::::::");
             }
 
 
@@ -744,13 +740,13 @@ namespace Diaco.EightBall.Server
             {
                 if (data.winner == UserName.userName)
                 {
-                    Debug.Log("Winner");
+                    ///Debug.Log("Winner");
                     //  GameResult.enabled = true;
                     //  GameResult.text = "Winner";
                 }
                 if (data.loser == UserName.userName)
                 {
-                    Debug.Log("Loser");
+                    ///Debug.Log("Loser");
                     //GameResult.enabled = true;
                     // GameResult.text = "Loser";
                 }
@@ -834,7 +830,7 @@ namespace Diaco.EightBall.Server
 
                 EnableCoolDown(Side.Left, data.turnTime, data.totalTime);
 
-                //  Debug.Log("TimeAndTurnOnwer");
+                //  ///Debug.Log("TimeAndTurnOnwer");
             }
             else
             {
@@ -852,7 +848,7 @@ namespace Diaco.EightBall.Server
                 CheckEnable8BallRightInOtherClient();
                 //   AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(true);
 
-                // Debug.Log("TimeAndTurn");
+                // ///Debug.Log("TimeAndTurn");
             }
 
 
@@ -862,13 +858,13 @@ namespace Diaco.EightBall.Server
             {
                 if (data.winner == UserName.userName)
                 {
-                    Debug.Log("Winner");
+                    ///Debug.Log("Winner");
                     //GameResult.enabled = true;
                     //GameResult.text = "Winner";
                 }
                 if (data.loser == UserName.userName)
                 {
-                    Debug.Log("Loser");
+                    ///Debug.Log("Loser");
                     //  GameResult.enabled = true;
                     //  GameResult.text = "Loser";
                 }
@@ -884,7 +880,7 @@ namespace Diaco.EightBall.Server
 
             cueball.PowerCUE = Mathf.Clamp(state.force, 1.34f, 1.74f);
             cueball.PowerSpin = Mathf.Clamp(state.spin, 3, 4);
-            Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
+            ///Debug.Log("WoodUpdate::" + state.name + ";;" + state.spin);
         }
         public void initializTurn(Diaco.EightBall.Structs.GameData data)
         {
@@ -900,7 +896,7 @@ namespace Diaco.EightBall.Server
 
                 Turn = true;
                 // CallPacketEnable();
-                // Debug.Log("Turn");
+                // ///Debug.Log("Turn");
             });
 
             /*   TurnRecived = false;
@@ -933,14 +929,15 @@ namespace Diaco.EightBall.Server
         {
             PositionAndRotateBalls PositionBalls = new PositionAndRotateBalls();
             bool integateAllow = true;
-            canclemove = DOVirtual.DelayedCall(14, () =>
+            canclemove = DOVirtual.DelayedCall(20, () =>
             {
                 integateAllow = false;
                 for (int i = 0; i < AddressBalls.Count; i++)
                 {
-                    AddressBalls[i].StopMoving();
+                    if (AddressBalls[i] != null)
+                        AddressBalls[i].StopMoving();
                 }
-                Debug.Log("Force Stop");
+                ///Debug.Log("Force Stop");
 
             }, false);
             do
@@ -1061,7 +1058,7 @@ namespace Diaco.EightBall.Server
                 PositionBalls.isLastPacket = false;
                 Emit_PositionsBalls(PositionBalls);
 
-                //Debug.Log(PositionBalls.Tik);
+                /////Debug.Log(PositionBalls.Tik);
                 yield return new WaitForSecondsRealtime(Framerate);
                 PositionBalls.Tik++;
 
@@ -1069,7 +1066,7 @@ namespace Diaco.EightBall.Server
 
             canclemove.Kill(false);
             PositionBalls.isLastPacket = true;
-            Debug.Log("LastSend:" + PositionBalls.Tik);
+            ///Debug.Log("LastSend:" + PositionBalls.Tik);
             Emit_PositionsBalls(PositionBalls);
             //TimeStep = Time.realtimeSinceStartup;
             Emit_SendDataOfGameOnEndTurn(AddressBalls[0].transform.position);
@@ -1101,13 +1098,13 @@ namespace Diaco.EightBall.Server
 
                 try
                 {
-                    // Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
+                    // ///Debug.Log(tik + "   ::::::::::   " + QueuePositionsBallFromServer.Count);
                     tik = Mathf.Clamp(tik, 0, QueuePositionsBallFromServer.Count - 1);
                     PositionBalls = QueuePositionsBallFromServer[tik];
 
                     //  if (tik > QueuePositionsBallFromServer.Count)
                     //      tik = QueuePositionsBallFromServer.Count;
-                    //  Debug.Log(tik +"   ::::::::::   "+ QueuePositionsBallFromServer.Count);
+                    //  ///Debug.Log(tik +"   ::::::::::   "+ QueuePositionsBallFromServer.Count);
 
                     if (AddressBalls[0] != null)
                     {
@@ -1266,22 +1263,22 @@ namespace Diaco.EightBall.Server
                         }
                         Emit_EndPlayRecord();
                         loopCancle = true;
-                        // Debug.Log("LastRecive:" + PositionBalls.Tik);
+                        // ///Debug.Log("LastRecive:" + PositionBalls.Tik);
 
                     }
 
                 }
                 catch(Exception r)
                 {
-                    Debug.Log($"Exception:{r.Message}");
+                    ///Debug.Log($"Exception:{r.Message}");
                 }
                 //  Physics.Simulate(Time.fixedDeltaTime);
                 yield return new WaitForSecondsRealtime(Framerate);
 
-               //  Debug.Log("................Count List:"+QueuePositionsBallFromServer.Count+"...............TIk PACKET:"+PositionBalls.Tik+"................TIkLOOP:"+tik);
+               //  ///Debug.Log("................Count List:"+QueuePositionsBallFromServer.Count+"...............TIk PACKET:"+PositionBalls.Tik+"................TIkLOOP:"+tik);
                 tik++;
             }
-            //Debug.Log("xXXXXXXXXXxXXXXXXXXXXXXXXX");
+            /////Debug.Log("xXXXXXXXXXxXXXXXXXXXXXXXXX");
             QueuePositionsBallFromServer.Clear();
             // cueball.resetpos();
             intergateplayposition = 0;
@@ -1454,7 +1451,7 @@ namespace Diaco.EightBall.Server
             var PositionBall = QueueCueBallPositionFromServer.Dequeue();
             // AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().ActiveAimSystemForShowInOtherClient(false);
             AddressBalls[0].GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CueBallMoveFromServer(PositionBall, 0.02f);
-            /// Debug.Log("Recive2");
+            /// ///Debug.Log("Recive2");
             yield return null;
         }
 
@@ -1468,7 +1465,7 @@ namespace Diaco.EightBall.Server
 
                 cueball.SetCueWoodPositionAndRotationFromServer(aimdata);
                 // cueball.transform.position = aimdata.PosCueBall;
-                /// Debug.Log(aimdata);
+                /// ///Debug.Log(aimdata);
                 yield return null;
 
             }
@@ -1522,7 +1519,7 @@ namespace Diaco.EightBall.Server
                 {
                     if (list_object_in_basket[j].BallID == ballID)
                     {
-                        Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
+                        ///Debug.Log("AAAAAA" + list_object_in_basket[j].BallID);
                         find = true;
 
                     }
@@ -1551,11 +1548,11 @@ namespace Diaco.EightBall.Server
                     }
                     catch (Exception e)
                     {
-                        Debug.Log($"Exception:{e.Message}");
+                        ///Debug.Log($"Exception:{e.Message}");
                     }
                 }
             }
-            /// Debug.Log("basket length : " + BallInBasket.Count);
+            /// ///Debug.Log("basket length : " + BallInBasket.Count);
             yield return new WaitForSecondsRealtime(0.3f);
 
             for (int i = 0; i < Basket.ballinbasket.Count; i++)///check for Wrong Ball In Basket
@@ -1572,7 +1569,7 @@ namespace Diaco.EightBall.Server
                     var ball_in_basket = FindObjectsOfType<ballinbasket>();
                     for (int j = 0; j < ball_in_basket.Length; j++)
                     {
-                        //   Debug.Log("bas__:" + id);
+                        //   ///Debug.Log("bas__:" + id);
                         if (ball_in_basket[j].BallID == id)
                         {
                             Destroy(ball_in_basket[j].gameObject);
@@ -1583,7 +1580,7 @@ namespace Diaco.EightBall.Server
                     }
 
                 }
-                // Debug.Log("VBBBVBVBVBVBVBVBVBVBV"+id);
+                // ///Debug.Log("VBBBVBVBVBVBVBVBVBVBV"+id);
             }
             yield return new WaitForSecondsRealtime(0.5f);
             StartCoroutine(Basket.ExtractBallFast());
@@ -1599,7 +1596,7 @@ namespace Diaco.EightBall.Server
                     var idball = AddressBalls[i].IDPost;
                     if (gameData.deletedBalls.Contains(idball))
                     {
-                        Debug.Log("............" + idball);
+                        ///Debug.Log("............" + idball);
                         findworng = true;
                     }
                 }
@@ -1624,7 +1621,7 @@ namespace Diaco.EightBall.Server
                         if (i != j && ID == ID2)
                         {
                             need_reset = true;
-                            Debug.Log("..............ResetBallAdd33333");
+                            ///Debug.Log("..............ResetBallAdd33333");
                         }
                     }
                 }
@@ -1635,7 +1632,7 @@ namespace Diaco.EightBall.Server
                 if(SpawnBallWorng(data))
                 {
                     need_reset = true;
-                    Debug.Log("..............ResetBallAdd2222");
+                    ///Debug.Log("..............ResetBallAdd2222");
                 }
             }
 
@@ -1652,13 +1649,13 @@ namespace Diaco.EightBall.Server
                 {
                     if (BallInTable[i].tag != "whiteball")
                     {
-                        Debug.Log("..............count ball in table"+BallInTable.Length);
+                        ///Debug.Log("..............count ball in table"+BallInTable.Length);
                         Destroy(BallInTable[i].gameObject);
                     }
 
                 }
                 AddressBalls.Clear();
-                Debug.Log("..............ResetBallAdd");
+                ///Debug.Log("..............ResetBallAdd");
                 SpawnBalls2(data);
             }
             yield return null;
@@ -1700,7 +1697,7 @@ namespace Diaco.EightBall.Server
                         if (!temp_deletedball.Contains(ballID))
                         {
                             need_reset = true;
-                            Debug.Log("Find Worng this id: " + ballID);
+                            ///Debug.Log("Find Worng this id: " + ballID);
 
                         }
                     }
@@ -1717,25 +1714,25 @@ namespace Diaco.EightBall.Server
                 //yield return new WaitForSecondsRealtime(0.1f);
                 if (need_reset)
                 {
-                    Debug.Log("Start solving the problem in basket");
+                    ///Debug.Log("Start solving the problem in basket");
                     for (int i = 0; i < list_object_in_basket.Count; i++)
                     {
                         Destroy(list_object_in_basket[i].gameObject);
                         this.Basket.QueueBasket.Clear();
                         this.Basket.ballinbasket.Clear();
-                        Debug.Log("DESTROY BALL IN BASKET");
+                        ///Debug.Log("DESTROY BALL IN BASKET");
                     }
                     // yield return new WaitForSecondsRealtime(0.1f);
                     for (int i = 0; i < data.deletedBalls.Count; i++)
                     {
 
                         var deletedballID = data.deletedBalls[i];
-                        Debug.Log("ADD BALL IN BASKET:::   " + deletedballID);
+                        ///Debug.Log("ADD BALL IN BASKET:::   " + deletedballID);
                         this.Basket.AddToQueue(deletedballID);
 
 
                     }
-                    Debug.Log(".............................................The problem was solved in basket.");
+                    ///Debug.Log(".............................................The problem was solved in basket.");
                     ///yield return new WaitForSecondsRealtime(0.1f);
                     StartCoroutine(this.Basket.ExtractBallFast());
 
@@ -1749,7 +1746,7 @@ namespace Diaco.EightBall.Server
             socket.Off();
             socket.Manager.Close();
             socket.Disconnect();
-            Debug.Log("BilliardCloseConnection");
+            ///Debug.Log("BilliardCloseConnection");
         }
         public IEnumerator ResetData()
         {
@@ -1780,7 +1777,7 @@ namespace Diaco.EightBall.Server
                 if (AddressBalls[i] != null && i > 0)
                 {
                     Destroy(AddressBalls[i].gameObject);
-                    //  Debug.Log(AddressBalls[i].gameObject.name);
+                    //  ///Debug.Log(AddressBalls[i].gameObject.name);
                 }
 
             }
@@ -1836,7 +1833,7 @@ namespace Diaco.EightBall.Server
                     //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
                     ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
                     AddressBalls.Add(ball.GetComponent<AddressBall>());
-                    // Debug.Log("BALLLLLttttt::::::::::::");
+                    // ///Debug.Log("BALLLLLttttt::::::::::::");
 
                 }
                 else
@@ -1885,7 +1882,7 @@ namespace Diaco.EightBall.Server
                     //ball.transform.localEulerAngles = new Vector3(90f, 0f, 0f);
                     ball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
                     AddressBalls.Add(ball.GetComponent<AddressBall>());
-                    // Debug.Log("BALLLLLttttt::::::::::::");
+                    // ///Debug.Log("BALLLLLttttt::::::::::::");
 
                 }
                 else
@@ -1918,13 +1915,13 @@ namespace Diaco.EightBall.Server
         public void SelectTable(string name)
         {
 
-            // Debug.Log("e.nsddsasdame"+name);
+            // ///Debug.Log("e.nsddsasdame"+name);
             Tables.ForEach(e => {
 
                 if (e.name == name)
                 {
                     TableRenderer.material = e.table;
-                    //Debug.Log(e.name);
+                    /////Debug.Log(e.name);
                     if (name == "classic")
                         GamePlayRule = _GamePlayRule.classic;
                     else if (name == "quick" || name == "competition")
@@ -1937,7 +1934,7 @@ namespace Diaco.EightBall.Server
                 else if (e.name == "")
                 {
                     TableRenderer.material = Tables[0].table;
-                    //  Debug.Log(e.name);
+                    //  ///Debug.Log(e.name);
                 }
 
             });
@@ -1955,12 +1952,8 @@ namespace Diaco.EightBall.Server
             soundeffectcontroll.PlaySound(3);////  play resault sound;
             yield return new WaitForSeconds(3);
             soundeffectcontroll.PlaySound(4);////  play resault sound;
-            Debug.Log("GameResult");
+            ///Debug.Log("GameResult");
         }
-
-
-
-
         private void SetTimePlayerInUI(float playerOneTime, float playerTwoTime)
         {
 
@@ -2028,7 +2021,7 @@ namespace Diaco.EightBall.Server
 
             do
             {
-                /// Debug.Log("MoveInRecordMode");
+                /// ///Debug.Log("MoveInRecordMode");
                 yield return new WaitForSeconds(0.2f);
             }
             while (CheckBallsMove());
@@ -2041,7 +2034,7 @@ namespace Diaco.EightBall.Server
             if (Sibl.Area != 4)
                 soundeffectcontroll.PlaySound(5);///sib sound
             socket.Emit("EndTurn", Sibl.Area);
-            Debug.Log($"<color=blue><b>EndTurn</b>{Sibl.Area}</color>");
+            ///Debug.Log($"<color=blue><b>EndTurn</b>{Sibl.Area}</color>");
         }
         public void ClearSceneInRecordMode()
         {
@@ -2129,7 +2122,7 @@ namespace Diaco.EightBall.Server
                     if (shars[i].IDShar == Sharid[j])
                     {
                         shars[i].GetComponent<Button>().interactable = false;
-                        // Debug.Log("Shar:::"+ shars[i].IDShar);
+                        // ///Debug.Log("Shar:::"+ shars[i].IDShar);
                     }
                 }
 
@@ -2182,35 +2175,35 @@ namespace Diaco.EightBall.Server
                 PlayerCoolDowns[0].fillAmount = t;
 
                 PlayerCoolDowns[1].fillAmount = 1.0f;
-               Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
+               ///Debug.Log(Time+"....."+totaltime+"L_R : , R_S"+t);
             }
             else if (side == Side.Right)
             {
                 PlayerCoolDowns[0].fillAmount = 1.0f;
                 PlayerCoolDowns[1].fillAmount = t;
-                Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
+                ///Debug.Log(Time + "....." + totaltime + "R_R, L_S" +t);
             }
             
             
             Timer = Time / 1000;
 
             // float fill = Time / totaltime;
-            ////  Debug.Log("Time" + Timer);
+            ////  ///Debug.Log("Time" + Timer);
 
             if (side == 0)
             {
                 // PlayerCoolDowns[0].fillAmount = fill;
                 InvokeRepeating("SetLeftCoolDown", 0.0f, 0.01f * UnityEngine.Time.timeScale);
 
-                //Debug.Log("EnableCooldownLeft");
+                /////Debug.Log("EnableCooldownLeft");
             }
             else
             {
                 //  PlayerCoolDowns[0].fillAmount = fill;
                 InvokeRepeating("SetRightCoolDown", 0.0f, 0.01f * UnityEngine.Time.timeScale);
-                /// Debug.Log("EnableCooldownRight");
+                /// ///Debug.Log("EnableCooldownRight");
             }
-            // Debug.Log("CoolDown");
+            // ///Debug.Log("CoolDown");
         }
         private void SetLeftCoolDown()
         {
@@ -2218,7 +2211,7 @@ namespace Diaco.EightBall.Server
             var unit_time = 1.0f / Timer;
             var fill = PlayerCoolDowns[0].fillAmount - unit_time / 100;
             PlayerCoolDowns[0].fillAmount = fill;
-            // Debug.Log("EnableCooldownLeft...");
+            // ///Debug.Log("EnableCooldownLeft...");
             if (PlayerCoolDowns[0].fillAmount < 0.01f)
             {
                 PlayerCoolDowns[0].fillAmount = 1;
@@ -2226,7 +2219,7 @@ namespace Diaco.EightBall.Server
 
                 Turn = false;
                 //Pitok = 0;
-                //   Debug.Log("CancleCooldownLeft...");
+                //   ///Debug.Log("CancleCooldownLeft...");
             }
         }
         private void SetRightCoolDown()
@@ -2235,13 +2228,13 @@ namespace Diaco.EightBall.Server
             var unit_time = 1.0f / Timer;
             var fill = PlayerCoolDowns[1].fillAmount - unit_time / 100;
             PlayerCoolDowns[1].fillAmount = fill;
-            ///  Debug.Log("EnableCooldownRight...");
+            ///  ///Debug.Log("EnableCooldownRight...");
             if (PlayerCoolDowns[1].fillAmount < 0.01f)
             {
                 PlayerCoolDowns[1].fillAmount = 1;
                 CancelInvoke("SetRightCoolDown");
 
-                //   Debug.Log("CancleCooldownLeft...");
+                //   ///Debug.Log("CancleCooldownLeft...");
             }
         }
         private void CancelCoolDownTimer()
@@ -2259,19 +2252,19 @@ namespace Diaco.EightBall.Server
             if (cost == 0)///cup
             {
                 CostTypeIndicator.sprite = Cup_sprite;
-                ///  Debug.Log("Cup");
+                ///  ///Debug.Log("Cup");
             }
             else if (cost == 1)//coin
             {
 
                 CostTypeIndicator.sprite = Coin_sprite;
-                //  Debug.Log("Coin");
+                //  ///Debug.Log("Coin");
             }
 
             else if (cost == 2)//gem
             {
                 CostTypeIndicator.sprite = Gem_sprite;
-                //Debug.Log("Gem");
+                /////Debug.Log("Gem");
             }
 
         }
@@ -2378,7 +2371,7 @@ namespace Diaco.EightBall.Server
                 EightBallEnableLeftShar = true;
                 UI_Biliboard_SharLeft[0].interactable = true;
                 UI_Biliboard_SharLeft[0].image.sprite = EightBall;
-                //  Debug.Log("EightBallEnable");
+                //  ///Debug.Log("EightBallEnable");
             }
 
 
@@ -2400,7 +2393,7 @@ namespace Diaco.EightBall.Server
                 EightBallEnableRightShar = true;
                 UI_Biliboard_SharRight[0].interactable = true;
                 UI_Biliboard_SharRight[0].image.sprite = EightBall;
-                //  Debug.Log("EightBallEnable");
+                //  ///Debug.Log("EightBallEnable");
             }
 
 
@@ -2426,50 +2419,33 @@ namespace Diaco.EightBall.Server
         }
         public void NormalPitok(Vector3 lastpos)
         {
-            // DOVirtual.Float(0, 1, 0.2f, (x) => { }).OnComplete(() =>
-            /// {
+
             Pitok = 1;
             var cueball = AddressBalls[0];
-
             cueball.GetComponent<Collider>().enabled = true;
-            //cueball.gameObject.SetActive(true); 
             var ooo = new Vector3(lastpos.x, lastpos.y, lastpos.z);
-
             cueball.transform.position = ooo;
-
             cueball.transform.DOScale(0.33f, 0.1f);
             cueball.GetComponent<Rigidbody>().isKinematic = false;
             cueball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             cueball.GetComponent<Rigidbody>().WakeUp();
             cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = true;
-           cueball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
-            // Debug.Log("Pitok1" + ooo);
-
-            //  });
-
+            cueball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
         }
         public void Pitok1_3(Vector3 lastpos)
         {
-            // DOVirtual.Float(0, 1, 0.2f, (x) => { }).OnComplete(() =>
-            //  {
-
             Pitok = 2;
             var cueball = AddressBalls[0];
             cueball.GetComponent<Collider>().enabled = true;
-            // cueball.gameObject.SetActive(true);
             var ooo = new Vector3(lastpos.x, lastpos.y, lastpos.z);
             cueball.transform.position = ooo;
-            /// cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().CUEWoodSetPosition(Vector3.zero);
             cueball.transform.DOScale(0.33f, 0.1f);
             cueball.GetComponent<Rigidbody>().isKinematic = false;
             cueball.GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
             cueball.GetComponent<Rigidbody>().WakeUp();
             cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().EnableYFix = true;
-           cueball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
+            cueball.GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
             LimitPitokEffect();
-            //  Debug.Log("Pitok2:1/3" + ooo);
-            //// });
-
         }
         public void LimitPitokEffect()
         {
@@ -2495,17 +2471,17 @@ namespace Diaco.EightBall.Server
 
             Pitok = 0;
             var cueball = AddressBalls[0];
+            if (cueball.transform.localScale.x < 0.33f)
+                cueball.transform.localScale = new Vector3(0.33f, 0.33f, 0.33f);
             cueball.GetComponent<Diaco.EightBall.CueControllers.HitBallController>().LimitedMovePitok = false;
-            ///  Debug.Log("PitokOff");
+            ///  ///Debug.Log("PitokOff");
             //  });
-
         }
         public void ClearPocketedBallList()
         {
             PocketedBallsID.Clear();
         }
         public bool CheckPitok()
-
         {
             bool find = false;
             if (PocketedBallsID.Contains(0))
@@ -2544,12 +2520,12 @@ namespace Diaco.EightBall.Server
                     if (type == (int)PlayerShar)
                     {
                         Allow = true;
-                        //   Debug.Log("Allow");
+                        //   ///Debug.Log("Allow");
                     }
                     else
                     {
                         Allow = false;
-                        //Debug.Log("No Allow");
+                        /////Debug.Log("No Allow");
                     }
 
                 }
@@ -2571,38 +2547,38 @@ namespace Diaco.EightBall.Server
         /* private void GameManager_OnPocket5(int ID)
          {
              PocketedBallsID.Add(ID);
-             //  Debug.Log("Pocket6");
+             //  ///Debug.Log("Pocket6");
          }
 
          private void GameManager_OnPocket4(int ID)
          {
              PocketedBallsID.Add(ID);
-             //   Debug.Log("Pocket5");
+             //   ///Debug.Log("Pocket5");
          }
 
          private void GameManager_OnPocket3(int ID)
          {
              PocketedBallsID.Add(ID);
-             /// Debug.Log("Pocket4");
+             /// ///Debug.Log("Pocket4");
          }
 
          private void GameManager_OnPocket2(int ID)
          {
              PocketedBallsID.Add(ID);
-             ///  Debug.Log("Pocket3");
+             ///  ///Debug.Log("Pocket3");
          }
 
          private void GameManager_OnPocket1(int ID)
          {
              PocketedBallsID.Add(ID);
-             ///  Debug.Log("Pocket2");
+             ///  ///Debug.Log("Pocket2");
          }*/
 
         private void GameManager_OnPocket0(int ID)
         {
             if (!PocketedBallsID.Contains(ID))
                 PocketedBallsID.Add(ID);
-            ///  Debug.Log("Pocket1");
+            ///  ///Debug.Log("Pocket1");
         }
 
         #endregion

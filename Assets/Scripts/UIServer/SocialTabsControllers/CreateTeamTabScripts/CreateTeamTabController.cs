@@ -43,7 +43,7 @@ namespace Diaco.Social
         public int Tickets = 0;
         public List<Toggle> TicketsIndicator;
         public List<string> FriendsAdded;
-        public string BadgeID = "";
+        public string BadgeID = "9";
         private float H;
         private float M;
         private float S;
@@ -99,7 +99,7 @@ namespace Diaco.Social
             TabButton.onClick.RemoveAllListeners();
             InviteFriendButton.onClick.RemoveAllListeners();
             FriendsAdded.Clear();
-            BadgeID = "";
+            BadgeID = "9";
         }
         private void Dialog_CreateTeam_OnClickYes()
         {
@@ -143,7 +143,7 @@ namespace Diaco.Social
                 FriendsAdded.Add(e);
             });
         }
-      
+
         public Diaco.HTTPBody.CreateTeam CreateTeam()
         {
             var Team = new Diaco.HTTPBody.CreateTeam();
@@ -152,8 +152,8 @@ namespace Diaco.Social
             Team.description = Description.text;
             Team.game = Game.CurrentElementContext;
             Team.mode = Mode.CurrentElementContext;
-           
-                Team.typeCost = TypeCost.CurrentElementContext;
+
+            Team.typeCost = TypeCost.CurrentElementContext;
             Team.cost = Cost.CurrentValueDigit;
             Team.capacity = System.Convert.ToInt32(Capacity.ElementContexts[Capacity.CurrentElementContext]);
             Team.hour = Hour.CurrentValueDigit;
