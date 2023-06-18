@@ -43,16 +43,10 @@ namespace Diaco.Social
         public int Tickets = 0;
         public List<Toggle> TicketsIndicator;
         public List<string> FriendsAdded;
-        public string BadgeID = "";
+        public string BadgeID = "9";
         private float H;
         private float M;
         private float S;
-        public void Awake()
-        {
-           
-        }
-
-
 
         public void OnEnable()
         {
@@ -99,37 +93,13 @@ namespace Diaco.Social
             TabButton.onClick.RemoveAllListeners();
             InviteFriendButton.onClick.RemoveAllListeners();
             FriendsAdded.Clear();
-            BadgeID = "";
+            BadgeID = "9";
         }
         private void Dialog_CreateTeam_OnClickYes()
         {
            
         }
-     /*   private void Server_OnCreateTeamCompeleted()
-        {
-           // Tickets = Server.BODY.inventory.tickets;
-            //ShowTickets();
-        }*/
-      /*  private void Server_OnErrorCreateTeam(string error)
-        {
-            if(error == "1")
-            {
-                Dialog_Error_Ticket.ShowDialog();
-            }
-            else if(error == "2")
-            {
-                Dialog_Error_Coin.ShowDialog();
-            }
-            else if (error == "3")
-            {
-                Dialog_Error_Cup.ShowDialog();
-            }
-            else if (error == "4")
-            {
-                Dialog_Error_Gem.ShowDialog();
-            }
 
-        }*/
 
         private void SelectBadgesController_OnChangeBadgeId(string badge)
         {
@@ -143,7 +113,7 @@ namespace Diaco.Social
                 FriendsAdded.Add(e);
             });
         }
-      
+
         public Diaco.HTTPBody.CreateTeam CreateTeam()
         {
             var Team = new Diaco.HTTPBody.CreateTeam();
@@ -152,8 +122,8 @@ namespace Diaco.Social
             Team.description = Description.text;
             Team.game = Game.CurrentElementContext;
             Team.mode = Mode.CurrentElementContext;
-           
-                Team.typeCost = TypeCost.CurrentElementContext;
+
+            Team.typeCost = TypeCost.CurrentElementContext;
             Team.cost = Cost.CurrentValueDigit;
             Team.capacity = System.Convert.ToInt32(Capacity.ElementContexts[Capacity.CurrentElementContext]);
             Team.hour = Hour.CurrentValueDigit;
@@ -185,17 +155,20 @@ namespace Diaco.Social
             if (data.statusLeague == 0)
             {
                 Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.CurrentElementContext = 0;
                 Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ " });
 
             }
             else if (data.statusLeague == 1)
             {
                 Mode.PrimeryData = "ﯽﻣﻮﻤﻋ ";
+                Mode.CurrentElementContext = 1;
                 Mode.FillElementContexts(new List<string> { "ﯽﻣﻮﻤﻋ " });
             }
             else if (data.statusLeague == 2)
             {
                 Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.CurrentElementContext = 0;
                 Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ ", "ﯽﻣﻮﻤﻋ " });
             }
         }

@@ -32,7 +32,7 @@ public class ServerUI : MonoBehaviour
     private bool loadedpage = false;
     private int intergation = 0;
 
-    public float NormalPing = 2.5f;
+    public float NormalPing = 6.0f;
     private float Ping = 0.0f;
     private Diaco.Notification.Notification_Dialog_Manager Notification_Dialog;
     public void Update()
@@ -1637,14 +1637,14 @@ public class ServerUI : MonoBehaviour
         }
         
     }
-    public Sprite ConvertImageToSprite(string image)
+   /* public Sprite ConvertImageToSprite(string image)
     {
 
         var image_byte = Convert.FromBase64String(image);
         Texture2D texture = new Texture2D(512, 512, TextureFormat.ETC2_RGBA8, false);
         texture.LoadImage(image_byte);
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-    }
+    }*/
     #endregion
     #region Events
     private Action createteam;

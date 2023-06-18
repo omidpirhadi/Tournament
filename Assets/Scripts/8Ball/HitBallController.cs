@@ -65,9 +65,6 @@ namespace Diaco.EightBall.CueControllers
         public bool TouchWorkInUI = false;
         private float last_value_cue_energy = 0;
         private float timetouch = 0;
-
-        /// private float temp_PowerCUE;
-        /// private float temp_PowerSpin;
         private Ray ray_line;
         float prevAngle;
         public bool EnableYFix = true;
@@ -76,7 +73,6 @@ namespace Diaco.EightBall.CueControllers
         public float Y_Pos_Refrence;
         public float ThresholdSleep = 0.09f;
         public bool InMove = false;
-        // public bool TEsTaimDir = false;
         public Vector3 LastPosition;
         private Vector3 LastPositionInFrame20;
         public Vector3 LastRotation;
@@ -91,66 +87,39 @@ namespace Diaco.EightBall.CueControllers
         {
             generalSetting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
             generalSetting.OnChangeSetting += TempPlayerControll_OnChangeSetting;
-            // testSetting = FindObjectOfType<BillardTestSetting>();
-
-            // testSetting.OnChangeSetting += TestSetting_OnChangeSetting;
-
             AimLine = GetComponent<CustomLineRenderer2>();
             rigidbody = GetComponent<Rigidbody>();
-
             Server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
-
             Server.OnTurn += HitBallController_OnTurn;
-  
             EnergyCue.OnChangeEnergy += HitBallController_OnChangeEnergy;
             EnergyCue.OnEnergyTouchEnd += HitBallController_OnEnergyTouchEnd;
             EnergyCue.OnBeginChangeEnergy += EnergyCue_OnBeginChangeEnergy;
             AimControllerUI.OnChangeValueAimControll += AimControllerUI_OnChangeValueAimControll;
-
             CueSpin.OnChangeValueSpin += HitBallController_OnChangeValueSpin;
-
             UI.OnUIActive += UI_OnUIActive;
-
-           /// SetYPositionRefrence();
             SetSensivityRotate();
-
             LastPosition = this.transform.position;
             LastPositionInFrame20 = LastPosition;
             LastRotation = this.transform.eulerAngles;
         }
-
-       /* private void TestSetting_OnChangeSetting(float arg1, float arg2, float arg3, float arg4, float arg5, float arg6, float arg7,float arg8)
-        {
-            SetSetting(arg1, arg2, arg3, arg4, arg5, arg6, arg7,arg8);
-            Debug.Log("ChengeAccept");
-        }
-        */
         void LateUpdate()
         {
             RadiusGhostBall = (GetComponent<SphereCollider>().radius * transform.localScale.x) * RadiusGhostBallScaleFactor;
-          /*  if (EnableYFix)
-                FixOverflowMovment();*/
         }
         public void FixedUpdate()
         {
-
             VlocityBall = rigidbody.velocity;
             GetSpeed = VlocityBall.magnitude;
             if (SyncAimWithServeTurn)
             {
                 if (OnlyCheckMove() == true || DragIsBusy)
                 {
-
-
-                    ActiveAimSystem111(false);
+                    ActiveAimSystem(false);
                     ///  Debug.Log("Move1111");
-
                 }
                 else if (!DragIsBusy)
                 {
-
-                    ActiveAimSystem111(true);
-
+                    ActiveAimSystem(true);
                     ///Debug.Log("Stop111" );
                 }
             }
@@ -160,39 +129,26 @@ namespace Diaco.EightBall.CueControllers
                 CueBallMoveInPitokTouchController();
             else
                 CueRotate();
-            //CueBallMoveInPitoke = false;
-
-
-            
-
             LastPosition = this.transform.position;
             LastRotation = this.transform.eulerAngles;
-
             if (frame >= 20 && GetSpeed < 0.1f)
             {
                 LastPositionInFrame20 = LastPosition;
                 CheckMoveWithDistanceFromLastPosition();
                 frame = 0;
-
             }
-
             frame++;
         }
         private void OnCollisionEnter(Collision collision)
         {
-
             if (collision.collider.tag == "ball" && count_imapct == 0)
             {
-
                 Server.FirstBallImpact = collision.collider.GetComponent<AddressBall>().IDPost;
                 count_imapct++;
-
             }
             if (collision.collider.tag == "wall")
                 BounceBall(collision);
-
         }
-
         private void OnDrawGizmos()
         {
            /// Gizmos.color = Color.blue;
@@ -232,26 +188,20 @@ namespace Diaco.EightBall.CueControllers
             }
         }
 
-
-
         private void HitBallController_OnChangeValueSpin(Vector2 pos)
         {
             PosCueSpin = pos;
             //  TouchWorkInUI = false;
         }
-
-
         public void HitBallController_OnTurn(bool turn)
         {
             SyncAimWithServeTurn = true;
             if (turn)
             {
                 // ActiveAimSystem111(true);
-
                 if (Server.Pitok > 0)
                 {
                     CheckPitok();
-
                 }
                 EnergyCue.Show(true);
                 AimControllerUI.Show(true);
@@ -260,7 +210,6 @@ namespace Diaco.EightBall.CueControllers
                     Handheld.Vibrate();
                 last_value_cue_energy = 0;
                 count_imapct = 0;
-
             }
             else if (turn == false)
             {
@@ -269,18 +218,13 @@ namespace Diaco.EightBall.CueControllers
                 AimControllerUI.Show(false);
                 HandIcon.enabled = false;
                 CancelAnimationHand();
-
                 if (LargeCueBall.enabled)
                     LargeCueBall.enabled = false;
-
-
                 Handler_OnHitBall(-1, Vector3.zero);
             }
             TouchWorkInUI = false;
             // resetpos();
-
         }
-
         private void EnergyCue_OnBeginChangeEnergy()
         {
             TouchWorkInUI = true;
@@ -294,7 +238,6 @@ namespace Diaco.EightBall.CueControllers
                 int navigaion = 0;
                 if (x > last_value_cue_energy)
                 {
-
                     //   Debug.Log("big");
                     last_value_cue_energy = x;
                     navigaion = -1;
@@ -305,11 +248,8 @@ namespace Diaco.EightBall.CueControllers
                     last_value_cue_energy = x;
                     navigaion = 1;
                 }
-
-
                 CueRendererMove(navigaion, unit, 0.5f);
                 //InvokeRepeating("CheckballMove", 0, gamemanager.SendRate.value); 
-
             }
         }
         private void force(float step)
@@ -327,10 +267,7 @@ namespace Diaco.EightBall.CueControllers
                 {
                     ForceToBall(PowerCUE * t_step, PowerSpin);
                 }
-
-
                 soundeffectControll.PlaySound(0);
-
                 Server.Turn = false;
                 LimitedMovePitok = false;
                 Handler_OnHitBall(-1, Vector3.zero);
@@ -358,16 +295,13 @@ namespace Diaco.EightBall.CueControllers
             CUEWood.transform.Rotate(0f, value, 0f);
             Server.Emit_AimCueBall(new Diaco.EightBall.Structs.AimData { X_position = CUEWood.transform.position.x, Z_position = CUEWood.transform.position.z, YY_rotation = CUEWood.transform.eulerAngles.y, PosCueBall = this.transform.position });
         }
-    
         private void TouchOrderControll()
         {
             if (Input.touchCount > 0 && Server.Turn && TouchWorkInUI == false)
             {
-
                 Touch touch = Input.GetTouch(0);
                 var ray = Camera.main.ScreenPointToRay(touch.position);
                 RaycastHit hit_touch;
-
                 if (Physics.Raycast(ray, out hit_touch, 10, mask_for_move_Aim))
                 {
                     var hitpos = new Vector3(hit_touch.point.x, 00, hit_touch.point.z);
@@ -378,11 +312,9 @@ namespace Diaco.EightBall.CueControllers
                         CueBallMoveInPitoke = true;
                     }
                    
-
                 }
             }
         }
-
         private void CueBallMoveInPitokTouchController()
         {
             if (Server.Pitok > 0 && Server.Turn)
@@ -392,7 +324,6 @@ namespace Diaco.EightBall.CueControllers
                     var touch = Input.GetTouch(0);
                     if (touch.phase == TouchPhase.Began)
                     {
-
                         DragIsBusy = true;
                         LargeCueBall.transform.position = new Vector3(this.transform.position.x, 0.64f, this.transform.position.z);
                         LargeCueBall.enabled = true;
@@ -400,11 +331,10 @@ namespace Diaco.EightBall.CueControllers
                         rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
                         rigidbody.isKinematic = true;
                         GetComponent<ShodowFake>().shadow.gameObject.SetActive(false);
-                       // ActiveAimSystem(false);
+                        // ActiveAimSystem(false);
                         CancelAnimationHand();
                         Handler_FreazeBall(true);
                         Handler_OnHitBall(-1, Vector3.zero);
-
                     }
                     else if (touch.phase == TouchPhase.Moved)
                     {
@@ -418,18 +348,16 @@ namespace Diaco.EightBall.CueControllers
                         rigidbody.isKinematic = false;
                         rigidbody.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
                         DragIsBusy = false;
-                     //   ActiveAimSystem(true);
+                        //   ActiveAimSystem(true);
                         Handler_FreazeBall(false);
                         CancelAnimationHand();
                         GetComponent<ShodowFake>().shadow.gameObject.SetActive(true);
                         Server.Emit_PositionCueBallInPitoks(new Structs.CueBallData { position = this.transform.position, isDrag = DragIsBusy });
                         Debug.Log("CueBallMOve" + CueBallMoveInPitoke);
-
                     }
                 }
             }
         }
-
         private void DragCueBallInPitokWithTouch(Touch touch)
         {
 
@@ -596,27 +524,6 @@ namespace Diaco.EightBall.CueControllers
             }
             prevAngle = curAngle;
         }
-        /* public void initialze()
-         {
-             // temp_PowerCUE = PowerCUE;
-             // temp_PowerSpin = PowerSpin;
-             rigidbody = GetComponent<Rigidbody>();
-             lineRenderer = GetComponent<LineRenderer>();
-
-             Server = FindObjectOfType<Diaco.EightBall.Server.BilliardServer>();
-             Server.OnTurn += HitBallController_OnTurn;
-             //  Server.OnPitok += Gamemanager_OnPitok;
-             // rigidbody.constraints = RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-             FindObjectOfType<EnergyCUEController>().OnChangeEnergy += HitBallController_OnChangeEnergy;
-             FindObjectOfType<EnergyCUEController>().OnEnergyTouchEnd += HitBallController_OnEnergyTouchEnd;
-             FindObjectOfType<CueSpinController>().OnChangeValueSpin += HitBallController_OnChangeValueSpin;
-            if (Server.Turn)
-                 ActiveAimSystem(true);
-             else
-                 ActiveAimSystem(false);
-             //SetYPositionRefrence();
-
-         }*/
         private void CheckPitok()
         {
             if (Server.Pitok == 1)
@@ -640,23 +547,16 @@ namespace Diaco.EightBall.CueControllers
             }
             else if( Server.Pitok == 0)
             {
-
             }
         }
-
-
-        //public Vector3 AtPosition;
         private void ForceToBall(float powcue, float powspin)
         {
             rigidbody.maxAngularVelocity = maxanguler;
             var dir = (transform.position - CueRenderer.position).normalized;
-
-           var AtPosition = new Vector3(
-                (transform.localPosition.x + ((PosCueSpin.x / powspin) * RadiusGhostBall) * dir.z),
-                (transform.localPosition.y + ((PosCueSpin.y / powspin) * RadiusGhostBall)),
-                (transform.localPosition.z + ((PosCueSpin.x / powspin) * RadiusGhostBall) * -dir.x));
-
-            // Debug.Log($"AtPosition:{AtPosition}Dir:{dir}");
+            var AtPosition = new Vector3(
+                 (transform.localPosition.x + ((PosCueSpin.x / powspin) * RadiusGhostBall) * dir.z),
+                 (transform.localPosition.y + ((PosCueSpin.y / powspin) * RadiusGhostBall)),
+                 (transform.localPosition.z + ((PosCueSpin.x / powspin) * RadiusGhostBall) * -dir.x));
             var dir2 = (GhostBall.transform.position - transform.position).normalized;
             dir2.y = 0;
             rigidbody.AddForceAtPosition(dir2 * powcue, AtPosition, Forcemode);
@@ -671,33 +571,25 @@ namespace Diaco.EightBall.CueControllers
                 StartCoroutine(Server.CheckMovementAndSendDataInRecordMode());
             }
         }
-
         float ShortestDistance(float curAngle, float prevAngle)
         {
             float distance = curAngle - prevAngle;
-
             if (distance > 180f)
             {
                 distance -= 360f;
-                //Debug.Log(distance);
             }
             else if (distance < -180f)
             {
                 distance += 360f;
-                //Debug.Log(distance);
             }
-
             return distance;
         }
-
         float Angle(Vector2 toVector2, Vector2 fromVector2)
         {
             float ang = Vector2.Angle(fromVector2, toVector2);
             Vector3 cross = Vector3.Cross(fromVector2, toVector2);
-
             if (cross.z > 0)
                 ang = 360 - ang;
-
             return ang;
         }
         public void CueRendererMove(int navigation, float unitmove, float sensiviti)
@@ -705,34 +597,21 @@ namespace Diaco.EightBall.CueControllers
             var dir = transform.position - CueRenderer.transform.position;
             var dir_n = dir.normalized;
             var u = unitmove * sensiviti;
-           // Debug.Log((navigation * dir_n) * u);
             CueRenderer.Translate((navigation * dir_n) * u, Space.World);
-
         }
-
         public void LookAtFinger(Vector3 mousepos)
         {
-
             var center = Camera.main.WorldToScreenPoint(transform.position);
-
             var dir = (mousepos - center);
-
             var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            //var angle = Mathf.Atan2(y, x) * Mathf.Rad2Deg;
             Quaternion q = Quaternion.AngleAxis(-angle, Vector3.up);
-            // CUEWood.transform.position = Camera.main.ScreenToWorldPoint(center) + q * OffsetPositionCueWoodFromCueBall;
             CUEWood.transform.rotation = q;
-
-
-
         }
-
         public void SetCueWoodPositionAndRotationFromServer(Diaco.EightBall.Structs.AimData aimdata)
         {
             CUEWood.transform.position = new Vector3(aimdata.X_position, CUEWood.transform.position.y, aimdata.Z_position);
             CUEWood.transform.eulerAngles = new Vector3(CUEWood.transform.rotation.x, aimdata.YY_rotation, CUEWood.transform.rotation.z);
         }
-
         public void AimSystem()
         {
             if (AimSystemShow)
@@ -927,76 +806,15 @@ namespace Diaco.EightBall.CueControllers
             }
 
         } 
-       /* [Obsolete]
         public void ActiveAimSystem(bool show)
         {
-           
-           /* 
-      
-            if (show == false)
-            {
-                AimSystemShow = show;
-                CUEWood.SetActive(show);
-                GhostBall.SetActive(show) ;
-                EnergyCue.Show(show);
-                AimControllerUI.Show(show);
-                HandIcon.enabled = show;
-                CancelAnimationHand();
-
-
-                lineRenderer.SetPosition(0, Vector3.zero);
-                lineRenderer.SetPosition(1, Vector3.zero);
-                last_value_cue_energy = 0;
-                Debug.Log("DisableAim");
-            }
-            else if (show == true)
-            {
-
-                if (Server.Turn && CheckBallMove() ==  false)
-                {
-                     
-                    AimSystemShow = show;
-                    CUEWood.SetActive(show);
-                    GhostBall.SetActive(show);
-                    EnergyCue.Show(show);
-                    AimControllerUI.Show(show);
-                    if (Server.Pitok > 0)
-                    {
-                        CheckPitok();
-
-                    }
-                    waitForAim = false;
-                   resetpos();
-                    Debug.Log("ActiveAim");
-
-                }
-                else
-                {
-                    waitForAim = true;
-                    Debug.Log("WaitActiveAim");
-                }
-                last_value_cue_energy = 0;
-                 Handler_OnHitBall(-1, Vector3.zero);
-
-            }
-        }*/
-        public void ActiveAimSystem111(bool show)
-        {
-
-
-
             if (show == false)
             {
                 if (AimSystemShow == true)
-                {
-                    
+                {                    
                     AimSystemShow = show;
                     CUEWood.SetActive(show);
                     GhostBall.SetActive(show);
-
-
-                    //**** lineRenderer.SetPosition(0, Vector3.zero);
-                    //*** lineRenderer.SetPosition(1, Vector3.zero);
                     AimLine.enabled = (show);
                   //  Debug.Log("AimDisable"+DragIsBusy);
                 }
@@ -1016,120 +834,19 @@ namespace Diaco.EightBall.CueControllers
             }
 
         }
-       /* [Obsolete]
-        public void ActiveAimSystemForShowInOtherClient(bool show)
-        {
-           
-          /*
-            if (show == true)
-            {
-                if (AimSystemShow == false)
-                {
-                    if (!Server.Turn && CheckBallMove() == false)
-                    {
-
-                        AimSystemShow = show;
-                        CUEWood.SetActive(show);
-                        GhostBall.SetActive(show);
-                        //HandIcon.enabled = show;
-                        last_value_cue_energy = 0;
-                        Debug.Log("ActiveAimXXX2");
-                        waitForAim2 = false;
-                        resetpos();
-                    }
-                    else
-                    {
-                        waitForAim2 = true;
-                        Debug.Log("WaitActivexxxAim");
-                    }
-                }
-               // Debug.Log("ActiveAimXXX44");
-            }
-            else if (show == false)
-            {
-                if (AimSystemShow == true)
-                {
-                    AimSystemShow = show;
-                    CUEWood.SetActive(show);
-                    GhostBall.SetActive(show);
-                    // HandIcon.enabled = show;
-
-
-                    lineRenderer.SetPosition(0, Vector3.zero);
-                    lineRenderer.SetPosition(1, Vector3.zero);
-                    Handler_OnHitBall(-1, Vector3.zero);
-                    Debug.Log("DisableAimXXx");
-                }
-            }
-            
-        }*/
-       /* public void SetYPositionRefrence()
-        {
-            DOVirtual.Float(0, 1, 2.0f, (x) => { }).OnComplete(() =>
-            {
-
-            }).OnComplete(() => {
-                //rigidbody.constraints = RigidbodyConstraints.FreezePositionY;
-                Y_Pos_Refrence = transform.position.y;
-            });
-        }
-        private  void FixOverflowMovment()
-        {
-            if (Y_Pos_Refrence > 0.0f)
-            {
-                var conflict_Y = Mathf.Abs(transform.position.y - Y_Pos_Refrence);
-                if (conflict_Y > 0.1f)
-                {
-
-                    transform.position = new Vector3(transform.position.x, Y_Pos_Refrence, transform.position.z);
-
-                   // Debug.Log("Fix Y Ball");
-                }
-             
-            }
-            if (CheckBallMove() == true  && InMove == false)
-            {
-                DOVirtual.Float(0, 1, 1.0f, (x) => { }).OnComplete(() =>
-                {
-
-                }).OnComplete(() =>
-                {
-                   
-                    InMove = true;
-                });
-            }
-            if (VlocityBall.magnitude < ThresholdSleep && VlocityBall.magnitude > 0.001f && InMove == true)
-            {
-
-                rigidbody.velocity = Vector3.zero;
-                rigidbody.angularVelocity = Vector3.zero;
-                InMove = false;
-            //    Debug.Log("Fix Move Ball");
-                
-            }
-        }*/
-        
         public void CueBallMoveFromServer(Diaco.EightBall.Structs.CueBallData data, float speed)
         {
-
             transform.DOMove(data.position, speed).OnComplete(() => { DragIsBusy = data.isDrag; });
-           // Debug.Log("XDrag"+DragIsBusy);
             Handler_OnHitBall(-1, Vector3.zero);
-
         }
       
         public void resetpos()
         {
-
             CUEWood.transform.position = this.transform.position;
             CueRenderer.localPosition = new Vector3(-8.5f, 1.0f, 0.0f);
-            ///GhostBall.transform.position = this.transform.position;
-           // HandIcon.transform.position = new Vector3(this.transform.position.x + 0.37f, 0.64f, this.transform.position.z);
-           // Debug.Log("ReSETpOSS"); 
         }
         private void HandIconShow(float alpha)
         {
-            
                 HandIcon.DOColor(new Color(1, 1, 1, alpha), 1f);
         }
         private void HandAnimationOnPitok()
@@ -1202,69 +919,12 @@ namespace Diaco.EightBall.CueControllers
             rigidbody.Sleep();
             //  Debug.Log("Stoped");
         }
-
-        /*  private bool CheckBallMove()
-          {
-              var move = false;
-              if (rigidbody.velocity.magnitude > ThresholdSleep || rigidbody.angularVelocity.magnitude > ThresholdSleep)
-              {
-
-                  move = true;
-              }
-
-              return move;
-          }
-
-          private bool EqeulPosition(Vector3 a, Vector3 b)
-          {
-              bool eqeul = false;
-              var x = a.x - b.x;
-              var z = a.z - b.z;
-              if (x == 0.0f && z == 0.0f)
-              {
-                  eqeul = true;
-              }
-            //  LastPosition = this.transform.position;
-              return eqeul;
-
-          }
-          private bool EqeulRotation(Vector3 a, Vector3 b)
-          {
-              bool eqeul = false;
-              var x = a.x - b.x;
-              var y = a.y - b.y;
-              var z = a.z - b.z;
-              if (x == 0.0f && y == 0.0f && z == 0.0f)
-              {
-                  eqeul = true;
-              }
-             //// LastRotation = this.transform.eulerAngles;
-              return eqeul;
-          }
-          public bool CheckMoveBall()
-          {
-              var move = false;
-              var domove = EqeulPosition(transform.position, LastPosition);
-              var dorotate = EqeulRotation(transform.eulerAngles, LastPosition);
-
-              if (domove == false && dorotate == false)
-              {
-
-                  move = true;
-              }
-
-              return move;
-          }*/
         private void BounceBall(Collision collision)
         {
-
-
-
             var normal = collision.contacts[0].normal;
             var reflect2 = Vector3.Reflect(VlocityBall.normalized, normal).normalized;
             rigidbody.velocity = (reflect2 * collision.relativeVelocity.magnitude) * PowerBounceOnWall;
            // Debug.Log("wall");
-
         }
 
         /// <summary>
@@ -1276,18 +936,6 @@ namespace Diaco.EightBall.CueControllers
             TouchWorkInUI = active;
         }
 
-
-       /* private void SetSetting(float pow, float Drag, float AngularDrag,float MaxAngularDrag, float SpeedThershold,float sensivityrotate ,  float powbounce, float spin)
-        {
-            this.maxanguler = MaxAngularDrag;
-            this.PowerCUE = pow;
-            rigidbody.drag = Drag;
-            rigidbody.angularDrag = AngularDrag;
-            this.ThresholdSleep = SpeedThershold;
-            this.SensitivityRotate = sensivityrotate;
-            this.PowerBounceOnWall = powbounce;
-            this.PowerSpin = spin;
-        }*/
         #region Events
 
         public event Action<int , Vector3> OnHitBall;
