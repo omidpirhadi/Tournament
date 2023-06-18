@@ -47,12 +47,6 @@ namespace Diaco.Social
         private float H;
         private float M;
         private float S;
-        public void Awake()
-        {
-           
-        }
-
-
 
         public void OnEnable()
         {
@@ -105,31 +99,7 @@ namespace Diaco.Social
         {
            
         }
-     /*   private void Server_OnCreateTeamCompeleted()
-        {
-           // Tickets = Server.BODY.inventory.tickets;
-            //ShowTickets();
-        }*/
-      /*  private void Server_OnErrorCreateTeam(string error)
-        {
-            if(error == "1")
-            {
-                Dialog_Error_Ticket.ShowDialog();
-            }
-            else if(error == "2")
-            {
-                Dialog_Error_Coin.ShowDialog();
-            }
-            else if (error == "3")
-            {
-                Dialog_Error_Cup.ShowDialog();
-            }
-            else if (error == "4")
-            {
-                Dialog_Error_Gem.ShowDialog();
-            }
 
-        }*/
 
         private void SelectBadgesController_OnChangeBadgeId(string badge)
         {
@@ -185,17 +155,20 @@ namespace Diaco.Social
             if (data.statusLeague == 0)
             {
                 Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.CurrentElementContext = 0;
                 Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ " });
 
             }
             else if (data.statusLeague == 1)
             {
                 Mode.PrimeryData = "ﯽﻣﻮﻤﻋ ";
+                Mode.CurrentElementContext = 1;
                 Mode.FillElementContexts(new List<string> { "ﯽﻣﻮﻤﻋ " });
             }
             else if (data.statusLeague == 2)
             {
                 Mode.PrimeryData = "ﻪﻧﺎﺘﺳﻭﺩ ";
+                Mode.CurrentElementContext = 0;
                 Mode.FillElementContexts(new List<string> { "ﻪﻧﺎﺘﺳﻭﺩ ", "ﯽﻣﻮﻤﻋ " });
             }
         }

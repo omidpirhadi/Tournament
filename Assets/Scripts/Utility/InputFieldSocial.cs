@@ -25,6 +25,7 @@ namespace Diaco.Social.TeamsInputField
         private void OnEnable()
         {
             FieldOfViwe.text = PrimeryData;
+            
             btn_Next.onClick.AddListener(() => { Next(); });
             btn_Previous.onClick.AddListener(() => { Previous(); });
         }
