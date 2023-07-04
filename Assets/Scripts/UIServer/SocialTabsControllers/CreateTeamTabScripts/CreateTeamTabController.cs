@@ -147,7 +147,16 @@ namespace Diaco.Social
         }
         public void Rules(RulesData data)
         {
-            
+            if(data.capacity2 == true)
+            {
+                Capacity.PrimeryData = "2";
+                Capacity.ElementContexts = new List<string>(4) { "2", "4", "8", "16" };
+            }
+            else
+            {
+                Capacity.PrimeryData = "4";
+                Capacity.ElementContexts = new List<string>(4) {  "4", "8", "16" };
+            }
             soccerLeaguePrecent_text.text = data.soccerAward;
             billiardLeaguePrecent_text.text = data.billiardAward;
             CalculateTime(Convert.ToInt32(data.remainingTime));
@@ -309,6 +318,6 @@ namespace Diaco.Social
         public string billiardAward;
         public string remainingTime;
         public int statusLeague;///statusLeague =>  0 = firndly 1 = General 2 = mix
-
+        public bool capacity2;
     }
 }
