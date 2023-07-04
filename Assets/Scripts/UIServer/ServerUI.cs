@@ -143,11 +143,11 @@ public class ServerUI : MonoBehaviour
 
             
 
-            if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
+          /*  if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
             {
                 var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
                 Emit_Transaction(dt);
-            }
+            }*/
             BODY.inventory.tickets = new System.Collections.Generic.List<TicketData>();
             var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
 
@@ -603,11 +603,11 @@ public class ServerUI : MonoBehaviour
         {
             var product_id = m[0].ToString();
             var payload = m[1].ToString();
-            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
+           // Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
         });
         socket.On("log-transaction-bazzar-delete", (s, p, m) =>
         {
-            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DeleteTransaction("translog");
+         //   Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DeleteTransaction("translog");
         });
         socket.On("shop-soccer-plan", (s, p, m) =>
         {
