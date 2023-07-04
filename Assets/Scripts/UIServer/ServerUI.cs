@@ -727,7 +727,7 @@ public class ServerUI : MonoBehaviour
             else
             {
                 var tournumentdata = JsonUtility.FromJson<Diaco.UI.PopupTournumentRanking.TournomentData>(m[1].ToString());
-                if (tournumentdata.capacity == 4)
+                if (tournumentdata.capacity == 4 || tournumentdata.capacity == 2)
                 {
                     navigationUi.ShowPopUp("4playermatch");
                 }
