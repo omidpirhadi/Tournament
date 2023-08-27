@@ -47,6 +47,7 @@ public class ServerUI : MonoBehaviour
     #region Server_ON
     public void ConnectToUIServer()
     {
+        Debug.Log("----------------------------------------------------------0");
         Luncher = FindObjectOfType<GameLuncher>();
         var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
@@ -69,7 +70,7 @@ public class ServerUI : MonoBehaviour
         options.AutoConnect = true;
         socketmanager = new SocketManager(new Uri(URL), options);
         socket = socketmanager.Socket;
-
+        Debug.Log("----------------------------------------------------------1");
         socket.On("connect", (s, p, m) =>
         {
 
