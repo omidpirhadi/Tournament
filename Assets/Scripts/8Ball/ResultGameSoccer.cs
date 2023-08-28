@@ -90,7 +90,8 @@ public class ResultGameSoccer : MonoBehaviour
     }
     private void Server_OnGameResult(Diaco.EightBall.Structs.ResultGame result, bool playaginactive)
     {
-
+      //  Debug.Log(result.costType + "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXDIACOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+        SetCostType(result.costType);
         CloseGameButton.interactable = true;
         if (playaginactive)
             RematchButton.interactable = true;
@@ -183,6 +184,7 @@ public class ResultGameSoccer : MonoBehaviour
         {
             PlayerLeftCostType.sprite = Gem;
             PlayerRightCostType.sprite = Gem;
+           // Debug.Log("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXDIACOXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         }
     }
     public void SetResultPageElements(bool Winner, Sprite leftavatar, Sprite rightavatar, string leftusername, int leftgoal, string leftCup, string leftcoin, string leftXP, string rightusername, int rightgoal, string rightCup, string rightcoin, string rightXP, string rank)

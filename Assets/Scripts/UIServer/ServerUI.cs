@@ -13,7 +13,7 @@ public class ServerUI : MonoBehaviour
     /// SERVER IP LOCAL = "http://192.168.1.100:8420/socket.io/"
     /// SERVER IP GOLBAL = "http://37.152.185.15:8420/socket.io/"
     /// </summary>
-   /// public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
+    /// public string UIServerURL = "http://192.168.1.109:8420/socket.io/";
 
     public Diaco.ImageContainerTool.ImageContainer AvatarContainer, LeagueFlagsContainer, ImageGameType, ImageTypeCosts;
     public GameObject MainMenu, Footer, Header, Login, SplashScreen, LoginError, ExitApp;
@@ -25,9 +25,9 @@ public class ServerUI : MonoBehaviour
     public Socket socket;
     public SocketManager socketmanager;
     public GameLuncher Luncher;
-  //  public Diaco.Notification.NotificationPopUp NotificationPopUp;
+    //  public Diaco.Notification.NotificationPopUp NotificationPopUp;
     public NavigationUI navigationUi;
-    public  Diaco.UI.UIRegisterOnServer UIInFooterAndHeader;
+    public Diaco.UI.UIRegisterOnServer UIInFooterAndHeader;
 
     private bool loadedpage = false;
     private int intergation = 0;
@@ -38,7 +38,7 @@ public class ServerUI : MonoBehaviour
     public void Update()
     {
 
-        if(Input.GetKey(KeyCode.Escape) &&  navigationUi.CurrentPage == "selectgame")
+        if (Input.GetKey(KeyCode.Escape) && navigationUi.CurrentPage == "selectgame")
         {
             ExitApp.SetActive(true);
         }
@@ -47,12 +47,7 @@ public class ServerUI : MonoBehaviour
     #region Server_ON
     public void ConnectToUIServer()
     {
-        if (socket != null)
-        {
-            socket.Disconnect();
-            Debug.Log("older socket disconnected.");
-        }
-
+        Debug.Log("----------------------------------------------------------0");
         Luncher = FindObjectOfType<GameLuncher>();
         var setting = FindObjectOfType<Diaco.Setting.GeneralSetting>();
         Notification_Dialog = FindObjectOfType<Diaco.Notification.Notification_Dialog_Manager>();
@@ -64,19 +59,18 @@ public class ServerUI : MonoBehaviour
         Notification_Dialog.server = this;
         Notification_Dialog.init_Notification_menu();
 
-        
+
         PushNotification.server = this;
         PushNotification.InstantiateEvent();
 
-       
+
         navigationUi.OnChangePage += ServerUI_OnChangePage;
 
         SocketOptions options = new SocketOptions();
         options.AutoConnect = true;
         socketmanager = new SocketManager(new Uri(URL), options);
         socket = socketmanager.Socket;
-
-        
+        Debug.Log("----------------------------------------------------------1");
         socket.On("connect", (s, p, m) =>
         {
 
@@ -95,10 +89,10 @@ public class ServerUI : MonoBehaviour
 
             Ping = Time.realtimeSinceStartup - Ping;
             if (Ping > NormalPing)
-                Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context ="اتصال اینترنت شما ضعیف است." }, true);
+                Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = "اتصال اینترنت شما ضعیف است." }, true);
             else
                 Notification_Dialog.InternetPingDialog(new Diaco.Notification.Notification_Dialog_Body { alartType = 3, context = Ping.ToString() }, false);
-          //  Debug.Log("Ping is :" + Ping);
+            //  Debug.Log("Ping is :" + Ping);
         });
         socket.On("reconnect", (s, p, m) => {
             Ping = 0;
@@ -108,7 +102,7 @@ public class ServerUI : MonoBehaviour
             Debug.Log("reconnect");
 
         });
-       // socket.On("reconnecting", (s, p, m) => { Debug.Log("reconnecting"); });
+        // socket.On("reconnecting", (s, p, m) => { Debug.Log("reconnecting"); });
         socket.On("wrong-token", (s, p, m) =>
         {
             Login.SetActive(true);
@@ -116,7 +110,7 @@ public class ServerUI : MonoBehaviour
             SplashScreen.SetActive(false);
             /*DeleteToken("token");
             StartCoroutine(Luncher.RestartGame());*/
-            CloseConnectionUIToServer(); 
+            CloseConnectionUIToServer();
 
             Debug.Log($"<color=red><b>Wrong Token</b></color>");
         });
@@ -148,13 +142,13 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-            
 
-            if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
-            {
-                var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
-                Emit_Transaction(dt);
-            }
+
+            /*  if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
+              {
+                  var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
+                  Emit_Transaction(dt);
+              }*/
             BODY.inventory.tickets = new System.Collections.Generic.List<TicketData>();
             var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
 
@@ -221,7 +215,7 @@ public class ServerUI : MonoBehaviour
                 Header.SetActive(true);
                 loadedpage = true;
             }
-          
+
 
             UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
             SetElementInHeaderAndFooter();
@@ -231,7 +225,7 @@ public class ServerUI : MonoBehaviour
 
             Handler_OnGameBodyUpdate();
             navigationUi.StopLoadingPage();
-              Debug.Log("main-menu called");
+            Debug.Log("main-menu called");
         });
 
         socket.On("search-friend", (s, p, m) =>
@@ -320,7 +314,7 @@ public class ServerUI : MonoBehaviour
 
                 Handler_OnOpponentFind(opponent.userName, opponent.avatar);
             }
-            
+
         });
         socket.On("join-game", (s, p, m) =>
         {
@@ -337,8 +331,8 @@ public class ServerUI : MonoBehaviour
                 Debug.Log("JoinGame");
             }
         });
-       
-        
+
+
         socket.On("update-league", (s, p, m) =>
         {
 
@@ -537,7 +531,7 @@ public class ServerUI : MonoBehaviour
         });
         ////////
         //// ربطی  ب من ننداره فرشاد زده
-       socket.On("update-event", (s, p, m) =>
+        socket.On("update-event", (s, p, m) =>
         {
             socket.Emit(m[0].ToString());
         });
@@ -610,11 +604,11 @@ public class ServerUI : MonoBehaviour
         {
             var product_id = m[0].ToString();
             var payload = m[1].ToString();
-            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
+            // Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DoTransaction(product_id, payload);
         });
         socket.On("log-transaction-bazzar-delete", (s, p, m) =>
         {
-            Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DeleteTransaction("translog");
+            //   Diaco.Store.CafeBazzar.CafeBazzarStore.instance.DeleteTransaction("translog");
         });
         socket.On("shop-soccer-plan", (s, p, m) =>
         {
@@ -957,7 +951,7 @@ public class ServerUI : MonoBehaviour
             {
                 //FindObjectOfType<Diaco.Notification.PushNotification>().InstantiateEvent();
                 var data = JsonUtility.FromJson<Diaco.Notification.PushNotifcationsData>(m[1].ToString());
-                
+
                 Handler_OnPushNotification(data);
                 Debug.Log("Notifi" + m[1].ToString());
             }
@@ -1028,7 +1022,7 @@ public class ServerUI : MonoBehaviour
 
             navigationUi.CloseAllPopUp();
             Debug.Log("CloseAllPopup");
-            
+
         });
         socket.On("after_DC_result", (s, p, m) =>
         {
@@ -1044,7 +1038,7 @@ public class ServerUI : MonoBehaviour
             {
                 navigationUi.ShowPopUp("resultDC");
                 var data = JsonUtility.FromJson<Diaco.UI.PopupResualtAfterDC.ResultAfterDCData>(m[1].ToString());
-                var popup = FindObjectOfType< Diaco.UI.PopupResualtAfterDC.ResultAfterDC>();
+                var popup = FindObjectOfType<Diaco.UI.PopupResualtAfterDC.ResultAfterDC>();
                 popup.Set(data);
                 Debug.Log("<color=green Load Award League Popup : </color>");
 
@@ -1065,10 +1059,18 @@ public class ServerUI : MonoBehaviour
             //pop.SetHint(m[0].ToString());
             Debug.Log("Hint Opned");
         });
+        socket.On("open-hint-static", (s, p, m) => {
+            navigationUi.ShowPopUpOnPopup("hintstatic");
+
+            var pop = FindObjectOfType<PopupHintStatic>();
+            pop.Init_Hint(Convert.ToInt32(m[0].ToString()), m[1].ToString(), m[2].ToString(), m[3].ToString());
+            //pop.SetHint(m[0].ToString());
+            Debug.Log("static Hint Opned");
+        });
 
         socket.On("static-shop-price", (s, p, m) => {
-           
-            
+
+
             var static_shop = FindObjectOfType<StaticShop>();
             var data = JsonUtility.FromJson<StaticShop.ItemPriceData>(m[0].ToString());
             static_shop.Set(data);
@@ -1103,7 +1105,7 @@ public class ServerUI : MonoBehaviour
             //  UIInFooterAndHeader.Xp_inPageSelectGame.text = BODY.profile.billiard_level.ToString();
             UIInFooterAndHeader.SetXpPrograssBar(BODY.profile.billiard_level, BODY.profile.billiard_currentxp, BODY.profile.billiard_totalxp);
         }
-     
+
         else
         {
             UIInFooterAndHeader.ResetXpPrograssbar();
@@ -1123,13 +1125,13 @@ public class ServerUI : MonoBehaviour
         socket.Emit("ping2");
         //Debug.Log("Ping");
     }
-    public void  Emit_DialogAndNotification(string eventName ="shop")
+    public void Emit_DialogAndNotification(string eventName = "shop")
     {
         socket.Emit(eventName);
     }
-    public void Emit_DialogAndNotification(string eventName , string data)
+    public void Emit_DialogAndNotification(string eventName, string data)
     {
-        socket.Emit(eventName,data);
+        socket.Emit(eventName, data);
     }
 
     public void SendRequestForEditPhone(string phonenumber)
@@ -1140,7 +1142,7 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("changePhone", phonenumber, confrimcode);
     }
-    
+
     public void SendRequestGetFriends()
     {
         socket.Emit("get-friends");
@@ -1154,9 +1156,9 @@ public class ServerUI : MonoBehaviour
         navigationUi.StartLoadingPageShow();
         Debug.Log("GetChat..." + userName);
     }
-    public void SendChatToUser(string username, string Message,bool issticker)
+    public void SendChatToUser(string username, string Message, bool issticker)
     {
-        socket.Emit("chat", username, Message,issticker);
+        socket.Emit("chat", username, Message, issticker);
         navigationUi.StartLoadingPageShow();
         Debug.Log("SendChat...");
     }
@@ -1165,9 +1167,9 @@ public class ServerUI : MonoBehaviour
         socket.Emit("read-chat", userid);
         Debug.Log("Im a reading chat");
     }
-    public void SendChatToTeam(string message,bool issticker)
+    public void SendChatToTeam(string message, bool issticker)
     {
-        socket.Emit("team-chat", message,issticker);
+        socket.Emit("team-chat", message, issticker);
         navigationUi.StartLoadingPageShow();
         Debug.Log("ChatSendToTeam");
     }
@@ -1250,7 +1252,7 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("join-league", teamid);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("Join To League"  + teamid);
+        Debug.Log("Join To League" + teamid);
     }
     public void LeaveTheTeam()
     {
@@ -1323,9 +1325,9 @@ public class ServerUI : MonoBehaviour
     }
     public void RequestCreateTeam_NULLfeid()
     {
-        
+
         socket.Emit("create-league-error");
-        
+
         Debug.Log("Field Null");
     }
     public void RequestLeagueRules()
@@ -1342,7 +1344,7 @@ public class ServerUI : MonoBehaviour
     }
     public void RequestEditAvatar(string name)
     {
-        socket.Emit("edit-avatar",name);
+        socket.Emit("edit-avatar", name);
         navigationUi.StartLoadingPageShow();
         Debug.Log("Edit Avatars Requested");
     }
@@ -1362,8 +1364,8 @@ public class ServerUI : MonoBehaviour
     public void RequestEditUserName(string username)
     {
         socket.Emit("edit-username", username);
-      //  navigationUi.StartLoadingPageShow();
-        Debug.Log("CheckUserName " + username); 
+        //  navigationUi.StartLoadingPageShow();
+        Debug.Log("CheckUserName " + username);
     }
     #region Emits_Shop
     public void Emit_Transaction(string tranlog)
@@ -1445,13 +1447,13 @@ public class ServerUI : MonoBehaviour
             reciveMatchFriendRequest = obj_setting.Setting.reciveMatchFriendRequest
 
         };
-        
+
         var json_setting = JsonUtility.ToJson(data);
         socket.Emit("setting", json_setting);
         Debug.Log("Setting  Send To Server");
 
     }
-    public  void Emit_WithdrawAwardLeague()
+    public void Emit_WithdrawAwardLeague()
     {
         socket.Emit("league-withdraw");
         Debug.Log("WithdrawAwardLeague");
@@ -1463,8 +1465,8 @@ public class ServerUI : MonoBehaviour
     }
     public void Emit_AchivementDescription(string achivename)
     {
-        socket.Emit("achievement-dialog",achivename);
-        Debug.Log("Achivment Description"+achivename);
+        socket.Emit("achievement-dialog", achivename);
+        Debug.Log("Achivment Description" + achivename);
     }
     public void Emit_Ticket(string id)
     {
@@ -1476,17 +1478,17 @@ public class ServerUI : MonoBehaviour
         socket.Emit("card-dialog", id);
         Debug.Log("Card Dialog :" + id);
     }
-    public void Emit_ShopT2Button(string name, int price )
+    public void Emit_ShopT2Button(string name, int price)
     {
         socket.Emit("shop-t2", name, price);
-        Debug.Log("Price Of Prodoct :" + name +":"+ price);
-     
+        Debug.Log("Price Of Prodoct :" + name + ":" + price);
+
     }
     public void Emit_StaticShopUpdate()
     {
         socket.Emit("static-shop-price");
         Debug.Log("StaticShop Requested");
-      
+
     }
     public void Emit_CloseDialog(string closeEvent)
     {
@@ -1538,7 +1540,7 @@ public class ServerUI : MonoBehaviour
     {
         socket.Emit("competition-leave", id);
         navigationUi.StartLoadingPageShow();
-        Debug.Log("Request Competition Leave" +id);
+        Debug.Log("Request Competition Leave" + id);
     }
     public void RequestGoToTableRanking()
     {
@@ -1584,10 +1586,10 @@ public class ServerUI : MonoBehaviour
         socket.Emit("getSticker");
         Debug.Log("Emit_getSticker");
     }
-    public void  Emit_CurrncyButton(string c)
+    public void Emit_CurrncyButton(string c)
     {
         socket.Emit("currency-dialog", c);
-        Debug.Log("currency-dialog:"+c);
+        Debug.Log("currency-dialog:" + c);
     }
     #endregion
     #region Function
@@ -1635,29 +1637,29 @@ public class ServerUI : MonoBehaviour
         }
         return token.token;
     }
-    public void  DeleteToken(string FileName)
+    public void DeleteToken(string FileName)
     {
-        
+
         if (File.Exists(Application.persistentDataPath + "//" + FileName + ".json"))
         {
             File.Delete(Application.persistentDataPath + "//" + FileName + ".json");
         }
-        
-    }
-   /* public Sprite ConvertImageToSprite(string image)
-    {
 
-        var image_byte = Convert.FromBase64String(image);
-        Texture2D texture = new Texture2D(512, 512, TextureFormat.ETC2_RGBA8, false);
-        texture.LoadImage(image_byte);
-        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
-    }*/
+    }
+    /* public Sprite ConvertImageToSprite(string image)
+     {
+
+         var image_byte = Convert.FromBase64String(image);
+         Texture2D texture = new Texture2D(512, 512, TextureFormat.ETC2_RGBA8, false);
+         texture.LoadImage(image_byte);
+         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f));
+     }*/
     #endregion
     #region Events
     private Action createteam;
     public event Action OnCreateTeamCompeleted
     {
-        add { createteam+=value; }
+        add { createteam += value; }
         remove { createteam -= value; }
     }
     protected void Handler_OnCreateTeamCompeleted()
@@ -1671,7 +1673,7 @@ public class ServerUI : MonoBehaviour
     public event Action OnGameBodyUpdate
     {
         add { gamebody += value; }
-        remove { gamebody-= value; }
+        remove { gamebody -= value; }
     }
     protected void Handler_OnGameBodyUpdate()
     {
@@ -1757,7 +1759,7 @@ public class ServerUI : MonoBehaviour
     }
     protected void Handler_OnGetTeamInfo(TeamInfo teamInfos)
     {
-        if (getteaminfo  != null)
+        if (getteaminfo != null)
         {
             getteaminfo(teamInfos);
         }
@@ -1799,19 +1801,19 @@ public class ServerUI : MonoBehaviour
             ongetime(time);
         }
     }
-   /* private Action<ProfileOtherPerson> getprofileperson;
-    public event Action<ProfileOtherPerson> OnGetProfileOtherPerson
-    {
-        add { getprofileperson += value; }
-        remove { getprofileperson -= value; }
-    }
-    protected void Handler_OnGetProfileOtherPerson(ProfileOtherPerson profile)
-    {
-        if (getprofileperson != null)
-        {
-            getprofileperson(profile);
-        }
-    }*/
+    /* private Action<ProfileOtherPerson> getprofileperson;
+     public event Action<ProfileOtherPerson> OnGetProfileOtherPerson
+     {
+         add { getprofileperson += value; }
+         remove { getprofileperson -= value; }
+     }
+     protected void Handler_OnGetProfileOtherPerson(ProfileOtherPerson profile)
+     {
+         if (getprofileperson != null)
+         {
+             getprofileperson(profile);
+         }
+     }*/
 
     public event Action<TopPlayers> OnGetTopPlayers;
     protected void Handler_OnGetTopPlayers(TopPlayers players)
@@ -2033,7 +2035,7 @@ public class ServerUI : MonoBehaviour
         }
     }
 
-    private Action <string> onchangeusername;
+    private Action<string> onchangeusername;
     public event Action<string> OnchangeUsername
     {
         add
@@ -2043,12 +2045,12 @@ public class ServerUI : MonoBehaviour
         }
         remove
         {
-            onchangeusername-= value;
+            onchangeusername -= value;
         }
     }
     protected void Handler_OnChangeUsername(string user)
     {
-        if (onchangeusername!= null)
+        if (onchangeusername != null)
         {
             onchangeusername(user);
         }

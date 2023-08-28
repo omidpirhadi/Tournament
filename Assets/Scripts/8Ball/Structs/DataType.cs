@@ -174,7 +174,7 @@ namespace Diaco.EightBall.Structs
         public string avatar;
         public List<string> friends;
         public int goalCount;
-
+       
         public string rank;
         public string coin;
         public string cup;
@@ -187,6 +187,7 @@ namespace Diaco.EightBall.Structs
 
         public ResultPlayer winner;
         public ResultPlayer loser;
+        public int costType;
         public bool isFriend;
 
     }

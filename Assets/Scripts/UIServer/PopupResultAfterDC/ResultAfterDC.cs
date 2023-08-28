@@ -67,8 +67,8 @@ namespace Diaco.UI.PopupResualtAfterDC
         public void Set(ResultAfterDCData result)
         {
 
-
-            if (result.GameType == 0)// soccer
+            SetCostType(result.costType);
+            if (result.gameType == 0)// soccer
             {
                 cup_left_logo_image.sprite = SoccerCup_logo_sprite;
                 cup_right_logo_image.sprite = SoccerCup_logo_sprite;
@@ -203,7 +203,8 @@ namespace Diaco.UI.PopupResualtAfterDC
         public ResultPlayer winner;
         public ResultPlayer loser;
         public bool isWinner;
-        public int GameType; //0 = soccer ,,,,,1 = billiard
+        public int gameType; //0 = soccer ,,,,,1 = billiard
+        public int costType;
 
     }
 }
