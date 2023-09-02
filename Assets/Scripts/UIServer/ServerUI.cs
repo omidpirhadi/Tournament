@@ -142,21 +142,16 @@ public class ServerUI : MonoBehaviour
         socket.On("main-menu", (s, p, m) =>
         {
 
-
-
-              if(Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
-              {
-                  var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
-                  Emit_Transaction(dt);
-              }
+            if (Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ExistTransactionFile("translog"))
+            {
+                var dt = Diaco.Store.CafeBazzar.CafeBazzarStore.instance.ReadTransaction("translog");
+                Emit_Transaction(dt);
+            }
             BODY.inventory.tickets = new System.Collections.Generic.List<TicketData>();
             var ticket = FindObjectOfType<Diaco.UI.TicketManagers.TicketManager>();
-
             var byte_data = p.Attachments[0];
             var json = System.Text.UTF8Encoding.UTF8.GetString(byte_data);
             BODY = JsonUtility.FromJson<BODY>(json);
-
-
             if (navigationUi.CurrentPage != "findplayer")
             {
                 if (BODY.inGame.id != "" && intergation == 0)
@@ -201,28 +196,21 @@ public class ServerUI : MonoBehaviour
                     return;
                 }
             }
-
-
-
             if (loadedpage == false)
             {
                 Login.SetActive(false);
                 //  Register.SetActive(false);
                 SplashScreen.SetActive(false);
-
                 MainMenu.SetActive(true);
                 Footer.SetActive(true);
                 Header.SetActive(true);
                 loadedpage = true;
             }
-
-
             UIInFooterAndHeader.initTournmentCard(BODY.profile.tournaments);
             SetElementInHeaderAndFooter();
             if (ticket != null)
                 ticket.Show(BODY.inventory.tickets);
             Handler_OnCreateTeamCompeleted();
-
             Handler_OnGameBodyUpdate();
             navigationUi.StopLoadingPage();
             Debug.Log("main-menu called");
